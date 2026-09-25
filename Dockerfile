@@ -47,6 +47,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
+# Install exact Prisma CLI version to prevent version mismatch
+RUN npm install -g prisma@6.19.3
+
 # Create non-root system user
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
