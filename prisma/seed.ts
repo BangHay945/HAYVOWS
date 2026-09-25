@@ -238,6 +238,7 @@ async function main() {
   console.log("✅ Seeded demo guest: /invitation/alex-sara/budi-santoso");
 
   // 6. Seed Demo Ucapan
+  await prisma.guestMessage.deleteMany({ where: { weddingId: demoWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
@@ -376,6 +377,7 @@ async function main() {
     },
   });
 
+  await prisma.guestMessage.deleteMany({ where: { weddingId: cyberWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
@@ -514,6 +516,7 @@ async function main() {
     },
   });
 
+  await prisma.guestMessage.deleteMany({ where: { weddingId: floralWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
@@ -665,6 +668,7 @@ async function main() {
     },
   });
 
+  await prisma.guestMessage.deleteMany({ where: { weddingId: monogramWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
@@ -821,6 +825,7 @@ async function main() {
     },
   });
 
+  await prisma.guestMessage.deleteMany({ where: { weddingId: noirWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
@@ -973,6 +978,7 @@ async function main() {
     },
   });
 
+  await prisma.guestMessage.deleteMany({ where: { weddingId: batikWedding.id } });
   await prisma.guestMessage.createMany({
     data: [
       {
