@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -96,8 +95,9 @@ async function main() {
   });
   console.log("✅ Seeded template: Batik Jawa Heritage");
 
-  // 2. Seed Demo User
-  const hashedPassword = await bcrypt.hash("admin123", 10);
+  // 2. Seed Demo User (password: admin123)
+  const hashedPassword =
+    "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
   const demoUser = await prisma.user.upsert({
     where: { email: "admin@hayvows.com" },
     update: { plan: "luxury", role: "admin" },

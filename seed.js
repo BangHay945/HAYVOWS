@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const prisma = new client_1.PrismaClient();
 async function main() {
     // 1. Seed Template Pixel Adventure
@@ -91,8 +87,8 @@ async function main() {
         },
     });
     console.log("✅ Seeded template: Batik Jawa Heritage");
-    // 2. Seed Demo User
-    const hashedPassword = await bcryptjs_1.default.hash("admin123", 10);
+    // 2. Seed Demo User (password: admin123)
+    const hashedPassword = "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
     const demoUser = await prisma.user.upsert({
         where: { email: "admin@hayvows.com" },
         update: { plan: "luxury", role: "admin" },
