@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&family=IM+Fell+English:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.font-pixel {
+  font-family: 'Pixelify Sans', monospace, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.font-pixel-retro {
+  font-family: 'Press Start 2P', monospace, sans-serif;
+}
+
+.font-serif-floral {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-serif-monogram {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-floral {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.font-noir-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-noir-sans {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+}
+
+/* Batik Jawa Heritage Theme Fonts */
+.font-jawa-serif {
+  font-family: 'IM Fell English', Georgia, 'Times New Roman', serif;
+}
+
+.font-jawa-body {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+}
+
+/* Sembunyikan scrollbar untuk pengalaman scroll horizontal mobile yang rapi */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

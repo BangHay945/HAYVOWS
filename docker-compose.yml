@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hayvows-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      # Persistent volume untuk database SQLite dan file lokal
+      - hayvows_data:/app/prisma
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+volumes:
+  hayvows_data:
+    driver: local

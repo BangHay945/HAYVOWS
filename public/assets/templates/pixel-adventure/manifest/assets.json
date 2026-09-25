@@ -1,0 +1,61 @@
+{
+  "templateId": "pixel-adventure",
+  "version": "2.0.0",
+  "assets": [
+    {
+      "id": "map-floating-island-v1",
+      "type": "environment",
+      "file": "/assets/templates/pixel-adventure/maps/floating-island-v1/map.png",
+      "width": 1376,
+      "height": 768,
+      "status": "approved"
+    },
+    {
+      "id": "nav-floating-island-v1",
+      "type": "navigation",
+      "file": "/assets/templates/pixel-adventure/maps/floating-island-v1/navigation.json",
+      "status": "approved"
+    },
+    {
+      "id": "npc-guide-aria",
+      "type": "npc",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/guide_sprite.png",
+      "portrait": "/assets/templates/pixel-adventure/characters/npcs/guide_portrait.png",
+      "status": "approved"
+    },
+    {
+      "id": "npc-couple-alex-sara",
+      "type": "npc",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/couple_sprite.png",
+      "portrait": "/assets/templates/pixel-adventure/characters/npcs/couple_portrait.png",
+      "status": "approved"
+    },
+    {
+      "id": "npc-herald-valen",
+      "type": "npc",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/herald_sprite.png",
+      "portrait": "/assets/templates/pixel-adventure/characters/npcs/herald_portrait.png",
+      "status": "approved"
+    },
+    {
+      "id": "npc-steward-budi",
+      "type": "npc",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/steward_sprite.png",
+      "portrait": "/assets/templates/pixel-adventure/characters/npcs/steward_portrait.png",
+      "status": "approved"
+    },
+    {
+      "id": "npc-postmaster-pip",
+      "type": "npc",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/postmaster_sprite.png",
+      "portrait": "/assets/templates/pixel-adventure/characters/npcs/postmaster_portrait.png",
+      "status": "approved"
+    },
+    {
+      "id": "ui-dialog-frame",
+      "type": "ui",
+      "file": "/assets/templates/pixel-adventure/ui/dialog_frame.png",
+      "status": "approved"
+    }
+  ]
+}

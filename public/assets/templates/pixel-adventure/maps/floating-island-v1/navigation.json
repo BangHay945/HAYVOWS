@@ -1,0 +1,281 @@
+{
+  "mapId": "floating-island-v1",
+  "coordinateSystem": "isometric-2.5d",
+  "mapSize": {
+    "width": 1376,
+    "height": 768
+  },
+  "spawnPoint": {
+    "x": 50.15,
+    "y": 96,
+    "facing": "up"
+  },
+  "waypoints": {
+    "bridge_spawn": {
+      "x": 50.15,
+      "y": 97.01,
+      "label": "Jembatan Masuk"
+    },
+    "bridge_guide": {
+      "x": 50.15,
+      "y": 75.52,
+      "label": "Pos Pemandu"
+    },
+    "path_mid": {
+      "x": 50.15,
+      "y": 67.71,
+      "label": "Jalan Setapak"
+    },
+    "plaza_south": {
+      "x": 50.15,
+      "y": 61.85,
+      "label": "Pintu Masuk Plaza"
+    },
+    "plaza_center": {
+      "x": 50.15,
+      "y": 54.04,
+      "label": "Pusat Plaza"
+    },
+    "plaza_west": {
+      "x": 46.88,
+      "y": 55.99,
+      "label": "Plaza Barat"
+    },
+    "plaza_east": {
+      "x": 53.42,
+      "y": 55.99,
+      "label": "Plaza Timur"
+    },
+    "plaza_north": {
+      "x": 50.15,
+      "y": 46.88,
+      "label": "Plaza Utara"
+    },
+    "gazebo_entry": {
+      "x": 46.51,
+      "y": 52.08,
+      "label": "Akses Gazebo"
+    },
+    "gazebo_path": {
+      "x": 44.11,
+      "y": 43.62,
+      "label": "Jalan Gazebo"
+    },
+    "gazebo_stairs": {
+      "x": 41.06,
+      "y": 39.19,
+      "label": "Tangga Gazebo"
+    },
+    "gazebo_deck": {
+      "x": 39.97,
+      "y": 37.89,
+      "label": "Pavilion Mempelai"
+    },
+    "castle_entry": {
+      "x": 57.41,
+      "y": 47.53,
+      "label": "Akses Istana"
+    },
+    "castle_ramp": {
+      "x": 62.86,
+      "y": 40.36,
+      "label": "Tanjakan Istana"
+    },
+    "castle_gate": {
+      "x": 66.86,
+      "y": 38.41,
+      "label": "Gerbang Istana"
+    }
+  },
+  "edges": [
+    [
+      "bridge_spawn",
+      "bridge_guide"
+    ],
+    [
+      "bridge_guide",
+      "path_mid"
+    ],
+    [
+      "path_mid",
+      "plaza_south"
+    ],
+    [
+      "plaza_south",
+      "plaza_center"
+    ],
+    [
+      "plaza_center",
+      "plaza_west"
+    ],
+    [
+      "plaza_center",
+      "plaza_east"
+    ],
+    [
+      "plaza_center",
+      "plaza_north"
+    ],
+    [
+      "plaza_center",
+      "gazebo_entry"
+    ],
+    [
+      "gazebo_entry",
+      "gazebo_path"
+    ],
+    [
+      "gazebo_path",
+      "gazebo_stairs"
+    ],
+    [
+      "gazebo_stairs",
+      "gazebo_deck"
+    ],
+    [
+      "plaza_center",
+      "castle_entry"
+    ],
+    [
+      "castle_entry",
+      "castle_ramp"
+    ],
+    [
+      "castle_ramp",
+      "castle_gate"
+    ]
+  ],
+  "walkablePolygons": [
+    [
+      { "x": 46.1, "y": 100 },
+      { "x": 46.1, "y": 60 },
+      { "x": 44, "y": 56.5 },
+      { "x": 42.5, "y": 51.5 },
+      { "x": 42, "y": 45.5 },
+      { "x": 38.5, "y": 42 },
+      { "x": 36.5, "y": 38.5 },
+      { "x": 39.5, "y": 35.5 },
+      { "x": 44, "y": 39.5 },
+      { "x": 46.5, "y": 42.7 },
+      { "x": 56.3, "y": 42.7 },
+      { "x": 60.5, "y": 39.5 },
+      { "x": 69.5, "y": 33.5 },
+      { "x": 71.5, "y": 36 },
+      { "x": 63.5, "y": 44.5 },
+      { "x": 59, "y": 49.5 },
+      { "x": 57.5, "y": 55 },
+      { "x": 54.2, "y": 60 },
+      { "x": 54.2, "y": 100 }
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "guide",
+      "type": "guide",
+      "name": "Guide Aria",
+      "title": "PEMANDU WISATA KERAJAAN",
+      "badge": "🧭 PEMANDU",
+      "icon": "🧭",
+      "x": 53.05,
+      "y": 75.52,
+      "interactionPoint": {
+        "x": 50.15,
+        "y": 75.52,
+        "facing": "right"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/guide_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/guide_sprite.png",
+      "greeting": "Selamat datang di Pulau Langit Kerajaan! Silakan jelajahi pulau dan bicara dengan para sahabat di sekitar istana untuk melihat kisah cinta, jadwal acara, galeri foto, RSVP, dan tanda kasih."
+    },
+    {
+      "id": "couple",
+      "type": "couple",
+      "name": "Kedua Mempelai",
+      "title": "MEMPELAI BAHAGIA (OUR STORY)",
+      "badge": "👑 KEDUA MEMPELAI",
+      "icon": "👑",
+      "x": 38.52,
+      "y": 36.46,
+      "interactionPoint": {
+        "x": 39.97,
+        "y": 37.89,
+        "facing": "up"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/couple_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/couple_sprite.png",
+      "greeting": "Hai Sahabat Tersayang! Terima kasih telah berkunjung ke gazebo kenangan kami. Kami ingin berbagi kisah perjalanan cinta dan potret bahagia kami denganmu."
+    },
+    {
+      "id": "event",
+      "type": "event",
+      "name": "Herald Valen",
+      "title": "PENGAWAL AGUNG ISTANA (WEDDING DAY)",
+      "badge": "🏰 JADWAL & PETA",
+      "icon": "🏰",
+      "x": 68.31,
+      "y": 36.46,
+      "interactionPoint": {
+        "x": 66.86,
+        "y": 38.41,
+        "facing": "up"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/herald_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/herald_sprite.png",
+      "greeting": "Titah Kerajaan! Resepsi pernikahan agung akan diselenggarakan di Aula Utama Istana. Saksikan hitung mundur hari bahagia, jadwal prosesi, dan peta navigasi di sini!"
+    },
+    {
+      "id": "rsvp",
+      "type": "rsvp",
+      "name": "Steward Budi",
+      "title": "BUKU TAMU & RESERVASI KEHADIRAN",
+      "badge": "📜 BUKU TAMU / RSVP",
+      "icon": "📜",
+      "x": 55.23,
+      "y": 55.99,
+      "interactionPoint": {
+        "x": 53.42,
+        "y": 55.99,
+        "facing": "right"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/steward_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/steward_sprite.png",
+      "greeting": "Salam hormat! Mohon konfirmasikan kehadiran Anda pada pesta kerajaan ini agar kami dapat mempersiapkan tempat duduk dan jamuan terbaik untuk Anda sekeluarga."
+    },
+    {
+      "id": "messages",
+      "type": "messages",
+      "name": "Postmaster Pip",
+      "title": "KOTAK UCAPAN & DOA RESTU",
+      "badge": "✉️ KOTAK UCAPAN",
+      "icon": "✉️",
+      "x": 45.06,
+      "y": 55.99,
+      "interactionPoint": {
+        "x": 46.88,
+        "y": 55.99,
+        "facing": "left"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/postmaster_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/postmaster_sprite.png",
+      "greeting": "Bawalah doa terbaikmu! Kirimkan untaian kata dan doa restu yang hangat untuk kedua mempelai dalam lembaran buku kenangan abadi ini."
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "name": "Master Remi",
+      "title": "PELUKIS AGUNG ISTANA (PHOTO GALLERY)",
+      "badge": "🎨 GALERI FOTO",
+      "icon": "🎨",
+      "x": 51.24,
+      "y": 45.57,
+      "interactionPoint": {
+        "x": 51.24,
+        "y": 48.83,
+        "facing": "up"
+      },
+      "avatar": "/assets/templates/pixel-adventure/characters/npcs/artist_portrait.png",
+      "sprite": "/assets/templates/pixel-adventure/characters/npcs/artist_sprite.png",
+      "greeting": "Selamat datang di Galeri Potret Kerajaan! Saya telah mengabadikan setiap momen indah dan senyuman penuh cinta kedua mempelai dalam kanvas-kanvas kenangan ini. Mari nikmati galeri foto prewedding mereka!"
+    }
+  ]
+}

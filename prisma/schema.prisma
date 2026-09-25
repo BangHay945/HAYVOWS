@@ -1,0 +1,395 @@
+// Wedding Invitation SaaS — Prisma Schema
+// Database: SQLite (development), PostgreSQL (production)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────
+// USERS
+// ─────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          String    @default("client") // "client" | "admin"
+  plan          String    @default("basic")   // "basic" | "premium" | "luxury"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  weddings      Wedding[]
+  accounts      Account[]
+  sessions      Session[]
+  transactions  Transaction[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────
+// TEMPLATES
+// ─────────────────────────────────────────
+
+model Template {
+  id          String   @id @default(cuid())
+  slug        String   @unique   // "pixel-adventure"
+  name        String             // "Pixel Adventure"
+  description String?
+  thumbnail   String?
+  isPremium   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  version     String   @default("1.0.0")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  weddings    Wedding[]
+
+  @@map("templates")
+}
+
+// ─────────────────────────────────────────
+// WEDDINGS
+// ─────────────────────────────────────────
+
+model Wedding {
+  id              String   @id @default(cuid())
+  userId          String
+  slug            String   @unique  // "alex-sara"
+  templateId      String
+  templateVersion String   @default("1.0.0")
+  status          String   @default("draft")  // "draft" | "published"
+  messageMode     String   @default("auto")   // "auto" | "approval"
+  publishedAt     DateTime?
+  expiresAt       DateTime?
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+  whatsappMessage String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template        Template         @relation(fields: [templateId], references: [id])
+  couple          Couple?
+  events          Event[]
+  stories         Story[]
+  galleries       Gallery[]
+  musics          Music[]
+  guests          Guest[]
+  giftAccounts    GiftAccount[]
+  giftConfirmations GiftConfirmation[]
+  analyticsEvents AnalyticsEvent[]
+
+  @@map("weddings")
+}
+
+// ─────────────────────────────────────────
+// COUPLE
+// ─────────────────────────────────────────
+
+model Couple {
+  id              String   @id @default(cuid())
+  weddingId       String   @unique
+  groomName       String   @default("")
+  groomNickname   String   @default("")
+  groomPhoto      String?
+  groomFather     String   @default("")
+  groomMother     String   @default("")
+  groomInstagram  String   @default("")
+  brideName       String   @default("")
+  brideNickname   String   @default("")
+  bridePhoto      String?
+  couplePhoto     String?
+  brideFather     String   @default("")
+  brideMother     String   @default("")
+  brideInstagram  String   @default("")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  wedding         Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("couples")
+}
+
+// ─────────────────────────────────────────
+// EVENTS
+// ─────────────────────────────────────────
+
+model Event {
+  id          String   @id @default(cuid())
+  weddingId   String
+  title       String
+  date        String   // ISO date string
+  startTime   String
+  endTime     String?
+  venue       String
+  address     String   @default("")
+  mapsUrl     String   @default("")
+  description String   @default("")
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  wedding     Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("events")
+}
+
+// ─────────────────────────────────────────
+// STORY
+// ─────────────────────────────────────────
+
+model Story {
+  id          String   @id @default(cuid())
+  weddingId   String
+  title       String
+  date        String
+  description String   @default("")
+  image       String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  wedding     Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("stories")
+}
+
+// ─────────────────────────────────────────
+// GALLERY
+// ─────────────────────────────────────────
+
+model Gallery {
+  id        String   @id @default(cuid())
+  weddingId String
+  imageUrl  String
+  caption   String   @default("")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wedding   Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("galleries")
+}
+
+// ─────────────────────────────────────────
+// MUSIC
+// ─────────────────────────────────────────
+
+model Music {
+  id        String   @id @default(cuid())
+  weddingId String
+  title     String
+  fileUrl   String
+  duration  Int?     // seconds
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wedding   Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("musics")
+}
+
+// ─────────────────────────────────────────
+// GUESTS
+// ─────────────────────────────────────────
+
+model Guest {
+  id               String    @id @default(cuid())
+  weddingId        String
+  name             String
+  slug             String    // "budi-santoso"
+  phone            String    @default("")
+  address          String?   @default("")        // Alamat / Kota Asal / Instansi Tamu
+  category         String    @default("general") // "VIP" | "Keluarga" | "Reguler" | etc.
+  guestCount       Int       @default(1)         // Kuota Undangan (Pax)
+  tableNumber      String?   @default("")        // Nomor Meja / Alokasi Tempat Duduk
+  sessionName      String?   @default("")        // Sesi Acara (e.g. Sesi 1 / Sesi 2)
+  qrCode           String?                       // Token QR unik tiket kehadiran
+  attendanceStatus String    @default("pending") // "pending" | "attending" | "not_attending"
+  checkedIn        Boolean   @default(false)     // Status Kehadiran Riil Hari H
+  checkedInAt      DateTime?                     // Waktu Check-in
+  checkedInPax     Int       @default(1)         // Jumlah Pax yang Hadir Riil
+  souvenirTaken    Boolean   @default(false)     // Status Pengambilan Souvenir
+  giftType         String?   @default("")        // "amplop" | "kado" | "digital" | "none"
+  checkInNotes     String?   @default("")        // Catatan Khusus Penerima Tamu
+  openedAt         DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  wedding          Wedding        @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  rsvp             Rsvp?
+  messages         GuestMessage[]
+
+  @@unique([weddingId, slug])
+  @@map("guests")
+}
+
+// ─────────────────────────────────────────
+// RSVP
+// ─────────────────────────────────────────
+
+model Rsvp {
+  id               String   @id @default(cuid())
+  weddingId        String
+  guestId          String   @unique
+  attendanceStatus String   // "attending" | "not_attending"
+  guestCount       Int      @default(1)
+  submittedAt      DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  guest            Guest    @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@map("rsvps")
+}
+
+// ─────────────────────────────────────────
+// GUEST MESSAGES
+// ─────────────────────────────────────────
+
+model GuestMessage {
+  id        String   @id @default(cuid())
+  weddingId String
+  guestId   String
+  message   String
+  status    String   @default("pending")  // "pending" | "approved" | "hidden"
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  guest     Guest    @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@map("guest_messages")
+}
+
+// ─────────────────────────────────────────
+// GIFT ACCOUNTS
+// ─────────────────────────────────────────
+
+model GiftAccount {
+  id          String   @id @default(cuid())
+  weddingId   String
+  bankName    String
+  accountName String
+  accountNo   String
+  type        String   @default("bank")  // "bank" | "qris"
+  qrisUrl     String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  wedding     Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("gift_accounts")
+}
+
+// ─────────────────────────────────────────
+// ANALYTICS
+// ─────────────────────────────────────────
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  weddingId String
+  guestId   String?
+  event     String   // "invitation_view" | "invitation_open" | "rsvp_submit" | ...
+  metadata  String   @default("{}")  // JSON string
+  createdAt DateTime @default(now())
+
+  wedding   Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("analytics_events")
+}
+
+// ─────────────────────────────────────────
+// GIFT CONFIRMATIONS (TRANSFER NOTIFICATIONS)
+// ─────────────────────────────────────────
+
+model GiftConfirmation {
+  id            String   @id @default(cuid())
+  weddingId     String
+  guestName     String
+  bankName      String
+  amount        Int
+  notes         String?
+  accountSender String?
+  proofUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  wedding       Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@map("gift_confirmations")
+}
+
+// ─────────────────────────────────────────
+// TRANSACTIONS (MIDTRANS PAYMENT ORDERS)
+// ─────────────────────────────────────────
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  orderId     String   @unique
+  plan        String   // "premium" | "luxury"
+  amount      Int      // 149000 atau 249000
+  status      String   @default("pending") // "pending" | "settlement" | "expire" | "cancel"
+  paymentType String?
+  snapToken   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+
