@@ -28,6 +28,7 @@ import {
   ArrowUpRight,
   BookOpenCheck,
   QrCode,
+  Plus,
 } from "lucide-react";
 
 export type WeddingOption = {
@@ -166,8 +167,6 @@ export function DashboardShell({
     if (path.startsWith("/dashboard/settings")) return "Pengaturan";
     return "Overview";
   };
-
-  const demoUrl = activeWedding ? `/invitation/${activeWedding.slug}` : "/invitation/neo-2077";
 
   return (
     <div className="flex min-h-screen bg-[#faf8f5] font-sans text-slate-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
@@ -506,16 +505,28 @@ export function DashboardShell({
 
           {/* Right Actions */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <Link
-              href={demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-[#2d4a3e] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 rounded-xl shadow-2xs transition-colors"
-            >
-              <ExternalLink className="hidden sm:inline w-3.5 h-3.5 text-[#2d4a3e] shrink-0" />
-              <span className="hidden sm:inline">Live Demo Undangan</span>
-              <span className="sm:hidden text-[11px] font-semibold">Demo ↗</span>
-            </Link>
+            {activeWedding ? (
+              <Link
+                href={`/invitation/${activeWedding.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-[#2d4a3e] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 rounded-xl shadow-2xs transition-colors"
+                title="Buka preview undangan di tab baru"
+              >
+                <ExternalLink className="hidden sm:inline w-3.5 h-3.5 text-[#2d4a3e] shrink-0" />
+                <span className="hidden sm:inline">Live Preview Undangan</span>
+                <span className="sm:hidden text-[11px] font-semibold">Preview ↗</span>
+              </Link>
+            ) : (
+              <Link
+                href="/dashboard/invitation/new"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#2d4a3e] hover:bg-[#233a30] rounded-xl shadow-2xs transition-all hover:shadow-sm"
+                title="Mulai buat undangan pertama Anda"
+              >
+                <Plus className="w-3.5 h-3.5 shrink-0" />
+                <span>Buat Undangan</span>
+              </Link>
+            )}
           </div>
         </header>
 
