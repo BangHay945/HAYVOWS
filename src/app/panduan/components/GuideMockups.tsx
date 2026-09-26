@@ -27,6 +27,8 @@ import {
   Send,
   Play,
   RotateCcw,
+  Crown,
+  Heart,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
@@ -400,18 +402,43 @@ export function TvDisplaySimulation() {
   const [selectedGuest, setSelectedGuest] = useState(0);
 
   const guestSamples = [
-    { name: "Bapak Budi Santoso & Keluarga", note: "Keluarga Besar Mempelai Pria", time: "Baru Saja Check-in" },
-    { name: "dr. Hendra Wijaya & Pasangan", note: "Rekan Dokter Spesialis", time: "1 Menit Lalu" },
-    { name: "Ibu Siti Rahmawati, S.E.", note: "Sahabat Kuliah Mempelai Wanita", time: "2 Menit Lalu" },
+    {
+      name: "Bapak Budi Santoso & Keluarga",
+      category: "TAMU VIP",
+      table: "Meja VIP A1",
+      pax: "2 Pax",
+      location: "Jakarta Selatan",
+      time: "Baru Saja Check-in",
+    },
+    {
+      name: "dr. Hendra Wijaya & Pasangan",
+      category: "TAMU VIP",
+      table: "Meja B4 (Kolega)",
+      pax: "2 Pax",
+      location: "Surabaya",
+      time: "1 Menit Lalu",
+    },
+    {
+      name: "Ibu Siti Rahmawati, S.E.",
+      category: "TAMU KELUARGA",
+      table: "Meja C2",
+      pax: "1 Pax",
+      location: "Bandung",
+      time: "2 Menit Lalu",
+    },
   ];
 
+  const current = guestSamples[selectedGuest];
+
   return (
-    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
+    <div className="bg-slate-950 rounded-3xl p-4 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Top TV Frame Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div className="flex items-center gap-2">
-          <Tv className="w-4 h-4 text-indigo-400" />
-          <span className="text-xs font-bold text-slate-200">Layar TV Resepsi (HDMI)</span>
+          <div className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+            <Tv className="w-3.5 h-3.5" />
+          </div>
+          <span className="text-xs font-bold text-slate-200">Layar Sapa Resepsi TV (/display)</span>
         </div>
         <div className="flex items-center gap-1.5 font-mono text-[10px] text-red-300 bg-red-500/10 px-2.5 py-0.5 rounded-full border border-red-500/30">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
@@ -419,28 +446,57 @@ export function TvDisplaySimulation() {
         </div>
       </div>
 
-      {/* Smart TV Bezel & Screen */}
-      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-tr from-slate-950 via-[#151c44] to-slate-950 border-2 border-slate-700 shadow-inner p-3.5 sm:p-4 text-center space-y-3">
-        {/* Subtle Ambient Glow */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
+      {/* Smart TV Bezel & Screen (Matching actual /display/[weddingSlug] UI) */}
+      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-950 via-[#0e1638] to-slate-950 border-2 border-slate-700 shadow-2xl p-3.5 sm:p-4 text-center space-y-3">
+        {/* Dynamic Light Bar at top of Screen */}
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-400" />
+        
+        {/* Ambient Glow */}
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-20 bg-indigo-500/20 blur-2xl pointer-events-none" />
 
         {/* Screen Top Bar */}
-        <div className="relative z-10 flex items-center justify-between text-[9px] text-slate-400 font-mono border-b border-white/5 pb-1">
-          <span className="tracking-wider">THE WEDDING OF DIMAS &amp; ANINDYA</span>
-          <span className="text-indigo-300">25 Okt 2026</span>
+        <div className="relative z-10 flex items-center justify-between text-[9px] text-slate-400 font-mono border-b border-white/10 pb-1.5">
+          <div className="flex items-center gap-1.5">
+            <Heart className="w-3 h-3 text-rose-400 fill-rose-400" />
+            <span className="tracking-wider uppercase font-bold text-slate-300">
+              The Official Wedding Reception
+            </span>
+          </div>
+          <span className="text-indigo-300 font-semibold">19:42 WIB</span>
         </div>
 
-        {/* Screen Dynamic Greeting Message */}
-        <div className="relative z-10 py-1.5 space-y-1 animate-in fade-in duration-200">
-          <div className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-indigo-200 text-[10px] font-bold tracking-wider uppercase">
-            Selamat Datang di Resepsi
+        {/* Dynamic Grand Welcome Banner */}
+        <div className="relative z-10 py-1 space-y-2 animate-in fade-in duration-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400/20 via-yellow-300/25 to-amber-400/20 border border-amber-300/50 text-[#fef08a] text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shadow">
+            <Sparkles className="w-3 h-3 text-amber-300" />
+            <span>Selamat Datang &bull; Tamu Kehormatan</span>
+            <Sparkles className="w-3 h-3 text-amber-300" />
           </div>
-          <h3 className="text-base sm:text-lg font-extrabold text-[#fef08a] drop-shadow-md leading-snug">
-            {guestSamples[selectedGuest].name}
+
+          <h3 className="text-base sm:text-xl font-extrabold text-white tracking-tight drop-shadow-md leading-snug">
+            {current.name}
           </h3>
-          <p className="text-[11px] text-slate-300 max-w-xs mx-auto leading-relaxed">
-            {guestSamples[selectedGuest].note}
+
+          <p className="text-[11px] text-indigo-200/90 font-medium flex items-center justify-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-indigo-400" />
+            <span>{current.location}</span>
           </p>
+
+          {/* Table & Pax Badges (Matching actual display page) */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-0.5">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold text-[9px] sm:text-[10px] shadow-sm">
+              <Crown className="w-3 h-3" />
+              <span>{current.category}</span>
+            </span>
+
+            <span className="px-2.5 py-0.5 rounded-lg bg-white/15 border border-white/20 text-white font-bold text-[9px] sm:text-[10px]">
+              Alokasi: <strong className="text-[#fef08a]">{current.table}</strong>
+            </span>
+
+            <span className="px-2.5 py-0.5 rounded-lg bg-white/15 border border-white/20 text-slate-200 text-[9px] sm:text-[10px]">
+              Presensi: {current.pax}
+            </span>
+          </div>
         </div>
 
         {/* Screen Bottom Bar */}
@@ -448,16 +504,16 @@ export function TvDisplaySimulation() {
           <span>Gedung Sasana Kriya Ballroom</span>
           <span className="text-emerald-400 font-bold flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Update Otomatis Real-time</span>
+            <span>Sinkron Otomatis dengan Scanner Meja</span>
           </span>
         </div>
       </div>
 
-      {/* Interactive Controller: Live Guest Arrivals Feed */}
+      {/* Interactive Controller: Live Reception Check-in Feed */}
       <div className="space-y-1.5 pt-0.5">
         <div className="flex items-center justify-between text-[11px] text-slate-300">
-          <span className="font-semibold">Simulasikan Tamu Check-in:</span>
-          <span className="text-[10px] text-indigo-300 font-mono">Klik untuk Ganti Nama &darr;</span>
+          <span className="font-semibold">Simulasikan Tamu Masuk Resepsi:</span>
+          <span className="text-[10px] text-indigo-300 font-mono">Klik Tamu &darr;</span>
         </div>
 
         <div className="space-y-1.5">
@@ -480,6 +536,7 @@ export function TvDisplaySimulation() {
                 />
                 <div className="min-w-0">
                   <span className="block text-xs font-bold truncate">{g.name}</span>
+                  <span className="block text-[10px] text-slate-400 truncate">{g.table} &bull; {g.location}</span>
                 </div>
               </div>
               <span className="text-[10px] font-mono shrink-0 ml-2 px-2 py-0.5 rounded bg-black/30 border border-white/10 text-indigo-200">
@@ -606,96 +663,180 @@ export function WhatsAppChatSimulation() {
    5. SIMULASI MOCKUP: GAME RETRO 2D PIXEL RPG
 ───────────────────────────────────────────────────────────── */
 export function PixelRpgSimulation() {
-  const [dialogueIndex, setDialogueIndex] = useState(0);
+  const [activeNpcIndex, setActiveNpcIndex] = useState(0);
 
-  const dialogues = [
+  const npcs = [
     {
-      speaker: "NPC Aria (Pemandu Gerbang)",
-      text: "Selamat datang Pengembara! Masuki Pulau Langit untuk membuka fitur RSVP & galeri foto mempelai!",
+      id: "guide",
+      name: "Guide Aria",
+      role: "PEMANDU WISATA KERAJAAN",
+      avatar: "/assets/templates/pixel-adventure/characters/npcs/guide_portrait.png",
+      sprite: "/assets/templates/pixel-adventure/characters/npcs/guide_sprite.png",
+      greeting:
+        "Selamat datang di Pulau Langit Kerajaan! Silakan jelajahi pulau dan bicara dengan para sahabat di sekitar istana untuk membuka fitur RSVP & galeri foto mempelai.",
+      badge: "🧚 PEMANDU",
+      location: "Bridge Entrance (Jembatan Masuk)",
     },
     {
-      speaker: "Ksatria Dimas (Mempelai Pria)",
-      text: "Terima kasih sudah datang jauh-jauh! Petualangan hidup baru kami dimulai hari ini!",
+      id: "couple",
+      name: "Kedua Mempelai",
+      role: "MEMPELAI BAHAGIA (OUR STORY)",
+      avatar: "/assets/templates/pixel-adventure/characters/npcs/couple_portrait.png",
+      sprite: "/assets/templates/pixel-adventure/characters/npcs/couple_sprite.png",
+      greeting:
+        "Hai Sahabat Tersayang! Terima kasih telah berkunjung ke gazebo kenangan kami. Kami ingin berbagi kisah perjalanan cinta dan potret bahagia kami denganmu.",
+      badge: "👑 KEDUA MEMPELAI",
+      location: "Memory Gazebo (Pusat Pulau)",
     },
     {
-      speaker: "Putri Anindya (Mempelai Wanita)",
-      text: "Jangan lupa periksa Peti Tanda Kasih di dekat air mancur untuk menitipkan doa restu ya!",
+      id: "herald",
+      name: "Herald Valen",
+      role: "PENGAWAL AGUNG ISTANA",
+      avatar: "/assets/templates/pixel-adventure/characters/npcs/herald_portrait.png",
+      sprite: "/assets/templates/pixel-adventure/characters/npcs/herald_sprite.png",
+      greeting:
+        "Titah Kerajaan! Resepsi pernikahan agung akan diselenggarakan di Aula Utama Istana. Saksikan hitung mundur hari bahagia, jadwal prosesi, dan peta navigasi di sini!",
+      badge: "🏰 JADWAL & PETA",
+      location: "Castle Gateway (Gerbang Istana)",
+    },
+    {
+      id: "steward",
+      name: "Steward Budi",
+      role: "BUKU TAMU & RESERVASI",
+      avatar: "/assets/templates/pixel-adventure/characters/npcs/steward_portrait.png",
+      sprite: "/assets/templates/pixel-adventure/characters/npcs/steward_sprite.png",
+      greeting:
+        "Salam hormat! Mohon konfirmasikan kehadiran Anda pada pesta kerajaan ini agar kami dapat mempersiapkan tempat duduk dan jamuan terbaik untuk Anda sekeluarga.",
+      badge: "📜 BUKU TAMU / RSVP",
+      location: "Plaza Center (Area Resepsi)",
     },
   ];
 
-  const handleNextDialogue = () => {
-    setDialogueIndex((prev) => (prev + 1) % dialogues.length);
+  const currentNpc = npcs[activeNpcIndex];
+
+  const handleNextNpc = () => {
+    setActiveNpcIndex((prev) => (prev + 1) % npcs.length);
   };
 
   return (
-    <div className="bg-[#0c102a] rounded-3xl p-4 sm:p-5 text-white border border-amber-400/50 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
-      {/* Console Header */}
-      <div className="flex items-center justify-between border-b border-amber-400/20 pb-3">
+    <div className="bg-[#1a060e] rounded-3xl p-4 sm:p-5 text-white border-2 border-[#eab308]/60 shadow-2xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
+      {/* 1. Retro Game Console Header */}
+      <div className="flex items-center justify-between border-b border-[#eab308]/30 pb-2.5">
         <div className="flex items-center gap-2">
-          <Gamepad2 className="w-4 h-4 text-amber-400" />
-          <span className="text-xs font-mono font-bold text-amber-300">16-Bit Retro Engine (60 FPS)</span>
+          <Gamepad2 className="w-4 h-4 text-[#fde047]" />
+          <span className="text-xs font-bold text-[#fde047] uppercase tracking-wider font-pixel">
+            Engine 2D Pixel RPG (60 FPS)
+          </span>
         </div>
-        <span className="text-[10px] font-mono text-emerald-400 bg-black/40 px-2 py-0.5 rounded border border-emerald-400/30">
-          ● Browser Mobile Ready
+        <span className="text-[10px] text-emerald-400 bg-black/60 px-2.5 py-0.5 rounded-full border border-emerald-400/40 font-mono">
+          ● Asset Asli Web
         </span>
       </div>
 
-      {/* Retro Pixel Screen */}
-      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#182357] via-[#0f1738] to-[#070b1c] border-2 border-amber-400/50 p-3 sm:p-4 aspect-[4/3] min-h-[220px] sm:min-h-[250px] flex flex-col justify-between">
-        {/* Floating Clouds & Island Scenery */}
-        <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-amber-200/70">
-          <span>HP: 100/100</span>
-          <span>LOCATION: SKY ISLAND</span>
+      {/* 2. Authentic Pixel World Canvas */}
+      <div className="relative rounded-2xl overflow-hidden border-2 sm:border-3 border-[#eab308] bg-[#111c3a] shadow-inner aspect-[4/3] min-h-[230px] sm:min-h-[260px] flex flex-col justify-between">
+        {/* Real In-Game Pixel Map Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center [image-rendering:pixelated]"
+          style={{
+            backgroundImage: "url('/assets/templates/pixel-adventure/maps/floating-island-v1/map1.png')",
+          }}
+        />
+        {/* Cinematic Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/60 pointer-events-none" />
+
+        {/* Top Royal Banner (Matching game UI) */}
+        <div className="relative z-10 p-2 flex items-center justify-between text-[10px] text-[#fde047] font-pixel">
+          <div className="border border-[#f6d776] bg-[#2a0812e6] px-2.5 py-1 rounded shadow flex items-center gap-1.5 ring-1 ring-[#78350f]">
+            <span>👑</span>
+            <span className="font-bold uppercase tracking-wider">DIMAS &amp; ANINDYA</span>
+            <span className="text-[8px] text-[#fef08a]">• 25 OKT 2026</span>
+          </div>
+
+          <span className="text-[9px] font-mono bg-black/75 px-2 py-0.5 rounded border border-white/20 text-slate-300">
+            {currentNpc.location}
+          </span>
         </div>
 
-        {/* Pixel Sprite Scene */}
-        <div className="my-auto text-center space-y-1.5 relative">
-          <div className="inline-flex items-center justify-center gap-3 sm:gap-4 p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-amber-400/30 backdrop-blur-xs">
-            {/* NPC Sprite */}
-            <div className="text-center">
-              <span className="text-xl sm:text-2xl block animate-bounce">🧝‍♀️</span>
-              <span className="text-[8px] sm:text-[9px] font-mono text-amber-300">Aria [NPC]</span>
-            </div>
-            {/* Groom Sprite */}
-            <div className="text-center">
-              <span className="text-xl sm:text-2xl block">🤵</span>
-              <span className="text-[8px] sm:text-[9px] font-mono text-emerald-300">Dimas</span>
-            </div>
-            {/* Bride Sprite */}
-            <div className="text-center">
-              <span className="text-xl sm:text-2xl block">👰</span>
-              <span className="text-[8px] sm:text-[9px] font-mono text-pink-300">Anindya</span>
-            </div>
+        {/* Real In-Game Pixel Art Sprites */}
+        <div className="relative z-10 my-auto flex items-end justify-center gap-8 pb-1">
+          {/* Player Character Sprite */}
+          <div className="flex flex-col items-center">
+            <span className="text-[9px] bg-black/75 px-1.5 py-0.5 rounded border border-emerald-400/50 text-emerald-300 mb-1 font-mono">
+              Tamu (Player)
+            </span>
+            <img
+              src="/assets/templates/pixel-adventure/characters/player/char-down-0.png"
+              alt="Player"
+              className="w-10 h-10 sm:w-12 sm:h-12 [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)] animate-bounce"
+            />
           </div>
-          <p className="text-[9px] sm:text-[10px] font-mono text-slate-300">
-            Tamu bebas berjalan menggunakan D-Pad virtual di layar HP
-          </p>
+
+          {/* Active NPC Sprite */}
+          <div className="flex flex-col items-center">
+            <div className="animate-pulse mb-1 px-2 py-0.5 bg-[#fde047] text-[#451a03] border border-[#78350f] text-[9px] font-bold uppercase rounded-full shadow flex items-center gap-1 font-pixel">
+              <span>{currentNpc.badge}</span>
+            </div>
+            <img
+              src={currentNpc.sprite}
+              alt={currentNpc.name}
+              className="w-11 h-11 sm:w-13 sm:h-13 [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]"
+            />
+          </div>
         </div>
 
-        {/* Retro Dialogue Box */}
-        <div className="bg-black/90 border-2 border-amber-400/80 rounded-xl p-2.5 sm:p-3 text-left space-y-1 shadow-lg">
-          <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono font-bold text-amber-300">
-            <span>{dialogues[dialogueIndex].speaker}</span>
-            <span className="text-[8px] sm:text-[9px] text-slate-400">Tekan [A] Lanjut &rarr;</span>
+        {/* 3. Authentic Wooden RPG Dialogue Box (Matching NPCDialog.tsx) */}
+        <div className="relative z-20 m-2 sm:m-2.5 bg-[#24060ef8] border-2 sm:border-3 border-[#eab308] ring-1 ring-[#78350f] p-2.5 sm:p-3 shadow-[0_8px_25px_rgba(0,0,0,0.95)]">
+          {/* Corner Diamonds */}
+          <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#fde047] border border-[#78350f] flex items-center justify-center text-[6px] text-[#78350f] font-black">
+            ◆
           </div>
-          <p className="text-[10px] sm:text-[11px] font-mono text-white leading-relaxed">
-            &ldquo;{dialogues[dialogueIndex].text}&rdquo;
-          </p>
+          <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#fde047] border border-[#78350f] flex items-center justify-center text-[6px] text-[#78350f] font-black">
+            ◆
+          </div>
+
+          <div className="flex gap-2.5 sm:gap-3 items-start">
+            {/* Real NPC Portrait from actual game assets */}
+            <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 border-2 border-[#fde047] bg-[#3b0d19] overflow-hidden shadow">
+              <img
+                src={currentNpc.avatar}
+                alt={currentNpc.name}
+                className="w-full h-full object-cover [image-rendering:pixelated]"
+              />
+            </div>
+
+            <div className="min-w-0 flex-1 space-y-0.5">
+              <div className="flex items-center justify-between">
+                <h4 className="text-[11px] sm:text-xs font-black uppercase text-[#fde047] tracking-wider truncate font-pixel">
+                  {currentNpc.name}
+                </h4>
+                <span className="text-[9px] text-[#fef08a]/70 font-mono">
+                  [A] Lanjut &rarr;
+                </span>
+              </div>
+              <p className="text-[9px] text-[#fef08a] font-semibold font-pixel">{currentNpc.role}</p>
+              <p className="text-[10px] text-white leading-relaxed line-clamp-3 font-pixel">
+                &ldquo;{currentNpc.greeting}&rdquo;
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Retro Controls Simulator */}
-      <div className="flex items-center justify-between pt-1 gap-2">
-        <div className="text-[9px] sm:text-[10px] font-mono text-slate-400">
-          <span>Kontrol: D-Pad / Layar Sentuh</span>
+      {/* 4. Controls Simulator */}
+      <div className="flex flex-col sm:flex-row items-center justify-between pt-1 gap-2">
+        <div className="flex items-center gap-1.5 text-[10px] text-slate-300">
+          <span className="px-2 py-0.5 rounded bg-white/10 font-mono">D-Pad / Layar Sentuh</span>
+          <span>Tamu berjalan bebas menjelajah pulau</span>
         </div>
+
         <button
           type="button"
-          onClick={handleNextDialogue}
-          className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono font-bold text-xs transition-all shadow-md active:scale-95 cursor-pointer shrink-0"
+          onClick={handleNextNpc}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#eab308] to-[#fde047] hover:brightness-110 text-[#451a03] font-bold text-xs shadow-md active:scale-95 cursor-pointer shrink-0 font-pixel"
         >
-          <span>Tombol [A] Aksi Dialog</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <Play className="w-3.5 h-3.5 fill-[#451a03]" />
+          <span>Bicara dengan Karakter Lain ({activeNpcIndex + 1}/{npcs.length})</span>
         </button>
       </div>
     </div>
