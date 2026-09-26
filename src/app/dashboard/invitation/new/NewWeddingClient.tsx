@@ -247,12 +247,12 @@ export function NewWeddingClient({
                         {reqPlan === "luxury" ? (
                           <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 text-[#c9a84c] border border-[#c9a84c]/40 uppercase tracking-wider">
                             <Crown className="w-2.5 h-2.5 text-[#c9a84c]" />
-                            <span>Paket Luxury</span>
+                            <span>Paket Exclusive</span>
                           </span>
                         ) : reqPlan === "premium" ? (
                           <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#2d4a3e] border border-emerald-300 uppercase tracking-wider">
                             <Sparkles className="w-2.5 h-2.5 text-[#2d4a3e]" />
-                            <span>Paket Premium</span>
+                            <span>Paket Populer</span>
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 uppercase tracking-wider">

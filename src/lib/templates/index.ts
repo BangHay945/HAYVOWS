@@ -3,16 +3,40 @@ import { prisma } from "@/lib/prisma";
 export type SubscriptionTier = "basic" | "premium" | "luxury";
 
 export const getRequiredPlan = (slug: string): SubscriptionTier => {
-  if (slug === "eternal-noir") return "luxury";
-  if (slug === "nature-floral" || slug === "pixel-cyberpunk" || slug === "vintage-royal" || slug === "batik-jawa") return "premium";
+  // Paket Exclusive (Rp 299.000)
+  if (
+    slug === "pixel-adventure" ||
+    slug === "pixel-cyberpunk" ||
+    slug === "pixel-rpg" ||
+    slug === "eternal-noir"
+  ) {
+    return "luxury";
+  }
+
+  // Paket Populer (Rp 199.000)
+  if (
+    slug === "nature-floral" ||
+    slug === "batik-jawa" ||
+    slug === "vintage-royal"
+  ) {
+    return "premium";
+  }
+
+  // Paket Basic (Rp 149.000)
   return "basic";
 };
 
-export const isPlanAllowed = (reqPlan: string, curPlan: string, role: string) => {
+export const isPlanAllowed = (reqPlan: string, curPlan: string, role?: string) => {
   if (role === "admin") return true;
-  if (reqPlan === "basic") return true;
-  if (reqPlan === "premium") return curPlan === "premium" || curPlan === "luxury";
-  if (reqPlan === "luxury") return curPlan === "luxury";
+  if (reqPlan === "basic") {
+    return curPlan === "basic" || curPlan === "premium" || curPlan === "luxury";
+  }
+  if (reqPlan === "premium") {
+    return curPlan === "premium" || curPlan === "luxury";
+  }
+  if (reqPlan === "luxury") {
+    return curPlan === "luxury";
+  }
   return false;
 };
 

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { MonogramSeal } from "@/templates/modern-monogram/components/MonogramSeal";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
+import { getRequiredPlan, isPlanAllowed } from "@/lib/templates";
 
 interface RichTemplateDetail {
   slug: string;
@@ -102,8 +103,8 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "vintage-royal": {
     slug: "vintage-royal",
     iconBg: "bg-[#2d4a3e] text-[#dfc49e]",
-    categoryTag: "Elegance & Luxury",
-    categoryStyle: "bg-amber-50 text-amber-900 border-amber-200",
+    categoryTag: "Paket Populer",
+    categoryStyle: "bg-emerald-50 text-emerald-800 border-emerald-200",
     versionTag: "v1.0.0 • Editorial",
     highlights: [
       "Audio: Classical Strings & Piano Romance",
@@ -140,21 +141,6 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     ],
     demoPath: "/invitation/prasetyo-kinanti/budi-santoso",
   },
-};
-
-
-const getRequiredPlan = (slug: string): "basic" | "premium" | "luxury" => {
-  if (slug === "eternal-noir" || slug === "pixel-adventure" || slug === "pixel-cyberpunk" || slug === "pixel-rpg") return "luxury";
-  if (slug === "nature-floral" || slug === "vintage-royal" || slug === "batik-jawa") return "premium";
-  return "basic";
-};
-
-const isPlanAllowed = (reqPlan: string, curPlan: string, role: string) => {
-  if (role === "admin") return true;
-  if (reqPlan === "basic") return true;
-  if (reqPlan === "premium") return curPlan === "premium" || curPlan === "luxury";
-  if (reqPlan === "luxury") return curPlan === "luxury";
-  return false;
 };
 
 export default function TemplateSelector({
