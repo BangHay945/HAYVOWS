@@ -48,47 +48,60 @@ export function UpgradeModal({
 
   if (!isOpen) return null;
 
-  // Helper untuk memastikan script Snap Midtrans termuat secara dinamis
+  // Helper untuk memastikan script Snap Midtrans termuat secara dinamis sesuai environment (Production vs Sandbox)
   const ensureSnapScriptLoaded = (
     clientKeyParam?: string,
     isProdParam?: boolean
   ): Promise<boolean> => {
     if (typeof window === "undefined") return Promise.resolve(false);
-    if ((window as any).snap) return Promise.resolve(true);
 
     return new Promise((resolve) => {
-      const isProd =
-        isProdParam !== undefined
-          ? isProdParam
-          : process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
-      const src = isProd
-        ? "https://app.midtrans.com/snap/snap.js"
-        : "https://app.sandbox.midtrans.com/snap/snap.js";
       const clientKey =
         clientKeyParam || process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "";
+      
+      // Deteksi otomatis production dari clientKey atau parameter API
+      const isProd =
+        clientKey.startsWith("Mid-client-") ||
+        (isProdParam !== undefined
+          ? isProdParam
+          : process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true");
+
+      const targetSrc = isProd
+        ? "https://app.midtrans.com/snap/snap.js"
+        : "https://app.sandbox.midtrans.com/snap/snap.js";
 
       const existingScript = document.getElementById("midtrans-snap-script") as HTMLScriptElement | null;
       if (existingScript) {
-        if ((window as any).snap) {
+        const currentSrc = existingScript.getAttribute("src");
+        // Jika script yang ada sudah persis sama URL tujuannya dan snap siap dipakai
+        if (currentSrc === targetSrc && (window as any).snap) {
           resolve(true);
-        } else {
-          existingScript.addEventListener("load", () => resolve(true), { once: true });
-          existingScript.addEventListener("error", () => resolve(false), { once: true });
-          setTimeout(() => resolve(Boolean((window as any).snap)), 2500);
+          return;
         }
-        return;
+
+        // Jika beda environment (misal sandbox terpasang tapi token adalah production), buang script lama
+        console.warn(`[MIDTRANS_SNAP_SWITCH] Menukar script dari ${currentSrc} ke ${targetSrc}`);
+        existingScript.remove();
+        try {
+          delete (window as any).snap;
+        } catch {
+          (window as any).snap = undefined;
+        }
       }
 
       const script = document.createElement("script");
       script.id = "midtrans-snap-script";
-      script.src = src;
+      script.src = targetSrc;
       if (clientKey) {
         script.setAttribute("data-client-key", clientKey);
       }
       script.async = true;
-      script.onload = () => resolve(true);
+      script.onload = () => {
+        console.log(`[MIDTRANS_SNAP_READY] Script Snap (${targetSrc}) berhasil dimuat.`);
+        resolve(true);
+      };
       script.onerror = () => {
-        console.warn("[MIDTRANS_SNAP_LOAD_FAILED] Gagal memuat script Midtrans Snap dari " + src);
+        console.warn("[MIDTRANS_SNAP_LOAD_FAILED] Gagal memuat script Midtrans Snap dari " + targetSrc);
         resolve(false);
       };
       document.body.appendChild(script);

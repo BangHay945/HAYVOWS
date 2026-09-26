@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Script from "next/script";
 import { HayvowsLogo } from "@/components/brand/HayvowsLogo";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import { isDemoWedding } from "@/lib/demo";
@@ -1054,18 +1053,6 @@ export function DashboardShell({
         currentPlan={currentPlan}
         weddingId={activeWedding?.id}
         weddingTitle={activeWedding?.coupleTitle}
-      />
-
-      {/* Midtrans Snap JS Script */}
-      <Script
-        id="midtrans-snap-script"
-        src={
-          process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true"
-            ? "https://app.midtrans.com/snap/snap.js"
-            : "https://app.sandbox.midtrans.com/snap/snap.js"
-        }
-        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
-        strategy="lazyOnload"
       />
     </div>
   );
