@@ -128,7 +128,9 @@ export default function WeddingEditor({
   // Template feature checks
   const templateSlug = wedding.template?.slug ?? "";
   const supportsHeroCouplePhoto =
-    templateSlug === "modern-monogram" || templateSlug === "eternal-noir";
+    templateSlug === "modern-monogram" ||
+    templateSlug === "eternal-noir" ||
+    templateSlug === "royal-emerald";
   const [showOptionalHeroPhoto, setShowOptionalHeroPhoto] = useState(false);
 
   // Event State
