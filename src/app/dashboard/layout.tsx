@@ -43,40 +43,65 @@ export default async function DashboardLayout({
 
   // Fetch all weddings for the logged in user to supply active workspace switcher in sidebar.
   // Super Admin can manage all demo showcase weddings plus their own.
-  const weddings = await prisma.wedding.findMany({
-    where:
-      userRole === "admin"
-        ? {
-            OR: [
-              { userId: session.user.id },
-              { slug: { in: [...DEMO_WEDDING_SLUGS] } },
-            ],
-          }
-        : { userId: session.user.id },
-    include: {
-      couple: true,
-      transactions: {
-        where: { status: "settlement" },
-        select: { id: true, status: true },
+  let weddings: any[] = [];
+  try {
+    weddings = await prisma.wedding.findMany({
+      where:
+        userRole === "admin"
+          ? {
+              OR: [
+                { userId: session.user.id },
+                { slug: { in: [...DEMO_WEDDING_SLUGS] } },
+              ],
+            }
+          : { userId: session.user.id },
+      include: {
+        couple: true,
+        transactions: {
+          where: { status: "settlement" },
+          select: { id: true, status: true },
+        },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.error("[DashboardLayout] Warning: wedding transactions query fallback:", err);
+    try {
+      weddings = await prisma.wedding.findMany({
+        where:
+          userRole === "admin"
+            ? {
+                OR: [
+                  { userId: session.user.id },
+                  { slug: { in: [...DEMO_WEDDING_SLUGS] } },
+                ],
+              }
+            : { userId: session.user.id },
+        include: {
+          couple: true,
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    } catch (fallbackErr) {
+      console.error("[DashboardLayout] Fallback weddings query failed:", fallbackErr);
+      weddings = [];
+    }
+  }
 
-  const weddingOptions = weddings.map((w) => {
+  const weddingOptions = weddings.map((w: any) => {
     const isWeddingPaid =
       Boolean(w.transactions && w.transactions.length > 0) ||
-      (w as any).plan === "basic" ||
-      (w as any).plan === "premium" ||
-      (w as any).plan === "luxury" ||
+      w.plan === "basic" ||
+      w.plan === "premium" ||
+      w.plan === "luxury" ||
       userRole === "admin";
 
     return {
       id: w.id,
       slug: w.slug,
       status: w.status,
-      plan: (w as any).plan || "trial",
-      createdAt: w.createdAt.toISOString(),
+      plan: w.plan || "trial",
+      createdAt: w.createdAt ? (typeof w.createdAt === "string" ? w.createdAt : w.createdAt.toISOString()) : new Date().toISOString(),
       hasPaid: isWeddingPaid,
       coupleTitle: `${w.couple?.groomName || "Pengantin"} & ${
         w.couple?.brideName || "Pengantin"

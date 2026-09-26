@@ -59,14 +59,15 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma_schema
 COPY --from=builder --chown=nextjs:nodejs /app/seed.js ./seed.js
 COPY --from=builder --chown=nextjs:nodejs /app/docker-entrypoint.sh ./docker-entrypoint.sh
 
 # Grant execute permission to entrypoint script
 RUN chmod +x ./docker-entrypoint.sh
 
-# Ensure prisma folder has write permission for SQLite db & uploads
-RUN mkdir -p /app/prisma && chown -R nextjs:nodejs /app/prisma
+# Ensure prisma and prisma_schema folders have proper ownership
+RUN mkdir -p /app/prisma /app/prisma_schema && chown -R nextjs:nodejs /app/prisma /app/prisma_schema
 
 USER nextjs
 
