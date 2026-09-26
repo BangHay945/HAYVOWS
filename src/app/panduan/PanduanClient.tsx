@@ -28,6 +28,15 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import {
+  EkosistemWorkflowBanner,
+  QrScannerSimulation,
+  TvDisplaySimulation,
+  WhatsAppChatSimulation,
+  PixelRpgSimulation,
+  BankCardSimulation,
+  QuickStartRoadmapSimulation,
+} from "./components/GuideMockups";
 
 export type GuideCategory =
   | "all"
@@ -392,6 +401,25 @@ export default function PanduanClient() {
     setTimeout(() => setCopiedSlug(null), 2000);
   };
 
+  const renderGuideMockup = (guideId: string) => {
+    switch (guideId) {
+      case "buku-tamu-qr":
+        return <QrScannerSimulation />;
+      case "layar-sapa-tv":
+        return <TvDisplaySimulation />;
+      case "sebar-whatsapp":
+        return <WhatsAppChatSimulation />;
+      case "game-pixel-rpg":
+        return <PixelRpgSimulation />;
+      case "amplop-digital-0-persen":
+        return <BankCardSimulation />;
+      case "mulai-cepat-5-menit":
+        return <QuickStartRoadmapSimulation />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900">
       {/* 🧭 1. NAVIGATION BAR 🧭 */}
@@ -575,6 +603,11 @@ export default function PanduanClient() {
 
       {/* 📚 4. GUIDES LIST 📚 */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        {/* Infografis Alur Resepsi Pintar (Tampil saat kategori 'all' atau tidak sedang mencari) */}
+        {selectedCategory === "all" && searchQuery.trim() === "" && (
+          <EkosistemWorkflowBanner />
+        )}
+
         {filteredGuides.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 p-8 space-y-3">
             <HelpCircle className="w-12 h-12 text-slate-300 mx-auto" />
@@ -640,7 +673,7 @@ export default function PanduanClient() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#2d4a3e] shrink-0 mt-1">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#2d4a3e] shrink-0 mt-1 shadow-2xs">
                       <Icon className="w-6 h-6" />
                     </div>
 
@@ -659,61 +692,88 @@ export default function PanduanClient() {
                   </div>
                 </div>
 
-                {/* Isi Langkah-Langkah (Step-by-Step) */}
-                <div className="p-6 sm:p-8 space-y-6">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Langkah-Langkah Praktis:
-                  </h3>
+                {/* Body: Split-Screen Layout (Langkah Praktis + Visual Mockup Interaktif) */}
+                <div className="p-6 sm:p-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    {/* Left Column: Timeline Langkah-Langkah Praktis */}
+                    <div className="lg:col-span-7 space-y-6">
+                      <div className="flex items-center justify-between pb-1">
+                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                          <span>Tahapan Pelaksanaan</span>
+                          <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono">
+                            {guide.steps.length} Langkah
+                          </span>
+                        </h3>
+                        <span className="text-[11px] font-mono text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                          {guide.badge}
+                        </span>
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    {guide.steps.map((step, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-emerald-300 transition-colors space-y-2 flex flex-col justify-between"
-                      >
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-[#2d4a3e] text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                      {/* Timeline Flow */}
+                      <div className="space-y-4 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+                        {guide.steps.map((step, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="relative pl-8 space-y-1.5 group"
+                          >
+                            <span className="absolute left-0 top-0.5 w-6 h-6 rounded-full bg-[#2d4a3e] text-white text-[10px] font-mono font-bold flex items-center justify-center ring-4 ring-white shadow-2xs group-hover:scale-110 transition-transform">
                               {step.number}
                             </span>
-                            <h4 className="text-xs sm:text-sm font-bold text-slate-900">
-                              {step.title}
-                            </h4>
+                            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 hover:border-emerald-300 hover:bg-white transition-all space-y-1.5 shadow-2xs">
+                              <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                                {step.title}
+                              </h4>
+                              <p className="text-xs text-slate-600 leading-relaxed">
+                                {step.desc}
+                              </p>
+                              {step.detail && (
+                                <p className="text-[11px] text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200/60 leading-normal mt-1.5">
+                                  {step.detail}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <p className="text-xs text-slate-600 leading-relaxed pl-8">
-                            {step.desc}
-                          </p>
-                        </div>
-
-                        {step.detail && (
-                          <div className="pl-8 pt-1">
-                            <p className="text-[11px] text-slate-500 bg-white p-2 rounded-lg border border-slate-200/60 leading-normal">
-                              {step.detail}
-                            </p>
-                          </div>
-                        )}
+                        ))}
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Pro Tip Box */}
-                  <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 font-medium leading-relaxed">
-                    {guide.proTip}
-                  </div>
+                      {/* Pro Tip Box */}
+                      <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 font-medium leading-relaxed">
+                        {guide.proTip}
+                      </div>
 
-                  {/* Demo Link Button jika ada */}
-                  {guide.demoUrl && (
-                    <div className="pt-2 flex justify-end">
-                      <Link
-                        href={guide.demoUrl}
-                        target="_blank"
-                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-4 py-2.5 rounded-xl transition-all"
-                      >
-                        <span>{guide.demoLabel || "Coba Lihat Demo Terkait"}</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </Link>
+                      {/* Demo Link Button jika ada */}
+                      {guide.demoUrl && (
+                        <div className="pt-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                          <span className="text-[11px] text-slate-500">
+                            Ingin mencoba langsung di halaman demo pernikahan?
+                          </span>
+                          <Link
+                            href={guide.demoUrl}
+                            target="_blank"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-4 py-2.5 rounded-xl transition-all shadow-2xs hover:scale-102"
+                          >
+                            <span>{guide.demoLabel || "Buka Demo Terkait"}</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      )}
                     </div>
-                  )}
+
+                    {/* Right Column: Visual Mockup Interaktif */}
+                    <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-3">
+                      <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
+                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Simulasi Interaktif Fitur:</span>
+                        </span>
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full">
+                          Live UI Preview
+                        </span>
+                      </div>
+
+                      {renderGuideMockup(guide.id)}
+                    </div>
+                  </div>
                 </div>
               </article>
             );
