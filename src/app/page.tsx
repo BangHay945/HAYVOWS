@@ -48,7 +48,7 @@ import {
   Copy,
 } from "lucide-react";
 
-export type ThemeCategory = "all" | "adat" | "floral" | "rpg" | "luxury" | "basic";
+export type ThemeCategory = "all" | "adat" | "floral" | "rpg" | "luxury" | "minimalist" | "basic";
 
 export interface ThemeCategoryItem {
   id: ThemeCategory;
@@ -95,11 +95,11 @@ export const THEME_CATEGORIES: ThemeCategoryItem[] = [
     description: "Kemewahan monokromatik hitam pekat berpadu aksen emas sampanye mewah dengan animasi Ken Burns sinematik.",
   },
   {
-    id: "basic",
-    label: "Modern Monogram",
-    shortLabel: "Monogram",
-    icon: Tag,
-    description: "Desain editorial modern yang bersih, berfokus pada monogram inisial nama mempelai dan tipografi artistik.",
+    id: "minimalist",
+    label: "Modern Minimalist",
+    shortLabel: "Minimalis",
+    icon: Sparkles,
+    description: "Desain editorial modern tanpa bunga, berfokus pada monogram inisial nama mempelai, tipografi arsitektural, dan estetika bersih.",
   },
 ];
 
@@ -174,16 +174,16 @@ export default function LandingPage() {
   const themes = [
     {
       id: "modern-monogram",
-      category: "basic",
+      category: "minimalist",
       name: "Modern Monogram Minimalis",
-      tag: "Paket Basic (Hemat)",
-      tagColor: "bg-amber-100 text-[#2d4a3e] border-[#c5a880]/50",
-      description: "Desain minimalis berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
+      tag: "Bersih & Editorial",
+      tagColor: "bg-slate-100 text-slate-800 border-slate-300",
+      description: "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
       demoUrl: "/invitation/adrian-nadia/budi-santoso",
       bannerImage: "/assets/templates/modern-monogram/banner.jpg",
-      highlights: ["Monogram Tipografi Artistik", "Hitung Mundur Waktu Acara", "Musik Romantis Preset"],
+      highlights: ["Monogram Inisial Artistik", "Tipografi Bersih Tanpa Bunga", "Musik Romantis Preset"],
       bgColor: "from-stone-900 via-[#2d4a3e] to-stone-950",
-      badge: "Basic Edition",
+      badge: "Modern Minimalist",
     },
     {
       id: "nature-floral",

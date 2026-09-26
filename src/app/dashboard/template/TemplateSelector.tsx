@@ -13,10 +13,20 @@ import {
   Palette,
   Globe,
   Lock,
+  Layers,
+  Crown,
+  Landmark,
 } from "lucide-react";
 import { MonogramSeal } from "@/templates/modern-monogram/components/MonogramSeal";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
-import { getRequiredPlan, isPlanAllowed } from "@/lib/templates";
+import {
+  getRequiredPlan,
+  isPlanAllowed,
+  ARCHETYPES,
+  ARCHETYPE_LIST,
+  getTemplateArchetype,
+  type TemplateArchetype,
+} from "@/lib/templates";
 
 interface RichTemplateDetail {
   slug: string;
@@ -159,12 +169,18 @@ export default function TemplateSelector({
   weddingTitle?: string;
 }) {
   const [templateList, setTemplateList] = useState<Template[]>(templates);
+  const [selectedArchetype, setSelectedArchetype] = useState<string>("all");
   const [selectedId, setSelectedId] = useState(currentTemplateId || "");
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [togglingStatusId, setTogglingStatusId] = useState<string | null>(null);
   const [adminFeedback, setAdminFeedback] = useState<string | null>(null);
+
+  const displayedTemplates = templateList.filter((t) => {
+    if (selectedArchetype === "all") return true;
+    return getTemplateArchetype(t.slug) === selectedArchetype;
+  });
 
   const handleToggleAdminOnly = async (tplId: string, currentAdminOnly: boolean) => {
     const nextAdminOnly = !currentAdminOnly;
@@ -262,9 +278,90 @@ export default function TemplateSelector({
         </div>
       )}
 
-      {/* 3-Card Template Grid (Matching DesainPakeAI prototype) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {templateList.map((tpl) => {
+      {/* 5 Archetype Pillar Filter Tabs */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <button
+            type="button"
+            onClick={() => setSelectedArchetype("all")}
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+              selectedArchetype === "all"
+                ? "bg-[#2d4a3e] text-white shadow-xs"
+                : "bg-white hover:bg-slate-100 text-slate-600 border border-slate-200"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Semua Tipe</span>
+            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${selectedArchetype === "all" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>
+              {templateList.length}
+            </span>
+          </button>
+          {ARCHETYPE_LIST.map((arch) => {
+            const isSelected = selectedArchetype === arch.id;
+            const count = templateList.filter((t) => getTemplateArchetype(t.slug) === arch.id).length;
+            return (
+              <button
+                key={arch.id}
+                type="button"
+                onClick={() => setSelectedArchetype(arch.id)}
+                className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isSelected
+                    ? "bg-[#2d4a3e] text-white shadow-xs"
+                    : "bg-white hover:bg-slate-100 text-slate-600 border border-slate-200"
+                }`}
+              >
+                <span>{arch.badge.split(" ")[0]}</span>
+                <span>{arch.name}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isSelected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Archetype Insight Banner */}
+        {selectedArchetype !== "all" && ARCHETYPES[selectedArchetype as TemplateArchetype] && (
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs animate-in fade-in duration-200 space-y-2.5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${ARCHETYPES[selectedArchetype as TemplateArchetype].tagColor}`}>
+                  {ARCHETYPES[selectedArchetype as TemplateArchetype].badge}
+                </span>
+                <span className="text-xs font-bold text-slate-900">
+                  Pilar: {ARCHETYPES[selectedArchetype as TemplateArchetype].name}
+                </span>
+              </div>
+              <span className="text-[11px] text-slate-400 font-mono">
+                {displayedTemplates.length} tema aktif dalam kategori ini
+              </span>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {ARCHETYPES[selectedArchetype as TemplateArchetype].description}
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1 border-t border-slate-100">
+              {ARCHETYPES[selectedArchetype as TemplateArchetype].traits.map((trait, i) => (
+                <span key={i} className="text-[10px] font-medium bg-slate-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200/70 flex items-center gap-1.5">
+                  <Check className="w-3 h-3 text-emerald-600" />
+                  <span>{trait}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {displayedTemplates.length === 0 ? (
+        <div className="text-center py-16 px-4 bg-white rounded-2xl border border-slate-200/80 shadow-2xs space-y-2">
+          <p className="text-sm font-bold text-slate-800">Belum Ada Tema di Pilar Ini</p>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            Varian tema turunan baru untuk pilar ini sedang dalam tahap kurasi desain. Silakan pilih pilar lainnya.
+          </p>
+        </div>
+      ) : (
+        /* 3-Card Template Grid (Matching DesainPakeAI prototype) */
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {displayedTemplates.map((tpl) => {
           const extra = THEME_EXTRAS[tpl.slug] || {
             slug: tpl.slug,
             iconBg: "bg-slate-900 text-slate-100",
@@ -283,6 +380,8 @@ export default function TemplateSelector({
           const reqPlan = getRequiredPlan(tpl.slug);
           const isAllowed = isPlanAllowed(reqPlan, userPlan, userRole);
           const isAdminOnly = Boolean((tpl as any).adminOnly);
+          const archKey = getTemplateArchetype(tpl.slug);
+          const archMeta = ARCHETYPES[archKey] || ARCHETYPES.minimalist;
 
           return (
             <div
@@ -416,12 +515,17 @@ export default function TemplateSelector({
 
                 {/* Card Body */}
                 <div className="p-5 space-y-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${extra.categoryStyle}`}
-                    >
-                      {extra.categoryTag}
-                    </span>
+                  <div className="flex flex-wrap items-center justify-between gap-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${archMeta.tagColor}`}>
+                        {archMeta.badge}
+                      </span>
+                      <span
+                        className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${extra.categoryStyle}`}
+                      >
+                        {extra.categoryTag}
+                      </span>
+                    </div>
                     <span className="text-[10px] text-slate-400 font-mono">
                       {extra.versionTag}
                     </span>
@@ -500,6 +604,7 @@ export default function TemplateSelector({
           );
         })}
       </div>
+      )}
 
       <UpgradeModal
         isOpen={upgradeModalOpen}

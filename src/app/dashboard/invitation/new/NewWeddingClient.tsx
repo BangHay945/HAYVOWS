@@ -14,7 +14,15 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
-import { getRequiredPlan, isPlanAllowed, type SubscriptionTier } from "@/lib/templates";
+import {
+  getRequiredPlan,
+  isPlanAllowed,
+  ARCHETYPES,
+  ARCHETYPE_LIST,
+  getTemplateArchetype,
+  type SubscriptionTier,
+  type TemplateArchetype,
+} from "@/lib/templates";
 
 interface Template {
   id: string;
@@ -38,6 +46,7 @@ export function NewWeddingClient({
   const searchParams = useSearchParams();
   const preselectedTemplate = searchParams.get("template");
 
+  const [selectedArchetype, setSelectedArchetype] = useState<string>("all");
   const [slug, setSlug] = useState("");
   const [templateId, setTemplateId] = useState<string>(() => {
     if (initialTemplates.length === 0) return "";
@@ -208,62 +217,111 @@ export function NewWeddingClient({
             </Link>
           </div>
 
-          <div className="space-y-3">
-            {initialTemplates.map((tpl) => {
-              const isSelected = templateId === tpl.id;
-              const demoUrl = getDemoUrl(tpl);
-              const reqPlan: SubscriptionTier = getRequiredPlan(tpl.slug);
-              const allowed = isPlanAllowed(reqPlan, userPlan, userRole);
-
+          {/* 5 Archetype Quick Filter Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-3 scrollbar-none">
+            <button
+              type="button"
+              onClick={() => setSelectedArchetype("all")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                selectedArchetype === "all"
+                  ? "bg-[#2d4a3e] text-white shadow-xs"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
+            >
+              Semua ({initialTemplates.length})
+            </button>
+            {ARCHETYPE_LIST.map((arch) => {
+              const count = initialTemplates.filter(
+                (t) => getTemplateArchetype(t.slug) === arch.id
+              ).length;
+              const isSelected = selectedArchetype === arch.id;
               return (
-                <div
-                  key={tpl.id}
-                  onClick={() => handleSelectTemplate(tpl)}
-                  className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 rounded-xl border transition-all cursor-pointer ${
+                <button
+                  key={arch.id}
+                  type="button"
+                  onClick={() => setSelectedArchetype(arch.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
                     isSelected
-                      ? "border-[#2d4a3e] bg-[#faf8f5] shadow-xs ring-1 ring-[#2d4a3e]"
-                      : allowed
-                      ? "border-slate-200 hover:border-slate-300 bg-white"
-                      : "border-slate-200/70 bg-slate-50/60 opacity-85 hover:border-slate-300"
+                      ? "bg-[#2d4a3e] text-white shadow-xs"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-600"
                   }`}
                 >
-                  <div className="flex items-start gap-3.5 flex-1">
-                    <input
-                      type="radio"
-                      name="template"
-                      value={tpl.id}
-                      checked={isSelected}
-                      disabled={!allowed}
-                      onChange={() => handleSelectTemplate(tpl)}
-                      className="mt-1 text-[#2d4a3e] focus:ring-[#2d4a3e] cursor-pointer"
-                    />
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-bold text-slate-900">
-                          {tpl.name}
-                        </span>
+                  <span>{arch.badge.split(" ")[0]}</span>
+                  <span>{arch.shortLabel}</span>
+                  <span className="text-[10px] opacity-75">({count})</span>
+                </button>
+              );
+            })}
+          </div>
 
-                        {/* Tier Badge */}
-                        {reqPlan === "luxury" ? (
-                          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 text-[#c9a84c] border border-[#c9a84c]/40 uppercase tracking-wider">
-                            <Crown className="w-2.5 h-2.5 text-[#c9a84c]" />
-                            <span>Paket Exclusive</span>
-                          </span>
-                        ) : reqPlan === "premium" ? (
-                          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#2d4a3e] border border-emerald-300 uppercase tracking-wider">
-                            <Sparkles className="w-2.5 h-2.5 text-[#2d4a3e]" />
-                            <span>Paket Populer</span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 uppercase tracking-wider">
-                            <span>Paket Basic</span>
-                          </span>
-                        )}
+          <div className="space-y-3">
+            {initialTemplates
+              .filter((t) => {
+                if (selectedArchetype === "all") return true;
+                return getTemplateArchetype(t.slug) === selectedArchetype;
+              })
+              .map((tpl) => {
+                const isSelected = templateId === tpl.id;
+                const demoUrl = getDemoUrl(tpl);
+                const reqPlan: SubscriptionTier = getRequiredPlan(tpl.slug);
+                const allowed = isPlanAllowed(reqPlan, userPlan, userRole);
+                const arch = getTemplateArchetype(tpl.slug);
+                const archMeta = ARCHETYPES[arch];
 
-                        {/* Selected Indicator */}
-                        {isSelected && (
-                          <span className="text-[9px] font-bold uppercase tracking-wider bg-[#2d4a3e] text-[#fef08a] px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <CheckCircle2 className="w-2.5 h-2.5" />
+                return (
+                  <div
+                    key={tpl.id}
+                    onClick={() => handleSelectTemplate(tpl)}
+                    className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 rounded-xl border transition-all cursor-pointer ${
+                      isSelected
+                        ? "border-[#2d4a3e] bg-[#faf8f5] shadow-xs ring-1 ring-[#2d4a3e]"
+                        : allowed
+                        ? "border-slate-200 hover:border-slate-300 bg-white"
+                        : "border-slate-200/70 bg-slate-50/60 opacity-85 hover:border-slate-300"
+                    }`}
+                  >
+                    <div className="flex items-start gap-3.5 flex-1">
+                      <input
+                        type="radio"
+                        name="template"
+                        value={tpl.id}
+                        checked={isSelected}
+                        disabled={!allowed}
+                        onChange={() => handleSelectTemplate(tpl)}
+                        className="mt-1 text-[#2d4a3e] focus:ring-[#2d4a3e] cursor-pointer"
+                      />
+                      <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs font-bold text-slate-900">
+                            {tpl.name}
+                          </span>
+
+                          {/* Archetype Badge */}
+                          <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full border ${archMeta.tagColor}`}>
+                            {archMeta.badge}
+                          </span>
+
+                          {/* Tier Badge */}
+                          {reqPlan === "luxury" ? (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 text-[#c9a84c] border border-[#c9a84c]/40 uppercase tracking-wider">
+                              <Crown className="w-2.5 h-2.5 text-[#c9a84c]" />
+                              <span>Paket Exclusive</span>
+                            </span>
+                          ) : reqPlan === "premium" ? (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#2d4a3e] border border-emerald-300 uppercase tracking-wider">
+                              <Sparkles className="w-2.5 h-2.5 text-[#2d4a3e]" />
+                              <span>Paket Populer</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 uppercase tracking-wider">
+                              <span>Paket Basic</span>
+                            </span>
+                          )}
+
+                          {/* Selected Indicator */}
+                          {isSelected && (
+                            <span className="text-[9px] font-bold uppercase tracking-wider bg-[#2d4a3e] text-[#fef08a] px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <CheckCircle2 className="w-2.5 h-2.5" />
                             <span>Terpilih</span>
                           </span>
                         )}
