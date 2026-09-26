@@ -26,6 +26,14 @@ export const PLAN_PRICING = {
 export type PlanType = "basic" | "premium" | "luxury";
 
 export const isMidtransProduction = (): boolean => {
+  const sk = getMidtransServerKey();
+  const ck = getMidtransClientKey();
+  if (sk.startsWith("Mid-server-") || ck.startsWith("Mid-client-")) {
+    return true;
+  }
+  if (sk.startsWith("SB-Mid-server-") || ck.startsWith("SB-Mid-client-")) {
+    return false;
+  }
   return (
     process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true" ||
     process.env.MIDTRANS_IS_PRODUCTION === "true"
