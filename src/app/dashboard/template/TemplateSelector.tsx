@@ -137,6 +137,20 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     ],
     demoPath: "/invitation/eleanor-xavier/budi-santoso",
   },
+  "royal-emerald": {
+    slug: "royal-emerald",
+    iconBg: "bg-[#02241b] text-[#ffd700]",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: "bg-emerald-950 text-[#ffd700] border-[#d4af37]/40",
+    versionTag: "v1.0.0 • Royal Emerald",
+    bannerImage: "/assets/templates/eternal-noir/banner.jpg",
+    highlights: [
+      "Estetika: Emerald Velvet Aristokrat & Emas Bangsawan",
+      "Ornamen: Mahkota Kerajaan, Sudut Baroque, & Monogram Emas",
+      "Tata Letak: Sinematik Split Desktop & 12 Komponen Lengkap",
+    ],
+    demoPath: "/invitation/arthur-guinevere/budi-santoso",
+  },
   "batik-jawa": {
     slug: "batik-jawa",
     iconBg: "bg-[#3D2B1F] text-[#D4A853]",

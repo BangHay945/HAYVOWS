@@ -115,6 +115,9 @@ export function NewWeddingClient({
     if (tpl.slug === "eternal-noir") {
       return "/invitation/eleanor-xavier/budi-santoso";
     }
+    if (tpl.slug === "royal-emerald") {
+      return "/invitation/eleanor-xavier/budi-santoso?tpl=royal-emerald";
+    }
     if (tpl.slug === "nature-floral") {
       return "/invitation/dimas-anindya/budi-santoso";
     }

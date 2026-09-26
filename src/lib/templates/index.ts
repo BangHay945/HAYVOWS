@@ -167,7 +167,8 @@ export const getRequiredPlan = (slug: string): SubscriptionTier => {
     slug === "pixel-adventure" ||
     slug === "pixel-cyberpunk" ||
     slug === "pixel-rpg" ||
-    slug === "eternal-noir"
+    slug === "eternal-noir" ||
+    slug === "royal-emerald"
   ) {
     return "luxury";
   }

@@ -95,6 +95,22 @@ async function main() {
   });
   console.log("✅ Seeded template: Batik Jawa Heritage");
 
+  // 1.10. Seed Template Royal Emerald & Gold (Pilar Haute Luxury)
+  const tplRoyalEmerald = await prisma.template.upsert({
+    where: { slug: "royal-emerald" },
+    update: {},
+    create: {
+      slug: "royal-emerald",
+      name: "Royal Emerald & Gold",
+      description:
+        "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, ornamen mahkota kerajaan, dan tata letak split desktop sinematik.",
+      isPremium: true,
+      isActive: true,
+      version: "1.0.0",
+    },
+  });
+  console.log("✅ Seeded template: Royal Emerald & Gold");
+
   // 2. Seed Demo User (password: admin123)
   const hashedPassword =
     "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
