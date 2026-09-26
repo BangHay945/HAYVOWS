@@ -59,10 +59,10 @@ export async function POST(req: Request) {
     let processedBuffer: Buffer;
 
     if (type === "couple") {
-      // Foto profil mempelai: Square 500x500px, WebP Q85
+      // Foto profil mempelai: Max 800x800px, WebP Q85 (mempertahankan rasio framing pilihan user)
       processedBuffer = await sharp(buffer)
         .rotate() // Auto-rotate berdasarkan EXIF orientasi kamera HP
-        .resize(500, 500, { fit: "cover", position: "center" })
+        .resize(800, 800, { fit: "inside", withoutEnlargement: true })
         .webp({ quality: 85, effort: 4 })
         .toBuffer();
     } else if (type === "cover") {

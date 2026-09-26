@@ -665,7 +665,8 @@ Terima kasih.`,
                   value={couple.couplePhoto}
                   onChange={handleCouplePhotoChange}
                   type="cover"
-                  enableCrop={false}
+                  enableCrop={true}
+                  defaultCropRatio="3:4"
                 />
               </div>
             ) : (
@@ -700,7 +701,8 @@ Terima kasih.`,
                       value={couple.couplePhoto}
                       onChange={handleCouplePhotoChange}
                       type="cover"
-                      enableCrop={false}
+                      enableCrop={true}
+                      defaultCropRatio="3:4"
                     />
                   </div>
                 ) : (
@@ -1893,10 +1895,11 @@ Terima kasih.`,
                     value={settingsData.ogImage}
                     onChange={(url) => setSettingsData({ ...settingsData, ogImage: url })}
                     type="gallery"
-                    enableCrop={false}
+                    enableCrop={true}
+                    defaultCropRatio="16:9"
                   />
                   <p className="text-[10px] text-slate-400 mt-1">
-                    Gambar banner rasio 1.91:1 atau 16:9 yang tampil saat link dibagikan. Otomatis WebP.
+                    Gambar banner rasio 16:9 yang tampil saat link dibagikan. Otomatis WebP.
                   </p>
                 </div>
               </div>

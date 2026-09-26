@@ -12,7 +12,7 @@ import {
   AlertCircle,
   Sparkles,
 } from "lucide-react";
-import ImageCropModal from "./ImageCropModal";
+import ImageCropModal, { AspectRatioMode } from "./ImageCropModal";
 
 interface ImageUploadDropzoneProps {
   value?: string | null;
@@ -21,6 +21,7 @@ interface ImageUploadDropzoneProps {
   type?: "couple" | "gallery" | "cover";
   enableCrop?: boolean;
   aspectRatio?: "square" | "free";
+  defaultCropRatio?: AspectRatioMode;
 }
 
 export default function ImageUploadDropzone({
@@ -29,6 +30,7 @@ export default function ImageUploadDropzone({
   label,
   type = "couple",
   enableCrop = true,
+  defaultCropRatio,
 }: ImageUploadDropzoneProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -99,7 +101,7 @@ export default function ImageUploadDropzone({
   };
 
   // Upload cropped blob ke API /api/upload
-  const uploadBlob = async (blob: Blob | File, filename = "photo.jpg") => {
+  const uploadBlob = async (blob: Blob | File, filename = "photo.webp") => {
     setIsUploading(true);
     setErrorMessage("");
 
@@ -131,7 +133,7 @@ export default function ImageUploadDropzone({
 
   const handleCropComplete = (croppedBlob: Blob) => {
     setCropModalSrc(null);
-    uploadBlob(croppedBlob, "cropped-couple.jpg");
+    uploadBlob(croppedBlob, "cropped-photo.webp");
   };
 
   const handleRemovePhoto = () => {
@@ -239,7 +241,7 @@ export default function ImageUploadDropzone({
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-xl overflow-hidden border-2 border-emerald-500/80 shadow-xs bg-slate-900 group">
                 <img src={value} alt="Preview Foto" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-[9px] text-white font-bold uppercase tracking-wider">1:1</span>
+                  <span className="text-[9px] text-white font-bold uppercase tracking-wider">Crop</span>
                 </div>
               </div>
 
@@ -303,7 +305,7 @@ export default function ImageUploadDropzone({
                     Klik atau tarik foto ke sini
                   </p>
                   <p className="text-[11px] text-slate-500 mt-0.5">
-                    Mendukung Crop 1:1 interaktif &amp; otomatis dikonversi ke format WebP ringan
+                    Mendukung Crop 1:1, 3:4, 16:9, atau Bebas Asli • Otomatis dikonversi ke WebP ringan
                   </p>
                   <div className="mt-2.5 inline-flex items-center gap-1 text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                     <span>JPG, PNG, WebP (Maks. 12 MB)</span>
@@ -331,11 +333,12 @@ export default function ImageUploadDropzone({
         </div>
       )}
 
-      {/* Modal Crop 1:1 jika user memilih gambar */}
+      {/* Modal Crop Multi-Rasio jika user memilih gambar */}
       {cropModalSrc && (
         <ImageCropModal
           imageSrc={cropModalSrc}
-          title={`Sesuaikan ${label || "Foto Mempelai"} (1:1)`}
+          title={`Sesuaikan ${label || "Foto"}`}
+          initialRatio={defaultCropRatio || (type === "cover" ? "3:4" : "1:1")}
           onCropComplete={handleCropComplete}
           onCancel={() => setCropModalSrc(null)}
         />
