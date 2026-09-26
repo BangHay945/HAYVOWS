@@ -397,41 +397,41 @@ export default function PanduanClient() {
       {/* 🧭 1. NAVIGATION BAR 🧭 */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group shrink-0">
             <HayvowsLogo size="md" variant="horizontal" />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-xs font-semibold text-slate-600 whitespace-nowrap">
             <Link href="/" className="hover:text-[#2d4a3e] transition-colors">
               Beranda
             </Link>
             <Link href="/#fitur" className="hover:text-[#2d4a3e] transition-colors">
-              Fitur Ekosistem
+              Fitur
             </Link>
             <Link href="/#tema" className="hover:text-[#2d4a3e] transition-colors">
-              Galeri Tema
+              Tema
             </Link>
             <Link href="/#harga" className="hover:text-[#2d4a3e] transition-colors">
-              Paket Harga
+              Harga
             </Link>
             <Link
               href="/panduan"
               className="text-[#2d4a3e] font-bold border-b-2 border-[#2d4a3e] pb-0.5"
             >
-              Pusat Panduan
+              Panduan
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <Link
               href="/login"
-              className="text-xs font-semibold text-slate-700 hover:text-[#2d4a3e] px-3.5 py-2 rounded-xl transition-colors"
+              className="text-xs font-semibold text-slate-700 hover:text-[#2d4a3e] px-3.5 py-2 rounded-xl transition-colors whitespace-nowrap"
             >
               Masuk
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2d4a3e] hover:bg-[#233a30] px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2d4a3e] hover:bg-[#233a30] px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all whitespace-nowrap"
             >
               <span>Buat Undangan</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -441,7 +441,7 @@ export default function PanduanClient() {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-slate-700 hover:text-[#2d4a3e]"
+            className="lg:hidden p-2 text-slate-700 hover:text-[#2d4a3e] cursor-pointer"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -450,27 +450,34 @@ export default function PanduanClient() {
 
         {/* Mobile dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-b border-slate-200 bg-white px-5 py-4 space-y-3">
+          <div className="lg:hidden border-b border-slate-200 bg-white px-5 py-4 space-y-3 shadow-lg">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-1"
+              className="block text-sm font-semibold text-slate-700 py-1 border-b border-slate-100"
             >
               Beranda
             </Link>
             <Link
               href="/#fitur"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-1"
+              className="block text-sm font-semibold text-slate-700 py-1 border-b border-slate-100"
             >
               Fitur Ekosistem
             </Link>
             <Link
               href="/#tema"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-1"
+              className="block text-sm font-semibold text-slate-700 py-1 border-b border-slate-100"
             >
               Galeri Tema
+            </Link>
+            <Link
+              href="/#harga"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-sm font-semibold text-slate-700 py-1 border-b border-slate-100"
+            >
+              Paket Harga
             </Link>
             <Link
               href="/panduan"

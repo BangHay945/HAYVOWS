@@ -273,46 +273,43 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#fbf8f3] text-slate-800 flex flex-col font-sans selection:bg-[#2d4a3e] selection:text-white">
       {/* ───────────────── 1. NAVBAR ───────────────── */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#fbf8f3]/85 border-b border-[#2d4a3e]/10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#fbf8f3]/90 border-b border-[#2d4a3e]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
             <HayvowsLogo variant="full" theme="light" size="md" />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
-            <a href="#keunggulan" className="hover:text-[#2d4a3e] transition-colors">
-              Keunggulan Ekosistem
-            </a>
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-semibold text-slate-600 whitespace-nowrap">
             <a href="#fitur" className="hover:text-[#2d4a3e] transition-colors">
-              Fitur Lengkap
+              Fitur
             </a>
             <a href="#cara-kerja" className="hover:text-[#2d4a3e] transition-colors">
-              Alur Hybrid Cetak &amp; Digital
+              Alur Kerja
             </a>
             <a href="#tema" className="hover:text-[#2d4a3e] transition-colors">
-              Galeri Tema
+              Tema
             </a>
             <a href="#harga" className="hover:text-[#2d4a3e] transition-colors">
-              Paket Harga
+              Harga
             </a>
+            <Link href="/panduan" className="text-emerald-800 font-bold hover:text-[#2d4a3e] transition-colors">
+              Panduan
+            </Link>
             <a href="#faq" className="hover:text-[#2d4a3e] transition-colors">
               FAQ
             </a>
-            <Link href="/panduan" className="text-emerald-800 font-bold hover:text-[#2d4a3e] transition-colors">
-              Panduan Fitur
-            </Link>
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <Link
               href="/login"
-              className="text-xs font-semibold text-slate-700 hover:text-[#2d4a3e] px-3.5 py-2 rounded-xl transition-colors"
+              className="text-xs font-semibold text-slate-700 hover:text-[#2d4a3e] px-3.5 py-2 rounded-xl transition-colors whitespace-nowrap"
             >
               Masuk
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2d4a3e] hover:bg-[#233a30] px-4 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2d4a3e] hover:bg-[#233a30] px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all active:scale-95 whitespace-nowrap"
             >
               <span>Buat Undangan</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -322,7 +319,7 @@ export default function LandingPage() {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-slate-700 hover:text-[#2d4a3e] focus:outline-none"
+            className="lg:hidden p-2 text-slate-700 hover:text-[#2d4a3e] focus:outline-none cursor-pointer"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -331,27 +328,20 @@ export default function LandingPage() {
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 shadow-lg">
-            <a
-              href="#keunggulan"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-2 border-b border-slate-100"
-            >
-              Keunggulan Ekosistem
-            </a>
+          <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-lg">
             <a
               href="#fitur"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block text-sm font-semibold text-slate-700 py-2 border-b border-slate-100"
             >
-              Fitur Lengkap &amp; Anti-Spam
+              Fitur Ekosistem
             </a>
             <a
               href="#cara-kerja"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block text-sm font-semibold text-slate-700 py-2 border-b border-slate-100"
             >
-              Alur Hybrid Cetak &amp; Digital
+              Alur Kerja
             </a>
             <a
               href="#tema"
@@ -367,20 +357,20 @@ export default function LandingPage() {
             >
               Paket Harga
             </a>
-            <a
-              href="#faq"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-2 border-b border-slate-100"
-            >
-              FAQ
-            </a>
             <Link
               href="/panduan"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-bold text-emerald-800 py-2"
+              className="block text-sm font-bold text-emerald-800 py-2 border-b border-slate-100"
             >
               Pusat Panduan &amp; Fitur
             </Link>
+            <a
+              href="#faq"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-sm font-semibold text-slate-700 py-2"
+            >
+              FAQ
+            </a>
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 href="/login"
@@ -390,9 +380,9 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/register"
-                className="w-full text-center py-2.5 rounded-xl bg-[#2d4a3e] text-white font-bold text-xs shadow-md"
+                className="w-full text-center py-2.5 rounded-xl bg-[#2d4a3e] text-xs font-bold text-white shadow-xs"
               >
-                Buat Undangan Sekarang
+                Buat Undangan Gratis
               </Link>
             </div>
           </div>
