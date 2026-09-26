@@ -663,10 +663,10 @@ export default function PanduanClient() {
               <article
                 key={guide.id}
                 id={guide.id}
-                className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow overflow-hidden scroll-mt-36"
+                className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow scroll-mt-36"
               >
                 {/* Header Kartu Panduan */}
-                <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50/70 via-white to-slate-50/40">
+                <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50/70 via-white to-slate-50/40 rounded-t-3xl">
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2">
                       <span
@@ -721,11 +721,11 @@ export default function PanduanClient() {
                 </div>
 
                 {/* Body: Split-Screen Layout (Langkah Praktis + Visual Mockup Interaktif) */}
-                <div className="p-4 sm:p-6 lg:p-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="p-4 sm:p-6 lg:p-8 rounded-b-3xl">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
                     {/* On Mobile: Mockup appears FIRST so mobile user immediately sees the visual preview! */}
-                    {/* On Desktop: Mockup is on right column with sticky positioning and smooth parallax */}
-                    <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 space-y-3">
+                    {/* On Desktop: Mockup is on right column, sticky pinned at top-36, staying STILL while left steps scroll */}
+                    <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 self-start space-y-3 z-10">
                       <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
                         <span className="font-bold text-slate-700 flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
@@ -742,7 +742,7 @@ export default function PanduanClient() {
                     </div>
 
                     {/* On Mobile: Steps follow after the visual preview */}
-                    {/* On Desktop: Steps are on left column (col-span-7) */}
+                    {/* On Desktop: Steps are on left column (col-span-7) and scroll smoothly */}
                     <div className="order-2 lg:order-1 lg:col-span-7 space-y-6 pt-4 lg:pt-0">
                       <div className="flex items-center justify-between pb-1">
                         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
@@ -757,7 +757,7 @@ export default function PanduanClient() {
                       </div>
 
                       {/* Timeline Flow */}
-                      <div className="space-y-3.5 sm:space-y-4 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+                      <div className="space-y-4 sm:space-y-5 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
                         {guide.steps.map((step, sIdx) => (
                           <div
                             key={sIdx}
@@ -766,7 +766,7 @@ export default function PanduanClient() {
                             <span className="absolute left-0 top-0.5 w-6 h-6 rounded-full bg-[#2d4a3e] text-white text-[10px] font-mono font-bold flex items-center justify-center ring-4 ring-white shadow-2xs group-hover:scale-110 transition-transform">
                               {step.number}
                             </span>
-                            <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 hover:border-emerald-300 hover:bg-white transition-all space-y-1.5 shadow-2xs">
+                            <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 hover:border-emerald-300 hover:bg-white transition-all space-y-2 shadow-2xs">
                               <h4 className="text-xs sm:text-sm font-bold text-slate-900">
                                 {step.title}
                               </h4>
@@ -774,7 +774,7 @@ export default function PanduanClient() {
                                 {step.desc}
                               </p>
                               {step.detail && (
-                                <p className="text-[11px] text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200/60 leading-normal mt-1.5">
+                                <p className="text-[11px] text-slate-500 bg-white p-3 rounded-xl border border-slate-200/60 leading-relaxed mt-2">
                                   {step.detail}
                                 </p>
                               )}

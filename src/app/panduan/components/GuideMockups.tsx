@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   QrCode,
   Tv,
@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
-   0. PARALLAX MOCKUP WRAPPER (DESKTOP PARALLAX & MOBILE NATIVE)
+   0. STICKY MOCKUP WRAPPER (TETAP DIAM DI DESKTOP, RESPONSIVE DI MOBILE)
 ───────────────────────────────────────────────────────────── */
 export function ParallaxMockupWrapper({
   children,
@@ -39,64 +39,20 @@ export function ParallaxMockupWrapper({
   children: React.ReactNode;
   badgeText?: string;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkMedia = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-    checkMedia();
-    window.addEventListener("resize", checkMedia);
-    return () => window.removeEventListener("resize", checkMedia);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Smooth desktop parallax spring translation
-  const smoothY = useSpring(
-    useTransform(scrollYProgress, [0, 1], [-28, 28]),
-    { stiffness: 100, damping: 24, mass: 0.6 }
-  );
-
-  const smoothRotate = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [-0.8, 0, 0.8]),
-    { stiffness: 100, damping: 24 }
-  );
-
-  // Secondary floating depth badge floating in reverse
-  const badgeY = useSpring(
-    useTransform(scrollYProgress, [0, 1], [22, -22]),
-    { stiffness: 90, damping: 20 }
-  );
-
   return (
-    <div ref={containerRef} className="relative w-full">
-      {/* Decorative desktop parallax floating depth badge */}
-      {badgeText && isDesktop && (
-        <motion.div
-          style={{ y: badgeY }}
-          className="hidden lg:flex absolute -top-4 -right-2 z-20 items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 backdrop-blur-md border border-emerald-400/50 text-[10px] font-mono font-bold text-emerald-300 shadow-xl pointer-events-none"
-        >
+    <div className="relative w-full">
+      {/* Decorative desktop depth badge */}
+      {badgeText && (
+        <div className="hidden lg:flex absolute -top-3.5 -right-2 z-20 items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 backdrop-blur-md border border-emerald-400/50 text-[10px] font-mono font-bold text-emerald-300 shadow-lg pointer-events-none">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span>{badgeText}</span>
-        </motion.div>
+        </div>
       )}
 
-      {/* Main Parallax Motion Card on Desktop */}
-      <motion.div
-        style={{
-          y: isDesktop ? smoothY : 0,
-          rotateZ: isDesktop ? smoothRotate : 0,
-        }}
-        whileHover={isDesktop ? { scale: 1.015, transition: { duration: 0.25 } } : undefined}
-        className="w-full transition-shadow duration-300"
-      >
+      {/* Main Mockup Card: Tetap diam (rock-solid still) saat tahapan di sebelah kiri discroll */}
+      <div className="w-full">
         {children}
-      </motion.div>
+      </div>
     </div>
   );
 }
