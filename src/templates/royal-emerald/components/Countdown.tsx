@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { TemplateComponentProps } from "@/types/template";
+import { CalendarPlus } from "lucide-react";
 import { RoyalDivider } from "./Ornaments";
 
 function useCountdown(targetDate: string) {
@@ -56,6 +57,15 @@ export function RoyalCountdown({ context }: TemplateComponentProps) {
     { label: "Detik", value: seconds },
   ];
 
+  const groom = context.wedding.couple?.groomNickname || context.wedding.couple?.groomName || "Mempelai Pria";
+  const bride = context.wedding.couple?.brideNickname || context.wedding.couple?.brideName || "Mempelai Wanita";
+  const mainTitleEncoded = encodeURIComponent(`The Wedding of ${groom} & ${bride}`);
+  const mainLocationEncoded = encodeURIComponent(
+    `${mainEvent?.venue || ""} ${mainEvent?.address || ""}`.trim()
+  );
+  const mainDateClean = mainEvent?.date ? mainEvent.date.replace(/-/g, "") : "";
+  const mainCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${mainTitleEncoded}&dates=${mainDateClean}T010000Z/${mainDateClean}T140000Z&location=${mainLocationEncoded}`;
+
   return (
     <section className="relative w-full py-16 px-6 bg-[#02241b] text-[#fdfbf7] overflow-hidden">
       <div className="max-w-2xl mx-auto flex flex-col items-center text-center relative z-10">
@@ -89,6 +99,19 @@ export function RoyalCountdown({ context }: TemplateComponentProps) {
             </div>
           ))}
         </motion.div>
+
+        {/* Simpan ke Kalender Button */}
+        <div className="mt-8">
+          <a
+            href={mainCalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border border-[#d4af37]/60 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all duration-300 shadow-[0_2px_12px_rgba(212,175,55,0.2)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.45)] cursor-pointer"
+          >
+            <CalendarPlus className="w-4 h-4 text-[#ffd700] shrink-0" />
+            <span>Simpan ke Kalender</span>
+          </a>
+        </div>
       </div>
     </section>
   );

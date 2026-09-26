@@ -55,6 +55,17 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
     { label: "Detik", value: seconds },
   ];
 
+  const groom = context.wedding.couple?.groomNickname || context.wedding.couple?.groomName || "Mempelai Pria";
+  const bride = context.wedding.couple?.brideNickname || context.wedding.couple?.brideName || "Mempelai Wanita";
+  const mainTitleEncoded = encodeURIComponent(`The Wedding of ${groom} & ${bride}`);
+  const mainLocationEncoded = encodeURIComponent(
+    `${mainEvent?.venue || ""} ${mainEvent?.address || ""}`.trim()
+  );
+  const mainDateClean = mainEvent?.date ? mainEvent.date.replace(/-/g, "") : "";
+  const mainCalUrl = mainEvent
+    ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${mainTitleEncoded}&dates=${mainDateClean}T010000Z/${mainDateClean}T140000Z&location=${mainLocationEncoded}`
+    : "#";
+
   if (events.length === 0) return null;
 
   return (
@@ -111,7 +122,7 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
               </div>
             )}
 
-            <p className="font-serif text-xs sm:text-sm text-[#f4eedb] italic font-light">
+            <p className="font-serif text-xs sm:text-sm text-[#f4eedb] italic font-light mb-5">
               {new Date(mainEvent.date).toLocaleDateString("id-ID", {
                 weekday: "long",
                 day: "numeric",
@@ -119,6 +130,19 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
                 year: "numeric",
               })}
             </p>
+
+            {/* Simpan ke Kalender Button */}
+            {mainEvent && (
+              <a
+                href={mainCalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border border-[#d4af37]/60 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all duration-300 shadow-[0_2px_12px_rgba(212,175,55,0.2)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.45)] cursor-pointer"
+              >
+                <CalendarPlus className="w-4 h-4 text-[#ffd700] shrink-0" />
+                <span>Simpan ke Kalender</span>
+              </a>
+            )}
           </motion.div>
         )}
 
@@ -132,15 +156,6 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
               month: "long",
               year: "numeric",
             });
-
-            // Google Calendar link builder
-            const titleEncoded = encodeURIComponent(
-              `${evt.title} — ${context.wedding.slug}`
-            );
-            const locationEncoded = encodeURIComponent(
-              `${evt.venue || ""} ${evt.address || ""}`.trim()
-            );
-            const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titleEncoded}&location=${locationEncoded}`;
 
             const mapLink =
               evt.mapsUrl ||
@@ -203,32 +218,20 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
                   </div>
                 </div>
 
-                {/* Actions - Clean 2-column grid that never overflows */}
-                <div className="pt-5 border-t border-[#d4af37]/20 grid grid-cols-2 gap-3">
-                  {mapLink ? (
+                {/* Actions - Petunjuk Arah */}
+                {mapLink && (
+                  <div className="pt-5 border-t border-[#d4af37]/20">
                     <a
                       href={mapLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#d4af37]/50 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-[11px] sm:text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all cursor-pointer shadow-sm text-center"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-[#d4af37]/50 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all cursor-pointer shadow-sm text-center"
                     >
                       <Navigation className="w-3.5 h-3.5 shrink-0" />
                       <span>Petunjuk Arah</span>
                     </a>
-                  ) : (
-                    <div />
-                  )}
-
-                  <a
-                    href={gCalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#d4af37]/30 bg-white/5 hover:bg-white/10 text-[11px] sm:text-xs text-[#fdfbf7] tracking-wider transition-all cursor-pointer text-center"
-                  >
-                    <CalendarPlus className="w-3.5 h-3.5 text-[#ffd700] shrink-0" />
-                    <span>Simpan Kalender</span>
-                  </a>
-                </div>
+                  </div>
+                )}
               </motion.div>
             );
           })}
