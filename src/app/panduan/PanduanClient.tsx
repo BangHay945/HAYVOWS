@@ -28,8 +28,10 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   EkosistemWorkflowBanner,
+  ParallaxMockupWrapper,
   QrScannerSimulation,
   TvDisplaySimulation,
   WhatsAppChatSimulation,
@@ -534,6 +536,32 @@ export default function PanduanClient() {
 
       {/* 🚀 2. HERO SECTION 🚀 */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[#2d4a3e]/10 via-slate-50 to-slate-50 pt-16 pb-12 sm:pt-20 sm:pb-16 border-b border-slate-200/80">
+        {/* Parallax Floating Ambient Spheres on Desktop */}
+        <motion.div
+          animate={{
+            y: [0, -18, 0],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="hidden lg:block absolute top-10 left-1/4 w-80 h-80 rounded-full bg-emerald-200/30 blur-3xl pointer-events-none -z-10"
+        />
+        <motion.div
+          animate={{
+            y: [0, 22, 0],
+            scale: [1, 1.08, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="hidden lg:block absolute bottom-4 right-1/4 w-96 h-96 rounded-full bg-amber-200/25 blur-3xl pointer-events-none -z-10"
+        />
+
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-xs font-bold text-[#2d4a3e] tracking-wide uppercase shadow-2xs">
             <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
@@ -638,7 +666,7 @@ export default function PanduanClient() {
                 className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow overflow-hidden scroll-mt-36"
               >
                 {/* Header Kartu Panduan */}
-                <div className="p-6 sm:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50/70 via-white to-slate-50/40">
+                <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-100 bg-gradient-to-r from-slate-50/70 via-white to-slate-50/40">
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2">
                       <span
@@ -672,13 +700,13 @@ export default function PanduanClient() {
                     </button>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#2d4a3e] shrink-0 mt-1 shadow-2xs">
-                      <Icon className="w-6 h-6" />
+                  <div className="flex items-start gap-3.5 sm:gap-4">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#2d4a3e] shrink-0 mt-1 shadow-2xs">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
 
                     <div className="space-y-1.5">
-                      <h2 className="text-lg sm:text-2xl font-bold text-slate-900 leading-snug">
+                      <h2 className="text-base sm:text-2xl font-bold text-slate-900 leading-snug">
                         {guide.title}
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -693,10 +721,29 @@ export default function PanduanClient() {
                 </div>
 
                 {/* Body: Split-Screen Layout (Langkah Praktis + Visual Mockup Interaktif) */}
-                <div className="p-6 sm:p-8">
+                <div className="p-4 sm:p-6 lg:p-8">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    {/* Left Column: Timeline Langkah-Langkah Praktis */}
-                    <div className="lg:col-span-7 space-y-6">
+                    {/* On Mobile: Mockup appears FIRST so mobile user immediately sees the visual preview! */}
+                    {/* On Desktop: Mockup is on right column with sticky positioning and smooth parallax */}
+                    <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 space-y-3">
+                      <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
+                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Simulasi Interaktif Fitur:</span>
+                        </span>
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">
+                          Live UI Preview
+                        </span>
+                      </div>
+
+                      <ParallaxMockupWrapper badgeText={guide.badge}>
+                        {renderGuideMockup(guide.id)}
+                      </ParallaxMockupWrapper>
+                    </div>
+
+                    {/* On Mobile: Steps follow after the visual preview */}
+                    {/* On Desktop: Steps are on left column (col-span-7) */}
+                    <div className="order-2 lg:order-1 lg:col-span-7 space-y-6 pt-4 lg:pt-0">
                       <div className="flex items-center justify-between pb-1">
                         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
                           <span>Tahapan Pelaksanaan</span>
@@ -710,16 +757,16 @@ export default function PanduanClient() {
                       </div>
 
                       {/* Timeline Flow */}
-                      <div className="space-y-4 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+                      <div className="space-y-3.5 sm:space-y-4 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
                         {guide.steps.map((step, sIdx) => (
                           <div
                             key={sIdx}
-                            className="relative pl-8 space-y-1.5 group"
+                            className="relative pl-7 sm:pl-8 space-y-1.5 group"
                           >
                             <span className="absolute left-0 top-0.5 w-6 h-6 rounded-full bg-[#2d4a3e] text-white text-[10px] font-mono font-bold flex items-center justify-center ring-4 ring-white shadow-2xs group-hover:scale-110 transition-transform">
                               {step.number}
                             </span>
-                            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 hover:border-emerald-300 hover:bg-white transition-all space-y-1.5 shadow-2xs">
+                            <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 hover:border-emerald-300 hover:bg-white transition-all space-y-1.5 shadow-2xs">
                               <h4 className="text-xs sm:text-sm font-bold text-slate-900">
                                 {step.title}
                               </h4>
@@ -737,7 +784,7 @@ export default function PanduanClient() {
                       </div>
 
                       {/* Pro Tip Box */}
-                      <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 font-medium leading-relaxed">
+                      <div className="p-3.5 sm:p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 font-medium leading-relaxed">
                         {guide.proTip}
                       </div>
 
@@ -757,21 +804,6 @@ export default function PanduanClient() {
                           </Link>
                         </div>
                       )}
-                    </div>
-
-                    {/* Right Column: Visual Mockup Interaktif */}
-                    <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-3">
-                      <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
-                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Simulasi Interaktif Fitur:</span>
-                        </span>
-                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full">
-                          Live UI Preview
-                        </span>
-                      </div>
-
-                      {renderGuideMockup(guide.id)}
                     </div>
                   </div>
                 </div>
