@@ -49,16 +49,23 @@ export function UpgradeModal({
   if (!isOpen) return null;
 
   // Helper untuk memastikan script Snap Midtrans termuat secara dinamis
-  const ensureSnapScriptLoaded = (): Promise<boolean> => {
+  const ensureSnapScriptLoaded = (
+    clientKeyParam?: string,
+    isProdParam?: boolean
+  ): Promise<boolean> => {
     if (typeof window === "undefined") return Promise.resolve(false);
     if ((window as any).snap) return Promise.resolve(true);
 
     return new Promise((resolve) => {
-      const isProd = process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
+      const isProd =
+        isProdParam !== undefined
+          ? isProdParam
+          : process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
       const src = isProd
         ? "https://app.midtrans.com/snap/snap.js"
         : "https://app.sandbox.midtrans.com/snap/snap.js";
-      const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "";
+      const clientKey =
+        clientKeyParam || process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "";
 
       const existingScript = document.getElementById("midtrans-snap-script") as HTMLScriptElement | null;
       if (existingScript) {
@@ -105,12 +112,12 @@ export function UpgradeModal({
         throw new Error(data.error || "Gagal membuat sesi pembayaran.");
       }
 
-      const { snapToken, orderId, isSimulated } = data;
+      const { snapToken, orderId, isSimulated, clientKey, isProduction } = data;
 
-      // Jika bukan mode simulasi, pastikan script Snap sudah termuat
+      // Jika bukan mode simulasi, pastikan script Snap sudah termuat dengan clientKey dari runtime
       let isSnapReady = false;
       if (!isSimulated) {
-        isSnapReady = await ensureSnapScriptLoaded();
+        isSnapReady = await ensureSnapScriptLoaded(clientKey, isProduction);
       }
 
       // Jika script Snap Midtrans tersedia dan bukan mode simulasi dev

@@ -127,6 +127,8 @@ export async function POST(req: Request) {
       isSimulated: snapToken.startsWith("SIMULASI-SNAP-"),
       plan,
       amount: price,
+      clientKey: getMidtransClientKey(),
+      isProduction: isMidtransProduction(),
     });
   } catch (error: any) {
     console.error("[CREATE_SNAP_ERROR]", error);
