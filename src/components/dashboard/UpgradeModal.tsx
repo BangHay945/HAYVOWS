@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   X,
   Check,
@@ -30,6 +30,17 @@ export function UpgradeModal({
   const [selectedPlan, setSelectedPlan] = useState<"basic" | "premium" | "luxury">("premium");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Lock background scroll when modal is active
+  useEffect(() => {
+    if (isOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prevOverflow || "unset";
+      };
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -135,10 +146,15 @@ export function UpgradeModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-4xl w-full overflow-hidden flex flex-col my-8 animate-in fade-in zoom-in-95 duration-200 text-slate-800">
-        {/* Header */}
-        <div className="p-6 pb-4 bg-gradient-to-b from-[#faf8f5] to-white border-b border-slate-100 flex items-start justify-between">
+    <div
+      className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 overflow-y-auto"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 max-w-4xl w-full max-h-[92dvh] sm:max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200 text-slate-800 my-auto">
+        {/* Header - Fixed & Always Visible */}
+        <div className="shrink-0 p-5 sm:p-6 pb-4 bg-gradient-to-b from-[#faf8f5] to-white border-b border-slate-100 flex items-start justify-between">
           <div>
             <HayvowsLogo size="sm" />
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-2">
@@ -151,14 +167,15 @@ export function UpgradeModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
+            aria-label="Tutup Modal"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0 ml-2"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Pricing Cards Selection - 3 Columns */}
-        <div className="p-6 space-y-6">
+        {/* Scrollable Content Body with smooth scrolling */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 overscroll-contain">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* 1. Paket Basic */}
             <div
