@@ -1,7 +1,17 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { snap, PLAN_PRICING, type PlanType } from "@/lib/midtrans";
+// @ts-ignore
+import midtransClient from "midtrans-client";
+import {
+  snap,
+  PLAN_PRICING,
+  type PlanType,
+  isMidtransConfigured,
+  getMidtransServerKey,
+  getMidtransClientKey,
+  isMidtransProduction,
+} from "@/lib/midtrans";
 
 export async function POST(req: Request) {
   try {
@@ -75,12 +85,23 @@ export async function POST(req: Request) {
     let redirectUrl: string;
 
     try {
-      const snapResponse = await snap.createTransaction(parameter);
-      snapToken = snapResponse.token;
-      redirectUrl = snapResponse.redirect_url;
+      const isConfigured = isMidtransConfigured();
+      if (!isConfigured) {
+        console.warn("[MIDTRANS_DEV_FALLBACK] Kredensial Midtrans belum dikonfigurasi di .env. Menggunakan mode simulasi.");
+        snapToken = `SIMULASI-SNAP-${orderId}`;
+        redirectUrl = `/dashboard?payment=simulated&orderId=${orderId}`;
+      } else {
+        const snapClient = new midtransClient.Snap({
+          isProduction: isMidtransProduction(),
+          serverKey: getMidtransServerKey(),
+          clientKey: getMidtransClientKey(),
+        });
+        const snapResponse = await snapClient.createTransaction(parameter);
+        snapToken = snapResponse.token;
+        redirectUrl = snapResponse.redirect_url;
+      }
     } catch (midtransError: any) {
-      // Jika kredensial sandbox belum diganti kunci asli, gunakan mode simulasi sandbox lokal
-      console.warn("[MIDTRANS_DEV_FALLBACK] Menggunakan mode simulasi lokal:", midtransError?.message || midtransError);
+      console.error("[MIDTRANS_CREATE_SNAP_ERROR]", midtransError?.message || midtransError);
       snapToken = `SIMULASI-SNAP-${orderId}`;
       redirectUrl = `/dashboard?payment=simulated&orderId=${orderId}`;
     }

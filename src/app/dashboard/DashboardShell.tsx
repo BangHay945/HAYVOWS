@@ -1058,7 +1058,12 @@ export function DashboardShell({
 
       {/* Midtrans Snap JS Script */}
       <Script
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        id="midtrans-snap-script"
+        src={
+          process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true"
+            ? "https://app.midtrans.com/snap/snap.js"
+            : "https://app.sandbox.midtrans.com/snap/snap.js"
+        }
         data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
         strategy="lazyOnload"
       />

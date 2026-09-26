@@ -48,6 +48,46 @@ export function UpgradeModal({
 
   if (!isOpen) return null;
 
+  // Helper untuk memastikan script Snap Midtrans termuat secara dinamis
+  const ensureSnapScriptLoaded = (): Promise<boolean> => {
+    if (typeof window === "undefined") return Promise.resolve(false);
+    if ((window as any).snap) return Promise.resolve(true);
+
+    return new Promise((resolve) => {
+      const isProd = process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
+      const src = isProd
+        ? "https://app.midtrans.com/snap/snap.js"
+        : "https://app.sandbox.midtrans.com/snap/snap.js";
+      const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "";
+
+      const existingScript = document.getElementById("midtrans-snap-script") as HTMLScriptElement | null;
+      if (existingScript) {
+        if ((window as any).snap) {
+          resolve(true);
+        } else {
+          existingScript.addEventListener("load", () => resolve(true), { once: true });
+          existingScript.addEventListener("error", () => resolve(false), { once: true });
+          setTimeout(() => resolve(Boolean((window as any).snap)), 2500);
+        }
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.id = "midtrans-snap-script";
+      script.src = src;
+      if (clientKey) {
+        script.setAttribute("data-client-key", clientKey);
+      }
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => {
+        console.warn("[MIDTRANS_SNAP_LOAD_FAILED] Gagal memuat script Midtrans Snap dari " + src);
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
   const handlePayMidtrans = async () => {
     setLoading(true);
     setErrorMessage("");
@@ -67,36 +107,46 @@ export function UpgradeModal({
 
       const { snapToken, orderId, isSimulated } = data;
 
-      // Jika script Snap Midtrans tersedia di window
-      if (typeof window !== "undefined" && (window as any).snap && !isSimulated) {
+      // Jika bukan mode simulasi, pastikan script Snap sudah termuat
+      let isSnapReady = false;
+      if (!isSimulated) {
+        isSnapReady = await ensureSnapScriptLoaded();
+      }
+
+      // Jika script Snap Midtrans tersedia dan bukan mode simulasi dev
+      if (isSnapReady && typeof window !== "undefined" && (window as any).snap && !isSimulated) {
         (window as any).snap.pay(snapToken, {
           onSuccess: async function (result: any) {
             console.log("Midtrans payment success:", result);
             // Panggil webhook lokal untuk konfirmasi cepat
-            await fetch("/api/payment/webhook", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                order_id: orderId,
-                transaction_status: "settlement",
-                status_code: "200",
-                gross_amount: data.amount.toString(),
-                payment_type: result.payment_type || "qris",
-              }),
-            });
+            try {
+              await fetch("/api/payment/webhook", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  order_id: orderId,
+                  transaction_status: "settlement",
+                  status_code: "200",
+                  gross_amount: data.amount.toString(),
+                  payment_type: result.payment_type || "qris",
+                }),
+              });
+            } catch (err) {
+              console.error("[WEBHOOK_CALL_ERROR]", err);
+            }
             onUpgradeSuccess?.();
             onClose();
             window.location.reload();
           },
           onPending: function (result: any) {
-            alert("Pembayaran Anda sedang diproses. Mohon selesaikan instruksi pembayaran.");
+            alert("Instruksi pembayaran telah dibuat. Silakan selesaikan pembayaran Anda lalu segarkan halaman ini.");
             onClose();
           },
           onError: function (result: any) {
-            alert("Pembayaran gagal. Silakan coba kembali.");
+            alert("Pembayaran tidak berhasil atau dibatalkan. Silakan coba kembali.");
           },
           onClose: function () {
-            console.log("Customer closed the popup without finishing the payment");
+            console.log("Pelanggan menutup jendela pembayaran Midtrans tanpa menyelesaikan transaksi.");
           },
         });
       } else {
@@ -104,7 +154,7 @@ export function UpgradeModal({
         const confirmSimulate = window.confirm(
           `[SIMULASI MIDTRANS SANDBOX]\n\nOrder ID: ${orderId}\nPaket: ${selectedPlan.toUpperCase()}\nNominal: Rp ${data.amount.toLocaleString(
             "id-ID"
-          )}\n\nTekan OK untuk mensimulasikan pembayaran QRIS / Virtual Account berhasil secara instan!`
+          )}\n\n(Catatan: Mode ini aktif otomatis jika kredensial Midtrans belum diisi di .env)\n\nTekan OK untuk mensimulasikan pembayaran QRIS / Virtual Account berhasil secara instan!`
         );
 
         if (confirmSimulate) {
@@ -122,7 +172,7 @@ export function UpgradeModal({
           });
 
           if (simRes.ok) {
-            alert("Pembayaran simulasi berhasil! Paket akun Anda telah aktif.");
+            alert("Pembayaran simulasi berhasil! Paket akun & undangan Anda telah aktif.");
             onUpgradeSuccess?.();
             onClose();
             window.location.reload();

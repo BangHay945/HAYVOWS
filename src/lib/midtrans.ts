@@ -25,20 +25,46 @@ export const PLAN_PRICING = {
 
 export type PlanType = "basic" | "premium" | "luxury";
 
-const isProduction = process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true";
-const serverKey = process.env.MIDTRANS_SERVER_KEY || "SB-Mid-server-TEST_SANDBOX_KEY";
-const clientKey = process.env.MIDTRANS_CLIENT_KEY || "SB-Mid-client-TEST_SANDBOX_KEY";
+export const isMidtransProduction = (): boolean => {
+  return (
+    process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true" ||
+    process.env.MIDTRANS_IS_PRODUCTION === "true"
+  );
+};
+
+export const getMidtransServerKey = (): string => {
+  return process.env.MIDTRANS_SERVER_KEY || "";
+};
+
+export const getMidtransClientKey = (): string => {
+  return (
+    process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ||
+    process.env.MIDTRANS_CLIENT_KEY ||
+    ""
+  );
+};
+
+export const isMidtransConfigured = (): boolean => {
+  const sk = getMidtransServerKey();
+  const ck = getMidtransClientKey();
+  return Boolean(
+    sk &&
+    ck &&
+    !sk.includes("TEST_SANDBOX_KEY") &&
+    !ck.includes("TEST_SANDBOX_KEY")
+  );
+};
 
 export const snap = new midtransClient.Snap({
-  isProduction,
-  serverKey,
-  clientKey,
+  isProduction: isMidtransProduction(),
+  serverKey: getMidtransServerKey() || "SB-Mid-server-TEST_SANDBOX_KEY",
+  clientKey: getMidtransClientKey() || "SB-Mid-client-TEST_SANDBOX_KEY",
 });
 
 export const coreApi = new midtransClient.CoreApi({
-  isProduction,
-  serverKey,
-  clientKey,
+  isProduction: isMidtransProduction(),
+  serverKey: getMidtransServerKey() || "SB-Mid-server-TEST_SANDBOX_KEY",
+  clientKey: getMidtransClientKey() || "SB-Mid-client-TEST_SANDBOX_KEY",
 });
 
 /**
@@ -51,6 +77,8 @@ export function verifySignatureKey(
   grossAmount: string,
   signatureKey: string
 ): boolean {
+  const serverKey = getMidtransServerKey();
+  if (!serverKey) return false;
   const hash = crypto
     .createHash("sha512")
     .update(`${orderId}${statusCode}${grossAmount}${serverKey}`)

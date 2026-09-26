@@ -90,10 +90,12 @@ export async function POST(req: Request) {
       // Kirim email konfirmasi & invoice jika user memiliki email
       if (transaction.user?.email) {
         const planNameFormatted =
-          transaction.plan.toUpperCase() === "PRO"
-            ? "Paket Pro"
-            : transaction.plan.toUpperCase() === "ROYAL"
-            ? "Paket Royal Gold"
+          transaction.plan === "basic"
+            ? "Paket Basic"
+            : transaction.plan === "premium"
+            ? "Paket Populer"
+            : transaction.plan === "luxury"
+            ? "Paket Exclusive"
             : `Paket ${transaction.plan}`;
 
         sendPaymentSuccessEmail({
