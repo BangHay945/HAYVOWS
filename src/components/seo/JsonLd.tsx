@@ -116,7 +116,7 @@ export default function JsonLd() {
             name: "Apakah ada potongan biaya (admin fee) pada amplop digital?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank maupun QRIS langsung terhubung ke rekening pribadi pengantin sehingga seluruh hadiah dari tamu masuk 100% utuh tanpa perantara.",
+              text: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank langsung terhubung ke rekening pribadi pengantin sehingga seluruh hadiah dari tamu masuk 100% utuh tanpa perantara.",
             },
           },
           {

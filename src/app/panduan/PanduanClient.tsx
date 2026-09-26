@@ -264,21 +264,21 @@ export default function PanduanClient() {
     {
       id: "amplop-digital-0-persen",
       category: "amplop",
-      title: "Panduan Amplop Digital, QRIS & Konfirmasi Transfer Tanpa Potongan (0%)",
+      title: "Panduan Amplop Digital & Konfirmasi Transfer Bank Tanpa Potongan (0%)",
       badge: "Bebas Biaya Admin",
       badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
       icon: Gift,
       readTime: "3 Menit",
       targetUser: "Calon Pengantin",
       summary:
-        "Cara mendaftarkan rekening bank pribadi, memasang QRIS, dan menerima tanda kasih secara langsung 100% utuh tanpa potongan pihak ketiga.",
+        "Cara mendaftarkan nomor rekening bank pribadi kedua mempelai dan menerima tanda kasih transfer langsung 100% utuh tanpa potongan pihak ketiga.",
       steps: [
         {
           number: "01",
-          title: "Daftarkan Rekening Bank & QRIS di Dashboard",
-          desc: "Buka menu Tanda Kasih / Amplop Digital. Masukkan nomor rekening bank Anda (BCA, Mandiri, BNI, BRI, Bank Jago, dll.) serta nama pemilik rekening.",
+          title: "Daftarkan Rekening Bank Mempelai di Dashboard",
+          desc: "Buka menu Tanda Kasih / Amplop Digital. Masukkan nama bank pilihan Anda (BCA, Mandiri, BNI, BRI, Bank Jago, dll.), nomor rekening, serta nama pemilik rekening.",
           detail:
-            "Anda juga dapat mengunggah gambar QRIS agar tamu dari e-wallet (GoPay, OVO, Dana, ShopeePay) bisa langsung scan.",
+            "Tamu dapat menyalin nomor rekening secara instan dengan tombol 'Salin' dan melakukan transfer langsung lewat mobile banking atau ATM.",
         },
         {
           number: "02",

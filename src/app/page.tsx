@@ -163,7 +163,7 @@ export default function LandingPage() {
     },
     {
       q: "Apakah ada potongan biaya (admin fee) pada amplop digital?",
-      a: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank maupun QRIS yang Anda pasang langsung terhubung ke rekening pribadi Anda, sehingga seluruh tanda kasih dari tamu masuk 100% utuh tanpa perantara.",
+      a: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank yang Anda pasang langsung terhubung ke rekening pribadi Anda, sehingga seluruh tanda kasih dari tamu masuk 100% utuh tanpa perantara.",
     },
     {
       q: "Bisakah mengganti lagu atau latar musik undangan?",
@@ -899,7 +899,7 @@ export default function LandingPage() {
                     Amplop Digital &amp; Rekening Langsung
                   </h3>
                   <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Tanda kasih masuk 100% utuh langsung ke rekening bank atau QRIS mempelai tanpa perantara atau potongan admin.
+                    Tanda kasih masuk 100% utuh langsung ke nomor rekening bank mempelai tanpa perantara atau potongan admin.
                   </p>
                 </div>
 
