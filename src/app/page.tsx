@@ -390,10 +390,10 @@ export default function LandingPage() {
       </header>
 
       {/* ───────────────── 2. HERO SECTION ───────────────── */}
-      <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-emerald-100/40 via-amber-50/30 to-transparent pointer-events-none -z-10 blur-3xl" />
 
-        <div className="max-w-5xl mx-auto text-center space-y-6 sm:space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#c5a880]/60 text-[#2d4a3e] text-xs font-bold shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#c5a880]" />
@@ -434,7 +434,7 @@ export default function LandingPage() {
           </div>
 
           {/* ───────────────── DUAL LIVE PREVIEW HERO CARDS ───────────────── */}
-          <div className="pt-8 sm:pt-12 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 text-left max-w-4xl mx-auto">
+          <div className="pt-8 sm:pt-12 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 text-left w-full">
             {/* Card 1: Pixel RPG Live Preview */}
             <div className="group relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#161d42] to-[#0c102a] border-2 border-amber-400/80 shadow-2xl p-6 sm:p-7 text-white flex flex-col justify-between hover:shadow-amber-500/20 transition-all">
               <div className="flex items-center justify-between mb-4">
@@ -523,8 +523,8 @@ export default function LandingPage() {
       </section>
 
       {/* ───────────────── 3. STATS & KEY METRICS ───────────────── */}
-      <section className="border-y border-slate-200 bg-white py-10 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="border-y border-slate-200 bg-white py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
             <p className="text-2xl sm:text-4xl font-extrabold text-[#2d4a3e]">1 Detik</p>
             <p className="text-xs text-slate-500 font-medium mt-1">Check-in QR di Meja Resepsi</p>
@@ -545,8 +545,9 @@ export default function LandingPage() {
       </section>
 
       {/* ───────────────── 4. THE 4 POWERHOUSE PILLARS ───────────────── */}
-      <section id="keunggulan" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
+      <section id="keunggulan" className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
             <Zap className="w-3.5 h-3.5 text-emerald-600" />
             <span>4 PILAR EKOSISTEM PINTAR</span>
@@ -774,11 +775,12 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       {/* ───────────────── 5. FITUR LENGKAP UNDANGAN & PROTEKSI ANTI-SPAM ───────────────── */}
-      <section id="fitur" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#fbf8f3] via-white to-[#fbf8f3] border-t border-slate-200">
-        <div className="max-w-6xl mx-auto space-y-14">
+      <section id="fitur" className="py-20 bg-gradient-to-b from-[#fbf8f3] via-white to-[#fbf8f3] border-t border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -1067,8 +1069,8 @@ export default function LandingPage() {
       </section>
 
       {/* ───────────────── 6. CARA KERJA ALUR HYBRID ───────────────── */}
-      <section id="cara-kerja" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#2d4a3e] text-white">
-        <div className="max-w-6xl mx-auto space-y-14">
+      <section id="cara-kerja" className="py-20 bg-[#2d4a3e] text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-[#fef08a] uppercase tracking-wider">
               <Layers className="w-3.5 h-3.5" />
@@ -1141,8 +1143,8 @@ export default function LandingPage() {
       </section>
 
       {/* ───────────────── 6. KATALOG TEMA SHOWCASE ───────────────── */}
-      <section id="tema" className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-t border-slate-200">
-        <div className="max-w-6xl mx-auto">
+      <section id="tema" className="py-20 bg-white border-t border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
               <Palette className="w-3.5 h-3.5 text-emerald-600" />
@@ -1298,85 +1300,90 @@ export default function LandingPage() {
       </section>
 
       {/* ───────────────── 7. TABEL KOMPARASI (Platform Biasa vs Hayvows) ───────────────── */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>KOMPARASI FITUR</span>
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>KOMPARASI FITUR</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Mengapa Hayvows Jauh Lebih Unggul?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Perbandingan fitur antara website undangan digital biasa dengan Ekosistem Resepsi Pintar Hayvows.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Mengapa Hayvows Jauh Lebih Unggul?
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Perbandingan fitur antara website undangan digital biasa dengan Ekosistem Resepsi Pintar Hayvows.
-          </p>
-        </div>
 
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-          <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-700">
-              <tr>
-                <th className="py-4 px-5 sm:px-6 font-bold">Kemampuan &amp; Fitur</th>
-                <th className="py-4 px-4 text-center font-semibold text-slate-400">Undangan Biasa</th>
-                <th className="py-4 px-5 sm:px-6 text-center font-extrabold text-[#2d4a3e] bg-emerald-50/60">
-                  Hayvows Smart Wedding
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Tampilan Web &amp; Pemutar Musik Romantis</td>
-                <td className="py-3.5 px-4 text-center text-emerald-600">✓</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Audio Bebas Blokir</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Proteksi Anti-Spam &amp; Moderasi Ucapan Doa</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗ (Rawan spam)</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Filter Cerdas &amp; Moderasi</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Amplop Digital &amp; Rekening Bank Langsung</td>
-                <td className="py-3.5 px-4 text-center text-slate-400">Potongan Admin</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 0% Biaya Potongan</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Dukungan Undangan Cetak Fisik (Studio 300 DPI)</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ File Siap Cetak</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Tiket E-Pass QR Presensi Tamu</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Otomatis per Tamu</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Check-in Cepat Meja Resepsionis (QR &amp; Nama)</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗ (Manual)</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 1-Detik Scan</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Layar Sambutan TV / Videotron Real-time</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Live 3 Detik</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Kalkulator Estimasi Porsi Katering</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Presisi + Buffer 10%</td>
-              </tr>
-              <tr>
-                <td className="py-3.5 px-5 sm:px-6 font-medium">Ekspor Laporan Kehadiran CSV / Excel</td>
-                <td className="py-3.5 px-4 text-center text-slate-300">Terbatas</td>
-                <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 1-Klik Lengkap</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-700">
+                  <tr>
+                    <th className="py-4 px-5 sm:px-6 font-bold">Kemampuan &amp; Fitur</th>
+                    <th className="py-4 px-4 text-center font-semibold text-slate-400">Undangan Biasa</th>
+                    <th className="py-4 px-5 sm:px-6 text-center font-extrabold text-[#2d4a3e] bg-emerald-50/60">
+                      Hayvows Smart Wedding
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Tampilan Web &amp; Pemutar Musik Romantis</td>
+                    <td className="py-3.5 px-4 text-center text-emerald-600">✓</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Audio Bebas Blokir</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Proteksi Anti-Spam &amp; Moderasi Ucapan Doa</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗ (Rawan spam)</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Filter Cerdas &amp; Moderasi</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Amplop Digital &amp; Rekening Bank Langsung</td>
+                    <td className="py-3.5 px-4 text-center text-slate-400">Potongan Admin</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 0% Biaya Potongan</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Dukungan Undangan Cetak Fisik (Studio 300 DPI)</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ File Siap Cetak</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Tiket E-Pass QR Presensi Tamu</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Otomatis per Tamu</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Check-in Cepat Meja Resepsionis (QR &amp; Nama)</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗ (Manual)</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 1-Detik Scan</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Layar Sambutan TV / Videotron Real-time</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Live 3 Detik</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Kalkulator Estimasi Porsi Katering</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">✗</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ Presisi + Buffer 10%</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-5 sm:px-6 font-medium">Ekspor Laporan Kehadiran CSV / Excel</td>
+                    <td className="py-3.5 px-4 text-center text-slate-300">Terbatas</td>
+                    <td className="py-3.5 px-5 sm:px-6 text-center font-bold text-emerald-700 bg-emerald-50/40">✓ 1-Klik Lengkap</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ───────────────── 8. HARGA & PAKET PENJUALAN ───────────────── */}
-      <section id="harga" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+      <section id="harga" className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
             <Tag className="w-3.5 h-3.5 text-emerald-600" />
             <span>HARGA TRANSPARAN &amp; SEKALI BAYAR</span>
@@ -1573,57 +1580,61 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
+        </div>
       </section>
 
       {/* ───────────────── 9. FAQ ACCORDION ───────────────── */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
-        <div className="text-center mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
-            <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
-            <span>TANYA JAWAB</span>
+      <section id="faq" className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#2d4a3e] uppercase tracking-wider">
+              <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+              <span>TANYA JAWAB</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Pertanyaan yang Sering Diajukan
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Punya pertanyaan lain? Tim kami siap membantu kapan saja via WhatsApp.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Pertanyaan yang Sering Diajukan
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Punya pertanyaan lain? Tim kami siap membantu kapan saja via WhatsApp.
-          </p>
-        </div>
 
-        <div className="space-y-3">
-          {faqs.map((faq, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full px-5 py-4 text-left font-bold text-sm sm:text-base text-slate-800 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+          <div className="space-y-3">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs transition-all"
                 >
-                  <span>{faq.q}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${
-                      isOpen ? "rotate-180 text-[#2d4a3e]" : ""
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full px-5 py-4 text-left font-bold text-sm sm:text-base text-slate-800 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${
+                        isOpen ? "rotate-180 text-[#2d4a3e]" : ""
+                      }`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="px-5 pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* ───────────────── 10. CALL TO ACTION BANNER ───────────────── */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-tr from-[#2d4a3e] via-[#385b4d] to-[#1c3329] p-8 sm:p-14 text-center text-white relative overflow-hidden shadow-2xl">
+      <section className="py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-full rounded-3xl bg-gradient-to-tr from-[#2d4a3e] via-[#385b4d] to-[#1c3329] p-8 sm:p-14 text-center text-white relative overflow-hidden shadow-2xl">
           <div className="relative z-10 max-w-2xl mx-auto space-y-6">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg">
               <Sparkles className="w-7 h-7 text-[#fef08a]" />
@@ -1657,89 +1668,92 @@ export default function LandingPage() {
           <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-emerald-400/10 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -right-20 w-60 h-60 rounded-full bg-amber-400/10 blur-3xl pointer-events-none" />
         </div>
+        </div>
       </section>
 
       {/* ───────────────── 11. FOOTER ───────────────── */}
-      <footer className="bg-slate-900 text-slate-400 py-14 px-4 sm:px-6 lg:px-8 text-xs border-t border-slate-800">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          <div className="space-y-3">
-            <HayvowsLogo variant="full" theme="dark" size="md" />
-            <p className="text-slate-400 leading-relaxed">
-              Platform ekosistem pernikahan digital &amp; resepsi pintar terdepan di Indonesia. Hadirkan pengalaman tak terlupakan bagi tamu Anda.
+      <footer className="bg-slate-900 text-slate-400 py-14 text-xs border-t border-slate-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            <div className="space-y-3">
+              <HayvowsLogo variant="full" theme="dark" size="md" />
+              <p className="text-slate-400 leading-relaxed">
+                Platform ekosistem pernikahan digital &amp; resepsi pintar terdepan di Indonesia. Hadirkan pengalaman tak terlupakan bagi tamu Anda.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-sm mb-3">Kategori Tema</h4>
+              <ul className="space-y-2">
+                {THEME_CATEGORIES.filter((c) => c.id !== "all").map((cat) => {
+                  const count = themes.filter((t) => t.category === cat.id).length;
+                  const IconComponent = cat.icon;
+                  return (
+                    <li key={cat.id}>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectCategory(cat.id)}
+                        className="hover:text-white transition-colors text-left flex items-center justify-between w-full group py-0.5 cursor-pointer"
+                      >
+                        <span className="flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                          <IconComponent className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>{cat.label}</span>
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 group-hover:bg-[#2d4a3e] group-hover:text-emerald-300 font-mono transition-colors">
+                          {count} Desain
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-sm mb-3">Ekosistem Pintar</h4>
+              <ul className="space-y-2">
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">Studio QR Siap Cetak (300 DPI)</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">Buku Tamu Digital &amp; Scanner</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">Layar Sambutan TV Gedung</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">Kalkulator Estimasi Katering</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">Amplop Digital &amp; Rekening Bank</a></li>
+                <li><a href="#keunggulan" className="hover:text-white transition-colors">WhatsApp 1-Klik Generator</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold text-sm mb-3">Bantuan &amp; Kontak</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/panduan"
+                    className="hover:text-emerald-400 font-semibold text-emerald-400 transition-colors flex items-center gap-1.5"
+                  >
+                    <span>Pusat Panduan &amp; Fitur</span>
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                  >
+                    <span>WhatsApp CS: 0812-3456-7890</span>
+                  </a>
+                </li>
+                <li><span>Email: support@hayvows.com</span></li>
+                <li><span>Jam Operasional: 09:00 - 21:00 WIB</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500">
+            <p>&copy; 2026 HAYVOWS. All rights reserved.</p>
+            <p className="flex items-center gap-1">
+              Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for unforgettable weddings.
             </p>
           </div>
-
-          <div>
-            <h4 className="text-white font-bold text-sm mb-3">Kategori Tema</h4>
-            <ul className="space-y-2">
-              {THEME_CATEGORIES.filter((c) => c.id !== "all").map((cat) => {
-                const count = themes.filter((t) => t.category === cat.id).length;
-                const IconComponent = cat.icon;
-                return (
-                  <li key={cat.id}>
-                    <button
-                      type="button"
-                      onClick={() => handleSelectCategory(cat.id)}
-                      className="hover:text-white transition-colors text-left flex items-center justify-between w-full group py-0.5 cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                        <IconComponent className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>{cat.label}</span>
-                      </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 group-hover:bg-[#2d4a3e] group-hover:text-emerald-300 font-mono transition-colors">
-                        {count} Desain
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold text-sm mb-3">Ekosistem Pintar</h4>
-            <ul className="space-y-2">
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">Studio QR Siap Cetak (300 DPI)</a></li>
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">Buku Tamu Digital &amp; Scanner</a></li>
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">Layar Sambutan TV Gedung</a></li>
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">Kalkulator Estimasi Katering</a></li>
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">Amplop Digital &amp; Rekening Bank</a></li>
-              <li><a href="#keunggulan" className="hover:text-white transition-colors">WhatsApp 1-Klik Generator</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold text-sm mb-3">Bantuan &amp; Kontak</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/panduan"
-                  className="hover:text-emerald-400 font-semibold text-emerald-400 transition-colors flex items-center gap-1.5"
-                >
-                  <span>Pusat Panduan &amp; Fitur</span>
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://wa.me/6281234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors flex items-center gap-1.5"
-                >
-                  <span>WhatsApp CS: 0812-3456-7890</span>
-                </a>
-              </li>
-              <li><span>Email: support@hayvows.com</span></li>
-              <li><span>Jam Operasional: 09:00 - 21:00 WIB</span></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="max-w-6xl mx-auto border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500">
-          <p>&copy; 2026 HAYVOWS. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for unforgettable weddings.
-          </p>
         </div>
       </footer>
     </div>
