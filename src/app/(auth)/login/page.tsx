@@ -14,6 +14,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const searchParams = useSearchParams();
   const isRegistered = searchParams.get("registered") === "1";
+  const isReset = searchParams.get("reset") === "1";
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
@@ -32,6 +33,13 @@ function LoginForm() {
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>Pendaftaran akun berhasil! Silakan masuk menggunakan email dan kata sandi Anda.</span>
+          </div>
+        )}
+
+        {isReset && (
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Kata sandi Anda berhasil diperbarui! Silakan masuk menggunakan kata sandi baru Anda.</span>
           </div>
         )}
 
@@ -57,9 +65,17 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Kata Sandi
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-semibold text-slate-700">
+                Kata Sandi
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-[11px] text-[#2d4a3e] hover:underline font-medium"
+              >
+                Lupa kata sandi?
+              </Link>
+            </div>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}

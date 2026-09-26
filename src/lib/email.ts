@@ -398,6 +398,59 @@ export async function sendGiftNotificationEmail({
 }
 
 /**
+ * 5. Kirim Email Reset Kata Sandi
+ */
+export async function sendPasswordResetEmail({
+  to,
+  name,
+  resetUrl,
+}: {
+  to: string;
+  name?: string | null;
+  resetUrl: string;
+}) {
+  const subject = "Atur Ulang Kata Sandi Akun Hayvows Anda";
+  const displayName = name ? `Halo <strong>${name}</strong>,` : "Halo,";
+
+  const content = `
+    <h2 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-top: 0; margin-bottom: 12px; font-family: Georgia, serif;">
+      Permintaan Atur Ulang Kata Sandi
+    </h2>
+    <p style="margin-bottom: 16px;">
+      ${displayName} Kami menerima permintaan untuk mengatur ulang kata sandi akun Hayvows Anda.
+    </p>
+    <p style="margin-bottom: 24px; color: #475569;">
+      Jika Anda memang meminta pengaturan ulang ini, silakan klik tombol di bawah untuk membuat kata sandi baru:
+    </p>
+
+    <table border="0" cellspacing="0" cellpadding="0" style="margin: 28px 0;">
+      <tr>
+        <td align="center" style="border-radius: 12px; background-color: #2d4a3e;">
+          <a href="${resetUrl}" target="_blank" style="font-size: 14px; font-weight: bold; color: #ffffff; text-decoration: none; padding: 14px 28px; display: inline-block; border-radius: 12px;">
+            Atur Ulang Kata Sandi Sekarang &rarr;
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <div style="background-color: #fffbeb; border: 1px solid #fef3c7; border-radius: 10px; padding: 14px 16px; margin: 24px 0; font-size: 12px; color: #92400e;">
+      <strong>Penting:</strong> Tautan ini hanya berlaku selama <strong>1 jam</strong> untuk alasan keamanan. Jika Anda tidak pernah meminta pengaturan ulang kata sandi ini, Anda dapat mengabaikan email ini dengan aman. Akun Anda tetap terlindungi.
+    </div>
+
+    <p style="font-size: 12px; color: #64748b; margin-bottom: 0;">
+      Tautan tidak bisa diklik? Buka URL berikut di peramban Anda:<br>
+      <a href="${resetUrl}" style="color: #2d4a3e; word-break: break-all;">${resetUrl}</a>
+    </p>
+  `;
+
+  return sendEmail({
+    to,
+    subject,
+    html: emailWrapper({ title: subject, content }),
+  });
+}
+
+/**
  * Core send email executor
  */
 async function sendEmail({
