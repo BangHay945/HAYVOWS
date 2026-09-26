@@ -64,6 +64,15 @@ export async function POST(req: Request) {
     const userPlan = user?.plan || "basic";
 
     if (userRole !== "admin") {
+      if ((template as any).adminOnly) {
+        return NextResponse.json(
+          {
+            error: `Tema "${template.name}" saat ini masih dalam mode pengujian khusus Super Admin dan belum dirilis untuk umum.`,
+          },
+          { status: 403 }
+        );
+      }
+
       const requiredPlan = getRequiredPlan(template.slug);
       if (!isPlanAllowed(requiredPlan, userPlan, userRole)) {
         return NextResponse.json(

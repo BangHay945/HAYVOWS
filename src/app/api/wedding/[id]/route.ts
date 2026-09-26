@@ -43,6 +43,22 @@ export async function PATCH(
   const { id } = await params;
   const body = await req.json();
 
+  if (body.templateId) {
+    const template = await prisma.template.findUnique({
+      where: { id: body.templateId },
+    });
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { role: true },
+    });
+    if (template && (template as any).adminOnly && user?.role !== "admin") {
+      return NextResponse.json(
+        { error: "Tema ini masih dalam mode pengujian admin dan belum dirilis untuk publik." },
+        { status: 403 }
+      );
+    }
+  }
+
   const wedding = await prisma.wedding.updateMany({
     where: { id, userId: session.user.id },
     data: body,

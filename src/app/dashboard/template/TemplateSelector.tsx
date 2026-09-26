@@ -11,10 +11,11 @@ import {
   Play,
   Flower2,
   Palette,
+  Globe,
+  Lock,
 } from "lucide-react";
 import { MonogramSeal } from "@/templates/modern-monogram/components/MonogramSeal";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
-import { Lock } from "lucide-react";
 
 interface RichTemplateDetail {
   slug: string;
@@ -171,10 +172,41 @@ export default function TemplateSelector({
   userRole?: string;
   weddingTitle?: string;
 }) {
+  const [templateList, setTemplateList] = useState<Template[]>(templates);
   const [selectedId, setSelectedId] = useState(currentTemplateId || "");
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  const [togglingStatusId, setTogglingStatusId] = useState<string | null>(null);
+  const [adminFeedback, setAdminFeedback] = useState<string | null>(null);
+
+  const handleToggleAdminOnly = async (tplId: string, currentAdminOnly: boolean) => {
+    const nextAdminOnly = !currentAdminOnly;
+    setTogglingStatusId(tplId);
+    setAdminFeedback(null);
+    try {
+      const res = await fetch("/api/admin/templates/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ templateId: tplId, adminOnly: nextAdminOnly }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setTemplateList((prev) =>
+          prev.map((t) => (t.id === tplId ? { ...t, adminOnly: nextAdminOnly } : t))
+        );
+        setAdminFeedback(data.message);
+        setTimeout(() => setAdminFeedback(null), 4000);
+      } else {
+        alert(data.error || "Gagal memperbarui status tema.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan jaringan.");
+    } finally {
+      setTogglingStatusId(null);
+    }
+  };
 
   const handleSelect = async (id: string) => {
     if (!weddingId) return;
@@ -192,7 +224,6 @@ export default function TemplateSelector({
     }
     setSaving(false);
   };
-
 
   return (
     <div className="space-y-6 w-full">
@@ -213,10 +244,27 @@ export default function TemplateSelector({
         <div className="shrink-0">
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>{templates.length} Tema Siap Pakai</span>
+            <span>{templateList.length} Tema Siap Pakai</span>
           </span>
         </div>
       </div>
+
+      {/* Admin Feedback Banner */}
+      {adminFeedback && (
+        <div className="bg-slate-900 border border-slate-700 text-amber-300 text-xs px-4 py-3 rounded-xl flex items-center justify-between shadow-md animate-in fade-in duration-200">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="font-semibold text-white">{adminFeedback}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setAdminFeedback(null)}
+            className="text-slate-400 hover:text-white text-xs px-2 py-0.5 rounded cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Success Banner */}
       {success && (
@@ -230,7 +278,7 @@ export default function TemplateSelector({
 
       {/* 3-Card Template Grid (Matching DesainPakeAI prototype) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {templates.map((tpl) => {
+        {templateList.map((tpl) => {
           const extra = THEME_EXTRAS[tpl.slug] || {
             slug: tpl.slug,
             iconBg: "bg-slate-900 text-slate-100",
@@ -248,17 +296,54 @@ export default function TemplateSelector({
           const isCurrent = Boolean(weddingId && selectedId === tpl.id);
           const reqPlan = getRequiredPlan(tpl.slug);
           const isAllowed = isPlanAllowed(reqPlan, userPlan, userRole);
+          const isAdminOnly = Boolean((tpl as any).adminOnly);
 
           return (
             <div
               key={tpl.id}
               className={`bg-white rounded-2xl border transition-all flex flex-col justify-between overflow-hidden shadow-2xs ${
-                isCurrent
+                isAdminOnly
+                  ? "border-amber-400/80 ring-1 ring-amber-400/30"
+                  : isCurrent
                   ? "border-[#2d4a3e] ring-2 ring-[#2d4a3e]/15 shadow-md"
                   : "border-slate-200/90 hover:border-[#2d4a3e]/40 hover:shadow-xs"
               }`}
             >
               <div>
+                {/* Super Admin Staging Strip */}
+                {userRole === "admin" && (
+                  <div className="px-3.5 py-2 bg-slate-950 border-b border-slate-800 flex items-center justify-between text-xs text-white">
+                    <div className="flex items-center gap-1.5 font-mono text-[10px]">
+                      {isAdminOnly ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
+                          <Lock className="w-2.5 h-2.5 text-amber-400" />
+                          <span>Draft / Uji Coba Admin</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">
+                          <Globe className="w-2.5 h-2.5 text-emerald-400" />
+                          <span>Publik (Live)</span>
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleAdminOnly(tpl.id, isAdminOnly)}
+                      disabled={togglingStatusId === tpl.id}
+                      className={`text-[10px] font-semibold px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                        isAdminOnly
+                          ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xs"
+                          : "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:text-white"
+                      }`}
+                    >
+                      {togglingStatusId === tpl.id
+                        ? "..."
+                        : isAdminOnly
+                        ? "🚀 Terbitkan ke Publik"
+                        : "🔒 Tarik ke Draft"}
+                    </button>
+                  </div>
+                )}
                 {/* Hero Banner Visual */}
                 <div
                   className={`h-40 flex items-center justify-center border-b border-slate-100 select-none relative overflow-hidden ${extra.iconBg}`}

@@ -86,6 +86,7 @@ model Template {
   thumbnail   String?
   isPremium   Boolean  @default(false)
   isActive    Boolean  @default(true)
+  adminOnly   Boolean  @default(false)
   version     String   @default("1.0.0")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
