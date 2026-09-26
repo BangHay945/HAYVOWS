@@ -396,7 +396,7 @@ export default function PanduanClient() {
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900">
       {/* 🧭 1. NAVIGATION BAR 🧭 */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-3 group shrink-0">
             <HayvowsLogo size="md" variant="horizontal" />
           </Link>
@@ -547,7 +547,7 @@ export default function PanduanClient() {
       </section>
 
       {/* 🧭 3. CATEGORY FILTER TABS 🧭 */}
-      <section className="sticky top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 py-3 shadow-2xs">
+      <section className="sticky top-18 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 py-3 shadow-2xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
             {categories.map((cat) => {
@@ -574,7 +574,7 @@ export default function PanduanClient() {
       </section>
 
       {/* 📚 4. GUIDES LIST 📚 */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {filteredGuides.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 p-8 space-y-3">
             <HelpCircle className="w-12 h-12 text-slate-300 mx-auto" />
@@ -800,7 +800,7 @@ export default function PanduanClient() {
 
       {/* 🦶 7. FOOTER 🦶 */}
       <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <HayvowsLogo size="md" theme="dark" variant="horizontal" />
             <p className="text-xs text-slate-500 text-center sm:text-right">

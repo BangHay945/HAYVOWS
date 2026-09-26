@@ -274,7 +274,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#fbf8f3] text-slate-800 flex flex-col font-sans selection:bg-[#2d4a3e] selection:text-white">
       {/* ───────────────── 1. NAVBAR ───────────────── */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-[#fbf8f3]/90 border-b border-[#2d4a3e]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <HayvowsLogo variant="full" theme="light" size="md" />
           </Link>
