@@ -18,6 +18,8 @@ interface UpgradeModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentPlan?: string;
+  weddingId?: string;
+  weddingTitle?: string;
   onUpgradeSuccess?: () => void;
 }
 
@@ -25,6 +27,8 @@ export function UpgradeModal({
   isOpen,
   onClose,
   currentPlan = "basic",
+  weddingId,
+  weddingTitle,
   onUpgradeSuccess,
 }: UpgradeModalProps) {
   const [selectedPlan, setSelectedPlan] = useState<"basic" | "premium" | "luxury">("premium");
@@ -52,7 +56,7 @@ export function UpgradeModal({
       const res = await fetch("/api/payment/create-snap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: selectedPlan }),
+        body: JSON.stringify({ plan: selectedPlan, weddingId }),
       });
 
       const data = await res.json();
@@ -158,10 +162,16 @@ export function UpgradeModal({
           <div>
             <HayvowsLogo size="sm" />
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-2">
-              Pilih Paket Undangan Anda
+              Pilih Paket Undangan
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Hapus batas masa aktif 3 hari, hilangkan watermark uji coba, dan buka tema impian Anda.
+              {weddingTitle ? (
+                <>
+                  Untuk undangan <span className="font-bold text-[#2d4a3e]">{weddingTitle}</span>. Hapus batas masa aktif 3 hari &amp; hilangkan watermark.
+                </>
+              ) : (
+                "Hapus batas masa aktif 3 hari, hilangkan watermark uji coba, dan buka tema impian Anda."
+              )}
             </p>
           </div>
           <button

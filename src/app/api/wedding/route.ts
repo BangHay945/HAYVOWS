@@ -80,6 +80,7 @@ export async function POST(req: Request) {
         userId: session.user.id,
         slug: finalSlug,
         templateId,
+        plan: userRole === "admin" ? "luxury" : "trial",
         couple: { create: {} },
       },
       include: { template: true, couple: true },

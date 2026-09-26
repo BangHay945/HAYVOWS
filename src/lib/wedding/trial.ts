@@ -7,16 +7,22 @@ export interface TrialStatus {
 }
 
 export function checkTrialStatus(
-  user: {
+  target: {
     role?: string | null;
     plan?: string | null;
     createdAt?: Date | string | null;
     transactions?: { status: string }[];
+    user?: {
+      role?: string | null;
+      plan?: string | null;
+      createdAt?: Date | string | null;
+    } | null;
   } | null | undefined,
   isDemoWedding: boolean = false
 ): TrialStatus {
   // 1. Undangan demo platform atau akun Super Admin tidak pernah kedaluwarsa
-  if (isDemoWedding || user?.role === "admin") {
+  const isAdmin = target?.role === "admin" || target?.user?.role === "admin";
+  if (isDemoWedding || isAdmin) {
     return {
       isTrial: false,
       isExpired: false,
@@ -26,12 +32,20 @@ export function checkTrialStatus(
     };
   }
 
-  // 2. Jika user sudah membeli paket berbayar (transaksi settlement) atau status paket bukan trial/unpaid basic
-  const hasSettledPayment = user?.transactions?.some(
+  // 2. Jika paket berbayar aktif (Basic, Premium/Populer, Luxury/Exclusive)
+  // Evaluasi plan undangan (target.plan), atau fallback ke target.user?.plan
+  const activePlan = target?.plan || target?.user?.plan;
+  const isPaidPlan =
+    activePlan === "basic" ||
+    activePlan === "premium" ||
+    activePlan === "luxury";
+
+  // Cek apakah ada transaksi settlement
+  const hasSettledPayment = target?.transactions?.some(
     (t) => t.status === "settlement"
   );
 
-  if (hasSettledPayment) {
+  if (isPaidPlan || hasSettledPayment) {
     return {
       isTrial: false,
       isExpired: false,
@@ -41,19 +55,12 @@ export function checkTrialStatus(
     };
   }
 
-  // Jika paket di-update oleh admin menjadi premium atau luxury, bukan trial lagi
-  if (user?.plan === "premium" || user?.plan === "luxury") {
-    return {
-      isTrial: false,
-      isExpired: false,
-      daysRemaining: 999,
-      hoursRemaining: 999,
-      trialEndsAt: null,
-    };
-  }
-
-  // 3. User dalam masa uji coba (Trial / Unpaid Basic) - Aktif 3 Hari
-  const createdDate = user?.createdAt ? new Date(user.createdAt) : new Date();
+  // 3. Undangan dalam masa uji coba (Trial) - Aktif 3 Hari dari tanggal dibuatnya undangan
+  const createdDate = target?.createdAt
+    ? new Date(target.createdAt)
+    : target?.user?.createdAt
+    ? new Date(target.user.createdAt)
+    : new Date();
   const trialDurationMs = 3 * 24 * 60 * 60 * 1000; // 3 Hari dalam milidetik
   const trialEndsAt = new Date(createdDate.getTime() + trialDurationMs);
   const now = new Date();

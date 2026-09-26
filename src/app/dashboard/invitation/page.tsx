@@ -66,6 +66,7 @@ export default async function InvitationIndexPage() {
       rsvpCount: w.guests.filter((g) => g.rsvp !== null).length,
       viewCount: w.analyticsEvents.length,
       isDemo: isDemoWedding(w.slug),
+      plan: (w as any).plan || "trial",
     };
   });
 

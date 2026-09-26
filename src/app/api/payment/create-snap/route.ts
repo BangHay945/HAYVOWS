@@ -12,6 +12,7 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const plan = (body.plan as PlanType) || "premium";
+    const weddingId = body.weddingId ? String(body.weddingId) : undefined;
 
     if (plan !== "basic" && plan !== "premium" && plan !== "luxury") {
       return NextResponse.json({ error: "Paket tidak valid" }, { status: 400 });
@@ -25,11 +26,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "User tidak ditemukan" }, { status: 404 });
     }
 
+    // Cari wedding jika weddingId disertakan
+    let wedding = null;
+    if (weddingId) {
+      wedding = await prisma.wedding.findFirst({
+        where: { id: weddingId, userId: user.id },
+        include: { couple: true },
+      });
+    }
+
     const price = PLAN_PRICING[plan].price;
     const orderId = `HAYVOWS-${plan.toUpperCase()}-${Date.now()}-${Math.random()
       .toString(36)
       .substring(2, 6)
       .toUpperCase()}`;
+
+    const weddingLabel = wedding ? ` (${wedding.slug})` : "";
 
     // Buat parameter Midtrans Snap
     const parameter = {
@@ -42,7 +54,7 @@ export async function POST(req: Request) {
           id: plan,
           price: price,
           quantity: 1,
-          name: `Hayvows ${PLAN_PRICING[plan].name}`,
+          name: `Hayvows ${PLAN_PRICING[plan].name}${weddingLabel}`.slice(0, 50),
           category: "Digital Wedding Invitation",
         },
       ],
@@ -73,10 +85,11 @@ export async function POST(req: Request) {
       redirectUrl = `/dashboard?payment=simulated&orderId=${orderId}`;
     }
 
-    // Rekam transaksi di database
+    // Rekam transaksi di database dengan weddingId
     const transaction = await prisma.transaction.create({
       data: {
         userId: user.id,
+        weddingId: wedding ? wedding.id : null,
         orderId,
         plan,
         amount: price,

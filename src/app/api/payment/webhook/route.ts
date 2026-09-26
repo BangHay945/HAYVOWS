@@ -61,8 +61,22 @@ export async function POST(req: Request) {
       },
     });
 
-    // Jika pembayaran sukses, upgrade paket user
+    // Jika pembayaran sukses, upgrade paket wedding & user
     if (finalStatus === "settlement") {
+      // 1. Update paket wedding spesifik jika ada weddingId
+      if (transaction.weddingId) {
+        await prisma.wedding.update({
+          where: { id: transaction.weddingId },
+          data: {
+            plan: transaction.plan,
+          },
+        });
+        console.log(
+          `[PAYMENT_SUCCESS] Wedding ${transaction.weddingId} berhasil di-upgrade ke paket ${transaction.plan}`
+        );
+      }
+
+      // 2. Update status paket user
       await prisma.user.update({
         where: { id: transaction.userId },
         data: {

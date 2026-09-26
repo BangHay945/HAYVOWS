@@ -27,8 +27,15 @@ export default function InvitationClient({
 
   const coupleTitle = `${wedding.couple?.groomNickname || wedding.couple?.groomName || "Pengantin"} & ${wedding.couple?.brideNickname || wedding.couple?.brideName || "Pengantin"}`;
 
-  // Cek masa aktif trial 3 hari
-  const trialStatus = checkTrialStatus(wedding.user, wedding.isDemo);
+  // Cek masa aktif trial 3 hari berbasis paket undangan
+  const trialStatus = checkTrialStatus(
+    {
+      plan: (wedding as any).plan,
+      createdAt: wedding.createdAt,
+      user: wedding.user,
+    },
+    wedding.isDemo
+  );
 
   if (trialStatus.isExpired) {
     return <TrialExpiredNotice coupleTitle={coupleTitle} />;

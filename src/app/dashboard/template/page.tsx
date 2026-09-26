@@ -36,6 +36,12 @@ export default async function TemplateSelectionPage({
   });
   const userPlan = currentUser?.plan || "basic";
   const userRole = currentUser?.role || "client";
+  const weddingPlan = (selectedWedding as any)?.plan || userPlan || "trial";
+  const weddingTitle = selectedWedding
+    ? `${selectedWedding.couple?.groomName || "Pengantin"} & ${
+        selectedWedding.couple?.brideName || "Pengantin"
+      }`
+    : undefined;
 
   return (
     <div className="space-y-6">
@@ -57,8 +63,9 @@ export default async function TemplateSelectionPage({
         weddingId={selectedWedding?.id || null}
         currentTemplateId={selectedWedding?.templateId || ""}
         templates={templates}
-        userPlan={userPlan}
+        userPlan={weddingPlan}
         userRole={userRole}
+        weddingTitle={weddingTitle}
       />
     </div>
   );

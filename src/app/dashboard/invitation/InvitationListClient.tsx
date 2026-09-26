@@ -29,6 +29,7 @@ export interface WeddingListItem {
   rsvpCount: number;
   viewCount: number;
   isDemo: boolean;
+  plan?: string;
 }
 
 export function InvitationListClient({
@@ -258,9 +259,29 @@ export function InvitationListClient({
                           <span>{isPublished ? "Live • Published" : "Draft"}</span>
                         </span>
 
-                        {w.isDemo && (
+                        {w.isDemo ? (
                           <span className="font-bold text-[9px] bg-purple-100 text-purple-900 border border-purple-200 px-1.5 py-0.5 rounded uppercase">
                             Demo Showcase
+                          </span>
+                        ) : (
+                          <span
+                            className={`font-bold text-[9px] px-2 py-0.5 rounded-full border ${
+                              w.plan === "luxury"
+                                ? "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40"
+                                : w.plan === "premium"
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                : w.plan === "basic"
+                                ? "bg-teal-50 text-teal-800 border-teal-200"
+                                : "bg-amber-50 text-amber-800 border-amber-200"
+                            }`}
+                          >
+                            {w.plan === "luxury"
+                              ? "Paket Exclusive"
+                              : w.plan === "premium"
+                              ? "Paket Populer"
+                              : w.plan === "basic"
+                              ? "Paket Basic"
+                              : "Uji Coba 3 Hari"}
                           </span>
                         )}
                       </div>

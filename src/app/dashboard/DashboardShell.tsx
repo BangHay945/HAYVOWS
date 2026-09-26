@@ -34,6 +34,9 @@ export type WeddingOption = {
   id: string;
   slug: string;
   status: string;
+  plan?: string;
+  createdAt?: string;
+  hasPaid?: boolean;
   coupleTitle: string;
 };
 
@@ -78,16 +81,25 @@ export function DashboardShell({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Selected wedding from URL or fallback to first
+  const weddingIdParam = searchParams.get("weddingId");
+  const activeWedding =
+    weddings.find((w) => w.id === weddingIdParam) || weddings[0] || null;
+
+  // Wedding-specific plan & status (Per-Undangan)
+  const currentPlan = activeWedding?.plan || userPlan || "trial";
+  const currentCreatedAt = activeWedding?.createdAt || userCreatedAt;
+  const currentHasPaid = activeWedding?.hasPaid ?? hasPaid;
+
   const trialStatus = checkTrialStatus(
     {
       role: userRole,
-      plan: userPlan,
-      createdAt: userCreatedAt,
-      transactions: hasPaid ? [{ status: "settlement" }] : [],
+      plan: currentPlan,
+      createdAt: currentCreatedAt,
+      transactions: currentHasPaid ? [{ status: "settlement" }] : [],
     },
-    false
+    Boolean(activeWedding && isDemoWedding(activeWedding.slug))
   );
-
 
   const isOverview = pathname === "/dashboard";
 
@@ -115,11 +127,6 @@ export function DashboardShell({
       document.body.style.overflow = "unset";
     };
   }, [moreMenuOpen]);
-
-  // Selected wedding from URL or fallback to first
-  const weddingIdParam = searchParams.get("weddingId");
-  const activeWedding =
-    weddings.find((w) => w.id === weddingIdParam) || weddings[0] || null;
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -234,7 +241,7 @@ export function DashboardShell({
             const Icon = item.icon;
             const active = isActive(item.href);
             const isItemLocked =
-              (userPlan === "basic" || userPlan === "trial" || trialStatus.isTrial) &&
+              (currentPlan === "basic" || currentPlan === "trial" || trialStatus.isTrial) &&
               userRole !== "admin" &&
               (item.href === "/dashboard/guestbook" ||
                 item.href === "/dashboard/rsvp" ||
@@ -301,9 +308,9 @@ export function DashboardShell({
         <div className="px-3 pt-2 pb-1 bg-[#faf8f5]/80 border-t border-slate-100">
           <div
             className={`p-3 rounded-xl border text-xs space-y-2 ${
-              userPlan === "luxury"
+              currentPlan === "luxury"
                 ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
-                : userPlan === "premium"
+                : currentPlan === "premium"
                 ? "bg-emerald-50 text-emerald-950 border-emerald-200"
                 : !trialStatus.isTrial
                 ? "bg-teal-50 text-teal-950 border-teal-200"
@@ -314,12 +321,12 @@ export function DashboardShell({
           >
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                {userPlan === "luxury" ? (
+                {currentPlan === "luxury" ? (
                   <>
                     <Crown className="w-3 h-3 text-[#c9a84c]" />
                     <span className="text-[#c9a84c]">Paket Exclusive</span>
                   </>
-                ) : userPlan === "premium" ? (
+                ) : currentPlan === "premium" ? (
                   <>
                     <Sparkles className="w-3 h-3 text-emerald-700" />
                     <span className="text-emerald-800">Paket Populer</span>
@@ -338,9 +345,9 @@ export function DashboardShell({
                 )}
               </span>
               <span className="text-[10px] font-mono opacity-60">
-                {userPlan === "luxury"
+                {currentPlan === "luxury"
                   ? "Unlimited"
-                  : userPlan === "premium"
+                  : currentPlan === "premium"
                   ? "500 Tamu"
                   : !trialStatus.isTrial
                   ? "150 Tamu"
@@ -362,13 +369,13 @@ export function DashboardShell({
               </p>
             )}
 
-            {!trialStatus.isTrial && userPlan === "basic" && (
+            {!trialStatus.isTrial && currentPlan === "basic" && (
               <p className="text-[10px] text-teal-800/90 leading-tight">
                 Paket Basic aktif selamanya.
               </p>
             )}
 
-            {userPlan !== "luxury" && (
+            {currentPlan !== "luxury" && (
               <button
                 type="button"
                 onClick={() => setUpgradeModalOpen(true)}
@@ -381,7 +388,7 @@ export function DashboardShell({
                 <span>
                   {trialStatus.isExpired
                     ? "Aktifkan Paket Sekarang"
-                    : userPlan === "premium"
+                    : currentPlan === "premium"
                     ? "Upgrade Exclusive"
                     : !trialStatus.isTrial
                     ? "Upgrade Paket"
@@ -515,10 +522,10 @@ export function DashboardShell({
         {/* Page Content Body (with pb-20 on mobile for 4-tab bottom bar clearance) */}
         <main className="flex-1 p-3.5 sm:p-6 lg:p-8 pb-20 md:pb-8 w-full min-w-0">
           {/* Mobile Plan Banner (Khusus Tampilan Mobile saat bukan Luxury) */}
-          {userPlan !== "luxury" && (
+          {currentPlan !== "luxury" && (
             <div
               className={`block md:hidden mb-4 p-3.5 sm:p-4 rounded-2xl border shadow-2xs transition-all ${
-                userPlan === "premium"
+                currentPlan === "premium"
                   ? "bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-100/70 border-emerald-200/90 text-emerald-950"
                   : !trialStatus.isTrial
                   ? "bg-gradient-to-r from-teal-50 via-emerald-50/70 to-teal-100/70 border-teal-200/90 text-teal-950"
@@ -532,7 +539,7 @@ export function DashboardShell({
                   <span className="p-1 rounded-lg bg-white/90 border border-slate-200/60 shadow-2xs shrink-0">
                     <Sparkles
                       className={`w-3.5 h-3.5 ${
-                        userPlan === "premium" || !trialStatus.isTrial
+                        currentPlan === "premium" || !trialStatus.isTrial
                           ? "text-emerald-700"
                           : trialStatus.isExpired
                           ? "text-rose-700"
@@ -541,7 +548,7 @@ export function DashboardShell({
                     />
                   </span>
                   <span className="text-xs font-bold truncate">
-                    {userPlan === "premium"
+                    {currentPlan === "premium"
                       ? "Paket Populer Aktif"
                       : !trialStatus.isTrial
                       ? "Paket Basic Aktif"
@@ -552,14 +559,14 @@ export function DashboardShell({
                 </div>
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
-                    userPlan === "premium" || !trialStatus.isTrial
+                    currentPlan === "premium" || !trialStatus.isTrial
                       ? "bg-emerald-200/90 text-emerald-900 border border-emerald-300"
                       : trialStatus.isExpired
                       ? "bg-rose-200/90 text-rose-950 border border-rose-300"
                       : "bg-amber-200/90 text-amber-950 border border-amber-300"
                   }`}
                 >
-                  {userPlan === "premium"
+                  {currentPlan === "premium"
                     ? "500 Tamu"
                     : !trialStatus.isTrial
                     ? "150 Tamu"
@@ -570,7 +577,7 @@ export function DashboardShell({
               </div>
 
               <p className="text-[11px] leading-relaxed text-slate-600 mb-2.5">
-                {userPlan === "premium"
+                {currentPlan === "premium"
                   ? "Tingkatkan ke paket Exclusive untuk fitur lengkap seperti TV Reception Screen, 2D RPG, dan kustomisasi tanpa kompromi."
                   : !trialStatus.isTrial
                   ? "Paket Basic Anda aktif selamanya. Anda dapat upgrade ke Populer atau Exclusive kapan saja untuk tema & fitur lebih lengkap."
@@ -591,7 +598,7 @@ export function DashboardShell({
                 <span>
                   {trialStatus.isExpired
                     ? "Aktifkan Paket Sekarang"
-                    : userPlan === "premium"
+                    : currentPlan === "premium"
                     ? "Upgrade ke Paket Exclusive"
                     : !trialStatus.isTrial
                     ? "Upgrade Paket"
@@ -874,9 +881,9 @@ export function DashboardShell({
             <div className="px-4 pb-3">
               <div
                 className={`p-3 rounded-xl border text-xs space-y-2 ${
-                  userPlan === "luxury"
+                  currentPlan === "luxury"
                     ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
-                    : userPlan === "premium"
+                    : currentPlan === "premium"
                     ? "bg-emerald-50 text-emerald-950 border-emerald-200"
                     : !trialStatus.isTrial
                     ? "bg-teal-50 text-teal-950 border-teal-200"
@@ -887,12 +894,12 @@ export function DashboardShell({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                    {userPlan === "luxury" ? (
+                    {currentPlan === "luxury" ? (
                       <>
                         <Crown className="w-3 h-3 text-[#c9a84c]" />
                         <span className="text-[#c9a84c]">Paket Exclusive</span>
                       </>
-                    ) : userPlan === "premium" ? (
+                    ) : currentPlan === "premium" ? (
                       <>
                         <Sparkles className="w-3 h-3 text-emerald-700" />
                         <span className="text-emerald-800">Paket Populer</span>
@@ -911,9 +918,9 @@ export function DashboardShell({
                     )}
                   </span>
                   <span className="text-[10px] font-mono opacity-60">
-                    {userPlan === "luxury"
+                    {currentPlan === "luxury"
                       ? "Unlimited"
-                      : userPlan === "premium"
+                      : currentPlan === "premium"
                       ? "500 Tamu"
                       : !trialStatus.isTrial
                       ? "150 Tamu"
@@ -935,13 +942,13 @@ export function DashboardShell({
                   </p>
                 )}
 
-                {!trialStatus.isTrial && userPlan === "basic" && (
+                {!trialStatus.isTrial && currentPlan === "basic" && (
                   <p className="text-[10px] text-teal-800/90 leading-tight">
                     Paket Basic aktif selamanya.
                   </p>
                 )}
 
-                {userPlan !== "luxury" && (
+                {currentPlan !== "luxury" && (
                   <button
                     type="button"
                     onClick={() => {
@@ -957,7 +964,7 @@ export function DashboardShell({
                     <span>
                       {trialStatus.isExpired
                         ? "Aktifkan Paket Sekarang"
-                        : userPlan === "premium"
+                        : currentPlan === "premium"
                         ? "Upgrade Exclusive"
                         : !trialStatus.isTrial
                         ? "Upgrade Paket"
@@ -998,7 +1005,9 @@ export function DashboardShell({
       <UpgradeModal
         isOpen={upgradeModalOpen}
         onClose={() => setUpgradeModalOpen(false)}
-        currentPlan={userPlan}
+        currentPlan={currentPlan}
+        weddingId={activeWedding?.id}
+        weddingTitle={activeWedding?.coupleTitle}
       />
 
       {/* Midtrans Snap JS Script */}

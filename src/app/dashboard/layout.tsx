@@ -53,18 +53,36 @@ export default async function DashboardLayout({
             ],
           }
         : { userId: session.user.id },
-    include: { couple: true },
+    include: {
+      couple: true,
+      transactions: {
+        where: { status: "settlement" },
+        select: { id: true, status: true },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 
-  const weddingOptions = weddings.map((w) => ({
-    id: w.id,
-    slug: w.slug,
-    status: w.status,
-    coupleTitle: `${w.couple?.groomName || "Pengantin"} & ${
-      w.couple?.brideName || "Pengantin"
-    }`,
-  }));
+  const weddingOptions = weddings.map((w) => {
+    const isWeddingPaid =
+      Boolean(w.transactions && w.transactions.length > 0) ||
+      (w as any).plan === "basic" ||
+      (w as any).plan === "premium" ||
+      (w as any).plan === "luxury" ||
+      userRole === "admin";
+
+    return {
+      id: w.id,
+      slug: w.slug,
+      status: w.status,
+      plan: (w as any).plan || "trial",
+      createdAt: w.createdAt.toISOString(),
+      hasPaid: isWeddingPaid,
+      coupleTitle: `${w.couple?.groomName || "Pengantin"} & ${
+        w.couple?.brideName || "Pengantin"
+      }`,
+    };
+  });
 
   const handleLogout = async () => {
     "use server";

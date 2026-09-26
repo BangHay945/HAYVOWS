@@ -162,12 +162,14 @@ export default function TemplateSelector({
   templates,
   userPlan = "basic",
   userRole = "client",
+  weddingTitle,
 }: {
   weddingId?: string | null;
   currentTemplateId?: string;
   templates: Template[];
   userPlan?: string;
   userRole?: string;
+  weddingTitle?: string;
 }) {
   const [selectedId, setSelectedId] = useState(currentTemplateId || "");
   const [saving, setSaving] = useState(false);
@@ -432,6 +434,8 @@ export default function TemplateSelector({
         isOpen={upgradeModalOpen}
         onClose={() => setUpgradeModalOpen(false)}
         currentPlan={userPlan}
+        weddingId={weddingId || undefined}
+        weddingTitle={weddingTitle}
       />
     </div>
   );
