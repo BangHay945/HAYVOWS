@@ -33,8 +33,8 @@ export function RoyalGallery({ context }: TemplateComponentProps) {
           <RoyalDivider className="max-w-[180px] mx-auto my-3" />
         </motion.div>
 
-        {/* Masonry / Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full">
+        {/* Masonry / Grid - 2 columns optimized for 500px desktop split & mobile */}
+        <div className="grid grid-cols-2 gap-3.5 w-full max-w-md mx-auto">
           {galleries.map((item, idx) => (
             <motion.div
               key={item.id || idx}

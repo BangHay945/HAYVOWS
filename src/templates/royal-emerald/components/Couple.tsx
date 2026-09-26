@@ -77,15 +77,15 @@ export function RoyalCouple({ context }: TemplateComponentProps) {
           <RoyalDivider className="max-w-[200px] mx-auto mt-4" />
         </motion.div>
 
-        {/* Couple Cards Grid */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 items-start">
+        {/* Couple Cards - Stacked vertically for pristine 500px frame responsiveness */}
+        <div className="w-full max-w-md mx-auto flex flex-col gap-8 items-center">
           {/* Groom Card */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-[#063c2f]/40 backdrop-blur-md border border-[#d4af37]/35 shadow-[0_10px_35px_rgba(0,0,0,0.5)] relative group hover:border-[#d4af37]/70 transition-all duration-500"
+            className="w-full flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-[#063c2f]/40 backdrop-blur-md border border-[#d4af37]/35 shadow-[0_10px_35px_rgba(0,0,0,0.5)] relative group hover:border-[#d4af37]/70 transition-all duration-500"
           >
             {/* Top Corners */}
             <div className="absolute top-3 left-3 pointer-events-none opacity-50">
@@ -141,13 +141,20 @@ export function RoyalCouple({ context }: TemplateComponentProps) {
             )}
           </motion.div>
 
+          {/* Royal Ampersand Divider */}
+          <div className="flex items-center justify-center gap-4 my-1 w-full max-w-xs">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4af37]/50 to-[#d4af37]" />
+            <span className="font-serif text-[#ffd700] text-3xl font-light italic leading-none drop-shadow-[0_0_10px_rgba(212,175,55,0.7)]">&amp;</span>
+            <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4af37]/50 to-[#d4af37]" />
+          </div>
+
           {/* Bride Card */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-[#063c2f]/40 backdrop-blur-md border border-[#d4af37]/35 shadow-[0_10px_35px_rgba(0,0,0,0.5)] relative group hover:border-[#d4af37]/70 transition-all duration-500"
+            className="w-full flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-[#063c2f]/40 backdrop-blur-md border border-[#d4af37]/35 shadow-[0_10px_35px_rgba(0,0,0,0.5)] relative group hover:border-[#d4af37]/70 transition-all duration-500"
           >
             {/* Top Corners */}
             <div className="absolute top-3 left-3 pointer-events-none opacity-50">
