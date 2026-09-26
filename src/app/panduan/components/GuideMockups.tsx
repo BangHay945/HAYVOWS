@@ -34,21 +34,12 @@ import {
 ───────────────────────────────────────────────────────────── */
 export function ParallaxMockupWrapper({
   children,
-  badgeText,
 }: {
   children: React.ReactNode;
   badgeText?: string;
 }) {
   return (
     <div className="relative w-full">
-      {/* Decorative desktop depth badge */}
-      {badgeText && (
-        <div className="hidden lg:flex absolute -top-3.5 -right-2 z-20 items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 backdrop-blur-md border border-emerald-400/50 text-[10px] font-mono font-bold text-emerald-300 shadow-lg pointer-events-none">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>{badgeText}</span>
-        </div>
-      )}
-
       {/* Main Mockup Card: Tetap diam (rock-solid still) saat tahapan di sebelah kiri discroll */}
       <div className="w-full">
         {children}
@@ -233,7 +224,7 @@ export function QrScannerSimulation() {
   };
 
   return (
-    <div className="bg-slate-900 rounded-3xl p-4 sm:p-6 text-white border-2 border-emerald-500/50 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-emerald-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Top Phone Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">
@@ -415,85 +406,98 @@ export function TvDisplaySimulation() {
   ];
 
   return (
-    <div className="bg-slate-900 rounded-3xl p-4 sm:p-6 text-white border-2 border-indigo-500/50 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Top TV Frame Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+      <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div className="flex items-center gap-2">
           <Tv className="w-4 h-4 text-indigo-400" />
-          <span className="text-xs font-bold text-slate-200">Layar TV Gedung (Kabel HDMI)</span>
+          <span className="text-xs font-bold text-slate-200">Layar TV Resepsi (HDMI)</span>
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-[10px] text-amber-300 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">
+        <div className="flex items-center gap-1.5 font-mono text-[10px] text-red-300 bg-red-500/10 px-2.5 py-0.5 rounded-full border border-red-500/30">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          <span>LIVE DISPLAY</span>
+          <span className="font-bold">LIVE DISPLAY</span>
         </div>
       </div>
 
       {/* Smart TV Bezel & Screen */}
-      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-tr from-slate-950 via-[#161d42] to-slate-950 border-4 border-slate-700 shadow-inner aspect-[16/9] min-h-[190px] sm:min-h-[220px] flex flex-col justify-between p-3.5 sm:p-5 text-center">
+      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-tr from-slate-950 via-[#151c44] to-slate-950 border-2 border-slate-700 shadow-inner p-3.5 sm:p-4 text-center space-y-3">
         {/* Subtle Ambient Glow */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
 
         {/* Screen Top Bar */}
-        <div className="relative z-10 flex items-center justify-between text-[9px] sm:text-[10px] text-slate-400 font-mono">
-          <span>THE WEDDING OF DIMAS &amp; ANINDYA</span>
-          <span className="text-indigo-300">Minggu, 25 Okt 2026</span>
+        <div className="relative z-10 flex items-center justify-between text-[9px] text-slate-400 font-mono border-b border-white/5 pb-1">
+          <span className="tracking-wider">THE WEDDING OF DIMAS &amp; ANINDYA</span>
+          <span className="text-indigo-300">25 Okt 2026</span>
         </div>
 
         {/* Screen Dynamic Greeting Message */}
-        <div className="relative z-10 space-y-1.5 my-auto animate-in fade-in duration-300">
-          <div className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-indigo-200 text-[9px] sm:text-[11px] font-bold tracking-wider uppercase">
-            Selamat Datang di Resepsi Pernikahan
+        <div className="relative z-10 py-1.5 space-y-1 animate-in fade-in duration-200">
+          <div className="inline-block px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-indigo-200 text-[10px] font-bold tracking-wider uppercase">
+            Selamat Datang di Resepsi
           </div>
-          <h3 className="text-sm sm:text-xl font-extrabold text-[#fef08a] drop-shadow-md">
+          <h3 className="text-base sm:text-lg font-extrabold text-[#fef08a] drop-shadow-md leading-snug">
             {guestSamples[selectedGuest].name}
           </h3>
-          <p className="text-[10px] sm:text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
-            {guestSamples[selectedGuest].note} &bull; Merupakan kebahagiaan atas kehadiran Anda.
+          <p className="text-[11px] text-slate-300 max-w-xs mx-auto leading-relaxed">
+            {guestSamples[selectedGuest].note}
           </p>
         </div>
 
         {/* Screen Bottom Bar */}
         <div className="relative z-10 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 border-t border-white/10 pt-1.5">
           <span>Gedung Sasana Kriya Ballroom</span>
-          <span className="text-emerald-400 font-bold">Otomatis Update Tiap Tamu Scan</span>
+          <span className="text-emerald-400 font-bold flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Update Otomatis Real-time</span>
+          </span>
         </div>
       </div>
 
-      {/* TV Stand Visual Base */}
-      <div className="w-16 sm:w-20 h-1.5 sm:h-2 bg-slate-700 rounded-full mx-auto -mt-2 shadow-md" />
+      {/* Interactive Controller: Live Guest Arrivals Feed */}
+      <div className="space-y-1.5 pt-0.5">
+        <div className="flex items-center justify-between text-[11px] text-slate-300">
+          <span className="font-semibold">Simulasikan Tamu Check-in:</span>
+          <span className="text-[10px] text-indigo-300 font-mono">Klik untuk Ganti Nama &darr;</span>
+        </div>
 
-      {/* Interactive Controller */}
-      <div className="space-y-2 pt-1">
-        <span className="text-[11px] text-slate-400 block font-medium">
-          Uji Coba Ganti Sapaan Tamu di Layar TV:
-        </span>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+        <div className="space-y-1.5">
           {guestSamples.map((g, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => setSelectedGuest(idx)}
-              className={`p-2 rounded-xl text-[10px] font-bold text-left transition-all border cursor-pointer ${
+              className={`w-full px-3 py-2 rounded-xl text-left transition-all border flex items-center justify-between cursor-pointer ${
                 selectedGuest === idx
-                  ? "bg-indigo-600 text-white border-indigo-400 shadow-xs"
-                  : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
+                  ? "bg-indigo-600/90 text-white border-indigo-400 shadow-sm"
+                  : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white"
               }`}
             >
-              <span className="block truncate">{g.name}</span>
-              <span className="text-[9px] text-slate-400 block font-normal">{g.time}</span>
+              <div className="flex items-center gap-2 min-w-0">
+                <span
+                  className={`w-2 h-2 rounded-full shrink-0 ${
+                    selectedGuest === idx ? "bg-amber-300 animate-pulse" : "bg-slate-600"
+                  }`}
+                />
+                <div className="min-w-0">
+                  <span className="block text-xs font-bold truncate">{g.name}</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono shrink-0 ml-2 px-2 py-0.5 rounded bg-black/30 border border-white/10 text-indigo-200">
+                {g.time}
+              </span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Connection Info */}
-      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2 sm:p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
-        <span className="flex items-center gap-1">
+      <div className="text-[11px] text-slate-300 bg-white/5 px-3 py-2 rounded-xl border border-white/10 flex items-center justify-between">
+        <span className="flex items-center gap-1.5 font-medium">
           <Laptop className="w-3.5 h-3.5 text-indigo-400" />
           <span>Laptop Resepsionis</span>
         </span>
-        <span className="text-indigo-300 font-mono text-[9px] sm:text-[10px]">── HDMI ──&gt;</span>
-        <span className="flex items-center gap-1">
+        <span className="text-indigo-300 font-mono text-[10px] font-semibold">── Kabel HDMI ──&gt;</span>
+        <span className="flex items-center gap-1.5 font-medium">
           <Monitor className="w-3.5 h-3.5 text-indigo-400" />
           <span>TV / Videotron</span>
         </span>
@@ -511,9 +515,9 @@ export function WhatsAppChatSimulation() {
   const nameOptions = ["Budi Santoso", "dr. Hendra Wijaya", "Siti Rahmawati", "Keluarga Om Joko"];
 
   return (
-    <div className="bg-[#0b141a] rounded-3xl p-4 sm:p-6 text-white border-2 border-emerald-600/50 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-[#0b141a] rounded-3xl p-4 sm:p-5 text-white border border-emerald-600/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* WhatsApp App Header */}
-      <div className="bg-[#1f2c34] -mx-4 -mt-4 sm:-mx-6 sm:-mt-6 p-3 sm:p-4 rounded-t-3xl border-b border-white/10 flex items-center justify-between">
+      <div className="bg-[#1f2c34] -mx-4 -mt-4 sm:-mx-5 sm:-mt-5 p-3 sm:p-3.5 rounded-t-3xl border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#128c7e] text-white flex items-center justify-center font-bold text-xs">
             {guestName.substring(0, 2).toUpperCase()}
@@ -624,7 +628,7 @@ export function PixelRpgSimulation() {
   };
 
   return (
-    <div className="bg-[#0c102a] rounded-3xl p-4 sm:p-6 text-white border-2 border-amber-400/70 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-[#0c102a] rounded-3xl p-4 sm:p-5 text-white border border-amber-400/50 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Console Header */}
       <div className="flex items-center justify-between border-b border-amber-400/20 pb-3">
         <div className="flex items-center gap-2">
@@ -729,7 +733,7 @@ export function BankCardSimulation() {
   };
 
   return (
-    <div className="bg-slate-900 rounded-3xl p-4 sm:p-6 text-white border-2 border-rose-500/50 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-rose-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">
@@ -865,7 +869,7 @@ export function QuickStartRoadmapSimulation() {
   ];
 
   return (
-    <div className="bg-slate-900 rounded-3xl p-4 sm:p-6 text-white border-2 border-blue-500/50 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden relative">
+    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-blue-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">

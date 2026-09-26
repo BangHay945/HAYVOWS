@@ -725,18 +725,18 @@ export default function PanduanClient() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
                     {/* On Mobile: Mockup appears FIRST so mobile user immediately sees the visual preview! */}
                     {/* On Desktop: Mockup is on right column, sticky pinned at top-36, staying STILL while left steps scroll */}
-                    <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 self-start space-y-3 z-10">
-                      <div className="flex items-center justify-between text-xs text-slate-500 pb-1">
-                        <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                    <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 self-start space-y-2.5 z-10">
+                      <div className="flex items-center justify-between text-xs pb-0.5">
+                        <span className="font-bold text-slate-800 flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                           <span>Simulasi Interaktif Fitur:</span>
                         </span>
-                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold shadow-2xs">
                           Live UI Preview
                         </span>
                       </div>
 
-                      <ParallaxMockupWrapper badgeText={guide.badge}>
+                      <ParallaxMockupWrapper>
                         {renderGuideMockup(guide.id)}
                       </ParallaxMockupWrapper>
                     </div>
