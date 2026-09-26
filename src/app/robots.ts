@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: [
           "/",
+          "/panduan",
           "/invitation/",
           "/display/",
           "/login",
@@ -35,6 +36,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
         allow: [
           "/",
+          "/panduan",
           "/invitation/",
           "/display/",
         ],

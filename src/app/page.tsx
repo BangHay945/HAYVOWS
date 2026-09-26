@@ -298,6 +298,9 @@ export default function LandingPage() {
             <a href="#faq" className="hover:text-[#2d4a3e] transition-colors">
               FAQ
             </a>
+            <Link href="/panduan" className="text-emerald-800 font-bold hover:text-[#2d4a3e] transition-colors">
+              Panduan Fitur
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
@@ -367,10 +370,17 @@ export default function LandingPage() {
             <a
               href="#faq"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-700 py-2"
+              className="block text-sm font-semibold text-slate-700 py-2 border-b border-slate-100"
             >
               FAQ
             </a>
+            <Link
+              href="/panduan"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-sm font-bold text-emerald-800 py-2"
+            >
+              Pusat Panduan &amp; Fitur
+            </Link>
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 href="/login"
@@ -1711,6 +1721,14 @@ export default function LandingPage() {
           <div>
             <h4 className="text-white font-bold text-sm mb-3">Bantuan &amp; Kontak</h4>
             <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/panduan"
+                  className="hover:text-emerald-400 font-semibold text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>Pusat Panduan &amp; Fitur</span>
+                </Link>
+              </li>
               <li>
                 <a
                   href="https://wa.me/6281234567890"
