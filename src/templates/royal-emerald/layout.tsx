@@ -166,7 +166,6 @@ export function RoyalLayout({
   const visibleSections = useMemo(() => [
     { id: "section-hero", label: "Pembuka" },
     { id: "section-couple", label: "Mempelai" },
-    { id: "section-countdown", label: "Hitung Mundur" },
     ...((context.wedding.stories ?? []).length > 0
       ? [{ id: "section-story", label: "Kisah" }]
       : []),
@@ -302,7 +301,6 @@ export function RoyalLayout({
               {/* Invitation Sections */}
               <div id="section-hero"><RoyalHero {...props} /></div>
               <div id="section-couple"><RoyalCouple {...props} /></div>
-              <div id="section-countdown"><RoyalCountdown {...props} /></div>
 
               {(context.wedding.stories ?? []).length > 0 && (
                 <div id="section-story"><RoyalStory {...props} /></div>

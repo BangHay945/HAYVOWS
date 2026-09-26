@@ -1,12 +1,60 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { TemplateComponentProps } from "@/types/template";
 import { Calendar, Clock, MapPin, Navigation, CalendarPlus } from "lucide-react";
 import { RoyalDivider, RoyalCorner, RoyalCrown } from "./Ornaments";
 
+function useCountdown(targetDate: string) {
+  const [diff, setDiff] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    passed: false,
+  });
+
+  useEffect(() => {
+    if (!targetDate) return;
+    const target = new Date(targetDate).getTime();
+
+    const update = () => {
+      const now = Date.now();
+      const delta = target - now;
+      if (delta <= 0) {
+        setDiff({ days: 0, hours: 0, minutes: 0, seconds: 0, passed: true });
+        return;
+      }
+      setDiff({
+        days: Math.floor(delta / 86400000),
+        hours: Math.floor((delta % 86400000) / 3600000),
+        minutes: Math.floor((delta % 3600000) / 60000),
+        seconds: Math.floor((delta % 60000) / 1000),
+        passed: false,
+      });
+    };
+
+    update();
+    const t = setInterval(update, 1000);
+    return () => clearInterval(t);
+  }, [targetDate]);
+
+  return diff;
+}
+
 export function RoyalEvent({ context }: TemplateComponentProps) {
   const events = context.wedding.events ?? [];
+  const mainEvent = events[0];
+  const { days, hours, minutes, seconds, passed } = useCountdown(mainEvent?.date || "");
+
+  const countdownUnits = [
+    { label: "Hari", value: days },
+    { label: "Jam", value: hours },
+    { label: "Menit", value: minutes },
+    { label: "Detik", value: seconds },
+  ];
+
   if (events.length === 0) return null;
 
   return (
@@ -20,7 +68,7 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <RoyalCrown className="w-8 h-8 text-[#d4af37] mx-auto mb-2" />
           <p className="text-[10px] tracking-[0.4em] uppercase text-[#d4af37] font-semibold">
@@ -31,6 +79,48 @@ export function RoyalEvent({ context }: TemplateComponentProps) {
           </h2>
           <RoyalDivider className="max-w-[200px] mx-auto my-3" />
         </motion.div>
+
+        {/* Countdown Timer Block */}
+        {mainEvent && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="w-full max-w-md mx-auto mb-10 p-5 sm:p-6 rounded-3xl bg-[#063c2f]/45 backdrop-blur-md border border-[#d4af37]/35 shadow-[0_8px_30px_rgba(0,0,0,0.4)] text-center relative group"
+          >
+            <p className="text-[9px] sm:text-[10px] tracking-[0.35em] uppercase text-[#d4af37] font-semibold mb-4">
+              {passed ? "Hari Bahagia Telah Tiba" : "Menuju Hari Sakral"}
+            </p>
+
+            {!passed && (
+              <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-sm mx-auto mb-4">
+                {countdownUnits.map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col items-center justify-center py-3 px-1 rounded-2xl bg-[#02241b]/80 border border-[#d4af37]/30 shadow-inner group-hover:border-[#d4af37]/60 transition-colors"
+                  >
+                    <span className="font-serif text-2xl sm:text-3xl font-normal text-[#ffd700] tracking-wider leading-none tabular-nums">
+                      {String(value).padStart(2, "0")}
+                    </span>
+                    <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-[#d4af37] font-medium mt-1.5">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <p className="font-serif text-xs sm:text-sm text-[#f4eedb] italic font-light">
+              {new Date(mainEvent.date).toLocaleDateString("id-ID", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+          </motion.div>
+        )}
 
         {/* Events Cards - Stacked vertically for pristine 500px frame responsiveness */}
         <div className="w-full max-w-md mx-auto flex flex-col gap-8">
