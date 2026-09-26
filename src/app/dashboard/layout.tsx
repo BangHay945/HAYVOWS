@@ -33,13 +33,13 @@ export default async function DashboardLayout({
   });
 
   const userRole = currentUser?.role || "client";
-  const userPlan = currentUser?.plan || "basic";
+  const userPlan = userRole === "admin" ? "luxury" : (currentUser?.plan || "basic");
   const userCreatedAt = currentUser?.createdAt
     ? currentUser.createdAt.toISOString()
     : undefined;
-  const hasPaid = Boolean(
-    currentUser?.transactions && currentUser.transactions.length > 0
-  );
+  const hasPaid =
+    userRole === "admin" ||
+    Boolean(currentUser?.transactions && currentUser.transactions.length > 0);
 
   // Fetch all weddings for the logged in user to supply active workspace switcher in sidebar.
   // Super Admin can manage all demo showcase weddings plus their own.
@@ -100,7 +100,7 @@ export default async function DashboardLayout({
       id: w.id,
       slug: w.slug,
       status: w.status,
-      plan: w.plan || "trial",
+      plan: userRole === "admin" ? "luxury" : (w.plan || "trial"),
       createdAt: w.createdAt ? (typeof w.createdAt === "string" ? w.createdAt : w.createdAt.toISOString()) : new Date().toISOString(),
       hasPaid: isWeddingPaid,
       coupleTitle: `${w.couple?.groomName || "Pengantin"} & ${

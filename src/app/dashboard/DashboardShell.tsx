@@ -88,9 +88,10 @@ export function DashboardShell({
     weddings.find((w) => w.id === weddingIdParam) || weddings[0] || null;
 
   // Wedding-specific plan & status (Per-Undangan)
-  const currentPlan = activeWedding?.plan || userPlan || "trial";
+  // Super Admin selalu memiliki plan "luxury" (Exclusive) dengan full all-access
+  const currentPlan = userRole === "admin" ? "luxury" : (activeWedding?.plan || userPlan || "trial");
   const currentCreatedAt = activeWedding?.createdAt || userCreatedAt;
-  const currentHasPaid = activeWedding?.hasPaid ?? hasPaid;
+  const currentHasPaid = userRole === "admin" || Boolean(activeWedding?.hasPaid ?? hasPaid);
 
   const trialStatus = checkTrialStatus(
     {
@@ -303,100 +304,117 @@ export function DashboardShell({
           )}
         </nav>
 
-        {/* Plan Upgrade Card */}
+        {/* Plan Upgrade Card / Super Admin Status */}
         <div className="px-3 pt-2 pb-1 bg-[#faf8f5]/80 border-t border-slate-100">
-          <div
-            className={`p-3 rounded-xl border text-xs space-y-2 ${
-              currentPlan === "luxury"
-                ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
-                : currentPlan === "premium"
-                ? "bg-emerald-50 text-emerald-950 border-emerald-200"
-                : !trialStatus.isTrial
-                ? "bg-teal-50 text-teal-950 border-teal-200"
-                : trialStatus.isExpired
-                ? "bg-rose-50 text-rose-950 border-rose-200"
-                : "bg-amber-50/80 text-amber-950 border-amber-200/80"
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                {currentPlan === "luxury" ? (
-                  <>
-                    <Crown className="w-3 h-3 text-[#c9a84c]" />
-                    <span className="text-[#c9a84c]">Paket Exclusive</span>
-                  </>
-                ) : currentPlan === "premium" ? (
-                  <>
-                    <Sparkles className="w-3 h-3 text-emerald-700" />
-                    <span className="text-emerald-800">Paket Populer</span>
-                  </>
-                ) : !trialStatus.isTrial ? (
-                  <>
-                    <Sparkles className="w-3 h-3 text-teal-700" />
-                    <span className="text-teal-800">Paket Basic</span>
-                  </>
-                ) : trialStatus.isExpired ? (
-                  <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
-                ) : (
-                  <span className="text-amber-800 font-bold">
-                    Uji Coba ({trialStatus.daysRemaining} Hari)
-                  </span>
-                )}
-              </span>
-              <span className="text-[10px] font-mono opacity-60">
-                {currentPlan === "luxury"
-                  ? "Unlimited"
-                  : currentPlan === "premium"
-                  ? "500 Tamu"
-                  : !trialStatus.isTrial
-                  ? "150 Tamu"
-                  : trialStatus.isExpired
-                  ? "Expired"
-                  : `Sisa ${trialStatus.hoursRemaining}j`}
-              </span>
-            </div>
-
-            {trialStatus.isTrial && (
-              <p
-                className={`text-[10px] leading-tight ${
-                  trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
-                }`}
-              >
-                {trialStatus.isExpired
-                  ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
-                  : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
-              </p>
-            )}
-
-            {!trialStatus.isTrial && currentPlan === "basic" && (
-              <p className="text-[10px] text-teal-800/90 leading-tight">
-                Paket Basic aktif selamanya.
-              </p>
-            )}
-
-            {currentPlan !== "luxury" && (
-              <button
-                type="button"
-                onClick={() => setUpgradeModalOpen(true)}
-                className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
-                  trialStatus.isExpired
-                    ? "bg-rose-600 hover:bg-rose-700"
-                    : "bg-[#2d4a3e] hover:bg-[#233a30]"
-                }`}
-              >
-                <span>
-                  {trialStatus.isExpired
-                    ? "Aktifkan Paket Sekarang"
-                    : currentPlan === "premium"
-                    ? "Upgrade Exclusive"
-                    : !trialStatus.isTrial
-                    ? "Upgrade Paket"
-                    : "Pilih Paket Undangan"}
+          {userRole === "admin" ? (
+            <div className="p-3 rounded-xl border text-xs bg-slate-900 text-white border-amber-500/40 space-y-1.5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 text-amber-400">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>SUPER ADMIN</span>
                 </span>
-                <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
-              </button>
-            )}
-          </div>
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                  ALL ACCESS
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-300 leading-tight">
+                Hak akses penuh tanpa batas untuk seluruh tema, fitur, dan operasional platform.
+              </p>
+            </div>
+          ) : (
+            <div
+              className={`p-3 rounded-xl border text-xs space-y-2 ${
+                currentPlan === "luxury"
+                  ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
+                  : currentPlan === "premium"
+                  ? "bg-emerald-50 text-emerald-950 border-emerald-200"
+                  : !trialStatus.isTrial
+                  ? "bg-teal-50 text-teal-950 border-teal-200"
+                  : trialStatus.isExpired
+                  ? "bg-rose-50 text-rose-950 border-rose-200"
+                  : "bg-amber-50/80 text-amber-950 border-amber-200/80"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                  {currentPlan === "luxury" ? (
+                    <>
+                      <Crown className="w-3 h-3 text-[#c9a84c]" />
+                      <span className="text-[#c9a84c]">Paket Exclusive</span>
+                    </>
+                  ) : currentPlan === "premium" ? (
+                    <>
+                      <Sparkles className="w-3 h-3 text-emerald-700" />
+                      <span className="text-emerald-800">Paket Populer</span>
+                    </>
+                  ) : !trialStatus.isTrial ? (
+                    <>
+                      <Sparkles className="w-3 h-3 text-teal-700" />
+                      <span className="text-teal-800">Paket Basic</span>
+                    </>
+                  ) : trialStatus.isExpired ? (
+                    <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
+                  ) : (
+                    <span className="text-amber-800 font-bold">
+                      Uji Coba ({trialStatus.daysRemaining} Hari)
+                    </span>
+                  )}
+                </span>
+                <span className="text-[10px] font-mono opacity-60">
+                  {currentPlan === "luxury"
+                    ? "Unlimited"
+                    : currentPlan === "premium"
+                    ? "500 Tamu"
+                    : !trialStatus.isTrial
+                    ? "150 Tamu"
+                    : trialStatus.isExpired
+                    ? "Expired"
+                    : `Sisa ${trialStatus.hoursRemaining}j`}
+                </span>
+              </div>
+
+              {trialStatus.isTrial && (
+                <p
+                  className={`text-[10px] leading-tight ${
+                    trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
+                  }`}
+                >
+                  {trialStatus.isExpired
+                    ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
+                    : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
+                </p>
+              )}
+
+              {!trialStatus.isTrial && currentPlan === "basic" && (
+                <p className="text-[10px] text-teal-800/90 leading-tight">
+                  Paket Basic aktif selamanya.
+                </p>
+              )}
+
+              {currentPlan !== "luxury" && (
+                <button
+                  type="button"
+                  onClick={() => setUpgradeModalOpen(true)}
+                  className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
+                    trialStatus.isExpired
+                      ? "bg-rose-600 hover:bg-rose-700"
+                      : "bg-[#2d4a3e] hover:bg-[#233a30]"
+                  }`}
+                >
+                  <span>
+                    {trialStatus.isExpired
+                      ? "Aktifkan Paket Sekarang"
+                      : currentPlan === "premium"
+                      ? "Upgrade Exclusive"
+                      : !trialStatus.isTrial
+                      ? "Upgrade Paket"
+                      : "Pilih Paket Undangan"}
+                  </span>
+                  <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* User Profile & Integrated Logout Button */}
@@ -532,8 +550,8 @@ export function DashboardShell({
 
         {/* Page Content Body (with pb-20 on mobile for 4-tab bottom bar clearance) */}
         <main className="flex-1 p-3.5 sm:p-6 lg:p-8 pb-20 md:pb-8 w-full min-w-0">
-          {/* Mobile Plan Banner (Khusus Tampilan Mobile saat bukan Luxury) */}
-          {currentPlan !== "luxury" && (
+          {/* Mobile Plan Banner (Khusus Tampilan Mobile saat bukan Super Admin & bukan Luxury) */}
+          {userRole !== "admin" && currentPlan !== "luxury" && (
             <div
               className={`block md:hidden mb-4 p-3.5 sm:p-4 rounded-2xl border shadow-2xs transition-all ${
                 currentPlan === "premium"
@@ -888,103 +906,120 @@ export function DashboardShell({
               </div>
             )}
 
-            {/* Plan Upgrade Card inside Bottom Sheet */}
+            {/* Plan Upgrade Card / Super Admin Status inside Bottom Sheet */}
             <div className="px-4 pb-3">
-              <div
-                className={`p-3 rounded-xl border text-xs space-y-2 ${
-                  currentPlan === "luxury"
-                    ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
-                    : currentPlan === "premium"
-                    ? "bg-emerald-50 text-emerald-950 border-emerald-200"
-                    : !trialStatus.isTrial
-                    ? "bg-teal-50 text-teal-950 border-teal-200"
-                    : trialStatus.isExpired
-                    ? "bg-rose-50 text-rose-950 border-rose-200"
-                    : "bg-amber-50/80 text-amber-950 border-amber-200/80"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                    {currentPlan === "luxury" ? (
-                      <>
-                        <Crown className="w-3 h-3 text-[#c9a84c]" />
-                        <span className="text-[#c9a84c]">Paket Exclusive</span>
-                      </>
-                    ) : currentPlan === "premium" ? (
-                      <>
-                        <Sparkles className="w-3 h-3 text-emerald-700" />
-                        <span className="text-emerald-800">Paket Populer</span>
-                      </>
-                    ) : !trialStatus.isTrial ? (
-                      <>
-                        <Sparkles className="w-3 h-3 text-teal-700" />
-                        <span className="text-teal-800">Paket Basic</span>
-                      </>
-                    ) : trialStatus.isExpired ? (
-                      <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
-                    ) : (
-                      <span className="text-amber-800 font-bold">
-                        Uji Coba ({trialStatus.daysRemaining} Hari)
-                      </span>
-                    )}
-                  </span>
-                  <span className="text-[10px] font-mono opacity-60">
-                    {currentPlan === "luxury"
-                      ? "Unlimited"
-                      : currentPlan === "premium"
-                      ? "500 Tamu"
-                      : !trialStatus.isTrial
-                      ? "150 Tamu"
-                      : trialStatus.isExpired
-                      ? "Expired"
-                      : `Sisa ${trialStatus.hoursRemaining}j`}
-                  </span>
-                </div>
-
-                {trialStatus.isTrial && (
-                  <p
-                    className={`text-[10px] leading-tight ${
-                      trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
-                    }`}
-                  >
-                    {trialStatus.isExpired
-                      ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
-                      : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
-                  </p>
-                )}
-
-                {!trialStatus.isTrial && currentPlan === "basic" && (
-                  <p className="text-[10px] text-teal-800/90 leading-tight">
-                    Paket Basic aktif selamanya.
-                  </p>
-                )}
-
-                {currentPlan !== "luxury" && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMoreMenuOpen(false);
-                      setUpgradeModalOpen(true);
-                    }}
-                    className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
-                      trialStatus.isExpired
-                        ? "bg-rose-600 hover:bg-rose-700"
-                        : "bg-[#2d4a3e] hover:bg-[#233a30]"
-                    }`}
-                  >
-                    <span>
-                      {trialStatus.isExpired
-                        ? "Aktifkan Paket Sekarang"
-                        : currentPlan === "premium"
-                        ? "Upgrade Exclusive"
-                        : !trialStatus.isTrial
-                        ? "Upgrade Paket"
-                        : "Pilih Paket Undangan"}
+              {userRole === "admin" ? (
+                <div className="p-3 rounded-xl border text-xs bg-slate-900 text-white border-amber-500/40 space-y-1.5 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 text-amber-400">
+                      <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                      <span>SUPER ADMIN</span>
                     </span>
-                    <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
-                  </button>
-                )}
-              </div>
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                      ALL ACCESS
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-slate-300 leading-tight">
+                    Hak akses penuh tanpa batas untuk seluruh tema dan operasional platform.
+                  </p>
+                </div>
+              ) : (
+                <div
+                  className={`p-3 rounded-xl border text-xs space-y-2 ${
+                    currentPlan === "luxury"
+                      ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
+                      : currentPlan === "premium"
+                      ? "bg-emerald-50 text-emerald-950 border-emerald-200"
+                      : !trialStatus.isTrial
+                      ? "bg-teal-50 text-teal-950 border-teal-200"
+                      : trialStatus.isExpired
+                      ? "bg-rose-50 text-rose-950 border-rose-200"
+                      : "bg-amber-50/80 text-amber-950 border-amber-200/80"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      {currentPlan === "luxury" ? (
+                        <>
+                          <Crown className="w-3 h-3 text-[#c9a84c]" />
+                          <span className="text-[#c9a84c]">Paket Exclusive</span>
+                        </>
+                      ) : currentPlan === "premium" ? (
+                        <>
+                          <Sparkles className="w-3 h-3 text-emerald-700" />
+                          <span className="text-emerald-800">Paket Populer</span>
+                        </>
+                      ) : !trialStatus.isTrial ? (
+                        <>
+                          <Sparkles className="w-3 h-3 text-teal-700" />
+                          <span className="text-teal-800">Paket Basic</span>
+                        </>
+                      ) : trialStatus.isExpired ? (
+                        <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
+                      ) : (
+                        <span className="text-amber-800 font-bold">
+                          Uji Coba ({trialStatus.daysRemaining} Hari)
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-[10px] font-mono opacity-60">
+                      {currentPlan === "luxury"
+                        ? "Unlimited"
+                        : currentPlan === "premium"
+                        ? "500 Tamu"
+                        : !trialStatus.isTrial
+                        ? "150 Tamu"
+                        : trialStatus.isExpired
+                        ? "Expired"
+                        : `Sisa ${trialStatus.hoursRemaining}j`}
+                    </span>
+                  </div>
+
+                  {trialStatus.isTrial && (
+                    <p
+                      className={`text-[10px] leading-tight ${
+                        trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
+                      }`}
+                    >
+                      {trialStatus.isExpired
+                        ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
+                        : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
+                    </p>
+                  )}
+
+                  {!trialStatus.isTrial && currentPlan === "basic" && (
+                    <p className="text-[10px] text-teal-800/90 leading-tight">
+                      Paket Basic aktif selamanya.
+                    </p>
+                  )}
+
+                  {currentPlan !== "luxury" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMoreMenuOpen(false);
+                        setUpgradeModalOpen(true);
+                      }}
+                      className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
+                        trialStatus.isExpired
+                          ? "bg-rose-600 hover:bg-rose-700"
+                          : "bg-[#2d4a3e] hover:bg-[#233a30]"
+                      }`}
+                    >
+                      <span>
+                        {trialStatus.isExpired
+                          ? "Aktifkan Paket Sekarang"
+                          : currentPlan === "premium"
+                          ? "Upgrade Exclusive"
+                          : !trialStatus.isTrial
+                          ? "Upgrade Paket"
+                          : "Pilih Paket Undangan"}
+                      </span>
+                      <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* User Profile & Logout in Bottom Sheet */}
