@@ -118,7 +118,7 @@ export function BatikJawaGallery({ context }: TemplateComponentProps) {
               <img
                 src={galleries[selected].imageUrl}
                 alt={galleries[selected].caption || `Foto ${selected + 1}`}
-                className="w-full max-h-[75vh] object-contain border"
+                className="w-full max-h-[75vh] object-contain border rounded-2xl shadow-2xl"
                 style={{ borderColor: "rgba(184,134,11,0.35)" }}
               />
               {galleries[selected].caption && (

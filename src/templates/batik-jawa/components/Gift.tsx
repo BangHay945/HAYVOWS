@@ -34,7 +34,7 @@ export function BatikJawaGift({ context, isModalOpen, setIsModalOpen }: GiftProp
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl p-5 sm:p-7 text-left"
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl p-5 sm:p-7 text-left"
             style={{
               backgroundColor: '#2D1B0E',
               border: '1.5px solid rgba(184, 134, 11, 0.5)',

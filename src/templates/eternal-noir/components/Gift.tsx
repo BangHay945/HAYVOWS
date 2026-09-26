@@ -35,7 +35,7 @@ export function NoirGift({
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.25 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-[#111111] border border-[#222222] p-6 sm:p-8 max-h-[90dvh] overflow-y-auto shadow-2xl"
+            className="relative w-full max-w-md bg-[#111111] border border-[#222222] p-6 sm:p-8 max-h-[90dvh] overflow-y-auto shadow-2xl rounded-3xl"
           >
             {/* Close */}
             <button

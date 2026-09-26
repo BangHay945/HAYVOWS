@@ -98,7 +98,7 @@ export function FloralGift({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 20 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative w-full max-w-md sm:max-w-lg max-h-[90dvh] overflow-y-auto rounded-2xl bg-[#fbf8f3] border-2 border-[#c5a880] p-4 sm:p-6 shadow-2xl text-left"
+              className="relative w-full max-w-md sm:max-w-lg max-h-[90dvh] overflow-y-auto rounded-3xl bg-[#fbf8f3] border-2 border-[#c5a880] p-4 sm:p-6 shadow-2xl text-left"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}

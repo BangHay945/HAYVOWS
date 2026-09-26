@@ -182,7 +182,7 @@ export function BatikJawaCountdown({ context }: TemplateComponentProps) {
             </span>
             {mainEvent.startTime && (
               <>
-                <span className="text-[#B8860B]">&bull;</span>
+                <span className="text-[#B8860B]">•</span>
                 <Clock size={14} className="text-[#B8860B]" />
                 <span>Pukul {mainEvent.startTime} WIB</span>
               </>

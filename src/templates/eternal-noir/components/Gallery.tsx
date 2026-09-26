@@ -94,7 +94,7 @@ export function NoirGallery({ context }: TemplateComponentProps) {
               exit={{ scale: 0.93 }}
               src={lightbox}
               alt="Foto Mempelai"
-              className="max-w-full max-h-[85dvh] object-contain border border-[#222222]"
+              className="max-w-full max-h-[85dvh] object-contain border border-[#222222] rounded-2xl shadow-2xl"
               style={{ filter: "grayscale(0)" }}
               onClick={(e) => e.stopPropagation()}
             />

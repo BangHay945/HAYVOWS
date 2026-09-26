@@ -166,7 +166,7 @@ export function GiftConfirmationForm({
   if (isSubmitted) {
     return (
       <div
-        className={`p-5 text-center rounded-xl animate-in zoom-in-95 duration-200 ${
+        className={`p-5 text-center rounded-2xl animate-in zoom-in-95 duration-200 ${
           isJawa
             ? "border border-[#B8860B]/40 bg-[#2D1B0E] text-[#EDE0C4] shadow-2xl font-jawa-body"
             : isNoir
@@ -246,7 +246,7 @@ export function GiftConfirmationForm({
               : "bg-white border text-emerald-700"
           }`}
         >
-          Nominal: Rp {Number(amount).toLocaleString("id-ID")} &bull; Bank:{" "}
+          Nominal: Rp {Number(amount).toLocaleString("id-ID")} • Bank:{" "}
           {selectedAccount?.bankName || bankName}
         </div>
         <div>
@@ -256,7 +256,7 @@ export function GiftConfirmationForm({
               setIsSubmitted(false);
               onClose?.();
             }}
-            className={`px-5 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+            className={`px-5 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
               isJawa
                 ? "bg-gradient-to-r from-[#E6C687] via-[#D4A853] to-[#B8860B] hover:brightness-105 text-[#1A0F07] font-jawa-body tracking-wider uppercase font-bold shadow-md"
                 : isNoir
@@ -280,7 +280,7 @@ export function GiftConfirmationForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`space-y-3.5 p-4 sm:p-5 rounded-xl text-left ${
+      className={`space-y-3.5 p-4 sm:p-5 rounded-2xl text-left ${
         isJawa
           ? "border border-[rgba(184,134,11,0.35)] bg-[#3D2B1F] text-[#EDE0C4] shadow-2xl font-jawa-body"
           : isNoir
@@ -496,7 +496,7 @@ export function GiftConfirmationForm({
               <div className="mt-2.5 animate-in fade-in-50 duration-200">
                 {isJawa ? (
                   /* Jawa Kraton Theme Card */
-                  <div className="bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] p-3.5 rounded-xl text-left shadow-xs">
+                  <div className="bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] p-3.5 rounded-2xl text-left shadow-xs">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-jawa-body text-[#D4A853] font-bold tracking-wider uppercase">
                         {selectedAccount.bankName}
@@ -508,14 +508,14 @@ export function GiftConfirmationForm({
                       )}
                     </div>
                     {selectedAccount.accountNo && (
-                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-[#3D2B1F] rounded-lg border border-[rgba(184,134,11,0.25)]">
+                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-[#3D2B1F] rounded-xl border border-[rgba(184,134,11,0.25)]">
                         <span className="font-mono text-sm sm:text-base font-bold text-[#FDF6E3] tracking-wider select-all">
                           {selectedAccount.accountNo}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(selectedAccount.accountNo)}
-                          className="px-3 py-1.5 bg-gradient-to-r from-[#E6C687] via-[#D4A853] to-[#B8860B] hover:brightness-105 text-[#1A0F07] font-jawa-body text-[10px] tracking-wider uppercase font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-98"
+                          className="px-3 py-1.5 bg-gradient-to-r from-[#E6C687] via-[#D4A853] to-[#B8860B] hover:brightness-105 text-[#1A0F07] font-jawa-body text-[10px] tracking-wider uppercase font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-98"
                         >
                           {copied ? (
                             <>
@@ -532,7 +532,7 @@ export function GiftConfirmationForm({
                       </div>
                     )}
                     {selectedAccount.qrisUrl && (
-                      <div className="my-2.5 p-2.5 bg-white rounded-lg border border-[rgba(184,134,11,0.3)] flex justify-center">
+                      <div className="my-2.5 p-2.5 bg-white rounded-xl border border-[rgba(184,134,11,0.3)] flex justify-center">
                         <img
                           src={selectedAccount.qrisUrl}
                           alt="QRIS"
@@ -543,7 +543,7 @@ export function GiftConfirmationForm({
                   </div>
                 ) : isNoir ? (
                   /* Noir Luxury Theme Card */
-                  <div className="bg-[#141414] border border-[#2a2a2a] p-3.5 rounded-lg text-left shadow-xs">
+                  <div className="bg-[#141414] border border-[#2a2a2a] p-3.5 rounded-2xl text-left shadow-xs">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-noir-sans text-[#c9a84c] font-semibold tracking-wider uppercase">
                         {selectedAccount.bankName}
@@ -555,14 +555,14 @@ export function GiftConfirmationForm({
                       )}
                     </div>
                     {selectedAccount.accountNo && (
-                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-[#0a0a0a] rounded border border-[#222222]">
+                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-[#0a0a0a] rounded-xl border border-[#222222]">
                         <span className="font-mono text-sm sm:text-base font-bold text-[#fafafa] tracking-wider select-all">
                           {selectedAccount.accountNo}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(selectedAccount.accountNo)}
-                          className="px-3 py-1.5 bg-[#1f1f1f] hover:bg-[#c9a84c] text-[#c9a84c] hover:text-[#0a0a0a] border border-[#c9a84c]/40 font-noir-sans text-[10px] tracking-wider uppercase font-semibold rounded transition-all cursor-pointer flex items-center gap-1.5"
+                          className="px-3 py-1.5 bg-[#1f1f1f] hover:bg-[#c9a84c] text-[#c9a84c] hover:text-[#0a0a0a] border border-[#c9a84c]/40 font-noir-sans text-[10px] tracking-wider uppercase font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
                         >
                           {copied ? (
                             <>
@@ -579,7 +579,7 @@ export function GiftConfirmationForm({
                       </div>
                     )}
                     {selectedAccount.qrisUrl && (
-                      <div className="my-2.5 p-2.5 bg-white rounded border border-[#222222] flex justify-center">
+                      <div className="my-2.5 p-2.5 bg-white rounded-xl border border-[#222222] flex justify-center">
                         <img
                           src={selectedAccount.qrisUrl}
                           alt="QRIS"
@@ -677,7 +677,7 @@ export function GiftConfirmationForm({
                   </div>
                 ) : isMonogram ? (
                   /* Modern Monogram Theme Card */
-                  <div className="p-3.5 bg-[#faf8f5] border border-[#e2d9cc] rounded-xl text-left shadow-2xs">
+                  <div className="p-3.5 bg-[#faf8f5] border border-[#e2d9cc] rounded-2xl text-left shadow-2xs">
                     <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                       <span className="text-[#2d4a3e] font-serif text-sm font-semibold">{selectedAccount.bankName}</span>
                       {selectedAccount.accountName && (
@@ -687,21 +687,21 @@ export function GiftConfirmationForm({
                       )}
                     </div>
                     {selectedAccount.accountNo && (
-                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-white rounded-lg border border-[#e2d9cc]">
+                      <div className="mt-2 flex items-center justify-between gap-2 p-2.5 bg-white rounded-xl border border-[#e2d9cc]">
                         <span className="font-mono text-xs sm:text-sm font-bold text-slate-900 select-all">
                           {selectedAccount.accountNo}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(selectedAccount.accountNo)}
-                          className="px-3 py-1.5 bg-[#2d4a3e] hover:bg-[#233a30] text-white text-[11px] font-semibold rounded-md shadow-2xs transition-colors cursor-pointer"
+                          className="px-3 py-1.5 bg-[#2d4a3e] hover:bg-[#233a30] text-white text-[11px] font-semibold rounded-lg shadow-2xs transition-colors cursor-pointer"
                         >
                           {copied ? "✓ Tersalin" : "Salin No. Rekening"}
                         </button>
                       </div>
                     )}
                     {selectedAccount.qrisUrl && (
-                      <div className="my-2.5 p-2 bg-white rounded border border-[#e2d9cc] flex justify-center">
+                      <div className="my-2.5 p-2 bg-white rounded-xl border border-[#e2d9cc] flex justify-center">
                         <img
                           src={selectedAccount.qrisUrl}
                           alt="QRIS"
@@ -712,7 +712,7 @@ export function GiftConfirmationForm({
                   </div>
                 ) : (
                   /* Standard Emerald Card */
-                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl text-left shadow-2xs">
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-left shadow-2xs">
                     <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                       <span className="text-emerald-800 font-semibold">{selectedAccount.bankName}</span>
                       {selectedAccount.accountName && (
@@ -722,21 +722,21 @@ export function GiftConfirmationForm({
                       )}
                     </div>
                     {selectedAccount.accountNo && (
-                      <div className="mt-1.5 flex items-center justify-between gap-2 p-2 bg-white rounded-lg border border-emerald-100">
+                      <div className="mt-1.5 flex items-center justify-between gap-2 p-2 bg-white rounded-xl border border-emerald-100">
                         <span className="font-mono text-xs sm:text-sm font-bold text-slate-900 select-all">
                           {selectedAccount.accountNo}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleCopy(selectedAccount.accountNo)}
-                          className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-medium rounded-md shadow-2xs transition-colors cursor-pointer"
+                          className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
                         >
                           {copied ? "✓ Tersalin" : "Salin No. Rekening"}
                         </button>
                       </div>
                     )}
                     {selectedAccount.qrisUrl && (
-                      <div className="my-2 p-2 bg-white rounded border flex justify-center">
+                      <div className="my-2 p-2 bg-white rounded-xl border flex justify-center">
                         <img
                           src={selectedAccount.qrisUrl}
                           alt="QRIS"
@@ -755,7 +755,7 @@ export function GiftConfirmationForm({
             value={bankName}
             onChange={(e) => setBankName(e.target.value)}
             placeholder="BCA / Mandiri / QRIS"
-            className={`w-full text-xs px-3 py-2 rounded-lg border focus:outline-none ${
+            className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none ${
               isNoir
                 ? "bg-[#141414] border-[#262626] text-[#fafafa] focus:border-[#c9a84c]"
                 : "border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-emerald-500"
@@ -840,7 +840,7 @@ export function GiftConfirmationForm({
             disabled={isDemo}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className={`w-full text-xs pl-9 pr-3 py-2 rounded-lg border font-mono font-bold focus:outline-none transition-colors ${
+            className={`w-full text-xs pl-9 pr-3 py-2 rounded-xl border font-mono font-bold focus:outline-none transition-colors ${
               isDemo ? "cursor-not-allowed opacity-60" : ""
             } ${
               isJawa
@@ -880,7 +880,7 @@ export function GiftConfirmationForm({
           placeholder="Misal: BCA a.n Budi / GoPay"
           value={accountSender}
           onChange={(e) => setAccountSender(e.target.value)}
-          className={`w-full text-xs px-3 py-2 rounded-lg border focus:outline-none transition-colors ${
+          className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
             isJawa
@@ -923,7 +923,7 @@ export function GiftConfirmationForm({
           }
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className={`w-full text-xs px-3 py-2 rounded-lg border focus:outline-none transition-colors resize-none ${
+          className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors resize-none ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
             isJawa
@@ -945,7 +945,7 @@ export function GiftConfirmationForm({
           <button
             type="button"
             onClick={onClose}
-            className={`px-3 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+            className={`px-3 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
               isJawa
                 ? "text-[#A89078] hover:text-[#EDE0C4] font-jawa-body"
                 : isNoir
@@ -963,7 +963,7 @@ export function GiftConfirmationForm({
         <button
           type="submit"
           disabled={loading || isDemo}
-          className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-semibold rounded-lg shadow-sm transition-all ${
+          className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-semibold rounded-xl shadow-sm transition-all ${
             isDemo || loading ? "cursor-not-allowed" : "cursor-pointer"
           } ${
             isDemo
