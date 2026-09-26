@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     const hashed = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
-      data: { name, email, password: hashed, role: "client" },
+      data: { name, email, password: hashed, role: "client", plan: "trial" },
     });
 
     // Kirim email selamat datang (non-blocking)

@@ -21,11 +21,25 @@ export default async function DashboardLayout({
   // Fetch user role & plan
   const currentUser = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { role: true, plan: true },
+    select: {
+      role: true,
+      plan: true,
+      createdAt: true,
+      transactions: {
+        where: { status: "settlement" },
+        select: { id: true, status: true },
+      },
+    },
   });
 
   const userRole = currentUser?.role || "client";
   const userPlan = currentUser?.plan || "basic";
+  const userCreatedAt = currentUser?.createdAt
+    ? currentUser.createdAt.toISOString()
+    : undefined;
+  const hasPaid = Boolean(
+    currentUser?.transactions && currentUser.transactions.length > 0
+  );
 
   // Fetch all weddings for the logged in user to supply active workspace switcher in sidebar.
   // Super Admin can manage all demo showcase weddings plus their own.
@@ -65,6 +79,8 @@ export default async function DashboardLayout({
         userInitial={userInitial}
         userRole={userRole}
         userPlan={userPlan}
+        userCreatedAt={userCreatedAt}
+        hasPaid={hasPaid}
         weddings={weddingOptions}
         onLogout={handleLogout}
       >

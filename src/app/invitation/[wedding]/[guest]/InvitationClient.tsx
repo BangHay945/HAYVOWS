@@ -4,7 +4,9 @@ import { useState } from "react";
 import { getTemplate } from "@/templates/registry";
 import type { Wedding, Guest, GuestMessage } from "@/types/wedding";
 import { TrialWatermark } from "@/components/invitation/TrialWatermark";
+import { TrialExpiredNotice } from "@/components/invitation/TrialExpiredNotice";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
+import { checkTrialStatus } from "@/lib/wedding/trial";
 
 export default function InvitationClient({
   wedding,
@@ -23,19 +25,25 @@ export default function InvitationClient({
 
   if (!template) return <div className="p-8 text-center">Template not found</div>;
 
+  const coupleTitle = `${wedding.couple?.groomNickname || wedding.couple?.groomName || "Pengantin"} & ${wedding.couple?.brideNickname || wedding.couple?.brideName || "Pengantin"}`;
+
+  // Cek masa aktif trial 3 hari
+  const trialStatus = checkTrialStatus(wedding.user, wedding.isDemo);
+
+  if (trialStatus.isExpired) {
+    return <TrialExpiredNotice coupleTitle={coupleTitle} />;
+  }
+
   const context = { wedding, guest, messages };
   const { Layout } = template;
-
-  // Cek apakah pemilik wedding berstatus paket Basic / Uji Coba (Bukan Premium & Bukan Luxury)
-  // Catatan: Jika isDemo true (undangan demo showcase platform), watermark uji coba disembunyikan
-  const isTrial = !wedding.isDemo && (wedding.user?.plan === "basic" || !wedding.user?.plan);
-
-  const coupleTitle = `${wedding.couple?.groomNickname || wedding.couple?.groomName || "Pengantin"} & ${wedding.couple?.brideNickname || wedding.couple?.brideName || "Pengantin"}`;
   const firstEvent = wedding.events && wedding.events.length > 0 ? wedding.events[0] : null;
 
   return (
     <>
-      <TrialWatermark isTrial={isTrial} />
+      <TrialWatermark
+        isTrial={trialStatus.isTrial}
+        daysRemaining={trialStatus.daysRemaining}
+      />
       <Layout
         context={context}
         isOpen={isOpen}

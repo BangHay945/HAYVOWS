@@ -148,7 +148,18 @@ export default async function InvitationPage({
       musics: { where: { isActive: true } },
       giftAccounts: { orderBy: { sortOrder: "asc" } },
       template: true,
-      user: { select: { id: true, plan: true } },
+      user: {
+        select: {
+          id: true,
+          plan: true,
+          createdAt: true,
+          role: true,
+          transactions: {
+            where: { status: "settlement" },
+            select: { id: true, status: true },
+          },
+        },
+      },
     },
   });
 

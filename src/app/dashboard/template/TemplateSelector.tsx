@@ -46,8 +46,8 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "pixel-cyberpunk": {
     slug: "pixel-cyberpunk",
     iconBg: "bg-slate-950 text-cyan-400",
-    categoryTag: "Futuristic RPG",
-    categoryStyle: "bg-cyan-50 text-cyan-800 border-cyan-200",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: "bg-slate-900 text-cyan-300 border-cyan-500/30",
     versionTag: "v2.4.0 • RPG 2D",
     bannerImage: "/assets/templates/pixel-cyberpunk/banner.jpg",
     highlights: [
@@ -60,8 +60,8 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "nature-floral": {
     slug: "nature-floral",
     iconBg: "bg-[#2d4a3e] text-[#fbf8f3]",
-    categoryTag: "Nature & Botanical",
-    categoryStyle: "bg-emerald-50 text-[#2d4a3e] border-emerald-200",
+    categoryTag: "Paket Populer",
+    categoryStyle: "bg-emerald-50 text-emerald-800 border-emerald-200",
     versionTag: "v1.0.0 • Floral Edition",
     bannerImage: "/assets/templates/nature-floral/banner.jpg",
     highlights: [
@@ -74,8 +74,8 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "pixel-adventure": {
     slug: "pixel-adventure",
     iconBg: "bg-amber-950 text-amber-300",
-    categoryTag: "Retro RPG 8-Bit",
-    categoryStyle: "bg-amber-50 text-amber-800 border-amber-200",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/30",
     versionTag: "v1.0.0 • Pulau Langit",
     bannerImage: "/assets/templates/pixel-adventure/banner.jpg",
     highlights: [
@@ -114,7 +114,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "eternal-noir": {
     slug: "eternal-noir",
     iconBg: "bg-[#0a0a0a] text-[#c9a84c]",
-    categoryTag: "Luxury Premium",
+    categoryTag: "Paket Exclusive",
     categoryStyle: "bg-slate-950 text-[#c9a84c] border-[#c9a84c]/30",
     versionTag: "v1.0.0 • Eternal Noir",
     bannerImage: "/assets/templates/eternal-noir/banner.jpg",
@@ -128,7 +128,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   "batik-jawa": {
     slug: "batik-jawa",
     iconBg: "bg-[#3D2B1F] text-[#D4A853]",
-    categoryTag: "Adat Nusantara",
+    categoryTag: "Paket Populer",
     categoryStyle: "bg-amber-100 text-amber-900 border-amber-300",
     versionTag: "v1.0.0 • Adat Jawa",
     bannerImage: "/assets/templates/batik-jawa/banner.jpg",
@@ -143,8 +143,8 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
 
 
 const getRequiredPlan = (slug: string): "basic" | "premium" | "luxury" => {
-  if (slug === "eternal-noir") return "luxury";
-  if (slug === "nature-floral" || slug === "pixel-cyberpunk" || slug === "vintage-royal" || slug === "batik-jawa") return "premium";
+  if (slug === "eternal-noir" || slug === "pixel-adventure" || slug === "pixel-cyberpunk" || slug === "pixel-rpg") return "luxury";
+  if (slug === "nature-floral" || slug === "vintage-royal" || slug === "batik-jawa") return "premium";
   return "basic";
 };
 
@@ -393,7 +393,13 @@ export default function TemplateSelector({
                     className="inline-flex items-center justify-center gap-1 px-2.5 py-2 text-[11px] font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-[#fef08a] shadow-2xs transition-colors cursor-pointer"
                   >
                     <Lock className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
-                    <span>{reqPlan === "luxury" ? "Perlu Luxury" : "Perlu Premium"}</span>
+                    <span>
+                      {reqPlan === "luxury"
+                        ? "Perlu Paket Exclusive"
+                        : reqPlan === "premium"
+                        ? "Perlu Paket Populer"
+                        : "Perlu Paket Basic"}
+                    </span>
                   </button>
                 ) : (
                   <button

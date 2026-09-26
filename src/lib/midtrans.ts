@@ -10,13 +10,13 @@ export const PLAN_PRICING = {
     hasWatermark: false,
   },
   premium: {
-    name: "Paket Premium",
+    name: "Paket Populer",
     price: 199000,
     guestLimit: 500,
     hasWatermark: false,
   },
   luxury: {
-    name: "Paket Luxury",
+    name: "Paket Exclusive",
     price: 299000,
     guestLimit: 999999, // Unlimited
     hasWatermark: false,

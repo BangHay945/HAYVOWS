@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const plan = (body.plan as PlanType) || "premium";
 
-    if (plan !== "premium" && plan !== "luxury") {
+    if (plan !== "basic" && plan !== "premium" && plan !== "luxury") {
       return NextResponse.json({ error: "Paket tidak valid" }, { status: 400 });
     }
 

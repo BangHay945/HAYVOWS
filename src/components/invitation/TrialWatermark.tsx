@@ -6,9 +6,13 @@ import { HayvowsLogo } from "@/components/brand/HayvowsLogo";
 
 interface TrialWatermarkProps {
   isTrial?: boolean;
+  daysRemaining?: number;
 }
 
-export function TrialWatermark({ isTrial = true }: TrialWatermarkProps) {
+export function TrialWatermark({
+  isTrial = true,
+  daysRemaining,
+}: TrialWatermarkProps) {
   if (!isTrial) return null;
 
   return (
@@ -17,7 +21,11 @@ export function TrialWatermark({ isTrial = true }: TrialWatermarkProps) {
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 pointer-events-auto select-none max-w-[92vw]">
         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-[#c9a84c]/40 text-white shadow-lg text-[10px] sm:text-xs">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-          <span className="font-semibold text-amber-200">Mode Uji Coba</span>
+          <span className="font-semibold text-amber-200">
+            {typeof daysRemaining === "number" && daysRemaining > 0
+              ? `Uji Coba 3 Hari (Sisa ${daysRemaining} Hari)`
+              : "Mode Uji Coba"}
+          </span>
           <span className="text-slate-500">•</span>
           <span className="font-light text-slate-300">Hayvows Digital</span>
           <Link

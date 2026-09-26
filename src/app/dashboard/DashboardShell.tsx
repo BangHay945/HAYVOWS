@@ -6,6 +6,7 @@ import Script from "next/script";
 import { HayvowsLogo } from "@/components/brand/HayvowsLogo";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import { isDemoWedding } from "@/lib/demo";
+import { checkTrialStatus } from "@/lib/wedding/trial";
 import {
   LayoutDashboard,
   HeartHandshake,
@@ -54,6 +55,8 @@ export function DashboardShell({
   userInitial,
   userRole = "client",
   userPlan = "basic",
+  userCreatedAt,
+  hasPaid = false,
   weddings = [],
   children,
   onLogout,
@@ -63,6 +66,8 @@ export function DashboardShell({
   userInitial: string;
   userRole?: string;
   userPlan?: string;
+  userCreatedAt?: string;
+  hasPaid?: boolean;
   weddings?: WeddingOption[];
   children: React.ReactNode;
   onLogout: () => Promise<void>;
@@ -72,6 +77,16 @@ export function DashboardShell({
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const trialStatus = checkTrialStatus(
+    {
+      role: userRole,
+      plan: userPlan,
+      createdAt: userCreatedAt,
+      transactions: hasPaid ? [{ status: "settlement" }] : [],
+    },
+    false
+  );
 
 
   const isOverview = pathname === "/dashboard";
@@ -219,7 +234,7 @@ export function DashboardShell({
             const Icon = item.icon;
             const active = isActive(item.href);
             const isItemLocked =
-              userPlan === "basic" &&
+              (userPlan === "basic" || userPlan === "trial" || trialStatus.isTrial) &&
               userRole !== "admin" &&
               (item.href === "/dashboard/guestbook" ||
                 item.href === "/dashboard/rsvp" ||
@@ -290,6 +305,10 @@ export function DashboardShell({
                 ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
                 : userPlan === "premium"
                 ? "bg-emerald-50 text-emerald-950 border-emerald-200"
+                : !trialStatus.isTrial
+                ? "bg-teal-50 text-teal-950 border-teal-200"
+                : trialStatus.isExpired
+                ? "bg-rose-50 text-rose-950 border-rose-200"
                 : "bg-amber-50/80 text-amber-950 border-amber-200/80"
             }`}
           >
@@ -298,25 +317,54 @@ export function DashboardShell({
                 {userPlan === "luxury" ? (
                   <>
                     <Crown className="w-3 h-3 text-[#c9a84c]" />
-                    <span className="text-[#c9a84c]">Paket Luxury</span>
+                    <span className="text-[#c9a84c]">Paket Exclusive</span>
                   </>
                 ) : userPlan === "premium" ? (
                   <>
                     <Sparkles className="w-3 h-3 text-emerald-700" />
-                    <span className="text-emerald-800">Paket Premium</span>
+                    <span className="text-emerald-800">Paket Populer</span>
                   </>
+                ) : !trialStatus.isTrial ? (
+                  <>
+                    <Sparkles className="w-3 h-3 text-teal-700" />
+                    <span className="text-teal-800">Paket Basic</span>
+                  </>
+                ) : trialStatus.isExpired ? (
+                  <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
                 ) : (
-                  <span className="text-amber-800 font-bold">Mode Uji Coba</span>
+                  <span className="text-amber-800 font-bold">
+                    Uji Coba ({trialStatus.daysRemaining} Hari)
+                  </span>
                 )}
               </span>
               <span className="text-[10px] font-mono opacity-60">
-                {userPlan === "luxury" ? "Unlimited" : userPlan === "premium" ? "500 Tamu" : "50 Tamu"}
+                {userPlan === "luxury"
+                  ? "Unlimited"
+                  : userPlan === "premium"
+                  ? "500 Tamu"
+                  : !trialStatus.isTrial
+                  ? "150 Tamu"
+                  : trialStatus.isExpired
+                  ? "Expired"
+                  : `Sisa ${trialStatus.hoursRemaining}j`}
               </span>
             </div>
 
-            {userPlan === "basic" && (
-              <p className="text-[10px] text-amber-800/90 leading-tight">
-                Undangan memuat label mode uji coba.
+            {trialStatus.isTrial && (
+              <p
+                className={`text-[10px] leading-tight ${
+                  trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
+                }`}
+              >
+                {trialStatus.isExpired
+                  ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
+                  : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
+              </p>
+            )}
+
+            {!trialStatus.isTrial && userPlan === "basic" && (
+              <p className="text-[10px] text-teal-800/90 leading-tight">
+                Paket Basic aktif selamanya.
               </p>
             )}
 
@@ -324,9 +372,21 @@ export function DashboardShell({
               <button
                 type="button"
                 onClick={() => setUpgradeModalOpen(true)}
-                className="w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-2xs"
+                className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
+                  trialStatus.isExpired
+                    ? "bg-rose-600 hover:bg-rose-700"
+                    : "bg-[#2d4a3e] hover:bg-[#233a30]"
+                }`}
               >
-                <span>{userPlan === "premium" ? "Upgrade Luxury" : "Upgrade / Hapus Label"}</span>
+                <span>
+                  {trialStatus.isExpired
+                    ? "Aktifkan Paket Sekarang"
+                    : userPlan === "premium"
+                    ? "Upgrade Exclusive"
+                    : !trialStatus.isTrial
+                    ? "Upgrade Paket"
+                    : "Pilih Paket Undangan"}
+                </span>
                 <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
               </button>
             )}
@@ -460,6 +520,10 @@ export function DashboardShell({
               className={`block md:hidden mb-4 p-3.5 sm:p-4 rounded-2xl border shadow-2xs transition-all ${
                 userPlan === "premium"
                   ? "bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-100/70 border-emerald-200/90 text-emerald-950"
+                  : !trialStatus.isTrial
+                  ? "bg-gradient-to-r from-teal-50 via-emerald-50/70 to-teal-100/70 border-teal-200/90 text-teal-950"
+                  : trialStatus.isExpired
+                  ? "bg-gradient-to-r from-rose-50 via-orange-50/70 to-rose-100/80 border-rose-200/90 text-rose-950"
                   : "bg-gradient-to-r from-amber-50 via-orange-50/70 to-amber-100/80 border-amber-200/90 text-amber-950"
               }`}
             >
@@ -468,37 +532,71 @@ export function DashboardShell({
                   <span className="p-1 rounded-lg bg-white/90 border border-slate-200/60 shadow-2xs shrink-0">
                     <Sparkles
                       className={`w-3.5 h-3.5 ${
-                        userPlan === "premium" ? "text-emerald-700" : "text-amber-700"
+                        userPlan === "premium" || !trialStatus.isTrial
+                          ? "text-emerald-700"
+                          : trialStatus.isExpired
+                          ? "text-rose-700"
+                          : "text-amber-700"
                       }`}
                     />
                   </span>
                   <span className="text-xs font-bold truncate">
-                    {userPlan === "premium" ? "Paket Premium Aktif" : "Mode Uji Coba (Free)"}
+                    {userPlan === "premium"
+                      ? "Paket Populer Aktif"
+                      : !trialStatus.isTrial
+                      ? "Paket Basic Aktif"
+                      : trialStatus.isExpired
+                      ? "Masa Uji Coba Berakhir"
+                      : `Mode Uji Coba (${trialStatus.daysRemaining} Hari)`}
                   </span>
                 </div>
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
-                    userPlan === "premium"
+                    userPlan === "premium" || !trialStatus.isTrial
                       ? "bg-emerald-200/90 text-emerald-900 border border-emerald-300"
+                      : trialStatus.isExpired
+                      ? "bg-rose-200/90 text-rose-950 border border-rose-300"
                       : "bg-amber-200/90 text-amber-950 border border-amber-300"
                   }`}
                 >
-                  {userPlan === "premium" ? "500 Tamu" : "50 Tamu"}
+                  {userPlan === "premium"
+                    ? "500 Tamu"
+                    : !trialStatus.isTrial
+                    ? "150 Tamu"
+                    : trialStatus.isExpired
+                    ? "Kedaluwarsa"
+                    : `Sisa ${trialStatus.hoursRemaining}j`}
                 </span>
               </div>
 
               <p className="text-[11px] leading-relaxed text-slate-600 mb-2.5">
                 {userPlan === "premium"
-                  ? "Tingkatkan ke paket Luxury untuk kuota tanpa batas dan bebas kustomisasi tanpa kompromi."
-                  : "Undangan Anda memuat label mode uji coba. Upgrade sekarang untuk menghapus label 100%."}
+                  ? "Tingkatkan ke paket Exclusive untuk fitur lengkap seperti TV Reception Screen, 2D RPG, dan kustomisasi tanpa kompromi."
+                  : !trialStatus.isTrial
+                  ? "Paket Basic Anda aktif selamanya. Anda dapat upgrade ke Populer atau Exclusive kapan saja untuk tema & fitur lebih lengkap."
+                  : trialStatus.isExpired
+                  ? "Masa uji coba 3 hari telah berakhir. Undangan publik tidak dapat diakses tamu sampai Anda mengaktifkan paket."
+                  : "Masa aktif uji coba berlaku 3 hari. Aktifkan paket mulai Rp 149.000 untuk menghapus watermark & aktif permanen."}
               </p>
 
               <button
                 type="button"
                 onClick={() => setUpgradeModalOpen(true)}
-                className="w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-xs active:scale-[0.99]"
+                className={`w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer text-white shadow-xs active:scale-[0.99] ${
+                  trialStatus.isExpired
+                    ? "bg-rose-600 hover:bg-rose-700"
+                    : "bg-[#2d4a3e] hover:bg-[#233a30]"
+                }`}
               >
-                <span>{userPlan === "premium" ? "Upgrade ke Paket Luxury" : "Upgrade / Hapus Label"}</span>
+                <span>
+                  {trialStatus.isExpired
+                    ? "Aktifkan Paket Sekarang"
+                    : userPlan === "premium"
+                    ? "Upgrade ke Paket Exclusive"
+                    : !trialStatus.isTrial
+                    ? "Upgrade Paket"
+                    : "Pilih Paket Undangan"}
+                </span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#fef08a]" />
               </button>
             </div>
@@ -780,6 +878,10 @@ export function DashboardShell({
                     ? "bg-[#0a0a0a] text-white border-[#c9a84c]/40"
                     : userPlan === "premium"
                     ? "bg-emerald-50 text-emerald-950 border-emerald-200"
+                    : !trialStatus.isTrial
+                    ? "bg-teal-50 text-teal-950 border-teal-200"
+                    : trialStatus.isExpired
+                    ? "bg-rose-50 text-rose-950 border-rose-200"
                     : "bg-amber-50/80 text-amber-950 border-amber-200/80"
                 }`}
               >
@@ -788,25 +890,54 @@ export function DashboardShell({
                     {userPlan === "luxury" ? (
                       <>
                         <Crown className="w-3 h-3 text-[#c9a84c]" />
-                        <span className="text-[#c9a84c]">Paket Luxury</span>
+                        <span className="text-[#c9a84c]">Paket Exclusive</span>
                       </>
                     ) : userPlan === "premium" ? (
                       <>
                         <Sparkles className="w-3 h-3 text-emerald-700" />
-                        <span className="text-emerald-800">Paket Premium</span>
+                        <span className="text-emerald-800">Paket Populer</span>
                       </>
+                    ) : !trialStatus.isTrial ? (
+                      <>
+                        <Sparkles className="w-3 h-3 text-teal-700" />
+                        <span className="text-teal-800">Paket Basic</span>
+                      </>
+                    ) : trialStatus.isExpired ? (
+                      <span className="text-rose-700 font-bold">Uji Coba Berakhir</span>
                     ) : (
-                      <span className="text-amber-800 font-bold">Mode Uji Coba</span>
+                      <span className="text-amber-800 font-bold">
+                        Uji Coba ({trialStatus.daysRemaining} Hari)
+                      </span>
                     )}
                   </span>
                   <span className="text-[10px] font-mono opacity-60">
-                    {userPlan === "luxury" ? "Unlimited" : userPlan === "premium" ? "500 Tamu" : "50 Tamu"}
+                    {userPlan === "luxury"
+                      ? "Unlimited"
+                      : userPlan === "premium"
+                      ? "500 Tamu"
+                      : !trialStatus.isTrial
+                      ? "150 Tamu"
+                      : trialStatus.isExpired
+                      ? "Expired"
+                      : `Sisa ${trialStatus.hoursRemaining}j`}
                   </span>
                 </div>
 
-                {userPlan === "basic" && (
-                  <p className="text-[10px] text-amber-800/90 leading-tight">
-                    Undangan memuat label mode uji coba.
+                {trialStatus.isTrial && (
+                  <p
+                    className={`text-[10px] leading-tight ${
+                      trialStatus.isExpired ? "text-rose-700 font-medium" : "text-amber-800/90"
+                    }`}
+                  >
+                    {trialStatus.isExpired
+                      ? "Masa uji coba 3 hari telah berakhir. Undangan publik dinonaktifkan."
+                      : "Masa aktif uji coba 3 hari dengan watermark pada undangan."}
+                  </p>
+                )}
+
+                {!trialStatus.isTrial && userPlan === "basic" && (
+                  <p className="text-[10px] text-teal-800/90 leading-tight">
+                    Paket Basic aktif selamanya.
                   </p>
                 )}
 
@@ -817,9 +948,21 @@ export function DashboardShell({
                       setMoreMenuOpen(false);
                       setUpgradeModalOpen(true);
                     }}
-                    className="w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-2xs"
+                    className={`w-full py-1.5 px-2.5 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer text-white shadow-2xs ${
+                      trialStatus.isExpired
+                        ? "bg-rose-600 hover:bg-rose-700"
+                        : "bg-[#2d4a3e] hover:bg-[#233a30]"
+                    }`}
                   >
-                    <span>{userPlan === "premium" ? "Upgrade Luxury" : "Upgrade / Hapus Label"}</span>
+                    <span>
+                      {trialStatus.isExpired
+                        ? "Aktifkan Paket Sekarang"
+                        : userPlan === "premium"
+                        ? "Upgrade Exclusive"
+                        : !trialStatus.isTrial
+                        ? "Upgrade Paket"
+                        : "Pilih Paket Undangan"}
+                    </span>
                     <ArrowUpRight className="w-3 h-3 text-[#fef08a]" />
                   </button>
                 )}
