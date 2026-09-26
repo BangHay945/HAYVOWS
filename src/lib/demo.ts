@@ -5,6 +5,7 @@ export const DEMO_WEDDING_SLUGS = [
   "adrian-nadia",
   "eleanor-xavier",
   "prasetyo-kinanti",
+  "arthur-guinevere",
 ] as const;
 
 export function isDemoWedding(slug?: string | null): boolean {
