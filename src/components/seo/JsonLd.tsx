@@ -24,8 +24,21 @@ export default function JsonLd() {
         url: "https://hayvows.com",
         applicationCategory: "LifestyleApplication",
         operatingSystem: "Web, Android, iOS",
+        image: "https://hayvows.com/icon-512.png",
+        screenshot: "https://hayvows.com/assets/templates/eternal-noir/banner.jpg",
         description:
           "Platform pembuatan undangan pernikahan online interaktif dengan tema 2D Pixel RPG, Adat Nusantara, dan sistem buku tamu digital QR Code terintegrasi.",
+        author: {
+          "@id": "https://hayvows.com/#organization",
+        },
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "4.9",
+          ratingCount: "128",
+          reviewCount: "128",
+          bestRating: "5",
+          worstRating: "1",
+        },
         offers: {
           "@type": "AggregateOffer",
           priceCurrency: "IDR",
@@ -38,6 +51,7 @@ export default function JsonLd() {
               name: "Paket Free Trial",
               price: "0",
               priceCurrency: "IDR",
+              availability: "https://schema.org/InStock",
               description: "Coba seluruh fitur undangan dan editor secara gratis.",
             },
             {
@@ -45,6 +59,7 @@ export default function JsonLd() {
               name: "Paket Premium",
               price: "99000",
               priceCurrency: "IDR",
+              availability: "https://schema.org/InStock",
               description: "Fitur lengkap, tamu unlimited, musik kustom, dan ekspor RSVP.",
             },
             {
@@ -52,6 +67,7 @@ export default function JsonLd() {
               name: "Paket Eksklusif Resepsi Pintar",
               price: "149000",
               priceCurrency: "IDR",
+              availability: "https://schema.org/InStock",
               description: "Semua fitur Premium ditambah Sistem Check-in QR Code dan Layar Sapa Resepsi TV Live.",
             },
           ],
