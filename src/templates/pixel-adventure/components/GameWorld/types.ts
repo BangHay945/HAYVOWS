@@ -113,7 +113,7 @@ export function hasLineOfSight(
 
 export const WAYPOINTS: Record<string, Waypoint> = {
   bridge_spawn: { id: "bridge_spawn", x: (690 / W) * 100, y: (745 / H) * 100, label: "Jembatan Masuk" },
-  bridge_guide: { id: "bridge_guide", x: (690 / W) * 100, y: (580 / H) * 100, label: "Pos Pemandu" },
+  bridge_guide: { id: "bridge_guide", x: (690 / W) * 100, y: (650 / H) * 100, label: "Pos Pemandu" },
   path_mid: { id: "path_mid", x: (690 / W) * 100, y: (520 / H) * 100, label: "Jalan Setapak" },
   plaza_south: { id: "plaza_south", x: (690 / W) * 100, y: (475 / H) * 100, label: "Pintu Masuk Plaza" },
   plaza_center: { id: "plaza_center", x: (690 / W) * 100, y: (415 / H) * 100, label: "Pusat Plaza" },
@@ -270,10 +270,10 @@ export const NPCS: NPCEntity[] = [
     badge: "🧭 PEMANDU",
     icon: "🧭",
     x: (730 / W) * 100,
-    y: (580 / H) * 100,
+    y: (650 / H) * 100,
     interactionPoint: {
       x: (690 / W) * 100,
-      y: (580 / H) * 100,
+      y: (650 / H) * 100,
       facing: "right",
     },
     avatar: "/assets/templates/pixel-adventure/characters/npcs/guide_portrait.png",
@@ -375,10 +375,10 @@ export const NPCS: NPCEntity[] = [
     badge: "🎁 TANDA KASIH",
     icon: "🎁",
     x: (650 / W) * 100,
-    y: (580 / H) * 100,
+    y: (520 / H) * 100,
     interactionPoint: {
       x: (690 / W) * 100,
-      y: (580 / H) * 100,
+      y: (520 / H) * 100,
       facing: "left",
     },
     avatar: "/assets/templates/pixel-adventure/ui/dialog_frame.png",
