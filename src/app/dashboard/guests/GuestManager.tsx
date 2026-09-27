@@ -19,9 +19,14 @@ import {
   MapPin,
   QrCode,
   BookOpenCheck,
+  Download,
+  Upload,
+  FileSpreadsheet,
 } from "lucide-react";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
+import { ImportGuestsModal } from "./ImportGuestsModal";
+import { WhatsAppTemplateModal, DEFAULT_WA_TEMPLATE } from "./WhatsAppTemplateModal";
 
 export type GuestWithRsvp = {
   id: string;
@@ -65,6 +70,11 @@ export default function GuestManager({
   const [showAddForm, setShowAddForm] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [selectedTicketGuest, setSelectedTicketGuest] = useState<GuestWithRsvp | null>(null);
+  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [waModalOpen, setWaModalOpen] = useState(false);
+  const [currentWaTemplate, setCurrentWaTemplate] = useState<string>(
+    whatsappTemplate || DEFAULT_WA_TEMPLATE
+  );
 
   // Form State
   const [newName, setNewName] = useState("");
@@ -82,48 +92,61 @@ export default function GuestManager({
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [rsvpFilter, setRsvpFilter] = useState("all");
 
-  const getGuestMessage = (name: string, slug: string) => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const getGuestMessage = (
+    nameOrGuest:
+      | string
+      | {
+          name: string;
+          slug: string;
+          tableNumber?: string | null;
+          address?: string | null;
+          sessionName?: string | null;
+        },
+    optionalSlug?: string
+  ) => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://hayvows.com";
+    const name = typeof nameOrGuest === "string" ? nameOrGuest : nameOrGuest.name;
+    const slug = typeof nameOrGuest === "string" ? optionalSlug || "" : nameOrGuest.slug;
+    const tableNumber = typeof nameOrGuest === "object" ? nameOrGuest.tableNumber || "-" : "-";
+    const address = typeof nameOrGuest === "object" ? nameOrGuest.address || "-" : "-";
+    const sessionName =
+      typeof nameOrGuest === "object" ? nameOrGuest.sessionName || "Sesi Acara" : "Sesi Acara";
+
     const personalUrl = `${origin}/invitation/${weddingSlug}/${slug}`;
-    const template =
-      whatsappTemplate ||
-      `Kepada Yth.
-Bapak/Ibu/Saudara/i: *{nama}*
-
-Tanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk hadir di acara pernikahan kami:
-
-💍 *{mempelai}*
-
-Untuk detail informasi acara dan konfirmasi kehadiran, silakan kunjungi tautan undangan resmi berikut:
-🔗 {link}
-
-Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-
-Terima kasih.`;
+    const template = currentWaTemplate || whatsappTemplate || DEFAULT_WA_TEMPLATE;
 
     return template
       .replace(/\{nama\}/g, name)
       .replace(/\{mempelai\}/g, coupleTitle || "Kedua Mempelai")
-      .replace(/\{link\}/g, personalUrl);
+      .replace(/\{link\}/g, personalUrl)
+      .replace(/\{meja\}/g, tableNumber)
+      .replace(/\{alamat\}/g, address)
+      .replace(/\{sesi\}/g, sessionName);
   };
 
   const copyPersonalLink = (id: string, slug: string) => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://hayvows.com";
     const url = `${origin}/invitation/${weddingSlug}/${slug}`;
     navigator.clipboard.writeText(url);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const copyWhatsAppMessage = (id: string, name: string, slug: string) => {
-    const msg = getGuestMessage(name, slug);
+  const copyWhatsAppMessage = (
+    id: string,
+    guest: GuestWithRsvp | { name: string; slug: string }
+  ) => {
+    const msg = getGuestMessage(guest);
     navigator.clipboard.writeText(msg);
     setCopiedMsgId(id);
     setTimeout(() => setCopiedMsgId(null), 2000);
   };
 
-  const openWhatsApp = (phone: string, name: string, slug: string) => {
-    const msg = getGuestMessage(name, slug);
+  const openWhatsApp = (
+    phone: string,
+    guest: GuestWithRsvp | { name: string; slug: string }
+  ) => {
+    const msg = getGuestMessage(guest);
     let cleanPhone = phone.replace(/[^0-9]/g, "");
     if (cleanPhone.startsWith("0")) {
       cleanPhone = "62" + cleanPhone.slice(1);
@@ -132,6 +155,65 @@ Terima kasih.`;
       ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
       : `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, "_blank");
+  };
+
+  // Export full guest list and RSVP status to CSV with UTF-8 BOM
+  const handleExportCSV = () => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://hayvows.com";
+    const headers = [
+      "No",
+      "Nama Tamu",
+      "Nomor WhatsApp",
+      "Kategori",
+      "Alamat / Domisili",
+      "Nomor Meja",
+      "Sesi Acara",
+      "Status RSVP",
+      "Pax Hadir",
+      "Status Check-in",
+      "Tautan Undangan Personal",
+      "Kode Tiket QR",
+    ];
+
+    const targetList = filteredGuests.length > 0 ? filteredGuests : guests;
+    const dataRows = targetList.map((g, idx) => {
+      const personalUrl = `${origin}/invitation/${weddingSlug}/${g.slug}`;
+      const rsvpStatus =
+        g.rsvp?.attendanceStatus === "attending"
+          ? "Hadir"
+          : g.rsvp?.attendanceStatus === "not_attending"
+          ? "Tidak Hadir"
+          : "Belum Respon";
+      const paxCount =
+        g.rsvp?.attendanceStatus === "attending" ? g.rsvp?.guestCount || g.guestCount : 0;
+      const checkInStatus = g.checkedIn ? "Sudah Check-in" : "Belum Check-in";
+
+      return [
+        idx + 1,
+        `"${(g.name || "").replace(/"/g, '""')}"`,
+        `"${(g.phone || "").replace(/"/g, '""')}"`,
+        `"${(g.category || "").replace(/"/g, '""')}"`,
+        `"${(g.address || "").replace(/"/g, '""')}"`,
+        `"${(g.tableNumber || "").replace(/"/g, '""')}"`,
+        `"${(g.sessionName || "").replace(/"/g, '""')}"`,
+        `"${rsvpStatus}"`,
+        paxCount,
+        `"${checkInStatus}"`,
+        `"${personalUrl}"`,
+        `"${(g.qrCode || "").replace(/"/g, '""')}"`,
+      ].join(",");
+    });
+
+    const csvContent = "\uFEFF" + [headers.join(","), ...dataRows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `daftar-tamu-${weddingSlug}-${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const addGuest = async (e: React.FormEvent) => {
@@ -215,14 +297,64 @@ Terima kasih.`;
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          {/* 1. Format Pesan WA */}
+          <button
+            type="button"
+            onClick={() => setWaModalOpen(true)}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
+            title="Kustomisasi Format Pesan Undangan WhatsApp"
+          >
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Format WA</span>
+          </button>
+
+          {/* 2. Import CSV / Excel */}
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                guests.length >=
+                (userRole === "admin" || userPlan === "luxury"
+                  ? 999999
+                  : userPlan === "premium"
+                  ? 500
+                  : 50)
+              ) {
+                setUpgradeModalOpen(true);
+                return;
+              }
+              setImportModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 shadow-2xs transition-colors cursor-pointer"
+            title="Import Banyak Tamu dari File Excel / CSV"
+          >
+            <Upload className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Import CSV</span>
+          </button>
+
+          {/* 3. Export CSV / Excel */}
+          <button
+            type="button"
+            onClick={handleExportCSV}
+            disabled={guests.length === 0}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Download Rekap Daftar Tamu & RSVP ke File CSV / Excel"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-600" />
+            <span>Export CSV</span>
+          </button>
+
+          {/* 4. Buku Tamu & Presensi QR */}
           <Link
             href={`/dashboard/guestbook?weddingId=${weddingId}`}
-            className="inline-flex items-center gap-1.5 py-2.5 px-4 rounded-xl font-bold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs transition-colors cursor-pointer"
           >
-            <BookOpenCheck className="w-4 h-4 text-purple-700" />
-            <span>Buku Tamu &amp; Presensi QR ↗</span>
+            <BookOpenCheck className="w-3.5 h-3.5 text-purple-700" />
+            <span className="hidden sm:inline">Buku Tamu QR ↗</span>
+            <span className="sm:hidden">Presensi QR ↗</span>
           </Link>
 
+          {/* 5. Tambah Tamu Manual */}
           <button
             type="button"
             onClick={() => {
@@ -240,7 +372,7 @@ Terima kasih.`;
               }
               setShowAddForm(!showAddForm);
             }}
-            className={`inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer shrink-0 ${
+            className={`inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer shrink-0 ${
               showAddForm
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
                 : "bg-[#2d4a3e] hover:bg-[#233a30] text-white"
@@ -644,7 +776,7 @@ Terima kasih.`;
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           type="button"
-                          onClick={() => copyWhatsAppMessage(guest.id, guest.name, guest.slug)}
+                          onClick={() => copyWhatsAppMessage(guest.id, guest)}
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition-colors cursor-pointer"
                           title="Salin Pesan WA"
                         >
@@ -663,7 +795,7 @@ Terima kasih.`;
 
                         <button
                           type="button"
-                          onClick={() => openWhatsApp(guest.phone, guest.name, guest.slug)}
+                          onClick={() => openWhatsApp(guest.phone, guest)}
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors cursor-pointer shadow-2xs"
                           title="Buka Chat WA"
                         >
@@ -721,6 +853,32 @@ Terima kasih.`;
         isOpen={upgradeModalOpen}
         onClose={() => setUpgradeModalOpen(false)}
         currentPlan={userPlan}
+      />
+
+      {/* Modal Import Tamu Massal (Excel / CSV) */}
+      <ImportGuestsModal
+        isOpen={importModalOpen}
+        onClose={() => setImportModalOpen(false)}
+        weddingId={weddingId}
+        userPlan={userPlan}
+        userRole={userRole}
+        currentGuestCount={guests.length}
+        onImportSuccess={(createdGuests) => {
+          setGuests((prev) => [...prev, ...createdGuests]);
+        }}
+      />
+
+      {/* Modal Kustomisasi Template Pesan WhatsApp */}
+      <WhatsAppTemplateModal
+        isOpen={waModalOpen}
+        onClose={() => setWaModalOpen(false)}
+        weddingId={weddingId}
+        currentTemplate={currentWaTemplate}
+        coupleTitle={coupleTitle}
+        weddingSlug={weddingSlug}
+        onSaved={(newTpl) => {
+          setCurrentWaTemplate(newTpl);
+        }}
       />
     </div>
   );

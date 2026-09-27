@@ -80,6 +80,69 @@ export async function createGuest(
   });
 }
 
+export async function createGuestsBulk(
+  weddingId: string,
+  guestsData: Array<{
+    name: string;
+    phone?: string;
+    address?: string;
+    category?: string;
+    guestCount?: number;
+    tableNumber?: string;
+    sessionName?: string;
+    slug?: string;
+  }>
+) {
+  const createdGuests = [];
+
+  for (const item of guestsData) {
+    const trimmedName = item.name?.trim();
+    if (!trimmedName) continue;
+
+    let slug = item.slug?.trim();
+    if (!slug) {
+      let isUnique = false;
+      let attempts = 0;
+      while (!isUnique && attempts < 10) {
+        const candidate = generateGuestCode(7);
+        const existing = await prisma.guest.findUnique({
+          where: { weddingId_slug: { weddingId, slug: candidate } },
+        });
+        if (!existing) {
+          slug = candidate;
+          isUnique = true;
+        }
+        attempts++;
+      }
+      if (!slug) {
+        slug = generateGuestCode(9);
+      }
+    }
+
+    const qrCodeToken = `HVW-${weddingId.slice(-4).toUpperCase()}-${slug.toUpperCase()}`;
+
+    const guest = await prisma.guest.create({
+      data: {
+        weddingId,
+        name: trimmedName,
+        slug,
+        phone: item.phone?.trim() ?? "",
+        address: item.address?.trim() ?? "",
+        category: item.category?.trim() || "Reguler",
+        guestCount: Math.max(1, Number(item.guestCount) || 1),
+        tableNumber: item.tableNumber?.trim() ?? "",
+        sessionName: item.sessionName?.trim() ?? "",
+        qrCode: qrCodeToken,
+      },
+      include: { rsvp: true },
+    });
+
+    createdGuests.push(guest);
+  }
+
+  return createdGuests;
+}
+
 export async function updateGuest(
   id: string,
   data: Partial<{
