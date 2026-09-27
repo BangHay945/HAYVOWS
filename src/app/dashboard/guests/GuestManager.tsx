@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import {
   Plus,
   Copy,
@@ -18,7 +17,6 @@ import {
   Filter,
   MapPin,
   QrCode,
-  BookOpenCheck,
   Download,
   Upload,
   FileSpreadsheet,
@@ -286,7 +284,7 @@ export default function GuestManager({
   return (
     <div className="space-y-6 max-w-7xl mx-auto w-full">
       {/* Top Header & Fast Action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 tracking-tight">
             Manajemen Daftar Tamu Undangan
@@ -296,7 +294,7 @@ export default function GuestManager({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           {/* 1. Format Pesan WA */}
           <button
             type="button"
@@ -344,17 +342,7 @@ export default function GuestManager({
             <span>Export CSV</span>
           </button>
 
-          {/* 4. Buku Tamu & Presensi QR */}
-          <Link
-            href={`/dashboard/guestbook?weddingId=${weddingId}`}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs transition-colors cursor-pointer"
-          >
-            <BookOpenCheck className="w-3.5 h-3.5 text-purple-700" />
-            <span className="hidden sm:inline">Buku Tamu QR ↗</span>
-            <span className="sm:hidden">Presensi QR ↗</span>
-          </Link>
-
-          {/* 5. Tambah Tamu Manual */}
+          {/* 4. Tambah Tamu Manual */}
           <button
             type="button"
             onClick={() => {
