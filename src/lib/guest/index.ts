@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
+import { searchSmartGuests } from "./search";
 
 export function generateGuestCode(length = 7): string {
   // Characters excluding visually ambiguous ones (0, O, 1, l, I)
@@ -247,29 +248,17 @@ export async function checkInGuest(
       include: { rsvp: true },
     });
 
-    // Pencarian Tahap 2: In-memory tolerant search (kompatibel SQLite & PostgreSQL)
+    // Pencarian Tahap 2: Smart Search dengan toleransi ejaan, gelar, fonetik, dan typo
     if (!guest) {
       const allWeddingGuests = await prisma.guest.findMany({
         where: { weddingId },
         include: { rsvp: true },
       });
 
-      const queryClean = rawInput.toLowerCase().replace(/[^a-z0-9]/g, "");
-      const tokenClean = tokenLastSegment.toLowerCase().replace(/[^a-z0-9]/g, "");
-
-      guest = allWeddingGuests.find((g) => {
-        const gNameClean = g.name.toLowerCase().replace(/[^a-z0-9]/g, "");
-        const gSlugClean = g.slug.toLowerCase().replace(/[^a-z0-9]/g, "");
-        const gQrClean = (g.qrCode || "").toLowerCase().replace(/[^a-z0-9]/g, "");
-
-        return (
-          gSlugClean === queryClean ||
-          gNameClean === queryClean ||
-          gQrClean === queryClean ||
-          (tokenClean && (gSlugClean === tokenClean || gQrClean.includes(tokenClean))) ||
-          (queryClean.length >= 3 && (gNameClean.includes(queryClean) || queryClean.includes(gSlugClean)))
-        );
-      }) || null;
+      const smartResults = searchSmartGuests(allWeddingGuests, rawInput, { limit: 1 });
+      if (smartResults.length > 0 && smartResults[0].score >= 50) {
+        guest = smartResults[0].guest;
+      }
     }
   }
 

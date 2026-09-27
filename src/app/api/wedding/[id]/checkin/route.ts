@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { checkInGuest, undoCheckInGuest } from "@/lib/guest";
+import { searchSmartGuests } from "@/lib/guest/search";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
@@ -22,27 +23,16 @@ export async function GET(
     return NextResponse.json({ error: "Wedding tidak ditemukan" }, { status: 404 });
   }
 
-  if (!q) {
-    return NextResponse.json({ guests: [] });
-  }
-
-  // Find guests matching search query (name, slug, qrCode, phone, address, or table)
-  const guests = await prisma.guest.findMany({
+  // Fetch all guests for this wedding to allow intelligent fuzzy, multi-token, and phonetic ranking
+  const allGuests = await prisma.guest.findMany({
     where: {
       weddingId: wedding.id,
-      OR: [
-        { name: { contains: q } },
-        { slug: { contains: q } },
-        { qrCode: { contains: q } },
-        { phone: { contains: q } },
-        { address: { contains: q } },
-        { tableNumber: { contains: q } },
-      ],
     },
     select: {
       id: true,
       name: true,
       slug: true,
+      phone: true,
       address: true,
       category: true,
       tableNumber: true,
@@ -53,11 +43,21 @@ export async function GET(
       souvenirTaken: true,
       qrCode: true,
     },
-    take: 10,
-    orderBy: [{ checkedIn: "asc" }, { name: "asc" }],
   });
 
-  return NextResponse.json({ guests });
+  const searchResults = searchSmartGuests(allGuests, q, {
+    limit: 20,
+    showRecentIfEmpty: true,
+  });
+
+  const formattedGuests = searchResults.map((item) => ({
+    ...item.guest,
+    matchReason: item.matchReason,
+    matchScore: item.score,
+    matchedTokens: item.matchedTokens,
+  }));
+
+  return NextResponse.json({ guests: formattedGuests });
 }
 
 export async function POST(

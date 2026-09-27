@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, UserPlus, MapPin, Users, Gift, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface OnTheSpotGuestModalProps {
   isOpen: boolean;
   onClose: () => void;
   weddingId: string;
+  initialName?: string;
   onSuccess: (newGuest?: any) => void;
 }
 
@@ -14,10 +15,11 @@ export function OnTheSpotGuestModal({
   isOpen,
   onClose,
   weddingId,
+  initialName,
   onSuccess,
 }: OnTheSpotGuestModalProps) {
   const [form, setForm] = useState({
-    name: "",
+    name: initialName || "",
     address: "",
     category: "Reguler",
     guestCount: 1,
@@ -29,6 +31,12 @@ export function OnTheSpotGuestModal({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen && initialName) {
+      setForm((prev) => ({ ...prev, name: initialName }));
+    }
+  }, [isOpen, initialName]);
 
   if (!isOpen) return null;
 

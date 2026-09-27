@@ -25,8 +25,39 @@ import {
   UserPlus,
   Clock,
   Loader2,
+  Phone,
+  UserCheck,
 } from "lucide-react";
 import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
+
+function HighlightMatch({ text, tokens }: { text?: string | null; tokens?: string[] }) {
+  if (!text) return null;
+  if (!tokens || tokens.length === 0) return <>{text}</>;
+
+  const validTokens = tokens
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+  if (validTokens.length === 0) return <>{text}</>;
+
+  const regex = new RegExp(`(${validTokens.join("|")})`, "gi");
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="bg-emerald-400/30 text-emerald-300 font-semibold px-0.5 rounded">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
 
 export default function ReceptionQRScannerPage({
   params,
@@ -205,14 +236,11 @@ export default function ReceptionQRScannerPage({
     };
   }, []);
 
-  // Debounced search for manual modal input
+  // Debounced smart search for manual modal input
   useEffect(() => {
-    const query = manualQuery.trim();
-    if (!query || query.length < 2) {
-      setManualSearchResults([]);
-      return;
-    }
+    if (!isManualModalOpen) return;
 
+    const query = manualQuery.trim();
     const timer = setTimeout(async () => {
       setIsSearchingManual(true);
       try {
@@ -227,10 +255,10 @@ export default function ReceptionQRScannerPage({
       } finally {
         setIsSearchingManual(false);
       }
-    }, 250);
+    }, query ? 120 : 0);
 
     return () => clearTimeout(timer);
-  }, [manualQuery, weddingData?.id, weddingSlug]);
+  }, [manualQuery, isManualModalOpen, weddingData?.id, weddingSlug]);
 
   // Start Camera Scanner
   const startCamera = useCallback(async (facing: "environment" | "user") => {
@@ -432,10 +460,78 @@ export default function ReceptionQRScannerPage({
     } catch {}
   };
 
+  // Handle Instant Check-in for a Specific Guest from Search
+  const handleCheckInGuestFromSearch = async (guest: any, customPax?: number) => {
+    if (isProcessingRef.current) return;
+    isProcessingRef.current = true;
+    setLoading(true);
+    setErrorMessage(null);
+
+    playSuccessChime();
+
+    try {
+      const targetId = weddingData?.id || weddingSlug;
+      const res = await fetch(`/api/wedding/${targetId}/checkin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guestId: guest.id,
+          checkedInPax: customPax || guest.guestCount || 1,
+          souvenirTaken: true,
+          giftType: "none",
+        }),
+      });
+
+      const json = await res.json();
+      setLoading(false);
+
+      if (res.ok && json.success) {
+        setIsManualModalOpen(false);
+        setManualQuery("");
+        setManualSearchResults([]);
+        setScannedGuest(json.guest);
+        fetchStats();
+
+        // Start countdown auto-dismiss (3 seconds)
+        setAutoDismissTimer(3);
+        if (autoDismissIntervalRef.current) clearInterval(autoDismissIntervalRef.current);
+        autoDismissIntervalRef.current = setInterval(() => {
+          setAutoDismissTimer((prev) => {
+            if (prev <= 1) {
+              dismissGuestWelcome();
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      } else {
+        setErrorMessage(json.error || "Gagal check-in tamu.");
+        setTimeout(() => {
+          setErrorMessage(null);
+          isProcessingRef.current = false;
+        }, 2500);
+      }
+    } catch {
+      setLoading(false);
+      setErrorMessage("Koneksi bermasalah saat check-in.");
+      setTimeout(() => {
+        setErrorMessage(null);
+        isProcessingRef.current = false;
+      }, 2500);
+    }
+  };
+
   // Handle Manual Form Submit
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!manualQuery.trim()) return;
+
+    // Smart auto-select top match if available
+    if (manualSearchResults.length > 0) {
+      await handleCheckInGuestFromSearch(manualSearchResults[0]);
+      return;
+    }
+
     setIsManualModalOpen(false);
     await handleScanSuccess(manualQuery);
     setManualQuery("");
@@ -794,6 +890,7 @@ export default function ReceptionQRScannerPage({
         isOpen={isOnTheSpotModalOpen}
         onClose={() => setIsOnTheSpotModalOpen(false)}
         weddingId={weddingData?.id || weddingSlug}
+        initialName={manualQuery}
         onSuccess={(newGuest) => {
           fetchStats();
           if (newGuest) {
@@ -830,12 +927,13 @@ export default function ReceptionQRScannerPage({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-5 sm:p-6 shadow-2xl text-white space-y-4 max-h-[90vh] flex flex-col"
+              className="w-full max-w-lg bg-slate-900 border border-white/15 rounded-3xl p-5 sm:p-6 shadow-2xl text-white space-y-4 max-h-[92vh] flex flex-col"
             >
+              {/* Modal Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2 text-amber-300">
                   <Keyboard className="w-5 h-5" />
-                  <h3 className="font-bold text-base text-white">Input Manual / Cari Tamu</h3>
+                  <h3 className="font-bold text-base text-white">Pencarian Pintar & Check-in Manual</h3>
                 </div>
                 <button
                   type="button"
@@ -850,97 +948,162 @@ export default function ReceptionQRScannerPage({
                 </button>
               </div>
 
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Ketik nama tamu, domisili, nomor meja, atau kode token tiket untuk check-in langsung.
-              </p>
-
-              <form onSubmit={handleManualSubmit} className="space-y-3">
+              {/* Smart Search Form */}
+              <form onSubmit={handleManualSubmit} className="space-y-3 flex-1 flex flex-col min-h-0">
                 <div className="relative">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={manualQuery}
                     onChange={(e) => setManualQuery(e.target.value)}
-                    placeholder="Ketik nama, token, meja..."
+                    placeholder="Ketik nama (bebas ejaan / gelar), meja, no. HP..."
                     autoFocus
-                    className="w-full pl-10 pr-10 py-3 bg-white/5 border border-white/20 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 placeholder:text-slate-500 font-sans"
+                    className="w-full pl-10 pr-16 py-3 bg-white/5 border border-white/20 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 placeholder:text-slate-500 font-sans"
                   />
-                  {isSearchingManual && (
-                    <Loader2 className="w-4 h-4 text-emerald-400 animate-spin absolute right-3.5 top-1/2 -translate-y-1/2" />
-                  )}
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                    {manualQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setManualQuery("")}
+                        className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors cursor-pointer"
+                        title="Hapus pencarian"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {isSearchingManual && (
+                      <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Smart Features Hint */}
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400 bg-white/5 py-1.5 px-3 rounded-xl border border-white/5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                  <span className="leading-tight">
+                    Toleran salah ketik (typo), gelar (Bpk/Ibu/dr), urutan kata terbalik, atau nomor meja.
+                  </span>
                 </div>
 
                 {/* Live Search Matching Guests List */}
-                {manualSearchResults.length > 0 && (
-                  <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                      Daftar Tamu Cocok ({manualSearchResults.length}):
-                    </p>
-                    {manualSearchResults.map((g) => (
-                      <div
-                        key={g.id}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between gap-2 transition-colors"
-                      >
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-bold text-sm text-white truncate">{g.name}</span>
-                            <span className="text-[9px] px-1.5 py-0.5 rounded-full font-mono bg-white/10 text-emerald-300">
-                              {g.category || "Reguler"}
-                            </span>
-                          </div>
-                          <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5">
-                            {g.tableNumber && <span>Meja: {g.tableNumber}</span>}
-                            {g.address && <span className="truncate max-w-[120px]">{g.address}</span>}
-                            <span>{g.guestCount || 1} Pax</span>
-                          </div>
-                        </div>
-
-                        {g.checkedIn ? (
-                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2.5 py-1 rounded-lg shrink-0 flex items-center gap-1">
-                            <Check className="w-3 h-3" />
-                            <span>Hadir</span>
+                <div className="flex-1 overflow-y-auto pr-1 space-y-1.5 max-h-64 sm:max-h-72">
+                  {manualSearchResults.length > 0 && (
+                    <>
+                      <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 tracking-wider uppercase px-1">
+                        <span>
+                          {manualQuery.trim()
+                            ? `Hasil Pencarian (${manualSearchResults.length})`
+                            : `Daftar Tamu Tersedia (${manualSearchResults.length})`}
+                        </span>
+                        {manualQuery.trim() && (
+                          <span className="text-[10px] text-emerald-400 lowercase font-normal">
+                            Tekan Enter untuk check-in teratas
                           </span>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={async () => {
-                              setIsManualModalOpen(false);
-                              await handleScanSuccess(g.qrCode || g.slug || g.id);
-                              setManualQuery("");
-                              setManualSearchResults([]);
-                            }}
-                            className="text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 active:scale-95 px-3 py-1.5 rounded-lg shrink-0 transition-all cursor-pointer flex items-center gap-1"
-                          >
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Check-in</span>
-                          </button>
                         )}
                       </div>
-                    ))}
-                  </div>
-                )}
 
-                {/* Not found state with button to add on the spot */}
-                {manualQuery.trim().length >= 2 && manualSearchResults.length === 0 && !isSearchingManual && (
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center space-y-2">
-                    <p className="text-xs text-slate-400">
-                      Tamu &quot;<span className="text-white font-semibold">{manualQuery}</span>&quot; tidak ada dalam daftar undangan.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsManualModalOpen(false);
-                        setIsOnTheSpotModalOpen(true);
-                      }}
-                      className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors cursor-pointer"
-                    >
-                      <UserPlus className="w-3.5 h-3.5 text-[#fef08a]" />
-                      <span>+ Daftarkan Tamu On-the-Spot</span>
-                    </button>
-                  </div>
-                )}
+                      {manualSearchResults.map((g, idx) => (
+                        <div
+                          key={g.id}
+                          className={`p-3 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                            idx === 0 && manualQuery.trim()
+                              ? "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+                              : "bg-white/5 hover:bg-white/10 border-white/10"
+                          }`}
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-bold text-sm text-white truncate">
+                                <HighlightMatch
+                                  text={g.name}
+                                  tokens={g.matchedTokens && g.matchedTokens.length > 0 ? g.matchedTokens : [manualQuery]}
+                                />
+                              </span>
 
-                <div className="flex gap-2 pt-2">
+                              {/* Smart Match Reason Badge */}
+                              {g.matchReason && manualQuery.trim() && (
+                                <span
+                                  className={`text-[9px] px-1.5 py-0.5 rounded-md font-semibold border ${
+                                    g.matchReason.includes("Mirip") || g.matchReason.includes("Ejaan")
+                                      ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                                      : g.matchReason.includes("Persis")
+                                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                                      : g.matchReason.includes("Meja")
+                                      ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/30"
+                                      : g.matchReason.includes("Telepon")
+                                      ? "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                                      : "bg-white/10 text-slate-300 border-white/10"
+                                  }`}
+                                >
+                                  {g.matchReason}
+                                </span>
+                              )}
+
+                              <span className="text-[9px] px-1.5 py-0.5 rounded-full font-mono bg-white/10 text-slate-300">
+                                {g.category || "Reguler"}
+                              </span>
+                            </div>
+
+                            <div className="text-[11px] text-slate-400 flex items-center flex-wrap gap-x-3 gap-y-1 mt-1">
+                              {g.tableNumber && (
+                                <span className="text-cyan-300 font-medium">Meja {g.tableNumber}</span>
+                              )}
+                              {g.address && (
+                                <span className="truncate max-w-[140px] sm:max-w-[180px]">{g.address}</span>
+                              )}
+                              {g.phone && (
+                                <span className="font-mono text-[10px] text-slate-400">{g.phone}</span>
+                              )}
+                              <span>{g.guestCount || 1} Pax</span>
+                            </div>
+                          </div>
+
+                          {/* Action Button */}
+                          <div className="shrink-0 flex items-center">
+                            {g.checkedIn ? (
+                              <span className="text-xs font-bold text-emerald-400 bg-emerald-500/20 border border-emerald-500/30 px-3 py-1.5 rounded-xl shrink-0 flex items-center gap-1.5">
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Hadir</span>
+                              </span>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => handleCheckInGuestFromSearch(g)}
+                                className="text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 active:scale-95 px-3.5 py-2 rounded-xl shrink-0 transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-emerald-950/40"
+                              >
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Check-in</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* Not found state with button to add on the spot */}
+                  {manualQuery.trim().length >= 2 && manualSearchResults.length === 0 && !isSearchingManual && (
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-3 my-2">
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Tamu &quot;<span className="text-white font-semibold">{manualQuery}</span>&quot; tidak ditemukan dalam daftar undangan.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsManualModalOpen(false);
+                          setIsOnTheSpotModalOpen(true);
+                        }}
+                        className="inline-flex items-center gap-1.5 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs transition-all cursor-pointer shadow-lg shadow-emerald-950/50"
+                      >
+                        <UserPlus className="w-4 h-4 text-[#fef08a]" />
+                        <span>+ Daftarkan Tamu On-the-Spot</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="flex gap-2 pt-2 border-t border-white/10">
                   <button
                     type="button"
                     onClick={() => {
@@ -950,14 +1113,14 @@ export default function ReceptionQRScannerPage({
                     }}
                     className="flex-1 py-3 px-4 rounded-xl border border-white/20 hover:bg-white/10 text-white text-xs font-semibold transition-colors cursor-pointer"
                   >
-                    Batal
+                    Tutup
                   </button>
                   <button
                     type="submit"
                     disabled={!manualQuery.trim() || loading}
-                    className="flex-1 py-3 px-4 rounded-xl bg-[#2d4a3e] hover:bg-[#233a30] text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                    className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    {loading ? "Memproses..." : "Check-in Kode"}
+                    {loading ? "Memproses..." : "Check-in (Enter)"}
                   </button>
                 </div>
               </form>
