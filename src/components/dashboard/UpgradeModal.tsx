@@ -420,6 +420,10 @@ export function UpgradeModal({
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
                     <span className="font-bold text-amber-900">Unlimited Nama Tamu (Tanpa Batas)</span>
                   </div>
+                  <div className="flex items-center gap-2 bg-amber-50/80 px-2 py-1 rounded-md border border-amber-200/50">
+                    <Crown className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
+                    <span className="font-bold text-amber-950">FREE Custom Domain (.my.id) / Subdomain</span>
+                  </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
                     <span className="font-semibold text-slate-800">Semua Fitur Paket Populer</span>

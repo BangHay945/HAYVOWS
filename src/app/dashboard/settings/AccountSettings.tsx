@@ -190,7 +190,7 @@ export default function AccountSettings({ initialUser }: { initialUser: AccountU
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 {currentPlan === "luxury"
-                  ? "Akses tanpa batas ke seluruh tema eksklusif (Eternal Noir), custom domain, dan prioritas VIP."
+                  ? "Akses tanpa batas ke seluruh tema eksklusif (Eternal Noir), Free Custom Domain (.my.id), dan prioritas VIP."
                   : currentPlan === "premium"
                   ? "Akses penuh tanpa watermark dengan kuota 500 tamu, Buku Tamu, Layar Sambutan TV, dan tema populer."
                   : "Kapasitas hingga 50 tamu undangan dengan fitur esensial praktis."}

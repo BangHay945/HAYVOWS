@@ -168,6 +168,10 @@ export default function LandingPage() {
       a: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank yang Anda pasang langsung terhubung ke rekening pribadi Anda, sehingga seluruh tanda kasih dari tamu masuk 100% utuh tanpa perantara.",
     },
     {
+      q: "Apakah Paket Exclusive sudah termasuk Custom Domain gratis?",
+      a: "Ya! Pengguna Paket Exclusive mendapatkan GRATIS 1 nama domain personal (.my.id) selama 1 tahun (contoh: romeojuliet.my.id) atau bisa langsung menggunakan subdomain kustom (nama.hayvows.com). Anda juga bebas menghubungkan domain berekstensi lain (.com, .id, dll) yang sudah Anda miliki sendiri dengan bantuan panduan DNS mudah di dashboard.",
+    },
+    {
       q: "Bisakah mengganti lagu atau latar musik undangan?",
       a: "Sangat bisa! Anda dapat menggunakan lagu pilihan dari playlist kami, mengunggah file MP3 sendiri, ataupun menyematkan lagu romantis langsung dari video YouTube favorit Anda.",
     },
@@ -1602,7 +1606,7 @@ export default function LandingPage() {
                   <span>VIP RESEPSI</span>
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Tamu Unlimited + Eternal Noir + Game RPG 2D.</p>
+              <p className="text-xs text-slate-500 mt-1">Tamu Unlimited + Free Custom Domain + Eternal Noir + RPG.</p>
 
               <div className="my-6">
                 <span className="text-xs text-slate-400 font-semibold line-through">Rp 499.000</span>
@@ -1616,6 +1620,10 @@ export default function LandingPage() {
                 <p className="flex items-center gap-2 font-bold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Unlimited Nama Tamu (Tanpa Batas)</span>
+                </p>
+                <p className="flex items-center gap-2 font-bold text-amber-900 bg-amber-50/80 px-2.5 py-1.5 rounded-lg border border-amber-200/60">
+                  <Crown className="w-4 h-4 text-[#c9a84c] shrink-0" />
+                  <span>FREE Custom Domain (.my.id) / Subdomain</span>
                 </p>
                 <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />

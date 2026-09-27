@@ -68,7 +68,7 @@ export default function JsonLd() {
               price: "299000",
               priceCurrency: "IDR",
               availability: "https://schema.org/InStock",
-              description: "Unlimited nama tamu, tema eksklusif Eternal Noir, Game 2D RPG & Cyberpunk, Layar Sambutan TV, dan dukungan prioritas.",
+              description: "Unlimited nama tamu, Free Custom Domain (.my.id) 1 tahun, tema eksklusif Eternal Noir, Game 2D RPG & Cyberpunk, Layar Sambutan TV, dan dukungan prioritas.",
             },
           ],
         },
@@ -125,6 +125,14 @@ export default function JsonLd() {
             acceptedAnswer: {
               "@type": "Answer",
               text: "Hanya butuh waktu sekitar 5 menit. Pengantin cukup memilih tema, melengkapi data mempelai, waktu acara, serta foto prewedding, dan tautan undangan langsung aktif siap dibagikan.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Apakah Paket Exclusive sudah termasuk Custom Domain gratis?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Ya! Pengguna Paket Exclusive mendapatkan GRATIS 1 nama domain personal (.my.id) selama 1 tahun (contoh: romeojuliet.my.id) atau bisa langsung menggunakan subdomain kustom (nama.hayvows.com). Anda juga bebas menghubungkan domain berekstensi lain yang sudah dimiliki.",
             },
           },
         ],
