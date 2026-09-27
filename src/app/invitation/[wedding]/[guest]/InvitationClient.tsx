@@ -78,6 +78,21 @@ export default function InvitationClient({
           qrCode={(guest as any).qrCode}
         />
       )}
+
+      {/* Permanent Canonical SEO Platform Backlink */}
+      <footer className="sr-only" aria-label="Hayvows Digital Wedding Invitation Platform">
+        <p>
+          Undangan pernikahan digital ini dibuat dengan{" "}
+          <a href="https://www.hayvows.com" rel="noopener">
+            Hayvows Digital Wedding
+          </a>
+          . Buat undangan pernikahan online elegan dengan fitur buku tamu digital QR Code dan layar TV resepsi di{" "}
+          <a href="https://www.hayvows.com" rel="noopener">
+            www.hayvows.com
+          </a>
+          .
+        </p>
+      </footer>
     </>
   );
 }

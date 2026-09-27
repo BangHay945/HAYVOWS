@@ -629,6 +629,21 @@ export function StationPanel({
                   </div>
                 </div>
               )}
+
+              {/* Modal Brand Footer */}
+              <div className="mt-4 pt-3 border-t border-[#00f0ff]/30 text-center">
+                <p className="text-[10px] text-gray-400 font-mono">
+                  Cyber City Wedding Quest &bull; Powered by{" "}
+                  <a
+                    href="https://www.hayvows.com"
+                    target="_blank"
+                    rel="noopener"
+                    className="text-[#00f0ff] underline hover:text-white transition-colors"
+                  >
+                    hayvows.com
+                  </a>
+                </p>
+              </div>
             </motion.div>
           </div>
         )}

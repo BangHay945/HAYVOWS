@@ -15,7 +15,15 @@ export function TrialExpiredNotice({
     <div className="min-h-screen bg-[#f8f6f0] flex items-center justify-center p-4 selection:bg-[#2d4a3e] selection:text-white">
       <div className="w-full max-w-lg bg-white border border-[#e2ded5] rounded-3xl p-8 sm:p-10 shadow-xl text-center space-y-6 animate-in fade-in zoom-in-95 duration-300">
         <div className="flex justify-center">
-          <HayvowsLogo size="md" />
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="hover:opacity-85 transition-opacity"
+            title="Hayvows Digital Wedding"
+          >
+            <HayvowsLogo size="md" />
+          </a>
         </div>
 
         <div className="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200/80 text-amber-700 flex items-center justify-center mx-auto shadow-inner">

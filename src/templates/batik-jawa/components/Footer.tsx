@@ -107,13 +107,30 @@ export function BatikJawaFooter({ context }: TemplateComponentProps) {
             style={{ color: '#B8860B', fontStyle: 'normal', letterSpacing: '0.15em' }}
           >
             Dibuat dengan cinta oleh{' '}
-            <span style={{ color: '#D4A853', fontWeight: 600 }}>Hayvows</span>
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              style={{ color: '#D4A853', fontWeight: 600, textDecoration: 'underline' }}
+              className="hover:brightness-125 transition-all"
+            >
+              Hayvows
+            </a>
           </p>
           <p
             className="font-jawa-body text-xs opacity-40"
             style={{ color: '#EDE0C4', fontStyle: 'normal' }}
           >
-            &copy; {currentYear} Hayvows. All rights reserved.
+            &copy; {currentYear}{' '}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="hover:underline hover:opacity-100 transition-opacity"
+            >
+              Hayvows
+            </a>
+            . All rights reserved.
           </p>
         </motion.div>
       </div>

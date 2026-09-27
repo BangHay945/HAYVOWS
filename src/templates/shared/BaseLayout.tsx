@@ -338,6 +338,25 @@ export function BaseLayout({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Subtle Persistent Brand Backlink in Game World */}
+      {isOpen && (
+        <aside
+          aria-label="Platform Info"
+          className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 pointer-events-auto select-none"
+        >
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-[10px] font-mono text-white/80 hover:text-white transition-all shadow-lg active:scale-95"
+            title="Hayvows Digital Wedding"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>hayvows.com</span>
+          </a>
+        </aside>
+      )}
     </div>
   );
 }

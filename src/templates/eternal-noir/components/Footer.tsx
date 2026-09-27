@@ -93,9 +93,17 @@ export function NoirFooter({ context }: TemplateComponentProps) {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="font-noir-sans text-[8px] tracking-[0.3em] uppercase text-[#333333]"
+          className="font-noir-sans text-[8px] tracking-[0.3em] uppercase text-[#555555]"
         >
-          Undangan Digital &copy; {year} — Hayvows
+          Undangan Digital &copy; {year} &mdash;{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#c9a84c] hover:underline font-semibold"
+          >
+            Hayvows
+          </a>
         </motion.p>
       </div>
     </section>

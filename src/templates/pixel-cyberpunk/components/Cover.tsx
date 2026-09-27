@@ -208,9 +208,22 @@ export function CyberCover({
           </motion.button>
         )}
 
-        <p className="text-[7px] sm:text-[8px] text-gray-500 mt-2 font-mono">
-          PRESS START TO ENTER THE CYBER DISTRICT
-        </p>
+        <div className="mt-2 text-center space-y-0.5">
+          <p className="text-[7px] sm:text-[8px] text-gray-500 font-mono">
+            PRESS START TO ENTER THE CYBER DISTRICT
+          </p>
+          <p className="text-[8px] sm:text-[9px] text-gray-400 font-mono">
+            DIGITAL WEDDING BY{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-[#00f0ff] underline hover:text-white transition-colors"
+            >
+              HAYVOWS.COM
+            </a>
+          </p>
+        </div>
       </motion.div>
     </div>
   );

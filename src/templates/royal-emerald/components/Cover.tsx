@@ -161,6 +161,19 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
               <span>Lihat E-Pass Presensi QR</span>
             </button>
           )}
+
+          {/* Platform Backlink */}
+          <p className="text-[10px] text-[#8ca89c]/70 tracking-wider uppercase pt-1 text-center">
+            Digital Wedding Invitation &bull;{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-[#d4af37] underline hover:text-[#fff2cc] font-medium"
+            >
+              Hayvows
+            </a>
+          </p>
         </div>
       </motion.div>
     </div>

@@ -124,6 +124,19 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
             <span>Lihat Tiket E-Pass QR</span>
           </motion.button>
         )}
+
+        {/* Platform Backlink */}
+        <p className="mt-4 text-[9px] text-[#666666] font-noir-sans tracking-[0.25em] uppercase text-center">
+          Undangan Digital &bull;{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#c9a84c] underline hover:text-white transition-colors font-medium"
+          >
+            Hayvows
+          </a>
+        </p>
       </motion.div>
     </div>
   );

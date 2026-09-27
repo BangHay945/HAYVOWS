@@ -203,11 +203,24 @@ export function PixelCover({ context, onOpen, onOpenTicket }: CoverProps) {
         </div>
 
         {/* Footer Subtext */}
-        <p className="text-[#fef08a] text-[11px] mt-3 tracking-wider drop-shadow flex items-center gap-1 font-bold">
-          <span>✨</span>
-          <span>KLIK UNTUK MEMULAI PETUALANGAN DI PULAU LANGIT KERAJAAN</span>
-          <span>✨</span>
-        </p>
+        <div className="mt-3 text-center space-y-1">
+          <p className="text-[#fef08a] text-[11px] tracking-wider drop-shadow flex items-center justify-center gap-1 font-bold">
+            <span>✨</span>
+            <span>KLIK UNTUK MEMULAI PETUALANGAN DI PULAU LANGIT KERAJAAN</span>
+            <span>✨</span>
+          </p>
+          <p className="text-[10px] text-amber-200/60 font-mono">
+            Undangan Digital oleh{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-[#fde047] underline hover:text-white transition-colors font-bold"
+            >
+              Hayvows
+            </a>
+          </p>
+        </div>
       </motion.div>
     </div>
   );

@@ -668,6 +668,21 @@ export function StationPanel({
                   </div>
                 </div>
               )}
+
+              {/* Modal Brand Footer */}
+              <div className="mt-4 pt-3 border-t border-[#eab308]/30 text-center">
+                <p className="text-[10px] text-[#fef08a]/60 font-mono">
+                  The Royal Wedding Quest &bull; Powered by{" "}
+                  <a
+                    href="https://www.hayvows.com"
+                    target="_blank"
+                    rel="noopener"
+                    className="text-[#fde047] underline hover:text-white transition-colors font-bold"
+                  >
+                    hayvows.com
+                  </a>
+                </p>
+              </div>
             </motion.div>
           </div>
         )}

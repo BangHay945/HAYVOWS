@@ -150,6 +150,19 @@ export function BatikJawaCover({ context, onOpen, onOpenTicket }: CoverProps) {
             <span>Lihat Tiket E-Pass QR</span>
           </motion.button>
         )}
+
+        {/* Platform Backlink */}
+        <p className="mt-4 text-[10px] text-[#EDE0C4]/60 font-jawa-body tracking-wider text-center" style={{ fontStyle: "normal" }}>
+          Undangan Digital &bull;{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#D4A853] underline hover:text-[#EDE0C4] transition-colors font-medium"
+          >
+            Hayvows
+          </a>
+        </p>
       </motion.div>
     </div>
   );

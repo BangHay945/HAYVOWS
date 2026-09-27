@@ -134,6 +134,19 @@ export function MonogramCover({
             <span>Lihat Tiket E-Pass QR</span>
           </button>
         )}
+
+        {/* Platform Backlink */}
+        <p className="text-[10px] text-slate-400 tracking-wider">
+          Undangan Digital oleh{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#2d4a3e] font-semibold underline hover:text-slate-900 transition-colors"
+          >
+            Hayvows
+          </a>
+        </p>
       </motion.div>
     </motion.section>
   );

@@ -397,7 +397,17 @@ export default function PublicRSVPClient({
 
         {/* Footer info */}
         <div className="text-center text-[11px] text-white/50">
-          <p>Powered by Hayvows Wedding Experience</p>
+          <p>
+            Powered by{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-white/80 underline hover:text-[#c9a84c] transition-colors font-semibold"
+            >
+              Hayvows Wedding Experience
+            </a>
+          </p>
         </div>
       </div>
 

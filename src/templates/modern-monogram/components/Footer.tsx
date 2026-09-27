@@ -43,10 +43,24 @@ export function MonogramFooter({ context }: TemplateComponentProps) {
             <span>Dibuat dengan</span>
             <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
             <span>oleh</span>
-            <span className="font-bold text-slate-800">Hayvows</span>
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="font-bold text-slate-800 hover:text-[#2d4a3e] underline transition-colors"
+            >
+              Hayvows
+            </a>
           </div>
           <p className="text-[10px] text-slate-400">
-            Platform Undangan Pernikahan Digital Modern
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="hover:underline hover:text-slate-600 transition-colors"
+            >
+              Platform Undangan Pernikahan Digital Modern &bull; www.hayvows.com
+            </a>
           </p>
         </div>
       </div>

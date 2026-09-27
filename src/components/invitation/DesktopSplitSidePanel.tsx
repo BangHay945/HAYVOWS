@@ -344,7 +344,17 @@ export function DesktopSplitSidePanel({
         )}
 
         <div className="flex items-center justify-between text-[11px] text-white/60 pt-1">
-          <span>&copy; {wedding.slug}. All rights reserved.</span>
+          <span>
+            &copy; {wedding.slug} &bull; Undangan Digital oleh{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="font-semibold text-white/90 underline hover:text-[#fef08a] transition-colors"
+            >
+              Hayvows
+            </a>
+          </span>
           <span className="hidden xl:inline italic text-white/50">
             Gulir panel kanan untuk membuka isi undangan &darr;
           </span>

@@ -31,10 +31,25 @@ export function RoyalFooter({ context }: TemplateComponentProps) {
         <div className="text-center space-y-1">
           <p className="text-[10px] tracking-[0.25em] uppercase text-[#8ca89c]">
             Created with elegance by{" "}
-            <span className="text-[#d4af37] font-semibold">Hayvows</span>
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-[#d4af37] font-semibold underline hover:text-[#ffd700] transition-colors"
+            >
+              Hayvows
+            </a>
           </p>
           <p className="text-[9px] text-[#8ca89c]/60">
-            &copy; {new Date().getFullYear()} {context.wedding.slug}. All Rights Reserved.
+            &copy; {new Date().getFullYear()} {context.wedding.slug}. Powered by{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="hover:underline text-[#8ca89c] hover:text-[#d4af37] transition-colors"
+            >
+              Hayvows
+            </a>
           </p>
         </div>
       </div>

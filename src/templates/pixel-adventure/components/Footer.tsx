@@ -13,8 +13,17 @@ export function PixelFooter({ context }: TemplateComponentProps) {
           {couple?.groomNickname || couple?.groomName || "Groom"} &amp;{" "}
           {couple?.brideNickname || couple?.brideName || "Bride"}
         </p>
-        <p className="font-mono text-[#555] text-xs mt-6">
-          Made with ♥ · Wedding Invitation
+        <p className="font-mono text-xs mt-6 text-[#888]">
+          Made with ♥ by{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#FFD700] underline hover:text-yellow-300 transition-colors font-bold"
+          >
+            Hayvows
+          </a>{" "}
+          &bull; 2D Pixel Wedding Invitation
         </p>
       </div>
     </footer>

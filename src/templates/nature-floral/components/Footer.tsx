@@ -34,9 +34,22 @@ export function FloralFooter({ context }: TemplateComponentProps) {
 
         <div className="w-12 h-[1px] bg-[#c5a880]/40 mx-auto" />
 
-        <p className="text-[10px] text-[#8ea89a] tracking-wider uppercase">
-          Digital Wedding Invitation · Nature &amp; Floral Edition
-        </p>
+        <div className="space-y-1 text-xs">
+          <p className="text-[11px] text-[#e8ded1] flex items-center justify-center gap-1">
+            <span>Dibuat dengan cinta oleh</span>
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="font-semibold text-[#c5a880] underline hover:text-white transition-colors"
+            >
+              Hayvows
+            </a>
+          </p>
+          <p className="text-[10px] text-[#8ea89a] tracking-wider uppercase">
+            Digital Wedding Invitation &bull; Nature &amp; Floral Edition
+          </p>
+        </div>
       </div>
     </footer>
   );

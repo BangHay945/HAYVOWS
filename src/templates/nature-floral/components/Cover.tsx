@@ -163,6 +163,19 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
         <p className="text-[#63756b] text-xs mt-4 tracking-wide text-center font-medium">
           Mohon maaf apabila ada kesalahan penulisan nama/gelar
         </p>
+
+        {/* Platform Backlink */}
+        <p className="text-[10px] text-[#7a8c7e] mt-2 tracking-wider text-center">
+          Undangan Pernikahan Digital &bull;{" "}
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="text-[#2d4a3e] font-bold underline hover:text-[#c5a880] transition-colors"
+          >
+            Hayvows
+          </a>
+        </p>
       </motion.div>
     </div>
   );

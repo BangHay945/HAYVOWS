@@ -27,7 +27,14 @@ export function TrialWatermark({
               : "Mode Uji Coba"}
           </span>
           <span className="text-slate-500">•</span>
-          <span className="font-light text-slate-300">Hayvows Digital</span>
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="font-light text-slate-300 hover:text-white underline transition-colors"
+          >
+            Hayvows Digital
+          </a>
           <Link
             href="/register"
             target="_blank"
@@ -42,9 +49,26 @@ export function TrialWatermark({
       {/* 2. Bottom Footer Banner */}
       <div className="w-full bg-[#0a0a0a] border-t border-[#c9a84c]/30 py-5 px-4 text-center select-none relative z-20">
         <div className="max-w-md mx-auto flex flex-col items-center gap-2">
-          <HayvowsLogo size="sm" theme="gold" showTagline={false} />
+          <a
+            href="https://www.hayvows.com"
+            target="_blank"
+            rel="noopener"
+            className="inline-block hover:opacity-85 transition-opacity"
+            title="Hayvows Digital Wedding Platform"
+          >
+            <HayvowsLogo size="sm" theme="gold" showTagline={false} />
+          </a>
           <p className="text-[11px] text-slate-400 leading-relaxed max-w-xs mx-auto">
-            Undangan ini dibuat menggunakan <span className="text-amber-200 font-semibold">Mode Uji Coba</span> Hayvows. Buat undangan pernikahan digital impian Anda hari ini.
+            Undangan ini dibuat menggunakan <span className="text-amber-200 font-semibold">Mode Uji Coba</span>{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener"
+              className="text-amber-200 font-semibold underline hover:text-white transition-colors"
+            >
+              Hayvows
+            </a>
+            . Buat undangan pernikahan digital impian Anda hari ini.
           </p>
           <Link
             href="/register"
