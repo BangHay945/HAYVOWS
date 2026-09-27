@@ -7,7 +7,7 @@ interface OnTheSpotGuestModalProps {
   isOpen: boolean;
   onClose: () => void;
   weddingId: string;
-  onSuccess: () => void;
+  onSuccess: (newGuest?: any) => void;
 }
 
 export function OnTheSpotGuestModal({
@@ -57,7 +57,7 @@ export function OnTheSpotGuestModal({
         return;
       }
 
-      onSuccess();
+      onSuccess(data.guest);
       onClose();
     } catch {
       setLoading(false);

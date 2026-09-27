@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -25,6 +25,7 @@ import {
   Crown,
   FileSpreadsheet,
   Heart,
+  RefreshCw,
 } from "lucide-react";
 import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
@@ -76,6 +77,7 @@ export function GuestbookWorkbench({
   const [isOnTheSpotModalOpen, setIsOnTheSpotModalOpen] = useState(false);
   const [selectedTicketGuest, setSelectedTicketGuest] = useState<GuestbookItem | null>(null);
   const [loadingGuestId, setLoadingGuestId] = useState<string | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Stats Calculations
   const stats = useMemo(() => {
@@ -104,7 +106,8 @@ export function GuestbookWorkbench({
   }, [guests]);
 
   // Refresh guests list from API
-  const reloadGuests = async () => {
+  const reloadGuests = useCallback(async (showIndicator = false) => {
+    if (showIndicator) setIsSyncing(true);
     try {
       const res = await fetch(`/api/wedding/${weddingId}/guests`);
       if (res.ok) {
@@ -113,8 +116,32 @@ export function GuestbookWorkbench({
       }
     } catch {
       // ignore
+    } finally {
+      if (showIndicator) {
+        setTimeout(() => setIsSyncing(false), 500);
+      }
     }
-  };
+  }, [weddingId]);
+
+  // Real-time live auto-refresh polling (every 4 seconds) & focus sync
+  useEffect(() => {
+    const interval = setInterval(() => {
+      reloadGuests(false);
+    }, 4000);
+
+    const handleFocus = () => {
+      reloadGuests(true);
+    };
+
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
+  }, [reloadGuests]);
 
   // Toggle quick checkin / undo
   const handleToggleCheckIn = async (guest: GuestbookItem) => {
@@ -245,6 +272,17 @@ export function GuestbookWorkbench({
             <Tv className="w-4 h-4 text-purple-700 shrink-0" />
             <span>Layar Sambutan TV ↗</span>
           </Link>
+
+          <button
+            type="button"
+            onClick={() => reloadGuests(true)}
+            disabled={isSyncing}
+            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs border border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+            title="Muat ulang data kehadiran terkini"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${isSyncing ? "animate-spin text-[#2d4a3e]" : ""}`} />
+            <span>{isSyncing ? "Menyinkronkan..." : "Sinkronkan"}</span>
+          </button>
 
           <button
             type="button"

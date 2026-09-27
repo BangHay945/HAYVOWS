@@ -7,19 +7,12 @@ export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const { id: weddingIdOrSlug } = await params;
 
-  const { id: weddingId } = await params;
-
-  // Verify ownership or admin
-  const userRole = (session.user as any)?.role;
+  // Support querying by wedding ID or slug
   const wedding = await prisma.wedding.findFirst({
     where: {
-      id: weddingId,
-      ...(userRole !== "admin" ? { userId: session.user.id } : {}),
+      OR: [{ id: weddingIdOrSlug }, { slug: weddingIdOrSlug }],
     },
   });
 
@@ -47,7 +40,7 @@ export async function POST(
     );
   }
 
-  const result = await quickRegisterCheckIn(weddingId, {
+  const result = await quickRegisterCheckIn(wedding.id, {
     name,
     address,
     category: category || "Reguler",

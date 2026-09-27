@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { createGuest, getGuests } from "@/lib/guest";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _req: Request,
@@ -11,8 +12,19 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = await params;
-  const guests = await getGuests(id);
+  const { id: weddingIdOrSlug } = await params;
+  const wedding = await prisma.wedding.findFirst({
+    where: {
+      OR: [{ id: weddingIdOrSlug }, { slug: weddingIdOrSlug }],
+    },
+    select: { id: true },
+  });
+
+  if (!wedding) {
+    return NextResponse.json({ error: "Wedding tidak ditemukan" }, { status: 404 });
+  }
+
+  const guests = await getGuests(wedding.id);
   return NextResponse.json(guests);
 }
 

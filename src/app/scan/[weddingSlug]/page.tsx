@@ -22,7 +22,11 @@ import {
   Search,
   Check,
   Zap,
+  UserPlus,
+  Clock,
+  Loader2,
 } from "lucide-react";
+import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
 
 export default function ReceptionQRScannerPage({
   params,
@@ -57,6 +61,11 @@ export default function ReceptionQRScannerPage({
   // Manual Input State
   const [isManualModalOpen, setIsManualModalOpen] = useState(false);
   const [manualQuery, setManualQuery] = useState("");
+  const [manualSearchResults, setManualSearchResults] = useState<any[]>([]);
+  const [isSearchingManual, setIsSearchingManual] = useState(false);
+
+  // On The Spot Modal State
+  const [isOnTheSpotModalOpen, setIsOnTheSpotModalOpen] = useState(false);
 
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isProcessingRef = useRef(false);
@@ -110,8 +119,8 @@ export default function ReceptionQRScannerPage({
         setWeddingData({
           id: json.wedding?.id || weddingSlug,
           coupleTitle,
-          checkedInCount: json.recentCheckedIn?.length || 0,
-          totalGuests: (json.wedding?._count?.guests ?? 0) || 0,
+          checkedInCount: json.stats?.totalCheckedIn ?? json.recentCheckedIn?.length ?? 0,
+          totalGuests: json.stats?.totalGuests ?? (json.wedding?._count?.guests ?? 0) ?? 0,
         });
       }
     } catch {
@@ -121,18 +130,107 @@ export default function ReceptionQRScannerPage({
 
   useEffect(() => {
     fetchStats();
-    const interval = setInterval(fetchStats, 6000);
+    const interval = setInterval(fetchStats, 5000);
     return () => clearInterval(interval);
   }, [fetchStats]);
 
-  // Fullscreen Handler
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
-    } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+  // Fullscreen Handler with cross-browser support
+  const toggleFullscreen = async () => {
+    try {
+      const doc = document as any;
+      const el = document.documentElement as any;
+      const isFs = Boolean(
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
+      );
+
+      if (!isFs) {
+        if (el.requestFullscreen) {
+          await el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          await el.webkitRequestFullscreen();
+        } else if (el.mozRequestFullScreen) {
+          await el.mozRequestFullScreen();
+        } else if (el.msRequestFullscreen) {
+          await el.msRequestFullscreen();
+        }
+      } else {
+        if (doc.exitFullscreen) {
+          await doc.exitFullscreen();
+        } else if (doc.webkitExitFullscreen) {
+          await doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          await doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          await doc.msExitFullscreen();
+        }
+      }
+    } catch (e) {
+      console.warn("Fullscreen toggle error:", e);
     }
   };
+
+  // Synchronize fullscreen state & ensure camera video doesn't pause
+  useEffect(() => {
+    const handleFsChange = () => {
+      const doc = document as any;
+      const isFs = Boolean(
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
+      );
+      setIsFullscreen(isFs);
+
+      // Ensure video element remains playing
+      const container = document.getElementById(scannerContainerId);
+      const video = container?.querySelector("video");
+      if (video && video.paused) {
+        video.play().catch(() => {});
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFsChange);
+    document.addEventListener("webkitfullscreenchange", handleFsChange);
+    document.addEventListener("mozfullscreenchange", handleFsChange);
+    document.addEventListener("MSFullscreenChange", handleFsChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFsChange);
+      document.removeEventListener("webkitfullscreenchange", handleFsChange);
+      document.removeEventListener("mozfullscreenchange", handleFsChange);
+      document.removeEventListener("MSFullscreenChange", handleFsChange);
+    };
+  }, []);
+
+  // Debounced search for manual modal input
+  useEffect(() => {
+    const query = manualQuery.trim();
+    if (!query || query.length < 2) {
+      setManualSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearchingManual(true);
+      try {
+        const targetId = weddingData?.id || weddingSlug;
+        const res = await fetch(`/api/wedding/${targetId}/checkin?q=${encodeURIComponent(query)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setManualSearchResults(data.guests || []);
+        }
+      } catch {
+        // ignore
+      } finally {
+        setIsSearchingManual(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [manualQuery, weddingData?.id, weddingSlug]);
 
   // Start Camera Scanner
   const startCamera = useCallback(async (facing: "environment" | "user") => {
@@ -154,9 +252,8 @@ export default function ReceptionQRScannerPage({
           qrbox: (viewfinderWidth, viewfinderHeight) => {
             const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
             const edge = Math.floor(minEdge * 0.72);
-            return { width: Math.max(edge, 240), height: Math.max(edge, 240) };
+            return { width: Math.max(edge, 220), height: Math.max(edge, 220) };
           },
-          aspectRatio: 1.0,
         },
         (decodedText) => {
           if (!isProcessingRef.current) {
@@ -417,10 +514,10 @@ export default function ReceptionQRScannerPage({
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer hidden sm:flex"
-            title="Layar Penuh"
+            className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+            title={isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh"}
           >
-            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-amber-300" /> : <Maximize2 className="w-4 h-4" />}
           </button>
         </div>
       </header>
@@ -430,7 +527,7 @@ export default function ReceptionQRScannerPage({
         {/* Camera Viewport Mount */}
         <div
           id={scannerContainerId}
-          className="absolute inset-0 w-full h-full object-cover [&_video]:w-full [&_video]:h-full [&_video]:object-cover"
+          className="absolute inset-0 w-full h-full object-cover [&_video]:w-full [&_video]:h-full [&_video]:object-cover [&_#qr-shaded-region]:!hidden [&_canvas]:!hidden"
         />
 
         {/* Camera Fallback / Error Alert */}
@@ -644,42 +741,87 @@ export default function ReceptionQRScannerPage({
       </main>
 
       {/* ── BOTTOM DOCK CONTROLS ── */}
-      <footer className="h-16 px-4 sm:px-6 bg-slate-900/90 backdrop-blur-md border-t border-white/10 flex items-center justify-between gap-3 z-30 shrink-0">
+      <footer className="h-16 px-3 sm:px-6 bg-slate-900/90 backdrop-blur-md border-t border-white/10 flex items-center justify-between gap-2 z-30 shrink-0">
         {/* Attendance Counter */}
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-mono text-slate-300 shrink-0">
           <Users className="w-4 h-4 text-emerald-400" />
           <span>
             <strong className="text-emerald-400 text-sm">{weddingData?.checkedInCount ?? 0}</strong> Hadir
           </span>
           {Boolean(weddingData?.totalGuests) && (
-            <span className="text-slate-500">/ {weddingData?.totalGuests} Undangan</span>
+            <span className="text-slate-500 hidden sm:inline">/ {weddingData?.totalGuests} Undangan</span>
           )}
         </div>
 
-        {/* Manual Keyboard Input Button */}
-        <button
-          type="button"
-          onClick={() => setIsManualModalOpen(true)}
-          className="flex items-center gap-2 py-2 px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold text-xs transition-all cursor-pointer border border-white/10"
-        >
-          <Keyboard className="w-4 h-4 text-amber-300" />
-          <span>Input Manual / Cari</span>
-        </button>
+        {/* Action Buttons: Tambah Tamu OTS & Input Manual */}
+        <div className="flex items-center gap-2">
+          {/* Button: Tambah Tamu On the Spot */}
+          <button
+            type="button"
+            onClick={() => setIsOnTheSpotModalOpen(true)}
+            className="flex items-center gap-1.5 py-2 px-3 sm:px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs transition-all cursor-pointer shadow-md shadow-emerald-950/40 shrink-0"
+            title="Tambah Tamu Hadir Tanpa Undangan Sebelumnya"
+          >
+            <UserPlus className="w-3.5 h-3.5 text-[#fef08a]" />
+            <span>Tamu On the Spot</span>
+          </button>
+
+          {/* Button: Input Manual / Cari */}
+          <button
+            type="button"
+            onClick={() => setIsManualModalOpen(true)}
+            className="flex items-center gap-1.5 py-2 px-3 sm:px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold text-xs transition-all cursor-pointer border border-white/10 shrink-0"
+            title="Cari Nama Tamu atau Input Token Manual"
+          >
+            <Keyboard className="w-3.5 h-3.5 text-amber-300" />
+            <span className="hidden sm:inline">Input Manual / Cari</span>
+            <span className="sm:hidden">Cari</span>
+          </button>
+        </div>
       </footer>
+
+      {/* ── ON THE SPOT GUEST MODAL ── */}
+      <OnTheSpotGuestModal
+        isOpen={isOnTheSpotModalOpen}
+        onClose={() => setIsOnTheSpotModalOpen(false)}
+        weddingId={weddingData?.id || weddingSlug}
+        onSuccess={(newGuest) => {
+          fetchStats();
+          if (newGuest) {
+            playSuccessChime();
+            setScannedGuest(newGuest);
+            setAutoDismissTimer(4);
+            if (autoDismissIntervalRef.current) clearInterval(autoDismissIntervalRef.current);
+            autoDismissIntervalRef.current = setInterval(() => {
+              setAutoDismissTimer((prev) => {
+                if (prev <= 1) {
+                  dismissGuestWelcome();
+                  return 0;
+                }
+                return prev - 1;
+              });
+            }, 1000);
+          }
+        }}
+      />
 
       {/* ── MANUAL INPUT DRAWER / MODAL ── */}
       <AnimatePresence>
         {isManualModalOpen && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
-            onClick={() => setIsManualModalOpen(false)}
+            onClick={() => {
+              setIsManualModalOpen(false);
+              setManualQuery("");
+              setManualSearchResults([]);
+            }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl text-white space-y-4"
+              className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-5 sm:p-6 shadow-2xl text-white space-y-4 max-h-[90vh] flex flex-col"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2 text-amber-300">
@@ -688,7 +830,11 @@ export default function ReceptionQRScannerPage({
                 </div>
                 <button
                   type="button"
-                  onClick={() => setIsManualModalOpen(false)}
+                  onClick={() => {
+                    setIsManualModalOpen(false);
+                    setManualQuery("");
+                    setManualSearchResults([]);
+                  }}
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
@@ -696,7 +842,7 @@ export default function ReceptionQRScannerPage({
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed">
-                Gunakan fitur ini jika kamera kesulitan membaca QR Code tamu. Masukkan kode token tiket (contoh: <code className="bg-white/10 text-amber-300 px-1 py-0.5 rounded">HVW-ALEX-1234</code>), nama lengkap, atau slug URL tamu.
+                Ketik nama tamu, domisili, nomor meja, atau kode token tiket untuk check-in langsung.
               </p>
 
               <form onSubmit={handleManualSubmit} className="space-y-3">
@@ -706,16 +852,93 @@ export default function ReceptionQRScannerPage({
                     type="text"
                     value={manualQuery}
                     onChange={(e) => setManualQuery(e.target.value)}
-                    placeholder="Ketik kode token, nama, atau slug..."
+                    placeholder="Ketik nama, token, meja..."
                     autoFocus
-                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 placeholder:text-slate-500 font-sans"
+                    className="w-full pl-10 pr-10 py-3 bg-white/5 border border-white/20 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 placeholder:text-slate-500 font-sans"
                   />
+                  {isSearchingManual && (
+                    <Loader2 className="w-4 h-4 text-emerald-400 animate-spin absolute right-3.5 top-1/2 -translate-y-1/2" />
+                  )}
                 </div>
+
+                {/* Live Search Matching Guests List */}
+                {manualSearchResults.length > 0 && (
+                  <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                    <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                      Daftar Tamu Cocok ({manualSearchResults.length}):
+                    </p>
+                    {manualSearchResults.map((g) => (
+                      <div
+                        key={g.id}
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between gap-2 transition-colors"
+                      >
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-sm text-white truncate">{g.name}</span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded-full font-mono bg-white/10 text-emerald-300">
+                              {g.category || "Reguler"}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5">
+                            {g.tableNumber && <span>Meja: {g.tableNumber}</span>}
+                            {g.address && <span className="truncate max-w-[120px]">{g.address}</span>}
+                            <span>{g.guestCount || 1} Pax</span>
+                          </div>
+                        </div>
+
+                        {g.checkedIn ? (
+                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2.5 py-1 rounded-lg shrink-0 flex items-center gap-1">
+                            <Check className="w-3 h-3" />
+                            <span>Hadir</span>
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              setIsManualModalOpen(false);
+                              await handleScanSuccess(g.qrCode || g.slug || g.id);
+                              setManualQuery("");
+                              setManualSearchResults([]);
+                            }}
+                            className="text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 active:scale-95 px-3 py-1.5 rounded-lg shrink-0 transition-all cursor-pointer flex items-center gap-1"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Check-in</span>
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Not found state with button to add on the spot */}
+                {manualQuery.trim().length >= 2 && manualSearchResults.length === 0 && !isSearchingManual && (
+                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center space-y-2">
+                    <p className="text-xs text-slate-400">
+                      Tamu &quot;<span className="text-white font-semibold">{manualQuery}</span>&quot; tidak ada dalam daftar undangan.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsManualModalOpen(false);
+                        setIsOnTheSpotModalOpen(true);
+                      }}
+                      className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors cursor-pointer"
+                    >
+                      <UserPlus className="w-3.5 h-3.5 text-[#fef08a]" />
+                      <span>+ Daftarkan Tamu On-the-Spot</span>
+                    </button>
+                  </div>
+                )}
 
                 <div className="flex gap-2 pt-2">
                   <button
                     type="button"
-                    onClick={() => setIsManualModalOpen(false)}
+                    onClick={() => {
+                      setIsManualModalOpen(false);
+                      setManualQuery("");
+                      setManualSearchResults([]);
+                    }}
                     className="flex-1 py-3 px-4 rounded-xl border border-white/20 hover:bg-white/10 text-white text-xs font-semibold transition-colors cursor-pointer"
                   >
                     Batal
@@ -725,7 +948,7 @@ export default function ReceptionQRScannerPage({
                     disabled={!manualQuery.trim() || loading}
                     className="flex-1 py-3 px-4 rounded-xl bg-[#2d4a3e] hover:bg-[#233a30] text-white text-xs font-bold transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    {loading ? "Memproses..." : "Check-in Tamu"}
+                    {loading ? "Memproses..." : "Check-in Kode"}
                   </button>
                 </div>
               </form>
