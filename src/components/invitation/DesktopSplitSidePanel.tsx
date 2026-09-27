@@ -13,7 +13,7 @@ import {
 
 interface DesktopSplitSidePanelProps {
   context: WeddingContextData;
-  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald";
+  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald" | "cinematic-editorial";
 }
 
 export function DesktopSplitSidePanel({
@@ -102,6 +102,18 @@ export function DesktopSplitSidePanel({
   // Theme-specific styles & color palettes
   const getThemeStyles = () => {
     switch (themeSlug) {
+      case "cinematic-editorial":
+        return {
+          bgGradient: "from-[#0a0a0c] via-[#121216] to-[#08080a]",
+          overlayGradient: "from-black/85 via-[#0f0f13]/70 to-[#070709]/95",
+          accentGold: "text-[#e8d5b5]",
+          accentGoldBg: "bg-white/10 border-white/20 text-[#f5f0eb]",
+          cardBg: "bg-black/50 border-white/15 backdrop-blur-md",
+          fontTitle: "font-serif text-[#fdfbf7] tracking-tight",
+          fontBody: "font-sans text-neutral-300",
+          particleColor: "bg-white/15",
+          ornamentBorder: "border-white/20",
+        };
       case "royal-emerald":
         return {
           bgGradient: "from-[#02241b] via-[#064e3b] to-[#021a13]",

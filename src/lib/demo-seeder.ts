@@ -233,5 +233,235 @@ export async function ensureDemoWeddingSeeded(slug: string): Promise<boolean> {
     }
   }
 
+  // Handle julian-claire auto-seed (The Wedding Journal - Cinematic Editorial)
+  if (normalizedSlug === "julian-claire") {
+    try {
+      // 1. Ensure cinematic-editorial template exists
+      const tplEditorial = await prisma.template.upsert({
+        where: { slug: "cinematic-editorial" },
+        update: {},
+        create: {
+          slug: "cinematic-editorial",
+          name: "The Wedding Journal",
+          description:
+            "Desain majalah mode editorial kelas atas (Vogue & Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik otomatis, dan background galeri dinamis.",
+          isPremium: true,
+          isActive: true,
+          version: "1.0.0",
+        },
+      });
+
+      // 2. Ensure demo user exists
+      const hashedPassword =
+        "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
+      const demoUser = await prisma.user.upsert({
+        where: { email: "admin@hayvows.com" },
+        update: { plan: "luxury", role: "admin" },
+        create: {
+          email: "admin@hayvows.com",
+          name: "Super Admin Hayvows",
+          password: hashedPassword,
+          role: "admin",
+          plan: "luxury",
+        },
+      });
+
+      // 3. Upsert julian-claire wedding
+      const editorialWedding = await prisma.wedding.upsert({
+        where: { slug: "julian-claire" },
+        update: { templateId: tplEditorial.id, status: "published" },
+        create: {
+          userId: demoUser.id,
+          slug: "julian-claire",
+          templateId: tplEditorial.id,
+          status: "published",
+          messageMode: "auto",
+          couple: {
+            create: {
+              groomName: "Julian Bradley, B.Arch.",
+              groomNickname: "Julian",
+              groomFather: "Richard Bradley",
+              groomMother: "Catherine Bradley",
+              groomInstagram: "julian.bradley",
+              groomPhoto:
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+              brideName: "Claire Vance, M.A.",
+              brideNickname: "Claire",
+              brideFather: "Arthur Vance",
+              brideMother: "Victoria Vance",
+              brideInstagram: "claire.vance",
+              bridePhoto:
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+              couplePhoto:
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+            },
+          },
+          events: {
+            create: [
+              {
+                title: "The Solemnization Ceremony",
+                date: "2026-10-24",
+                startTime: "09:00",
+                endTime: "11:00",
+                venue: "The Glasshouse Conservatory",
+                address: "Jl. Senopati No. 45, Kebayoran Baru, Jakarta Selatan",
+                mapsUrl: "https://maps.google.com",
+                description:
+                  "Prosesi ikrar janji suci pernikahan di hadapan keluarga dan para saksi terkasih",
+                sortOrder: 1,
+              },
+              {
+                title: "The Editorial Wedding Soirée",
+                date: "2026-10-24",
+                startTime: "18:00",
+                endTime: "22:00",
+                venue: "Grand Pavilion Ballroom",
+                address:
+                  "Jl. Jenderal Sudirman Kav. 52-53, SCBD, Jakarta Selatan",
+                mapsUrl: "https://maps.google.com",
+                description:
+                  "Jamuan malam elegan, toast perayaan cinta, dan live jazz performance",
+                sortOrder: 2,
+              },
+            ],
+          },
+          stories: {
+            create: [
+              {
+                title: "A Serendipitous Encounter",
+                date: "2021",
+                description:
+                  "Sebuah pertemuan tak disengaja di sudut galeri arsitektur membuka lembaran kisah cinta yang tak terduga.",
+                sortOrder: 1,
+              },
+              {
+                title: "Under The Autumn Skies",
+                date: "2023",
+                description:
+                  "Di bawah naungan dedaunan musim gugur, kami menyadari bahwa langkah ini ditakdirkan untuk beriringan selamanya.",
+                sortOrder: 2,
+              },
+              {
+                title: "The Lifetime Promise",
+                date: "2025",
+                description:
+                  "Sebuah komitmen tulus terucap untuk mengarungi bahtera kehidupan bersama dalam cinta dan ketulusan abadi.",
+                sortOrder: 3,
+              },
+            ],
+          },
+          galleries: {
+            create: [
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+                caption: "Issue Cover: Editorial Prewedding",
+                sortOrder: 1,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+                caption: "Timeless Moments in Black & White",
+                sortOrder: 2,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+                caption: "The Symphony of Two Hearts",
+                sortOrder: 3,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
+                caption: "Golden Sunset Reflections",
+                sortOrder: 4,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80",
+                caption: "Haute Couture Wedding Portraits",
+                sortOrder: 5,
+              },
+            ],
+          },
+          giftAccounts: {
+            create: [
+              {
+                bankName: "BCA",
+                accountName: "Julian Bradley",
+                accountNo: "8821948201",
+                type: "bank",
+                sortOrder: 1,
+              },
+              {
+                bankName: "Mandiri",
+                accountName: "Claire Vance",
+                accountNo: "1370098273619",
+                type: "bank",
+                sortOrder: 2,
+              },
+            ],
+          },
+        },
+      });
+
+      // 4. Ensure demo guest exists
+      const demoGuest = await prisma.guest.upsert({
+        where: {
+          weddingId_slug: {
+            weddingId: editorialWedding.id,
+            slug: "budi-santoso",
+          },
+        },
+        update: {},
+        create: {
+          weddingId: editorialWedding.id,
+          name: "Budi Santoso",
+          slug: "budi-santoso",
+          phone: "081234567890",
+          category: "VIP",
+          guestCount: 2,
+        },
+      });
+
+      // 5. Ensure guest message exists
+      const msgCount = await prisma.guestMessage.count({
+        where: { weddingId: editorialWedding.id },
+      });
+      if (msgCount === 0) {
+        await prisma.guestMessage.create({
+          data: {
+            weddingId: editorialWedding.id,
+            guestId: demoGuest.id,
+            message:
+              "Selamat atas pernikahan Julian & Claire! Konsep editorial majalahnya sangat memukau, berkelas, dan elegan. Semoga cinta kalian senantiasa mekar abadi.",
+            status: "approved",
+            isPinned: true,
+          },
+        });
+      }
+
+      // 6. Ensure music exists
+      const musicCount = await prisma.music.count({
+        where: { weddingId: editorialWedding.id },
+      });
+      if (musicCount === 0) {
+        await prisma.music.create({
+          data: {
+            weddingId: editorialWedding.id,
+            title: "Canon in D — Cinematic Strings",
+            fileUrl: "/music/presets/canon-harp-strings.mp3",
+            isActive: true,
+          },
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Failed to auto-seed julian-claire demo wedding:", err);
+      return false;
+    }
+  }
+
   return false;
 }

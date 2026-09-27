@@ -111,6 +111,22 @@ async function main() {
   });
   console.log("✅ Seeded template: Royal Emerald & Gold");
 
+  // 1.11. Seed Template The Wedding Journal (Cinematic Editorial - Luxury Exclusive)
+  const tplEditorial = await prisma.template.upsert({
+    where: { slug: "cinematic-editorial" },
+    update: {},
+    create: {
+      slug: "cinematic-editorial",
+      name: "The Wedding Journal",
+      description:
+        "Desain majalah mode editorial kelas atas (Vogue & Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik otomatis, dan background galeri foto dinamis.",
+      isPremium: true,
+      isActive: true,
+      version: "1.0.0",
+    },
+  });
+  console.log("✅ Seeded template: The Wedding Journal (Cinematic Editorial)");
+
   // 2. Seed Demo User (password: admin123)
   const hashedPassword =
     "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";

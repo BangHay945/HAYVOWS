@@ -165,6 +165,20 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     ],
     demoPath: "/invitation/prasetyo-kinanti/budi-santoso",
   },
+  "cinematic-editorial": {
+    slug: "cinematic-editorial",
+    iconBg: "bg-[#0a0a0c] text-[#e8d5b5]",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: "bg-slate-950 text-[#e8d5b5] border-[#e8d5b5]/30",
+    versionTag: "v1.0.0 • Editorial Journal",
+    bannerImage: "/assets/templates/cinematic-editorial/banner.jpg",
+    highlights: [
+      "Tipografi: Vogue & Kinfolk Editorial Serif & Bold Headlines",
+      "Galeri: Slideshow Sinematik Otomatis & Grid Lookbook",
+      "Background: Ambient Foto Prewedding Dinamis dari Galeri",
+    ],
+    demoPath: "/invitation/julian-claire/budi-santoso",
+  },
 };
 
 export default function TemplateSelector({

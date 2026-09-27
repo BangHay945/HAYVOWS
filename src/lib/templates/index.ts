@@ -128,6 +128,10 @@ export const getTemplateArchetype = (slug: string): TemplateArchetype => {
   if (
     slug === "eternal-noir" ||
     slug === "vintage-royal" ||
+    slug === "royal-emerald" ||
+    slug === "cinematic-editorial" ||
+    slug.includes("editorial") ||
+    slug.includes("journal") ||
     slug.includes("noir") ||
     slug.includes("luxury") ||
     slug.includes("emerald") ||
@@ -168,7 +172,8 @@ export const getRequiredPlan = (slug: string): SubscriptionTier => {
     slug === "pixel-cyberpunk" ||
     slug === "pixel-rpg" ||
     slug === "eternal-noir" ||
-    slug === "royal-emerald"
+    slug === "royal-emerald" ||
+    slug === "cinematic-editorial"
   ) {
     return "luxury";
   }

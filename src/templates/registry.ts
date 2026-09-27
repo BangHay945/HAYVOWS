@@ -6,6 +6,7 @@ import { ModernMonogramTemplate } from "./modern-monogram";
 import { EternalNoirTemplate } from "./eternal-noir";
 import { BatikJawaTemplate } from "./batik-jawa";
 import { RoyalEmeraldTemplate } from "./royal-emerald";
+import { CinematicEditorialTemplate } from "./cinematic-editorial";
 
 export const templateRegistry: Record<string, InvitationTemplate> = {
   "pixel-adventure": PixelAdventureTemplate,
@@ -15,6 +16,7 @@ export const templateRegistry: Record<string, InvitationTemplate> = {
   "eternal-noir": EternalNoirTemplate,
   "batik-jawa": BatikJawaTemplate,
   "royal-emerald": RoyalEmeraldTemplate,
+  "cinematic-editorial": CinematicEditorialTemplate,
 };
 
 export function getTemplate(slug: string): InvitationTemplate | null {
