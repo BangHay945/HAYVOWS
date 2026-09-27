@@ -28,6 +28,7 @@ import {
   BookOpenCheck,
   QrCode,
   Plus,
+  CreditCard,
 } from "lucide-react";
 
 export type WeddingOption = {
@@ -279,14 +280,14 @@ export function DashboardShell({
 
           {/* Super Admin Menu */}
           {userRole === "admin" && (
-            <div className="pt-3 mt-2 border-t border-slate-100">
+            <div className="pt-3 mt-2 border-t border-slate-100 space-y-1">
               <p className="text-[10px] font-mono tracking-widest text-purple-600 px-3 py-1 uppercase font-bold">
                 Admin Center
               </p>
               <Link
                 href="/dashboard/admin/users"
                 className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs transition-all ${
-                  pathname.startsWith("/dashboard/admin")
+                  pathname === "/dashboard/admin/users"
                     ? "bg-purple-900 text-white font-semibold shadow-xs"
                     : "text-purple-700 hover:text-purple-900 hover:bg-purple-50 font-semibold"
                 }`}
@@ -294,6 +295,23 @@ export function DashboardShell({
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="w-4 h-4 text-purple-600" />
                   <span>Kelola Pengguna</span>
+                </div>
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-200 text-purple-900">
+                  SUPER
+                </span>
+              </Link>
+
+              <Link
+                href="/dashboard/admin/payments"
+                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs transition-all ${
+                  pathname === "/dashboard/admin/payments"
+                    ? "bg-purple-900 text-white font-semibold shadow-xs"
+                    : "text-purple-700 hover:text-purple-900 hover:bg-purple-50 font-semibold"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <CreditCard className="w-4 h-4 text-purple-600" />
+                  <span>Kelola Pembayaran</span>
                 </div>
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-200 text-purple-900">
                   SUPER
@@ -886,17 +904,31 @@ export function DashboardShell({
               </div>
             </div>
 
-            {/* Super Admin Quick Link if admin */}
+            {/* Super Admin Quick Links if admin */}
             {userRole === "admin" && (
-              <div className="px-4 pb-2">
+              <div className="px-4 pb-2 space-y-1.5">
                 <Link
-                  href="/admin/users"
+                  href="/dashboard/admin/users"
                   onClick={() => setMoreMenuOpen(false)}
                   className="w-full p-2.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 flex items-center justify-between text-xs font-semibold text-purple-950 transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-purple-700" />
-                    <span>Panel Super Admin</span>
+                    <span>Kelola Pengguna (Super Admin)</span>
+                  </div>
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-200 text-purple-900">
+                    SUPER
+                  </span>
+                </Link>
+
+                <Link
+                  href="/dashboard/admin/payments"
+                  onClick={() => setMoreMenuOpen(false)}
+                  className="w-full p-2.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 flex items-center justify-between text-xs font-semibold text-purple-950 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-purple-700" />
+                    <span>Kelola Pembayaran (Super Admin)</span>
                   </div>
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-200 text-purple-900">
                     SUPER
