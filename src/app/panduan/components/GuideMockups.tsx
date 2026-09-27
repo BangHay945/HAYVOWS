@@ -228,14 +228,14 @@ export function QrScannerSimulation() {
   return (
     <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-emerald-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Top Phone Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
-        <div className="flex items-center gap-2">
-          <Smartphone className="w-4 h-4 text-emerald-400" />
-          <span className="text-xs font-bold text-slate-200">Scanner Meja Resepsi (Browser HP)</span>
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="text-xs font-bold text-slate-200 truncate">Scanner Meja Resepsi</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[10px] font-mono text-emerald-400">Siap Scan</span>
+        <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[10px] font-mono text-emerald-400 font-semibold">Siap Scan</span>
         </div>
       </div>
 
@@ -387,9 +387,9 @@ export function QrScannerSimulation() {
       )}
 
       {/* Footer Info Bar */}
-      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
-        <span>Bisa dibuka di 5 HP panitia sekaligus</span>
-        <span className="text-emerald-400 font-bold">Sinkron Real-time</span>
+      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+        <span className="truncate">Bisa dibuka di 5 HP panitia</span>
+        <span className="text-emerald-400 font-bold shrink-0 whitespace-nowrap">Sinkron Real-time</span>
       </div>
     </div>
   );
@@ -433,16 +433,16 @@ export function TvDisplaySimulation() {
   return (
     <div className="bg-slate-950 rounded-3xl p-4 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Top TV Frame Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
             <Tv className="w-3.5 h-3.5" />
           </div>
-          <span className="text-xs font-bold text-slate-200">Layar Sapa Resepsi TV (/display)</span>
+          <span className="text-xs font-bold text-slate-200 truncate">Layar Sapa TV (/display)</span>
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-[10px] text-red-300 bg-red-500/10 px-2.5 py-0.5 rounded-full border border-red-500/30">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          <span className="font-bold">LIVE DISPLAY</span>
+        <div className="flex items-center gap-1.5 font-mono text-[10px] text-red-300 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/30 shrink-0 whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+          <span className="font-bold">LIVE TV</span>
         </div>
       </div>
 
@@ -500,11 +500,11 @@ export function TvDisplaySimulation() {
         </div>
 
         {/* Screen Bottom Bar */}
-        <div className="relative z-10 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 border-t border-white/10 pt-1.5">
-          <span>Gedung Sasana Kriya Ballroom</span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1">
+        <div className="relative z-10 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 border-t border-white/10 pt-1.5 gap-2">
+          <span className="truncate">Sasana Kriya Ballroom</span>
+          <span className="text-emerald-400 font-bold flex items-center gap-1 shrink-0 whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Sinkron Otomatis dengan Scanner Meja</span>
+            <span>Sinkron Scanner Meja</span>
           </span>
         </div>
       </div>
@@ -548,15 +548,15 @@ export function TvDisplaySimulation() {
       </div>
 
       {/* Connection Info */}
-      <div className="text-[11px] text-slate-300 bg-white/5 px-3 py-2 rounded-xl border border-white/10 flex items-center justify-between">
-        <span className="flex items-center gap-1.5 font-medium">
-          <Laptop className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Laptop Resepsionis</span>
+      <div className="text-[10px] sm:text-[11px] text-slate-300 bg-white/5 px-2.5 sm:px-3 py-2 rounded-xl border border-white/10 flex items-center justify-between gap-1 overflow-hidden">
+        <span className="flex items-center gap-1 sm:gap-1.5 font-medium min-w-0">
+          <Laptop className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <span className="truncate">Laptop Meja</span>
         </span>
-        <span className="text-indigo-300 font-mono text-[10px] font-semibold">── Kabel HDMI ──&gt;</span>
-        <span className="flex items-center gap-1.5 font-medium">
-          <Monitor className="w-3.5 h-3.5 text-indigo-400" />
-          <span>TV / Videotron</span>
+        <span className="text-indigo-300 font-mono text-[9px] sm:text-[10px] font-semibold shrink-0 whitespace-nowrap">── HDMI ──&gt;</span>
+        <span className="flex items-center gap-1 sm:gap-1.5 font-medium min-w-0">
+          <Monitor className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <span className="truncate">TV Gedung</span>
         </span>
       </div>
     </div>
@@ -574,17 +574,17 @@ export function WhatsAppChatSimulation() {
   return (
     <div className="bg-[#0b141a] rounded-3xl p-4 sm:p-5 text-white border border-emerald-600/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* WhatsApp App Header */}
-      <div className="bg-[#1f2c34] -mx-4 -mt-4 sm:-mx-5 sm:-mt-5 p-3 sm:p-3.5 rounded-t-3xl border-b border-white/10 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#128c7e] text-white flex items-center justify-center font-bold text-xs">
+      <div className="bg-[#1f2c34] -mx-4 -mt-4 sm:-mx-5 sm:-mt-5 p-3 sm:p-3.5 rounded-t-3xl border-b border-white/10 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#128c7e] text-white flex items-center justify-center font-bold text-xs shrink-0">
             {guestName.substring(0, 2).toUpperCase()}
           </div>
-          <div>
-            <h4 className="font-bold text-xs text-white leading-tight">{guestName}</h4>
-            <span className="text-[10px] text-emerald-400 font-medium">Online &bull; WhatsApp</span>
+          <div className="min-w-0">
+            <h4 className="font-bold text-xs text-white leading-tight truncate">{guestName}</h4>
+            <span className="text-[10px] text-emerald-400 font-medium block truncate">Online &bull; WhatsApp</span>
           </div>
         </div>
-        <span className="text-[9px] sm:text-[10px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+        <span className="text-[9px] sm:text-[10px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded border border-white/10 shrink-0 whitespace-nowrap">
           Format Otomatis
         </span>
       </div>
@@ -651,9 +651,9 @@ export function WhatsAppChatSimulation() {
       </div>
 
       {/* Feature Bullet */}
-      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
-        <span>Kirim 1-Klik tanpa simpan nomor</span>
-        <span className="text-emerald-400 font-bold">Tamu Unlimited</span>
+      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+        <span className="truncate">Kirim 1-Klik tanpa simpan nomor</span>
+        <span className="text-emerald-400 font-bold shrink-0 whitespace-nowrap">Tamu Unlimited</span>
       </div>
     </div>
   );
@@ -686,19 +686,19 @@ export function PixelRpgSimulation() {
   return (
     <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-amber-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden">
       {/* 1. Browser/Console Frame Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <div className="flex items-center gap-1 shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
           </div>
-          <span className="text-[11px] font-mono text-slate-300 ml-1 truncate">
+          <span className="text-[10px] sm:text-[11px] font-mono text-slate-300 ml-1 truncate">
             hayvows.com/invitation/alex-sara
           </span>
         </div>
-        <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/30">
-          🎮 Game 2D 60 FPS
+        <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-amber-400/30 shrink-0 whitespace-nowrap">
+          🎮 2D RPG
         </span>
       </div>
 
@@ -718,19 +718,19 @@ export function PixelRpgSimulation() {
         </div>
 
         {/* Bottom Banner Title */}
-        <div className="absolute bottom-2.5 inset-x-2.5 flex items-center justify-between text-xs">
-          <div>
-            <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider block drop-shadow">
+        <div className="absolute bottom-2.5 inset-x-2.5 flex items-center justify-between text-xs gap-2">
+          <div className="min-w-0">
+            <span className="text-[9px] sm:text-[10px] text-amber-300 font-bold uppercase tracking-wider block drop-shadow truncate">
               Tema Eksklusif #1 di Indonesia
             </span>
-            <h4 className="text-xs sm:text-sm font-extrabold text-white drop-shadow">
+            <h4 className="text-xs sm:text-sm font-extrabold text-white drop-shadow truncate">
               The Royal Sky Island Wedding
             </h4>
           </div>
           <Link
             href="/invitation/alex-sara/budi-santoso"
             target="_blank"
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-[11px] shadow transition-all hover:scale-105 cursor-pointer shrink-0"
+            className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-[10px] sm:text-[11px] shadow transition-all hover:scale-105 cursor-pointer shrink-0 whitespace-nowrap"
           >
             <span>Buka Demo</span>
             <ExternalLink className="w-3 h-3" />
@@ -749,7 +749,7 @@ export function PixelRpgSimulation() {
               key={i}
               type="button"
               onClick={() => setSelectedFeature(i)}
-              className={`p-2 rounded-xl text-left transition-all border cursor-pointer ${
+              className={`p-1.5 sm:p-2 rounded-xl text-left transition-all border cursor-pointer min-w-0 ${
                 selectedFeature === i
                   ? "bg-amber-400/20 border-amber-400/60 text-amber-200 shadow-xs"
                   : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-slate-200"
@@ -820,13 +820,13 @@ export function BankCardSimulation() {
   return (
     <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-rose-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
-        <div className="flex items-center gap-2">
-          <Gift className="w-4 h-4 text-rose-400" />
-          <span className="text-xs font-bold text-slate-200">Amplop Digital (Transfer Bank)</span>
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <Gift className="w-4 h-4 text-rose-400 shrink-0" />
+          <span className="text-xs font-bold text-slate-200 truncate">Amplop Digital (Bank)</span>
         </div>
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40">
-          0% Biaya Potongan
+        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 shrink-0 whitespace-nowrap">
+          0% Potongan
         </span>
       </div>
 
@@ -881,11 +881,11 @@ export function BankCardSimulation() {
         </div>
 
         {/* Copy Button */}
-        <div className="relative z-10 pt-1 flex items-center justify-between">
+        <div className="relative z-10 pt-1 flex items-center justify-between gap-2">
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-all border border-white/30 cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-all border border-white/30 cursor-pointer active:scale-95 shrink-0"
           >
             {copied ? (
               <>
@@ -899,7 +899,7 @@ export function BankCardSimulation() {
               </>
             )}
           </button>
-          <span className="text-[10px] text-emerald-300/80 font-mono">0% Admin Fee</span>
+          <span className="text-[10px] text-emerald-300/80 font-mono shrink-0 whitespace-nowrap">0% Fee</span>
         </div>
 
         {/* Shimmer light effect */}
@@ -956,13 +956,13 @@ export function QuickStartRoadmapSimulation() {
   return (
     <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-blue-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-blue-400" />
-          <span className="text-xs font-bold text-slate-200">Alur Kilat Onboarding</span>
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <Sparkles className="w-4 h-4 text-blue-400 shrink-0" />
+          <span className="text-xs font-bold text-slate-200 truncate">Alur Kilat Onboarding</span>
         </div>
-        <span className="text-[10px] font-mono text-amber-300 bg-white/5 px-2 py-0.5 rounded border border-white/10">
-          ⏱️ Total: 5 Menit
+        <span className="text-[10px] font-mono text-amber-300 bg-white/5 px-2 py-0.5 rounded border border-white/10 shrink-0 whitespace-nowrap">
+          ⏱️ 5 Menit
         </span>
       </div>
 
@@ -1010,9 +1010,9 @@ export function QuickStartRoadmapSimulation() {
       </div>
 
       {/* Guarantee note */}
-      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2 sm:p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
-        <span>Bebas coba semua fitur gratis</span>
-        <span className="text-emerald-400 font-bold">Tanpa Kartu Kredit</span>
+      <div className="text-[10px] sm:text-[11px] text-slate-400 bg-white/5 p-2 sm:p-2.5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+        <span className="truncate">Bebas coba semua fitur gratis</span>
+        <span className="text-emerald-400 font-bold shrink-0 whitespace-nowrap">Tanpa Kartu Kredit</span>
       </div>
     </div>
   );

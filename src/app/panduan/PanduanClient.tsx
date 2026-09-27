@@ -705,7 +705,7 @@ export default function PanduanClient() {
                       <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
 
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 min-w-0">
                       <h2 className="text-base sm:text-2xl font-bold text-slate-900 leading-snug">
                         {guide.title}
                       </h2>
@@ -713,8 +713,8 @@ export default function PanduanClient() {
                         {guide.summary}
                       </p>
                       <div className="pt-1 flex items-center gap-2 text-[11px] text-slate-500">
-                        <span className="font-semibold text-slate-700">Untuk Siapa:</span>
-                        <span>{guide.targetUser}</span>
+                        <span className="font-semibold text-slate-700 shrink-0">Untuk Siapa:</span>
+                        <span className="truncate">{guide.targetUser}</span>
                       </div>
                     </div>
                   </div>
@@ -726,12 +726,12 @@ export default function PanduanClient() {
                     {/* On Mobile: Mockup appears FIRST so mobile user immediately sees the visual preview! */}
                     {/* On Desktop: Mockup is on right column, sticky pinned at top-36, staying STILL while left steps scroll */}
                     <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 self-start space-y-2.5 z-10">
-                      <div className="flex items-center justify-between text-xs pb-0.5">
-                        <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Simulasi Interaktif Fitur:</span>
+                      <div className="flex items-center justify-between gap-2 text-xs pb-0.5">
+                        <span className="font-bold text-slate-800 flex items-center gap-1.5 min-w-0 truncate">
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span className="truncate">Simulasi Interaktif Fitur:</span>
                         </span>
-                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold shadow-2xs">
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold shadow-2xs shrink-0 whitespace-nowrap">
                           Live UI Preview
                         </span>
                       </div>
