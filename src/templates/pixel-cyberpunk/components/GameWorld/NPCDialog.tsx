@@ -56,49 +56,53 @@ export function NPCDialog({
 }: NPCDialogProps) {
   return (
     <>
-      {/* 1. HUD TOP BAR */}
-      <header className="fixed top-2.5 left-1/2 -translate-x-1/2 z-40 pointer-events-none flex flex-col items-center">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="border-2 border-[#00f0ff] bg-[#0b0f19e6] backdrop-blur-xs px-3.5 sm:px-5 py-1 sm:py-1.5 shadow-[0_4px_16px_rgba(0,240,255,0.4)] flex items-center gap-2 text-[#00f0ff] ring-1 ring-[#ff007f]/50"
-        >
-          <span className="text-xs sm:text-sm">👑</span>
-          <h1 className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#00f0ff] drop-shadow">
-            {(couple?.groomNickname || "LIAM").toUpperCase()} &amp; {(couple?.brideNickname || "ELARA").toUpperCase()}
-          </h1>
-          <span className="text-[10px] text-pink-400 font-bold hidden sm:inline">•</span>
-          <span className="text-[10px] sm:text-[11px] text-[#ffe600] font-bold tracking-wider hidden sm:inline">
-            {firstEvent ? formatDate(firstEvent.date) : "NEO-TIMESTAMP 2077"}
-          </span>
-          <span className="text-xs sm:text-sm">👑</span>
-        </motion.div>
+      {/* 1. HUD TOP BAR & GUEST ACCESS */}
+      <header className="fixed top-2.5 inset-x-0 z-40 pointer-events-none px-2.5 sm:px-4">
+        <div className="relative flex items-center justify-between w-full h-8 sm:h-9">
+          {/* Left: Guest Access Indicator */}
+          <div className="flex items-center pointer-events-auto">
+            <div className="bg-[#0b0f19f2] border border-[#00f0ff] px-2 sm:px-2.5 py-1 shadow-[0_0_10px_rgba(0,240,255,0.4)] flex items-center gap-1.5 max-w-[110px] xs:max-w-[140px] sm:max-w-[190px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-ping shrink-0" />
+              <span className="text-[9px] sm:text-[10px] font-black text-[#00f0ff] uppercase tracking-wider truncate">
+                {characterName}
+              </span>
+            </div>
+          </div>
+
+          {/* Absolute Center: Cyber Couple Title */}
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-auto">
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="border-2 border-[#00f0ff] bg-[#0b0f19e6] backdrop-blur-xs px-2.5 sm:px-4 py-0.5 sm:py-1 shadow-[0_4px_16px_rgba(0,240,255,0.4)] flex items-center gap-1.5 sm:gap-2 text-[#00f0ff] ring-1 ring-[#ff007f]/50 whitespace-nowrap"
+            >
+              <span className="text-[10px] sm:text-xs">👑</span>
+              <h1 className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#00f0ff] drop-shadow">
+                {(couple?.groomNickname || "LIAM").toUpperCase()} &amp; {(couple?.brideNickname || "ELARA").toUpperCase()}
+              </h1>
+              <span className="text-[9px] text-pink-400 font-bold hidden md:inline">•</span>
+              <span className="text-[9px] sm:text-[10px] text-[#ffe600] font-bold tracking-wider hidden md:inline">
+                {firstEvent ? formatDate(firstEvent.date) : "NEO-TIMESTAMP 2077"}
+              </span>
+              <span className="text-[10px] sm:text-xs">👑</span>
+            </motion.div>
+          </div>
+
+          {/* Right: Reserved space for MusicButton (MusicButton is at top-3 right-3) */}
+          <div className="w-10 h-10 shrink-0 pointer-events-none" />
+        </div>
       </header>
 
-      {/* Guest Access Indicator Top-Left */}
-      <div className="fixed top-3 left-3 sm:top-4 sm:left-4 z-40 flex items-center gap-2 pointer-events-none">
-        <div className="bg-[#0b0f19f2] border-2 border-[#00f0ff] px-3 py-1.5 shadow-[0_0_12px_rgba(0,240,255,0.4)] flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping" />
-          <span className="text-[9px] sm:text-[10px] font-black text-[#00f0ff] uppercase tracking-wider">
-            [ACCESS]: {characterName}
-          </span>
-        </div>
-      </div>
+      {/* 2. DEVELOPER DEBUG HUD (Only rendered if debugMode is activated via ?debug=1) */}
+      {debugMode && (
+        <div className="fixed top-12 left-3 sm:top-14 sm:left-4 z-40 pointer-events-auto flex flex-col gap-1 select-none">
+          <button
+            onClick={() => setDebugMode(!debugMode)}
+            className="px-2 py-1 border text-[9px] font-black uppercase tracking-wider shadow cursor-pointer transition-colors bg-[#00f0ff] text-[#0b0f19] border-white shadow-[0_0_10px_#00f0ff]"
+          >
+            🛠️ NAV DEBUG: ON
+          </button>
 
-      {/* 2. DEVELOPER DEBUG HUD */}
-      <div className="fixed top-12 left-3 sm:top-14 sm:left-4 z-40 pointer-events-auto flex flex-col gap-1 select-none">
-        <button
-          onClick={() => setDebugMode(!debugMode)}
-          className={`px-2 py-1 border text-[9px] font-black uppercase tracking-wider shadow cursor-pointer transition-colors ${
-            debugMode
-              ? "bg-[#00f0ff] text-[#0b0f19] border-white shadow-[0_0_10px_#00f0ff]"
-              : "bg-[#0b0f19d0] text-[#00f0ff] border-[#00f0ff] hover:bg-[#162038]"
-          }`}
-        >
-          {debugMode ? "🛠️ NAV DEBUG: ON" : "🛠️ NAV DEBUG: OFF"}
-        </button>
-
-        {debugMode && (
           <div className="bg-[#0b0f19]/95 border border-[#00f0ff] p-2 text-[8px] font-mono text-[#00f0ff] shadow-[0_0_15px_rgba(0,240,255,0.4)] max-w-[200px]">
             <p>X: {playerPos.x.toFixed(2)}% | Y: {playerPos.y.toFixed(2)}%</p>
             <p>Facing: {direction.toUpperCase()}</p>
@@ -106,8 +110,8 @@ export function NPCDialog({
             <p>Path Queue: {activePathQueue.length} nodes</p>
             {nearbyNPC && <p className="text-[#ffe600]">Nearby: {nearbyNPC.name}</p>}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* 3. SIDE QUEST MENU */}
       <aside className="fixed top-1/2 -translate-y-1/2 right-2 sm:right-4 z-40 flex flex-col gap-1.5 sm:gap-2 select-none pointer-events-auto">

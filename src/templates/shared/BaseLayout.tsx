@@ -343,7 +343,7 @@ export function BaseLayout({
       {isOpen && (
         <aside
           aria-label="Platform Info"
-          className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 pointer-events-auto select-none"
+          className="fixed bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none"
         >
           <a
             href="https://www.hayvows.com"

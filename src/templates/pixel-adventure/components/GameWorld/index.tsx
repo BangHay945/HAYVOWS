@@ -64,9 +64,6 @@ export function PixelGameWorld({
   const camRef = useRef({ x: 0, y: 0 });
   const camInitializedRef = useRef(false);
 
-  // Developer Debug Mode Toggle
-  const [debugMode, setDebugMode] = useState(false);
-
   // Virtual Analog Joystick
   const [knobPos, setKnobPos] = useState({ x: 0, y: 0 });
   const joystickVectorRef = useRef({ vx: 0, vy: 0, intensity: 0 });
@@ -115,6 +112,20 @@ export function PixelGameWorld({
       setCharacterName(resolvedGuestName);
     }
   }, [resolvedGuestName]);
+
+  // Developer Debug Mode Toggle (hidden by default unless ?debug=1 or ?debug=true in URL)
+  const isDebugParam = useMemo(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get("debug") === "1" || urlParams.get("debug") === "true";
+    }
+    return searchParams?.get("debug") === "1" || searchParams?.get("debug") === "true";
+  }, [searchParams]);
+
+  const [debugMode, setDebugMode] = useState(isDebugParam);
+  useEffect(() => {
+    setDebugMode(isDebugParam);
+  }, [isDebugParam]);
 
   const [allMessages, setAllMessages] = useState<any[]>(messages || []);
   useEffect(() => {
@@ -541,6 +552,7 @@ export function PixelGameWorld({
       <NPCDialog
         couple={couple}
         firstEvent={firstEvent}
+        resolvedGuestName={resolvedGuestName}
         debugMode={debugMode}
         setDebugMode={setDebugMode}
         playerPos={playerPos}

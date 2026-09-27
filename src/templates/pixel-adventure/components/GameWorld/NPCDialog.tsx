@@ -12,6 +12,7 @@ interface NPCDialogProps {
   firstEvent?: {
     date: string;
   };
+  resolvedGuestName?: string | null;
   debugMode: boolean;
   setDebugMode: (val: boolean) => void;
   playerPos: { x: number; y: number };
@@ -34,6 +35,7 @@ interface NPCDialogProps {
 export function NPCDialog({
   couple,
   firstEvent,
+  resolvedGuestName,
   debugMode,
   setDebugMode,
   playerPos,
@@ -54,23 +56,47 @@ export function NPCDialog({
 }: NPCDialogProps) {
   return (
     <>
-      {/* 1. TOP RETRO ROYAL BANNER */}
-      <header className="fixed top-2.5 left-1/2 -translate-x-1/2 z-40 pointer-events-none flex flex-col items-center">
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="border-2 sm:border-3 border-[#f6d776] bg-[#2a0812e6] backdrop-blur-xs px-3 sm:px-5 py-1 sm:py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.85)] flex items-center gap-2 text-[#fde047] ring-1 ring-[#78350f]"
-        >
-          <span className="text-xs sm:text-sm">👑</span>
-          <h1 className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#fde047] drop-shadow">
-            {couple?.groomNickname || "ALEX"} &amp; {couple?.brideNickname || "SARA"}
-          </h1>
-          <span className="text-[10px] text-[#fef08a]/80 font-bold hidden sm:inline">•</span>
-          <span className="text-[10px] sm:text-[11px] text-[#fef08a] font-bold tracking-wider hidden sm:inline">
-            {firstEvent ? formatDate(firstEvent.date) : "20 OKTOBER 2026"}
-          </span>
-          <span className="text-xs sm:text-sm">👑</span>
-        </motion.div>
+      {/* 1. TOP RETRO ROYAL BANNER & GUEST HUD */}
+      <header className="fixed top-2.5 inset-x-0 z-40 pointer-events-none px-2.5 sm:px-4">
+        <div className="relative flex items-center justify-between w-full h-8 sm:h-9">
+          {/* Left: Guest greeting badge */}
+          <div className="flex items-center pointer-events-auto">
+            {resolvedGuestName && (
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                className="border border-[#f6d776]/80 bg-[#2a0812e6] backdrop-blur-xs px-2 sm:px-2.5 py-1 shadow flex items-center gap-1.5 text-[#fde047] max-w-[100px] xs:max-w-[130px] sm:max-w-[180px]"
+              >
+                <span className="text-[10px] sm:text-xs shrink-0">💌</span>
+                <span className="text-[9px] sm:text-[10px] font-bold text-[#fef08a] truncate">
+                  {resolvedGuestName}
+                </span>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Absolute Center: Couple Title Banner */}
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-auto">
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="border-2 sm:border-3 border-[#f6d776] bg-[#2a0812e6] backdrop-blur-xs px-2.5 sm:px-4 py-0.5 sm:py-1 shadow-[0_4px_16px_rgba(0,0,0,0.85)] flex items-center gap-1.5 sm:gap-2 text-[#fde047] ring-1 ring-[#78350f] whitespace-nowrap"
+            >
+              <span className="text-[10px] sm:text-xs">👑</span>
+              <h1 className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#fde047] drop-shadow">
+                {couple?.groomNickname || "ALEX"} &amp; {couple?.brideNickname || "SARA"}
+              </h1>
+              <span className="text-[9px] text-[#fef08a]/80 font-bold hidden md:inline">•</span>
+              <span className="text-[9px] sm:text-[10px] text-[#fef08a] font-bold tracking-wider hidden md:inline">
+                {firstEvent ? formatDate(firstEvent.date) : "20 OKTOBER 2026"}
+              </span>
+              <span className="text-[10px] sm:text-xs">👑</span>
+            </motion.div>
+          </div>
+
+          {/* Right: Reserved space for MusicButton (MusicButton is at top-3 right-3) */}
+          <div className="w-10 h-10 shrink-0 pointer-events-none" />
+        </div>
       </header>
 
       {/* 2. SIDE QUEST MENU */}
@@ -99,20 +125,16 @@ export function NPCDialog({
         ))}
       </aside>
 
-      {/* 3. DEVELOPER DEBUG HUD */}
-      <div className="fixed top-12 left-3 sm:top-14 sm:left-4 z-40 pointer-events-auto flex flex-col gap-1 select-none">
-        <button
-          onClick={() => setDebugMode(!debugMode)}
-          className={`px-2 py-1 border text-[9px] font-black uppercase tracking-wider shadow cursor-pointer transition-colors ${
-            debugMode
-              ? "bg-[#22c55e] text-[#052e16] border-white"
-              : "bg-[#2a0812d0] text-[#fde047] border-[#f6d776] hover:bg-[#4c0519]"
-          }`}
-        >
-          {debugMode ? "🛠️ NAV DEBUG: ON" : "🛠️ NAV DEBUG: OFF"}
-        </button>
+      {/* 3. DEVELOPER DEBUG HUD (Only rendered if debugMode is activated via ?debug=1) */}
+      {debugMode && (
+        <div className="fixed top-12 left-3 sm:top-14 sm:left-4 z-40 pointer-events-auto flex flex-col gap-1 select-none">
+          <button
+            onClick={() => setDebugMode(!debugMode)}
+            className="px-2 py-1 border text-[9px] font-black uppercase tracking-wider shadow cursor-pointer transition-colors bg-[#22c55e] text-[#052e16] border-white"
+          >
+            🛠️ NAV DEBUG: ON
+          </button>
 
-        {debugMode && (
           <div className="bg-[#18040a]/90 border border-[#22c55e] p-2 text-[8px] font-mono text-[#4ade80] shadow max-w-[200px]">
             <p>X: {playerPos.x.toFixed(2)}% | Y: {playerPos.y.toFixed(2)}%</p>
             <p>Facing: {direction.toUpperCase()}</p>
@@ -120,8 +142,8 @@ export function NPCDialog({
             <p>Path Queue: {activePathQueue.length} nodes</p>
             {nearbyNPC && <p className="text-[#facc15]">Nearby: {nearbyNPC.name}</p>}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* 4. VIRTUAL ANALOG JOYSTICK */}
       <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 pointer-events-auto select-none touch-none">
