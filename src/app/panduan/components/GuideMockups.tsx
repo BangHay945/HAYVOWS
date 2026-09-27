@@ -404,50 +404,53 @@ export function TvDisplaySimulation() {
   const guestSamples = [
     {
       name: "Bapak Budi Santoso & Keluarga",
-      category: "TAMU VIP",
+      shortName: "Budi Santoso",
+      category: "VIP",
       table: "Meja VIP A1",
       pax: "2 Pax",
       location: "Jakarta Selatan",
-      time: "Baru Saja Check-in",
+      time: "Live Check-in",
     },
     {
       name: "dr. Hendra Wijaya & Pasangan",
-      category: "TAMU VIP",
-      table: "Meja B4 (Kolega)",
+      shortName: "dr. Hendra",
+      category: "VIP",
+      table: "Meja B4",
       pax: "2 Pax",
       location: "Surabaya",
-      time: "1 Menit Lalu",
+      time: "1m lalu",
     },
     {
       name: "Ibu Siti Rahmawati, S.E.",
-      category: "TAMU KELUARGA",
+      shortName: "Siti Rahmawati",
+      category: "Keluarga",
       table: "Meja C2",
       pax: "1 Pax",
       location: "Bandung",
-      time: "2 Menit Lalu",
+      time: "2m lalu",
     },
   ];
 
   const current = guestSamples[selectedGuest];
 
   return (
-    <div className="bg-slate-950 rounded-3xl p-4 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
+    <div className="bg-slate-950 rounded-2xl sm:rounded-3xl p-3 sm:p-5 text-white border border-indigo-500/40 shadow-xl space-y-2.5 sm:space-y-3.5 overflow-hidden relative">
       {/* Top TV Frame Header */}
-      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+      <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-5 h-5 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
             <Tv className="w-3.5 h-3.5" />
           </div>
           <span className="text-xs font-bold text-slate-200 truncate">Layar Sapa TV (/display)</span>
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-[10px] text-red-300 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/30 shrink-0 whitespace-nowrap">
+        <div className="flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] text-red-300 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/30 shrink-0 whitespace-nowrap">
           <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           <span className="font-bold">LIVE TV</span>
         </div>
       </div>
 
       {/* Smart TV Bezel & Screen (Matching actual /display/[weddingSlug] UI) */}
-      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-950 via-[#0e1638] to-slate-950 border-2 border-slate-700 shadow-2xl p-3.5 sm:p-4 text-center space-y-3">
+      <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-br from-slate-950 via-[#0e1638] to-slate-950 border border-slate-700 sm:border-2 shadow-2xl p-3 sm:p-4 text-center space-y-2 sm:space-y-3">
         {/* Dynamic Light Bar at top of Screen */}
         <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-400" />
         
@@ -455,46 +458,46 @@ export function TvDisplaySimulation() {
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-20 bg-indigo-500/20 blur-2xl pointer-events-none" />
 
         {/* Screen Top Bar */}
-        <div className="relative z-10 flex items-center justify-between text-[9px] text-slate-400 font-mono border-b border-white/10 pb-1.5">
+        <div className="relative z-10 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 font-mono border-b border-white/10 pb-1.5">
           <div className="flex items-center gap-1.5">
-            <Heart className="w-3 h-3 text-rose-400 fill-rose-400" />
-            <span className="tracking-wider uppercase font-bold text-slate-300">
-              The Official Wedding Reception
+            <Heart className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-rose-400 fill-rose-400 shrink-0" />
+            <span className="tracking-wider uppercase font-bold text-slate-300 truncate">
+              The Official Reception
             </span>
           </div>
-          <span className="text-indigo-300 font-semibold">19:42 WIB</span>
+          <span className="text-indigo-300 font-semibold shrink-0">19:42 WIB</span>
         </div>
 
         {/* Dynamic Grand Welcome Banner */}
-        <div className="relative z-10 py-1 space-y-2 animate-in fade-in duration-300">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400/20 via-yellow-300/25 to-amber-400/20 border border-amber-300/50 text-[#fef08a] text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shadow">
-            <Sparkles className="w-3 h-3 text-amber-300" />
+        <div className="relative z-10 py-0.5 sm:py-1 space-y-1.5 sm:space-y-2 animate-in fade-in duration-300">
+          <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400/20 via-yellow-300/25 to-amber-400/20 border border-amber-300/40 text-[#fef08a] text-[8px] sm:text-[10px] font-bold tracking-wider uppercase shadow">
+            <Sparkles className="w-2.5 h-2.5 text-amber-300 shrink-0" />
             <span>Selamat Datang &bull; Tamu Kehormatan</span>
-            <Sparkles className="w-3 h-3 text-amber-300" />
+            <Sparkles className="w-2.5 h-2.5 text-amber-300 shrink-0" />
           </div>
 
-          <h3 className="text-base sm:text-xl font-extrabold text-white tracking-tight drop-shadow-md leading-snug">
+          <h3 className="text-sm sm:text-lg font-bold text-white tracking-tight drop-shadow-md leading-tight">
             {current.name}
           </h3>
 
-          <p className="text-[11px] text-indigo-200/90 font-medium flex items-center justify-center gap-1">
-            <MapPin className="w-3.5 h-3.5 text-indigo-400" />
+          <p className="text-[10px] sm:text-[11px] text-indigo-200/80 font-medium flex items-center justify-center gap-1">
+            <MapPin className="w-3 h-3 text-indigo-400 shrink-0" />
             <span>{current.location}</span>
           </p>
 
-          {/* Table & Pax Badges (Matching actual display page) */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-0.5">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold text-[9px] sm:text-[10px] shadow-sm">
-              <Crown className="w-3 h-3" />
+          {/* Table & Pax Badges (Clean single row on all mobile screens) */}
+          <div className="flex items-center justify-center gap-1 sm:gap-1.5 pt-0.5 text-[9px] sm:text-[10px]">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-bold shadow-xs whitespace-nowrap">
+              <Crown className="w-2.5 h-2.5" />
               <span>{current.category}</span>
             </span>
 
-            <span className="px-2.5 py-0.5 rounded-lg bg-white/15 border border-white/20 text-white font-bold text-[9px] sm:text-[10px]">
-              Alokasi: <strong className="text-[#fef08a]">{current.table}</strong>
+            <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/20 text-white font-medium whitespace-nowrap">
+              <strong className="text-[#fef08a]">{current.table}</strong>
             </span>
 
-            <span className="px-2.5 py-0.5 rounded-lg bg-white/15 border border-white/20 text-slate-200 text-[9px] sm:text-[10px]">
-              Presensi: {current.pax}
+            <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/20 text-slate-200 whitespace-nowrap">
+              {current.pax}
             </span>
           </div>
         </div>
@@ -502,61 +505,49 @@ export function TvDisplaySimulation() {
         {/* Screen Bottom Bar */}
         <div className="relative z-10 flex items-center justify-between text-[8px] sm:text-[9px] text-slate-400 border-t border-white/10 pt-1.5 gap-2">
           <span className="truncate">Sasana Kriya Ballroom</span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1 shrink-0 whitespace-nowrap">
+          <span className="text-emerald-400 font-semibold flex items-center gap-1 shrink-0 whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Sinkron Scanner Meja</span>
+            <span>Live Auto-Sync</span>
           </span>
         </div>
       </div>
 
-      {/* Interactive Controller: Live Reception Check-in Feed */}
-      <div className="space-y-1.5 pt-0.5">
-        <div className="flex items-center justify-between text-[11px] text-slate-300">
-          <span className="font-semibold">Simulasikan Tamu Masuk Resepsi:</span>
-          <span className="text-[10px] text-indigo-300 font-mono">Klik Tamu &darr;</span>
+      {/* Interactive Controller: Live Reception Check-in Feed (Horizontal Tabs) */}
+      <div className="space-y-1 pt-0.5">
+        <div className="flex items-center justify-between text-[11px] text-slate-300 px-0.5">
+          <span className="font-semibold text-slate-200">Simulasikan Tamu Masuk Resepsi:</span>
+          <span className="text-[10px] text-indigo-300 font-mono">Pilih Tamu &darr;</span>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="grid grid-cols-3 gap-1.5">
           {guestSamples.map((g, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => setSelectedGuest(idx)}
-              className={`w-full px-3 py-2 rounded-xl text-left transition-all border flex items-center justify-between cursor-pointer ${
+              className={`py-2 px-1.5 rounded-xl border text-center transition-all cursor-pointer ${
                 selectedGuest === idx
-                  ? "bg-indigo-600/90 text-white border-indigo-400 shadow-sm"
-                  : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white"
+                  ? "bg-indigo-600/90 text-white border-indigo-400 shadow-xs ring-1 ring-indigo-400/80"
+                : "bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-white"
               }`}
             >
-              <div className="flex items-center gap-2 min-w-0">
-                <span
-                  className={`w-2 h-2 rounded-full shrink-0 ${
-                    selectedGuest === idx ? "bg-amber-300 animate-pulse" : "bg-slate-600"
-                  }`}
-                />
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold truncate">{g.name}</span>
-                  <span className="block text-[10px] text-slate-400 truncate">{g.table} &bull; {g.location}</span>
-                </div>
-              </div>
-              <span className="text-[10px] font-mono shrink-0 ml-2 px-2 py-0.5 rounded bg-black/30 border border-white/10 text-indigo-200">
-                {g.time}
-              </span>
+              <p className="text-[11px] font-bold truncate leading-tight text-white">{g.shortName}</p>
+              <p className="text-[9px] text-amber-300/80 font-mono mt-0.5">{g.category} &bull; {g.pax}</p>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Connection Info */}
-      <div className="text-[10px] sm:text-[11px] text-slate-300 bg-white/5 px-2.5 sm:px-3 py-2 rounded-xl border border-white/10 flex items-center justify-between gap-1 overflow-hidden">
-        <span className="flex items-center gap-1 sm:gap-1.5 font-medium min-w-0">
-          <Laptop className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-          <span className="truncate">Laptop Meja</span>
+      {/* Connection Info Footnote */}
+      <div className="text-[10px] text-slate-400 bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/10 flex items-center justify-center gap-2 overflow-hidden">
+        <span className="flex items-center gap-1 text-slate-300 font-medium">
+          <Laptop className="w-3 h-3 text-indigo-400 shrink-0" />
+          <span>Laptop Meja</span>
         </span>
-        <span className="text-indigo-300 font-mono text-[9px] sm:text-[10px] font-semibold shrink-0 whitespace-nowrap">── HDMI ──&gt;</span>
-        <span className="flex items-center gap-1 sm:gap-1.5 font-medium min-w-0">
-          <Monitor className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-          <span className="truncate">TV Gedung</span>
+        <span className="text-indigo-400 font-mono font-bold text-[9px]">── HDMI ──&gt;</span>
+        <span className="flex items-center gap-1 text-slate-300 font-medium">
+          <Monitor className="w-3 h-3 text-indigo-400 shrink-0" />
+          <span>TV Gedung</span>
         </span>
       </div>
     </div>

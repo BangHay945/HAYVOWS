@@ -723,8 +723,8 @@ export default function PanduanClient() {
                 </div>
 
                 {/* Body: Split-Screen Layout (Langkah Praktis + Visual Mockup Interaktif) */}
-                <div className="p-4 sm:p-6 lg:p-8 rounded-b-3xl">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
+                <div className="p-3 sm:p-6 lg:p-8 rounded-b-3xl">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start relative">
                     {/* On Mobile: Mockup appears FIRST so mobile user immediately sees the visual preview! */}
                     {/* On Desktop: Mockup is on right column, sticky pinned at top-36, staying STILL while left steps scroll */}
                     <div className="order-1 lg:order-2 lg:col-span-5 lg:sticky lg:top-36 self-start space-y-2.5 z-10">
