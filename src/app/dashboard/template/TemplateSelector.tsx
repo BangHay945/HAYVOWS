@@ -143,7 +143,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryTag: "Paket Exclusive",
     categoryStyle: "bg-emerald-950 text-[#ffd700] border-[#d4af37]/40",
     versionTag: "v1.0.0 • Royal Emerald",
-    bannerImage: "/assets/templates/eternal-noir/banner.jpg",
+    bannerImage: "/assets/templates/royal-emerald/banner.jpg",
     highlights: [
       "Estetika: Emerald Velvet Aristokrat & Emas Bangsawan",
       "Ornamen: Mahkota Kerajaan, Sudut Baroque, & Monogram Emas",

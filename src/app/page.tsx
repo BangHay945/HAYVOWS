@@ -232,7 +232,7 @@ export default function LandingPage() {
       tagColor: "bg-emerald-950 text-amber-300 border-amber-500/40",
       description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
       demoUrl: "/invitation/arthur-guinevere/budi-santoso",
-      bannerImage: "/assets/templates/eternal-noir/banner.jpg",
+      bannerImage: "/assets/templates/royal-emerald/banner.jpg",
       highlights: ["Emerald Velvet & Emas Bangsawan", "Mahkota & Ornamen Kerajaan", "Layout Sinematik Split Desktop"],
       bgColor: "from-[#02241b] via-[#064e3b] to-[#021a13]",
       badge: "Royal Luxury",
