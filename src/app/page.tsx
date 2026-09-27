@@ -1072,7 +1072,7 @@ export default function LandingPage() {
 
       {/* ───────────────── 6. CARA KERJA ALUR HYBRID ───────────────── */}
       <section id="cara-kerja" className="py-20 bg-[#2d4a3e] text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-[#fef08a] uppercase tracking-wider">
               <Layers className="w-3.5 h-3.5" />
@@ -1082,58 +1082,116 @@ export default function LandingPage() {
               Cara Kerja Alur Hybrid Hayvows
             </h2>
             <p className="text-sm text-emerald-100/80 leading-relaxed">
-              Tiga langkah mudah menghubungkan undangan cetak fisik dan digital hingga hari H resepsi.
+              Empat tahapan mudah menghubungkan undangan cetak fisik, digital, presensi meja resepsi, hingga layar TV gedung.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             {/* Step 1 */}
-            <div className="bg-white/5 border border-white/15 p-7 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between">
+            <div className="bg-white/5 border border-white/15 p-6 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between hover:border-white/30 transition-all">
               <div className="space-y-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-sm shadow-md">
-                  1
+                <div className="flex items-center justify-between">
+                  <div className="w-9 h-9 rounded-xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-xs shadow-md">
+                    01
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#fef08a]">
+                    <Printer className="w-4 h-4" />
+                  </div>
                 </div>
-                <h3 className="font-bold text-lg text-white">
-                  Buat Undangan &amp; Unduh File QR Siap Cetak
-                </h3>
-                <p className="text-xs sm:text-sm text-emerald-100/75 leading-relaxed">
-                  Isi data mempelai dalam 5 menit, pilih tema, dan unduh file desain stiker QR 300 DPI dari dashboard untuk dicetak di percetakan fisik pilihan Anda.
+                <div>
+                  <h3 className="font-bold text-base text-white">
+                    Desain &amp; Cetak Fisik
+                  </h3>
+                  <p className="text-[11px] text-[#fef08a] font-medium mt-0.5">
+                    Undangan Kertas + Stiker QR
+                  </p>
+                </div>
+                <p className="text-xs text-emerald-100/75 leading-relaxed">
+                  Unduh file stiker QR 300 DPI dari dashboard untuk ditempel di amplop fisik percetakan Anda.
                 </p>
               </div>
               <div className="text-[11px] text-[#fef08a] font-mono border-t border-white/10 pt-3">
-                &bull; File 300 DPI High-Res Siap Cetak
+                &bull; Format 300 DPI Siap Cetak
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-white/5 border border-white/15 p-7 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between">
+            <div className="bg-white/5 border border-white/15 p-6 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between hover:border-white/30 transition-all">
               <div className="space-y-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-sm shadow-md">
-                  2
+                <div className="flex items-center justify-between">
+                  <div className="w-9 h-9 rounded-xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-xs shadow-md">
+                    02
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#fef08a]">
+                    <MessageCircle className="w-4 h-4" />
+                  </div>
                 </div>
-                <h3 className="font-bold text-lg text-white">
-                  Sebar Undangan &amp; Rekap Kehadiran
-                </h3>
-                <p className="text-xs sm:text-sm text-emerald-100/75 leading-relaxed">
-                  Kirim link via WhatsApp atau bagikan kartu cetak berstiker QR. Respon tamu dari web maupun kartu fisik otomatis tercatat rapi di dashboard yang sama.
+                <div>
+                  <h3 className="font-bold text-base text-white">
+                    Distribusi WhatsApp
+                  </h3>
+                  <p className="text-[11px] text-[#fef08a] font-medium mt-0.5">
+                    Kirim Personal 1-Klik
+                  </p>
+                </div>
+                <p className="text-xs text-emerald-100/75 leading-relaxed">
+                  Sebarkan tautan personal ke WhatsApp kerabat. Nama tamu langsung tertera di sampul &amp; tiket QR.
                 </p>
               </div>
               <div className="text-[11px] text-[#fef08a] font-mono border-t border-white/10 pt-3">
-                &bull; Terkoneksi ke Kalkulator Katering
+                &bull; WhatsApp Generator 1-Klik
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white/5 border border-white/15 p-7 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between">
+            <div className="bg-white/5 border border-white/15 p-6 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between hover:border-white/30 transition-all">
               <div className="space-y-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-sm shadow-md">
-                  3
+                <div className="flex items-center justify-between">
+                  <div className="w-9 h-9 rounded-xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-xs shadow-md">
+                    03
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#fef08a]">
+                    <QrCode className="w-4 h-4" />
+                  </div>
                 </div>
-                <h3 className="font-bold text-lg text-white">
-                  Hari H Resepsi Bebas Antre &amp; Layar TV Aktif
-                </h3>
-                <p className="text-xs sm:text-sm text-emerald-100/75 leading-relaxed">
-                  Penerima tamu scan QR tiket di ponsel tamu dalam 1 detik. Nama tamu langsung disambut di Layar Sapa TV gedung resepsi secara otomatis.
+                <div>
+                  <h3 className="font-bold text-base text-white">
+                    Meja Resepsi Hari H
+                  </h3>
+                  <p className="text-[11px] text-[#fef08a] font-medium mt-0.5">
+                    Scan Kamera HP 1 Detik
+                  </p>
+                </div>
+                <p className="text-xs text-emerald-100/75 leading-relaxed">
+                  Panitia memindai tiket QR di ponsel tamu. Bebas antrean tanpa perlu download aplikasi.
+                </p>
+              </div>
+              <div className="text-[11px] text-[#fef08a] font-mono border-t border-white/10 pt-3">
+                &bull; 1 Detik Scan Kamera HP
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="bg-white/5 border border-white/15 p-6 rounded-3xl backdrop-blur-md space-y-4 flex flex-col justify-between hover:border-white/30 transition-all">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-9 h-9 rounded-xl bg-[#c5a880] text-slate-900 font-extrabold flex items-center justify-center text-xs shadow-md">
+                    04
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#fef08a]">
+                    <Tv className="w-4 h-4" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-white">
+                    Layar TV &amp; Katering
+                  </h3>
+                  <p className="text-[11px] text-[#fef08a] font-medium mt-0.5">
+                    Sambutan Otomatis di Gedung
+                  </p>
+                </div>
+                <p className="text-xs text-emerald-100/75 leading-relaxed">
+                  Nama tamu langsung disambut di layar TV gedung resepsi, dan porsi konsumsi katering terhitung presisi.
                 </p>
               </div>
               <div className="text-[11px] text-[#fef08a] font-mono border-t border-white/10 pt-3">
