@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
   const userRole = (token?.role as string) || "client";
 
   // Public routes
-  const publicRoutes = ["/login", "/register", "/invitation"];
+  const publicRoutes = ["/login", "/register", "/invitation", "/panduan", "/display"];
   const isPublic =
     publicRoutes.some((r) => pathname.startsWith(r)) || pathname === "/";
 

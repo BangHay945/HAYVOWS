@@ -663,182 +663,126 @@ export function WhatsAppChatSimulation() {
    5. SIMULASI MOCKUP: GAME RETRO 2D PIXEL RPG
 ───────────────────────────────────────────────────────────── */
 export function PixelRpgSimulation() {
-  const [activeNpcIndex, setActiveNpcIndex] = useState(0);
+  const [selectedFeature, setSelectedFeature] = useState<number>(0);
 
-  const npcs = [
+  const features = [
     {
-      id: "guide",
-      name: "Guide Aria",
-      role: "PEMANDU WISATA KERAJAAN",
-      avatar: "/assets/templates/pixel-adventure/characters/npcs/guide_portrait.png",
-      sprite: "/assets/templates/pixel-adventure/characters/npcs/guide_sprite.png",
-      greeting:
-        "Selamat datang di Pulau Langit Kerajaan! Silakan jelajahi pulau dan bicara dengan para sahabat di sekitar istana untuk membuka fitur RSVP & galeri foto mempelai.",
-      badge: "🧚 PEMANDU",
-      location: "Bridge Entrance (Jembatan Masuk)",
+      title: "Jelajah Bebas",
+      icon: "🕹️",
+      desc: "Tamu menggerakkan avatar sendiri di pulau langit dengan joystick virtual di HP atau tombol keyboard.",
     },
     {
-      id: "couple",
-      name: "Kedua Mempelai",
-      role: "MEMPELAI BAHAGIA (OUR STORY)",
-      avatar: "/assets/templates/pixel-adventure/characters/npcs/couple_portrait.png",
-      sprite: "/assets/templates/pixel-adventure/characters/npcs/couple_sprite.png",
-      greeting:
-        "Hai Sahabat Tersayang! Terima kasih telah berkunjung ke gazebo kenangan kami. Kami ingin berbagi kisah perjalanan cinta dan potret bahagia kami denganmu.",
-      badge: "👑 KEDUA MEMPELAI",
-      location: "Memory Gazebo (Pusat Pulau)",
+      title: "5 NPC Interaktif",
+      icon: "🧚",
+      desc: "Bicara dengan Guide Aria, Pengawal Istana, dan Mempelai untuk membuka kisah cinta, jadwal, & galeri foto.",
     },
     {
-      id: "herald",
-      name: "Herald Valen",
-      role: "PENGAWAL AGUNG ISTANA",
-      avatar: "/assets/templates/pixel-adventure/characters/npcs/herald_portrait.png",
-      sprite: "/assets/templates/pixel-adventure/characters/npcs/herald_sprite.png",
-      greeting:
-        "Titah Kerajaan! Resepsi pernikahan agung akan diselenggarakan di Aula Utama Istana. Saksikan hitung mundur hari bahagia, jadwal prosesi, dan peta navigasi di sini!",
-      badge: "🏰 JADWAL & PETA",
-      location: "Castle Gateway (Gerbang Istana)",
-    },
-    {
-      id: "steward",
-      name: "Steward Budi",
-      role: "BUKU TAMU & RESERVASI",
-      avatar: "/assets/templates/pixel-adventure/characters/npcs/steward_portrait.png",
-      sprite: "/assets/templates/pixel-adventure/characters/npcs/steward_sprite.png",
-      greeting:
-        "Salam hormat! Mohon konfirmasikan kehadiran Anda pada pesta kerajaan ini agar kami dapat mempersiapkan tempat duduk dan jamuan terbaik untuk Anda sekeluarga.",
-      badge: "📜 BUKU TAMU / RSVP",
-      location: "Plaza Center (Area Resepsi)",
+      title: "RSVP & Amplop",
+      icon: "📜",
+      desc: "Konfirmasi kehadiran dan tanda kasih dibuka langsung dari dalam quest game tanpa keluar halaman.",
     },
   ];
 
-  const currentNpc = npcs[activeNpcIndex];
-
-  const handleNextNpc = () => {
-    setActiveNpcIndex((prev) => (prev + 1) % npcs.length);
-  };
-
   return (
-    <div className="bg-[#1a060e] rounded-3xl p-4 sm:p-5 text-white border-2 border-[#eab308]/60 shadow-2xl space-y-3 sm:space-y-3.5 overflow-hidden relative">
-      {/* 1. Retro Game Console Header */}
-      <div className="flex items-center justify-between border-b border-[#eab308]/30 pb-2.5">
+    <div className="bg-slate-900 rounded-3xl p-4 sm:p-5 text-white border border-amber-500/40 shadow-xl space-y-3 sm:space-y-3.5 overflow-hidden">
+      {/* 1. Browser/Console Frame Header */}
+      <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div className="flex items-center gap-2">
-          <Gamepad2 className="w-4 h-4 text-[#fde047]" />
-          <span className="text-xs font-bold text-[#fde047] uppercase tracking-wider font-pixel">
-            Engine 2D Pixel RPG (60 FPS)
+          <div className="flex items-center gap-1">
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+          </div>
+          <span className="text-[11px] font-mono text-slate-300 ml-1 truncate">
+            hayvows.com/invitation/alex-sara
           </span>
         </div>
-        <span className="text-[10px] text-emerald-400 bg-black/60 px-2.5 py-0.5 rounded-full border border-emerald-400/40 font-mono">
-          ● Asset Asli Web
+        <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+          🎮 Game 2D 60 FPS
         </span>
       </div>
 
-      {/* 2. Authentic Pixel World Canvas */}
-      <div className="relative rounded-2xl overflow-hidden border-2 sm:border-3 border-[#eab308] bg-[#111c3a] shadow-inner aspect-[4/3] min-h-[230px] sm:min-h-[260px] flex flex-col justify-between">
-        {/* Real In-Game Pixel Map Background */}
-        <div
-          className="absolute inset-0 bg-cover bg-center [image-rendering:pixelated]"
-          style={{
-            backgroundImage: "url('/assets/templates/pixel-adventure/maps/floating-island-v1/map1.png')",
-          }}
+      {/* 2. Official High-Resolution Gameplay Showcase Image from Web */}
+      <div className="relative rounded-2xl overflow-hidden border-2 border-amber-400/40 shadow-lg group aspect-[16/9]">
+        <img
+          src="/assets/templates/pixel-adventure/banner.jpg"
+          alt="Gameplay Undangan 2D Pixel RPG Hayvows"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
         />
-        {/* Cinematic Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent pointer-events-none" />
 
-        {/* Top Royal Banner (Matching game UI) */}
-        <div className="relative z-10 p-2 flex items-center justify-between text-[10px] text-[#fde047] font-pixel">
-          <div className="border border-[#f6d776] bg-[#2a0812e6] px-2.5 py-1 rounded shadow flex items-center gap-1.5 ring-1 ring-[#78350f]">
-            <span>👑</span>
-            <span className="font-bold uppercase tracking-wider">DIMAS &amp; ANINDYA</span>
-            <span className="text-[8px] text-[#fef08a]">• 25 OKT 2026</span>
-          </div>
-
-          <span className="text-[9px] font-mono bg-black/75 px-2 py-0.5 rounded border border-white/20 text-slate-300">
-            {currentNpc.location}
-          </span>
+        {/* Live Playable Badge */}
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-amber-400/50 text-[10px] font-bold text-amber-300 shadow">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <span>Tampilan Asli In-Game</span>
         </div>
 
-        {/* Real In-Game Pixel Art Sprites */}
-        <div className="relative z-10 my-auto flex items-end justify-center gap-8 pb-1">
-          {/* Player Character Sprite */}
-          <div className="flex flex-col items-center">
-            <span className="text-[9px] bg-black/75 px-1.5 py-0.5 rounded border border-emerald-400/50 text-emerald-300 mb-1 font-mono">
-              Tamu (Player)
+        {/* Bottom Banner Title */}
+        <div className="absolute bottom-2.5 inset-x-2.5 flex items-center justify-between text-xs">
+          <div>
+            <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider block drop-shadow">
+              Tema Eksklusif #1 di Indonesia
             </span>
-            <img
-              src="/assets/templates/pixel-adventure/characters/player/char-down-0.png"
-              alt="Player"
-              className="w-10 h-10 sm:w-12 sm:h-12 [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)] animate-bounce"
-            />
+            <h4 className="text-xs sm:text-sm font-extrabold text-white drop-shadow">
+              The Royal Sky Island Wedding
+            </h4>
           </div>
-
-          {/* Active NPC Sprite */}
-          <div className="flex flex-col items-center">
-            <div className="animate-pulse mb-1 px-2 py-0.5 bg-[#fde047] text-[#451a03] border border-[#78350f] text-[9px] font-bold uppercase rounded-full shadow flex items-center gap-1 font-pixel">
-              <span>{currentNpc.badge}</span>
-            </div>
-            <img
-              src={currentNpc.sprite}
-              alt={currentNpc.name}
-              className="w-11 h-11 sm:w-13 sm:h-13 [image-rendering:pixelated] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]"
-            />
-          </div>
-        </div>
-
-        {/* 3. Authentic Wooden RPG Dialogue Box (Matching NPCDialog.tsx) */}
-        <div className="relative z-20 m-2 sm:m-2.5 bg-[#24060ef8] border-2 sm:border-3 border-[#eab308] ring-1 ring-[#78350f] p-2.5 sm:p-3 shadow-[0_8px_25px_rgba(0,0,0,0.95)]">
-          {/* Corner Diamonds */}
-          <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#fde047] border border-[#78350f] flex items-center justify-center text-[6px] text-[#78350f] font-black">
-            ◆
-          </div>
-          <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#fde047] border border-[#78350f] flex items-center justify-center text-[6px] text-[#78350f] font-black">
-            ◆
-          </div>
-
-          <div className="flex gap-2.5 sm:gap-3 items-start">
-            {/* Real NPC Portrait from actual game assets */}
-            <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 border-2 border-[#fde047] bg-[#3b0d19] overflow-hidden shadow">
-              <img
-                src={currentNpc.avatar}
-                alt={currentNpc.name}
-                className="w-full h-full object-cover [image-rendering:pixelated]"
-              />
-            </div>
-
-            <div className="min-w-0 flex-1 space-y-0.5">
-              <div className="flex items-center justify-between">
-                <h4 className="text-[11px] sm:text-xs font-black uppercase text-[#fde047] tracking-wider truncate font-pixel">
-                  {currentNpc.name}
-                </h4>
-                <span className="text-[9px] text-[#fef08a]/70 font-mono">
-                  [A] Lanjut &rarr;
-                </span>
-              </div>
-              <p className="text-[9px] text-[#fef08a] font-semibold font-pixel">{currentNpc.role}</p>
-              <p className="text-[10px] text-white leading-relaxed line-clamp-3 font-pixel">
-                &ldquo;{currentNpc.greeting}&rdquo;
-              </p>
-            </div>
-          </div>
+          <Link
+            href="/invitation/alex-sara/budi-santoso"
+            target="_blank"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-[11px] shadow transition-all hover:scale-105 cursor-pointer shrink-0"
+          >
+            <span>Buka Demo</span>
+            <ExternalLink className="w-3 h-3" />
+          </Link>
         </div>
       </div>
 
-      {/* 4. Controls Simulator */}
-      <div className="flex flex-col sm:flex-row items-center justify-between pt-1 gap-2">
-        <div className="flex items-center gap-1.5 text-[10px] text-slate-300">
-          <span className="px-2 py-0.5 rounded bg-white/10 font-mono">D-Pad / Layar Sentuh</span>
-          <span>Tamu berjalan bebas menjelajah pulau</span>
+      {/* 3. Interactive Feature Tabs */}
+      <div className="space-y-1.5">
+        <span className="text-[11px] text-slate-400 block font-medium">
+          Fitur Utama Game RPG:
+        </span>
+        <div className="grid grid-cols-3 gap-1.5">
+          {features.map((f, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSelectedFeature(i)}
+              className={`p-2 rounded-xl text-left transition-all border cursor-pointer ${
+                selectedFeature === i
+                  ? "bg-amber-400/20 border-amber-400/60 text-amber-200 shadow-xs"
+                  : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-slate-200"
+              }`}
+            >
+              <span className="text-sm block mb-0.5">{f.icon}</span>
+              <span className="text-[10px] font-bold block truncate">{f.title}</span>
+            </button>
+          ))}
         </div>
-
-        <button
-          type="button"
-          onClick={handleNextNpc}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#eab308] to-[#fde047] hover:brightness-110 text-[#451a03] font-bold text-xs shadow-md active:scale-95 cursor-pointer shrink-0 font-pixel"
-        >
-          <Play className="w-3.5 h-3.5 fill-[#451a03]" />
-          <span>Bicara dengan Karakter Lain ({activeNpcIndex + 1}/{npcs.length})</span>
-        </button>
       </div>
+
+      {/* 4. Active Feature Description */}
+      <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1 text-xs">
+        <p className="font-bold text-amber-300 text-[11px] flex items-center gap-1.5">
+          <span>{features[selectedFeature].icon}</span>
+          <span>{features[selectedFeature].title}</span>
+        </p>
+        <p className="text-[11px] text-slate-300 leading-relaxed">
+          {features[selectedFeature].desc}
+        </p>
+      </div>
+
+      {/* 5. Primary Direct Play Button */}
+      <Link
+        href="/invitation/alex-sara/budi-santoso"
+        target="_blank"
+        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:brightness-110 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+      >
+        <Play className="w-3.5 h-3.5 fill-slate-950" />
+        <span>Coba Mainkan Demo Game Asli (1-Klik)</span>
+        <ExternalLink className="w-3.5 h-3.5" />
+      </Link>
     </div>
   );
 }
