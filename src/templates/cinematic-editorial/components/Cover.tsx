@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { TemplateComponentProps } from "@/types/template";
-import { MailOpen, QrCode, Sparkles, Volume2 } from "lucide-react";
+import { MailOpen, QrCode, Sparkles } from "lucide-react";
 
 interface CoverProps extends TemplateComponentProps {
   onOpen: () => void;
@@ -177,7 +177,6 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
           >
             <MailOpen className="w-4 h-4 text-[#111115] transition-transform group-hover:scale-110" />
             <span>Buka Undangan</span>
-            <Volume2 className="w-3.5 h-3.5 text-[#111115]/60 ml-1" />
           </button>
 
           {guest && onOpenTicket && (
