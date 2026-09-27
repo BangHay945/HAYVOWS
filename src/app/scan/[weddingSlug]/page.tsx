@@ -249,11 +249,6 @@ export default function ReceptionQRScannerPage({
         { facingMode: facing },
         {
           fps: 15,
-          qrbox: (viewfinderWidth, viewfinderHeight) => {
-            const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
-            const edge = Math.floor(minEdge * 0.72);
-            return { width: Math.max(edge, 220), height: Math.max(edge, 220) };
-          },
         },
         (decodedText) => {
           if (!isProcessingRef.current) {
@@ -561,10 +556,22 @@ export default function ReceptionQRScannerPage({
           </div>
         )}
 
+        {/* Global style to completely hide html5-qrcode internal shaded boxes and white borders */}
+        <style jsx global>{`
+          #fullscreen-qr-scanner-region #qr-shaded-region,
+          #fullscreen-qr-scanner-region > div:not(video):not([class*="custom"]),
+          #qr-shaded-region {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+          }
+        `}</style>
+
         {/* Cinematic Scanner Target Overlay */}
         <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center z-10 p-6">
           {/* Scanning Box */}
-          <div className="relative w-64 h-64 sm:w-80 sm:h-80 border-2 border-white/20 rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+          <div className="relative w-64 h-64 sm:w-80 sm:h-80 border-2 border-white/20 rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] bg-emerald-950/5">
             {/* Glowing Corner Accents */}
             <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-emerald-400 rounded-tl-2xl" />
             <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-emerald-400 rounded-tr-2xl" />
@@ -573,10 +580,12 @@ export default function ReceptionQRScannerPage({
 
             {/* Sweeping Animated Laser Beam */}
             <motion.div
-              animate={{ y: [0, 240, 0] }}
+              animate={{ top: ["2%", "96%", "2%"] }}
               transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
-              className="w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#34d399]"
-            />
+              className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_16px_#34d399]"
+            >
+              <div className="w-full h-full bg-emerald-300 blur-[1px]" />
+            </motion.div>
           </div>
 
           {/* Scanning Prompt Text */}
