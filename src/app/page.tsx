@@ -168,8 +168,8 @@ export default function LandingPage() {
       a: "Sama sekali tidak ada potongan (0% Admin Fee). Nomor rekening bank yang Anda pasang langsung terhubung ke rekening pribadi Anda, sehingga seluruh tanda kasih dari tamu masuk 100% utuh tanpa perantara.",
     },
     {
-      q: "Apakah Paket Exclusive sudah termasuk Custom Domain gratis?",
-      a: "Ya! Pengguna Paket Exclusive mendapatkan GRATIS 1 nama domain personal (.my.id) selama 1 tahun (contoh: romeojuliet.my.id) atau bisa langsung menggunakan subdomain kustom (nama.hayvows.com). Anda juga bebas menghubungkan domain berekstensi lain (.com, .id, dll) yang sudah Anda miliki sendiri dengan bantuan panduan DNS mudah di dashboard.",
+      q: "Apa itu 'Link Website Nama Sendiri' (Custom Domain) dan apakah gratis?",
+      a: "Artinya link undangan Anda tidak lagi berupa tautan panjang yang rumit, melainkan langsung memakai nama kedua mempelai layaknya website resmi (contoh: romeo-juliet.my.id atau alex-sara.hayvows.com). Di Paket Exclusive, Anda mendapatkan GRATIS 1 nama domain berekstensi .my.id selama 1 tahun penuh, atau Anda bisa langsung mengaktifkan alamat pendek Hayvows tanpa biaya tambahan!",
     },
     {
       q: "Bisakah mengganti lagu atau latar musik undangan?",
@@ -1606,7 +1606,7 @@ export default function LandingPage() {
                   <span>VIP RESEPSI</span>
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Tamu Unlimited + Free Custom Domain + Eternal Noir + RPG.</p>
+              <p className="text-xs text-slate-500 mt-1">Tamu Unlimited + Link Web Nama Sendiri + Eternal Noir + RPG.</p>
 
               <div className="my-6">
                 <span className="text-xs text-slate-400 font-semibold line-through">Rp 499.000</span>
@@ -1621,10 +1621,15 @@ export default function LandingPage() {
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Unlimited Nama Tamu (Tanpa Batas)</span>
                 </p>
-                <p className="flex items-center gap-2 font-bold text-amber-900 bg-amber-50/80 px-2.5 py-1.5 rounded-lg border border-amber-200/60">
-                  <Crown className="w-4 h-4 text-[#c9a84c] shrink-0" />
-                  <span>FREE Custom Domain (.my.id) / Subdomain</span>
-                </p>
+                <div className="bg-amber-50/80 p-2.5 rounded-xl border border-amber-200/70 space-y-1">
+                  <div className="flex items-center gap-2 font-bold text-amber-950 text-xs sm:text-sm">
+                    <Crown className="w-4 h-4 text-[#c9a84c] shrink-0" />
+                    <span>GRATIS Link Web Nama Sendiri (.my.id)</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800/90 pl-6 leading-relaxed">
+                    Alamat undangan resmi pakai nama mempelai (contoh: <strong className="font-mono text-amber-950">romeo-juliet.my.id</strong> atau <strong className="font-mono text-amber-950">romeo-juliet.hayvows.com</strong>) tanpa link acak biasa.
+                  </p>
+                </div>
                 <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Semua Fitur Paket Populer (Buku Tamu &amp; Layar TV)</span>

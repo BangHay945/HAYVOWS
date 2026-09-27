@@ -420,9 +420,14 @@ export function UpgradeModal({
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
                     <span className="font-bold text-amber-900">Unlimited Nama Tamu (Tanpa Batas)</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-amber-50/80 px-2 py-1 rounded-md border border-amber-200/50">
-                    <Crown className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
-                    <span className="font-bold text-amber-950">FREE Custom Domain (.my.id) / Subdomain</span>
+                  <div className="bg-amber-50/90 p-2 rounded-lg border border-amber-200/70 space-y-0.5">
+                    <div className="flex items-center gap-2 font-bold text-amber-950">
+                      <Crown className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
+                      <span>GRATIS Link Web Nama Sendiri (.my.id)</span>
+                    </div>
+                    <p className="text-[10px] text-amber-800 pl-5.5 leading-snug">
+                      Alamat resmi pakai nama mempelai (cth: <strong className="font-mono text-amber-950">romeo-juliet.my.id</strong>)
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />

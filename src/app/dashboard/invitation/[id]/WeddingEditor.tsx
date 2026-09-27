@@ -616,7 +616,7 @@ Terima kasih.`,
     { key: "music", label: "Musik Latar", icon: Music },
     { key: "gift", label: "Amplop & Kado", icon: Gift },
     { key: "settings", label: "Pengaturan & SEO", icon: Settings2 },
-    { key: "domain", label: "Domain", icon: Crown },
+    { key: "domain", label: "Link Web Sendiri", icon: Crown },
   ] as const;
 
 
@@ -2064,7 +2064,7 @@ Terima kasih.`,
             </div>
             <div>
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                Custom Domain / Subdomain
+                Alamat Link Web Sendiri (Custom Domain)
                 {isLuxury ? (
                   <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
                     Paket Exclusive ✓
@@ -2076,7 +2076,7 @@ Terima kasih.`,
                 )}
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Atur alamat khusus undangan — subdomain Hayvows atau domain pribadi Anda sendiri.
+                Ganti link undangan biasa menjadi alamat resmi memakai nama kedua mempelai (contoh: <strong className="text-slate-700">romeo-juliet.my.id</strong> atau <strong className="text-slate-700">alex-sara.hayvows.com</strong>).
               </p>
             </div>
           </div>
@@ -2088,11 +2088,11 @@ Terima kasih.`,
                 <Crown className="w-6 h-6 text-amber-600" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-amber-900">Fitur Eksklusif Paket Luxury</h3>
+                <h3 className="text-sm font-bold text-amber-900">Fitur Eksklusif Paket Exclusive</h3>
                 <p className="text-xs text-amber-700 mt-1 max-w-sm mx-auto leading-relaxed">
-                  Upgrade ke Paket Exclusive untuk mengatur subdomain Hayvows (contoh:{" "}
-                  <strong>alex-sara.hayvows.com</strong>) atau menghubungkan domain sendiri (contoh:{" "}
-                  <strong>pernikahan-kami.com</strong>).
+                  Upgrade ke Paket Exclusive untuk mendapatkan <strong>Gratis Domain .my.id 1 Tahun</strong> (contoh:{" "}
+                  <strong>alex-sara.my.id</strong>) atau membuat alamat pendek khusus (contoh:{" "}
+                  <strong>alex-sara.hayvows.com</strong>).
                 </p>
               </div>
               <button
@@ -2134,20 +2134,20 @@ Terima kasih.`,
                   <div>
                     <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
                       <Globe className="w-4 h-4 text-emerald-600" />
-                      Subdomain Hayvows
+                      Pilihan 1: Alamat Pendek Hayvows (Langsung Aktif)
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Buat alamat pendek yang mudah diingat di bawah domain Hayvows.
+                      Buat link pendek yang langsung aktif dalam 1 detik tanpa perlu konfigurasi teknis.
                     </p>
                   </div>
                   <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                    Gratis
+                    Langsung Aktif
                   </span>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Nama Subdomain
+                    Nama Link yang Diinginkan
                   </label>
                   <div className="flex items-center gap-2">
                     <div className="flex items-stretch flex-1 rounded-lg border border-slate-300 overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500">
@@ -2166,7 +2166,7 @@ Terima kasih.`,
                     </div>
                   </div>
                   <p className="text-[11px] text-slate-400 mt-1.5">
-                    Hanya huruf kecil, angka, dan tanda hubung (-). Minimal 3 karakter.
+                    Hanya gunakan huruf kecil, angka, dan tanda hubung (-). Contoh: <code className="text-slate-600 font-mono">alex-sara</code>
                   </p>
                 </div>
 
@@ -2211,30 +2211,43 @@ Terima kasih.`,
                   <div>
                     <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
                       <Link2 className="w-4 h-4 text-purple-600" />
-                      Domain Pribadi (Custom Domain)
+                      Pilihan 2: Domain Pribadi (Nama Website Sendiri)
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Hubungkan domain Anda sendiri yang dibeli dari registrar (Niaga Hoster, Namecheap, dll).
+                      Gunakan alamat website sepenuhnya tanpa nama Hayvows (contoh: <strong className="text-slate-700">romeo-juliet.my.id</strong> atau <strong className="text-slate-700">pernikahankami.com</strong>).
                     </p>
                   </div>
                   <span className="text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                    Domain Sendiri
+                    Paling Eksklusif
                   </span>
+                </div>
+
+                {/* Info Klaim Gratis untuk Exclusive */}
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-xl p-4 flex items-start gap-3">
+                  <Crown className="w-5 h-5 text-[#c9a84c] shrink-0 mt-0.5" />
+                  <div className="text-xs space-y-1">
+                    <p className="font-bold text-amber-950">
+                      🎁 Bonus Paket Exclusive: Gratis 1 Domain .my.id Selama 1 Tahun!
+                    </p>
+                    <p className="text-amber-900/90 leading-relaxed text-[11px]">
+                      Bingung cara beli atau setting domain? Tenang, tim Admin Hayvows siap membantu mendaftarkan dan menyambungkan nama domain pilihan Anda tanpa biaya tambahan. Silakan hubungi kami via WhatsApp untuk klaim domain gratis Anda.
+                    </p>
+                  </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Nama Domain (tanpa https://)
+                    Nama Domain Anda (tanpa https://)
                   </label>
                   <input
                     type="text"
                     value={customDomainInput}
                     onChange={(e) => setCustomDomainInput(e.target.value.toLowerCase().trim().replace(/^https?:\/\//, ""))}
-                    placeholder="pernikahan-kami.com"
+                    placeholder="romeo-juliet.my.id"
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono"
                   />
                   <p className="text-[11px] text-slate-400 mt-1.5">
-                    Contoh: <code className="font-mono">romeo-juliet.com</code> atau <code className="font-mono">pernikahan.romeodan.com</code>
+                    Contoh: <code className="font-mono text-slate-600">romeo-juliet.my.id</code> atau <code className="font-mono text-slate-600">pernikahan-kami.com</code>
                   </p>
                 </div>
 
@@ -2242,10 +2255,10 @@ Terima kasih.`,
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-3">
                   <div className="flex items-center gap-2">
                     <Info className="w-4 h-4 text-blue-600 shrink-0" />
-                    <h4 className="text-xs font-bold text-blue-900">Cara Menghubungkan Domain (Panduan DNS)</h4>
+                    <h4 className="text-xs font-bold text-blue-900">Bagi yang Memasang Sendiri (Panduan DNS)</h4>
                   </div>
                   <p className="text-[11px] text-blue-800 leading-relaxed">
-                    Setelah menyimpan domain di atas, masuk ke panel DNS registrar Anda dan tambahkan record berikut:
+                    Jika Anda membeli domain sendiri di registrar luar, cukup arahkan DNS CNAME domain Anda ke server Hayvows:
                   </p>
                   <div className="bg-white rounded-lg border border-blue-200 overflow-hidden">
                     <div className="grid grid-cols-3 text-[10px] font-bold text-blue-900 bg-blue-100 px-3 py-2">
@@ -2260,8 +2273,7 @@ Terima kasih.`,
                     </div>
                   </div>
                   <p className="text-[11px] text-blue-700 leading-relaxed">
-                    Setelah DNS propagasi (bisa 5 menit – 24 jam), domain Anda akan otomatis mengarah ke undangan.
-                    Hubungi admin Hayvows di WhatsApp jika membutuhkan SSL atau bantuan lebih lanjut.
+                    Butuh bantuan pemasangan? Tim CS kami di WhatsApp siap memandu sampai domain aktif.
                   </p>
                 </div>
 
