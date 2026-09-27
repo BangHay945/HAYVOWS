@@ -180,15 +180,17 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
             <Volume2 className="w-3.5 h-3.5 text-[#111115]/60 ml-1" />
           </button>
 
-          {onOpenTicket && guest?.qrCode && (
-            <button
+          {guest && onOpenTicket && (
+            <motion.button
               type="button"
               onClick={onOpenTicket}
-              className="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 active:scale-[0.98] text-white/90 font-medium text-xs border border-white/15 backdrop-blur-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] active:scale-[0.98] text-[#e8d5b5] font-mono text-[11px] uppercase tracking-[0.2em] border border-[#e8d5b5]/40 backdrop-blur-md transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
             >
-              <QrCode className="w-3.5 h-3.5 text-[#e8d5b5]" />
-              <span>Tiket Kehadiran QR Anda</span>
-            </button>
+              <QrCode className="w-4 h-4 text-[#e8d5b5]" />
+              <span>Lihat Tiket QR / E-Pass</span>
+            </motion.button>
           )}
         </div>
       </motion.footer>

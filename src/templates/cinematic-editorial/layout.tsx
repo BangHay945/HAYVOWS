@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import type { TemplateLayoutProps, RSVPSubmitData } from "@/types/template";
 import { AnimatePresence, motion } from "framer-motion";
 import { isYouTubeUrl, extractYouTubeId } from "@/lib/utils/youtube";
-import { Gift as GiftIcon } from "lucide-react";
+import { Gift as GiftIcon, QrCode } from "lucide-react";
 
 import { EditorialCover } from "./components/Cover";
 import { EditorialHero } from "./components/Hero";
@@ -265,9 +265,25 @@ export function EditorialLayout({
                 <EditorialMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
               </div>
 
-              {/* Floating Gift Button (Fixed at Bottom Right of Frame) */}
-              {(context.wedding.giftAccounts ?? []).length > 0 && (
-                <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
+              {/* Floating Action Buttons (Fixed at Bottom Right of Frame) */}
+              <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none flex items-center gap-2.5">
+                {context.guest && onOpenTicket && (
+                  <motion.button
+                    type="button"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.92 }}
+                    onClick={onOpenTicket}
+                    className="w-12 h-12 rounded-full bg-[#111115]/95 backdrop-blur-md border border-[#e8d5b5]/50 text-[#e8d5b5] shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex items-center justify-center cursor-pointer transition-all hover:border-[#e8d5b5] hover:scale-105"
+                    title="Lihat Tiket QR / E-Pass"
+                    aria-label="Lihat Tiket QR / E-Pass"
+                  >
+                    <QrCode className="w-5 h-5 text-[#e8d5b5]" />
+                  </motion.button>
+                )}
+
+                {(context.wedding.giftAccounts ?? []).length > 0 && (
                   <motion.button
                     type="button"
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -285,8 +301,8 @@ export function EditorialLayout({
                     </span>
                     <GiftIcon className="w-5 h-5 text-[#e8d5b5] transition-transform group-hover:scale-110" />
                   </motion.button>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Dot navigation — fixed on right edge */}
               <nav className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5 items-center select-none">
