@@ -25,12 +25,10 @@ import {
   Crown,
   FileSpreadsheet,
   Heart,
-  Printer,
 } from "lucide-react";
 import { QRScannerView } from "@/components/dashboard/QRScannerView";
 import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
-import { PrintableRSVPCardModal } from "@/components/dashboard/PrintableRSVPCardModal";
 
 export interface GuestbookItem {
   id: string;
@@ -80,7 +78,6 @@ export function GuestbookWorkbench({
   const [isOnTheSpotModalOpen, setIsOnTheSpotModalOpen] = useState(false);
   const [selectedTicketGuest, setSelectedTicketGuest] = useState<GuestbookItem | null>(null);
   const [loadingGuestId, setLoadingGuestId] = useState<string | null>(null);
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   // Stats Calculations
   const stats = useMemo(() => {
@@ -230,15 +227,6 @@ export function GuestbookWorkbench({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsPrintModalOpen(true)}
-            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-bold text-xs bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs transition-colors cursor-pointer"
-          >
-            <Printer className="w-4 h-4 text-[#fef08a]" />
-            <span>Cetak Kartu QR RSVP Fisik</span>
-          </button>
-
           <button
             type="button"
             onClick={() => setIsOnTheSpotModalOpen(true)}
@@ -630,14 +618,6 @@ export function GuestbookWorkbench({
           qrCode={selectedTicketGuest.qrCode}
         />
       )}
-
-      {/* Modal Cetak Kartu & Stiker QR RSVP Fisik */}
-      <PrintableRSVPCardModal
-        isOpen={isPrintModalOpen}
-        onClose={() => setIsPrintModalOpen(false)}
-        weddingSlug={weddingSlug}
-        coupleTitle={coupleTitle}
-      />
     </div>
   );
 }
