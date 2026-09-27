@@ -26,7 +26,6 @@ import {
   FileSpreadsheet,
   Heart,
 } from "lucide-react";
-import { QRScannerView } from "@/components/dashboard/QRScannerView";
 import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
 
@@ -72,7 +71,6 @@ export function GuestbookWorkbench({
 }) {
   const router = useRouter();
   const [guests, setGuests] = useState<GuestbookItem[]>(initialGuests);
-  const [activeTab, setActiveTab] = useState<"table" | "scanner" | "display">("table");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "checked_in" | "not_checked_in" | "vip">("all");
   const [isOnTheSpotModalOpen, setIsOnTheSpotModalOpen] = useState(false);
@@ -231,6 +229,15 @@ export function GuestbookWorkbench({
 
         <div className="flex items-center gap-2 shrink-0 flex-nowrap overflow-x-auto pb-1 lg:pb-0">
           <Link
+            href={`/scan/${weddingSlug}`}
+            target="_blank"
+            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+          >
+            <Camera className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span>Pemindai QR ↗</span>
+          </Link>
+
+          <Link
             href={`/display/${weddingSlug}`}
             target="_blank"
             className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
@@ -342,38 +349,16 @@ export function GuestbookWorkbench({
         </div>
       </div>
 
-      {/* Navigation Subtabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200">
-        <button
-          type="button"
-          onClick={() => setActiveTab("table")}
-          className={`py-2.5 px-4 font-bold text-xs sm:text-sm border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
-            activeTab === "table"
-              ? "border-[#2d4a3e] text-[#2d4a3e]"
-              : "border-transparent text-slate-500 hover:text-slate-800"
-          }`}
-        >
+      {/* Table Section Header */}
+      <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+        <div className="flex items-center gap-2 font-bold text-sm text-[#2d4a3e]">
           <Users className="w-4 h-4" />
           <span>Daftar Buku Tamu ({guests.length})</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("scanner")}
-          className={`py-2.5 px-4 font-bold text-xs sm:text-sm border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
-            activeTab === "scanner"
-              ? "border-[#2d4a3e] text-[#2d4a3e]"
-              : "border-transparent text-slate-500 hover:text-slate-800"
-          }`}
-        >
-          <Camera className="w-4 h-4" />
-          <span>Kamera Pemindai QR Resepsionis</span>
-        </button>
+        </div>
       </div>
 
-      {/* TAB CONTENT: 1. TABLE VIEW */}
-      {activeTab === "table" && (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden space-y-4 p-4 sm:p-5">
+      {/* TABLE VIEW */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden space-y-4 p-4 sm:p-5">
           {/* Filter and Search Bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             {/* Search Input */}
@@ -589,12 +574,6 @@ export function GuestbookWorkbench({
             </table>
           </div>
         </div>
-      )}
-
-      {/* TAB CONTENT: 2. SCANNER QR */}
-      {activeTab === "scanner" && (
-        <QRScannerView weddingId={weddingId} onCheckInSuccess={reloadGuests} />
-      )}
 
       {/* Modal On-The-Spot Guest */}
       <OnTheSpotGuestModal

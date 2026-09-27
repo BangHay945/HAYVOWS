@@ -8,18 +8,14 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const userRole = (session?.user as any)?.role;
+  const { id: weddingIdOrSlug } = await params;
 
-  const { id: weddingId } = await params;
-
-  // Verify ownership or admin
-  const userRole = (session.user as any)?.role;
+  // Support querying by wedding ID or slug
   const wedding = await prisma.wedding.findFirst({
     where: {
-      id: weddingId,
-      ...(userRole !== "admin" ? { userId: session.user.id } : {}),
+      OR: [{ id: weddingIdOrSlug }, { slug: weddingIdOrSlug }],
+      ...(session?.user?.id && userRole !== "admin" ? { userId: session.user.id } : {}),
     },
   });
 
@@ -40,7 +36,7 @@ export async function POST(
   } = body;
 
   if (action === "undo" && guestId) {
-    const result = await undoCheckInGuest(weddingId, guestId);
+    const result = await undoCheckInGuest(wedding.id, guestId);
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
@@ -48,7 +44,7 @@ export async function POST(
   }
 
   const result = await checkInGuest(
-    weddingId,
+    wedding.id,
     { qrCode, guestId, slug },
     { checkedInPax, souvenirTaken, giftType, checkInNotes }
   );
