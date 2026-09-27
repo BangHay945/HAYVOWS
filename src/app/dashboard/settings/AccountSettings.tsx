@@ -192,8 +192,8 @@ export default function AccountSettings({ initialUser }: { initialUser: AccountU
                 {currentPlan === "luxury"
                   ? "Akses tanpa batas ke seluruh tema eksklusif (Eternal Noir), custom domain, dan prioritas VIP."
                   : currentPlan === "premium"
-                  ? "Akses penuh tanpa watermark dengan kuota tamu tak terbatas dan tema premium."
-                  : "Mode evaluasi: Kuota maksimal 50 tamu undangan dengan label watermark Hayvows."}
+                  ? "Akses penuh tanpa watermark dengan kuota tamu hingga 500 tamu dan tema premium."
+                  : "Kapasitas hingga 50 tamu undangan dengan fitur esensial praktis."}
               </p>
             </div>
           </div>
@@ -221,7 +221,11 @@ export default function AccountSettings({ initialUser }: { initialUser: AccountU
               <span>Kuota Tamu</span>
             </div>
             <p className="text-xs text-slate-900 font-bold mt-1">
-              {currentPlan === "basic" ? "50 Tamu Undangan" : "Unlimited (Tanpa Batas)"}
+              {currentPlan === "luxury"
+                ? "Unlimited (Tanpa Batas)"
+                : currentPlan === "premium"
+                ? "500 Tamu Undangan"
+                : "50 Tamu Undangan"}
             </p>
           </div>
 

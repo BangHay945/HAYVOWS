@@ -201,7 +201,7 @@ export default function PanduanClient() {
           title: "Masukkan Daftar Nama Tamu (Bisa Impor Excel Sekaligus)",
           desc: "Masuk ke Dashboard > menu Tamu Undangan. Anda bisa menambahkan tamu satu per satu atau mengunggah berkas Excel/CSV untuk ratusan nama sekaligus.",
           detail:
-            "Dukungan kuota tamu unlimited tanpa batasan jumlah nama.",
+            "Dukungan kuota tamu fleksibel sesuai paket (hingga 50, 500, atau Unlimited tamu).",
         },
         {
           number: "02",

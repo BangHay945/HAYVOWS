@@ -300,6 +300,10 @@ export function UpgradeModal({
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Hingga 50 Nama Tamu &amp; WhatsApp</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>Hapus Watermark Uji Coba</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -308,7 +312,7 @@ export function UpgradeModal({
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Google Maps &amp; Sebar WhatsApp</span>
+                    <span>Petunjuk Arah Google Maps</span>
                   </div>
                 </div>
               </div>
@@ -347,6 +351,10 @@ export function UpgradeModal({
                 </p>
 
                 <div className="mt-4 pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span className="font-bold text-[#2d4a3e]">Hingga 500 Nama Tamu</span>
+                  </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span className="font-semibold text-slate-800">Semua Fitur Paket Basic</span>
@@ -404,6 +412,10 @@ export function UpgradeModal({
                 </p>
 
                 <div className="mt-4 pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
+                    <span className="font-bold text-amber-900">Unlimited Nama Tamu (Tanpa Batas)</span>
+                  </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
                     <span className="font-semibold text-slate-800">Semua Fitur Paket Populer</span>

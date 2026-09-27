@@ -74,7 +74,7 @@ export function EkosistemWorkflowBanner() {
       title: "Distribusi WhatsApp",
       subtitle: "Kirim Personal 1-Klik",
       desc: "Sebarkan tautan personal ke WhatsApp kerabat. Nama tamu langsung tertera di sampul & tiket QR.",
-      badge: "Unlimited Tamu",
+      badge: "Personal 1-Klik",
       icon: MessageCircle,
       color: "from-emerald-500/20 to-teal-500/10 border-emerald-300/60 text-emerald-800",
       activeBorder: "border-emerald-500 ring-2 ring-emerald-400/30",

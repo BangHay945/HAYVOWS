@@ -153,7 +153,7 @@ export default function LandingPage() {
     },
     {
       q: "Apakah ada batasan jumlah nama tamu yang bisa dibuatkan link khusus?",
-      a: "Tidak ada batasan (Unlimited)! Anda bisa memasukkan ratusan hingga ribuan nama tamu. Sistem kami akan otomatis membuatkan tautan khusus dengan nama tamu tertera elegan di sampul undangan dan pesan WhatsApp.",
+      a: "Kapasitas tamu disesuaikan dengan paket yang Anda pilih: Paket Basic hingga 50 nama tamu, Paket Populer hingga 500 nama tamu, dan Paket Exclusive mendukung Unlimited (tanpa batas nama tamu). Sistem kami akan otomatis membuatkan tautan khusus dengan nama tamu tertera elegan di sampul undangan dan pesan WhatsApp.",
     },
     {
       q: "Apakah tamu undangan bisa langsung konfirmasi kehadiran (RSVP) & kirim kado?",
@@ -1452,7 +1452,7 @@ export default function LandingPage() {
             Pilihan Paket untuk Setiap Pasangan
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            Sekali bayar tanpa biaya tersembunyi. Seluruh paket sudah termasuk tamu tanpa batas.
+            Sekali bayar tanpa biaya tersembunyi. Pilih paket sesuai kebutuhan kapasitas tamu dan fitur acara Anda.
           </p>
         </div>
 
@@ -1477,9 +1477,9 @@ export default function LandingPage() {
               </div>
 
               <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-600">
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 font-medium text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Unlimited Nama Tamu &amp; WhatsApp 1-Klik</span>
+                  <span>Hingga 50 Nama Tamu &amp; WhatsApp 1-Klik</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -1541,6 +1541,10 @@ export default function LandingPage() {
               </div>
 
               <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-700">
+                <p className="flex items-center gap-2 font-bold text-[#2d4a3e]">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Hingga 500 Nama Tamu &amp; WhatsApp 1-Klik</span>
+                </p>
                 <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Studio Desain QR Siap Cetak (300 DPI)</span>
@@ -1605,6 +1609,10 @@ export default function LandingPage() {
               </div>
 
               <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-600">
+                <p className="flex items-center gap-2 font-bold text-amber-700">
+                  <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
+                  <span>Unlimited Nama Tamu (Tanpa Batas)</span>
+                </p>
                 <p className="flex items-center gap-2 font-semibold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Semua Fitur &amp; Tema Paket Populer</span>

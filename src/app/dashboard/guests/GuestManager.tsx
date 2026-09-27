@@ -393,8 +393,8 @@ export default function GuestManager({
         </div>
       </div>
 
-      {/* Quota Banner for Basic */}
-      {userPlan === "basic" && userRole !== "admin" && (
+      {/* Quota Banner for Basic & Premium */}
+      {userRole !== "admin" && (userPlan === "basic" || (userPlan === "premium" && guests.length >= 400)) && (
         <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 font-bold shrink-0">
@@ -402,12 +402,12 @@ export default function GuestManager({
             </div>
             <div>
               <p className="text-xs font-bold text-amber-950">
-                Kuota Tamu: {guests.length} / 50 Tamu (Paket Basic Uji Coba)
+                Kuota Tamu: {guests.length} / {userPlan === "premium" ? "500" : "50"} Tamu ({userPlan === "premium" ? "Paket Populer" : "Paket Basic"})
               </p>
               <div className="w-48 sm:w-64 bg-amber-200/70 h-2 rounded-full overflow-hidden mt-1.5">
                 <div
                   className="bg-amber-600 h-full rounded-full transition-all"
-                  style={{ width: `${Math.min((guests.length / 50) * 100, 100)}%` }}
+                  style={{ width: `${Math.min((guests.length / (userPlan === "premium" ? 500 : 50)) * 100, 100)}%` }}
                 />
               </div>
             </div>
@@ -417,7 +417,7 @@ export default function GuestManager({
             onClick={() => setUpgradeModalOpen(true)}
             className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-[#2d4a3e] hover:bg-[#233a30] text-white text-xs font-bold transition-all shadow-2xs cursor-pointer inline-flex items-center gap-1.5"
           >
-            <span>Upgrade ke 500 / Unlimited Tamu</span>
+            <span>{userPlan === "premium" ? "Upgrade ke Unlimited Tamu" : "Upgrade ke 500 / Unlimited Tamu"}</span>
           </button>
         </div>
       )}
