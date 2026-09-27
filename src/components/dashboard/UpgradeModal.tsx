@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { HayvowsLogo } from "@/components/brand/HayvowsLogo";
+import { CONTACT_INFO } from "@/lib/contact";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -464,7 +465,7 @@ export function UpgradeModal({
                 <span>Pembayaran Aman &amp; Terverifikasi Otomatis</span>
               </span>
               <a
-                href={`https://wa.me/6281234567890?text=${whatsappMessage}`}
+                href={`https://wa.me/${CONTACT_INFO.whatsappNumber}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-slate-500 hover:text-emerald-700 underline inline-flex items-center gap-1"

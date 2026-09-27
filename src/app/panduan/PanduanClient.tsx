@@ -39,6 +39,8 @@ import {
   BankCardSimulation,
   QuickStartRoadmapSimulation,
 } from "./components/GuideMockups";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { CONTACT_INFO, getWhatsAppUrl } from "@/lib/contact";
 
 export type GuideCategory =
   | "all"
@@ -878,7 +880,7 @@ export default function PanduanClient() {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20Admin%20Hayvows,%20saya%20ingin%20tanya%20seputar%20fitur%20undangan"
+              href={getWhatsAppUrl("Halo Admin Hayvows, saya ingin tanya seputar fitur undangan di Pusat Panduan")}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm px-5 py-3.5 rounded-xl border border-white/20 transition-colors"
@@ -919,6 +921,9 @@ export default function PanduanClient() {
           </div>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Contact Widget */}
+      <FloatingWhatsApp message="Halo Admin Hayvows, saya sedang membaca Pusat Panduan dan butuh bantuan" />
     </div>
   );
 }

@@ -47,6 +47,8 @@ import {
   Calendar,
   Copy,
 } from "lucide-react";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { CONTACT_INFO, getWhatsAppUrl } from "@/lib/contact";
 
 export type ThemeCategory = "all" | "adat" | "floral" | "rpg" | "luxury" | "minimalist" | "basic";
 
@@ -1654,7 +1656,7 @@ export default function LandingPage() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
-                href="https://wa.me/6281234567890?text=Halo%20Admin%20Hayvows,%20saya%20ingin%20tanya%20tentang%20ekosistem%20undangan%20pernikahan%20digital"
+                href={getWhatsAppUrl("Halo Admin Hayvows, saya ingin tanya tentang ekosistem undangan pernikahan digital")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-6 py-4 rounded-xl border border-white/20 transition-all"
@@ -1734,15 +1736,15 @@ export default function LandingPage() {
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/6281234567890"
+                    href={CONTACT_INFO.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors flex items-center gap-1.5"
                   >
-                    <span>WhatsApp CS: 0812-3456-7890</span>
+                    <span>WhatsApp CS: {CONTACT_INFO.phoneFormatted}</span>
                   </a>
                 </li>
-                <li><span>Email: support@hayvows.com</span></li>
+                <li><span>Email: {CONTACT_INFO.email}</span></li>
                 <li><span>Jam Operasional: 09:00 - 21:00 WIB</span></li>
               </ul>
             </div>
@@ -1756,6 +1758,9 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Contact Widget */}
+      <FloatingWhatsApp />
     </div>
   );
 }
