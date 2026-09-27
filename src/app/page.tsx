@@ -1530,7 +1530,7 @@ export default function LandingPage() {
                   Hemat 35%
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Ekosistem lengkap: Studio QR Cetak, Buku Tamu &amp; Katering.</p>
+              <p className="text-xs text-slate-500 mt-1">Ekosistem lengkap: Studio QR, Buku Tamu, Layar TV &amp; Katering.</p>
 
               <div className="my-6">
                 <span className="text-xs text-slate-400 font-semibold line-through">Rp 299.000</span>
@@ -1552,6 +1552,10 @@ export default function LandingPage() {
                 <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Buku Tamu Digital &amp; Presensi QR 1-Detik</span>
+                </p>
+                <p className="flex items-center gap-2 font-semibold text-purple-700">
+                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+                  <span>Layar Sambutan TV / Videotron Real-time</span>
                 </p>
                 <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -1598,7 +1602,7 @@ export default function LandingPage() {
                   <span>VIP RESEPSI</span>
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Layar Sapa TV + Eternal Noir + Game RPG 2D.</p>
+              <p className="text-xs text-slate-500 mt-1">Tamu Unlimited + Eternal Noir + Game RPG 2D.</p>
 
               <div className="my-6">
                 <span className="text-xs text-slate-400 font-semibold line-through">Rp 499.000</span>
@@ -1615,11 +1619,7 @@ export default function LandingPage() {
                 </p>
                 <p className="flex items-center gap-2 font-semibold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
-                  <span>Semua Fitur &amp; Tema Paket Populer</span>
-                </p>
-                <p className="flex items-center gap-2 font-semibold text-emerald-800">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Layar Sambutan TV / Videotron Real-time</span>
+                  <span>Semua Fitur Paket Populer (Buku Tamu &amp; Layar TV)</span>
                 </p>
                 <p className="flex items-center gap-2 font-semibold text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />

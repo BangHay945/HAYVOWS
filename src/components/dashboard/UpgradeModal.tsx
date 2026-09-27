@@ -369,6 +369,10 @@ export function UpgradeModal({
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span className="font-semibold text-slate-800">Layar Sambutan TV Gedung</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>Amplop Digital &amp; Salin Rekening</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -434,7 +438,7 @@ export function UpgradeModal({
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#c9a84c] shrink-0" />
-                    <span>Layar Sambutan TV Gedung</span>
+                    <span>Prioritas Dukungan Teknis</span>
                   </div>
                 </div>
               </div>
