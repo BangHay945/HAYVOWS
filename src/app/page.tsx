@@ -1476,32 +1476,32 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-600">
-                <p className="flex items-center gap-2 font-medium text-slate-800">
+              <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-700">
+                <p className="flex items-center gap-2 font-bold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Hingga 50 Nama Tamu &amp; WhatsApp 1-Klik</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Tema Modern Monogram Minimalis</span>
                 </p>
-                <p className="flex items-center gap-2 font-medium text-slate-800">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Proteksi Anti-Spam &amp; Sensor Kata Cerdas</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Informasi Detail Acara &amp; Countdown Timer</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Petunjuk Arah Google Maps Terintegrasi</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Musik Romantis Preset Bawaan</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Galeri Momen Foto (Hingga 5 foto)</span>
                 </p>
@@ -1541,43 +1541,43 @@ export default function LandingPage() {
               </div>
 
               <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-700">
-                <p className="flex items-center gap-2 font-bold text-[#2d4a3e]">
+                <p className="flex items-center gap-2 font-bold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Hingga 500 Nama Tamu &amp; WhatsApp 1-Klik</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Studio Desain QR Siap Cetak (300 DPI)</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Buku Tamu Digital &amp; Presensi QR 1-Detik</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-purple-700">
-                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Layar Sambutan TV / Videotron Real-time</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-[#2d4a3e]">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Kalkulator Estimasi Katering &amp; Pax Riil</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-emerald-800">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Proteksi Anti-Spam &amp; Moderasi Mandiri</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-emerald-800">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Tema Nature Botanical Floral</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-amber-700">
-                  <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0" />
+                <p className="flex items-center gap-2 text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Tema Batik Jawa Heritage (Adat)</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Amplop Digital (Transfer Rekening &amp; Salin Cepat)</span>
                 </p>
-                <p className="flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Kustom Musik Latar (YouTube / MP3 Sendiri)</span>
                 </p>
@@ -1612,29 +1612,29 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-600">
-                <p className="flex items-center gap-2 font-bold text-amber-700">
+              <div className="space-y-3 border-t border-slate-100 pt-5 text-xs sm:text-sm text-slate-700">
+                <p className="flex items-center gap-2 font-bold text-slate-900">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Unlimited Nama Tamu (Tanpa Batas)</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-slate-900">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Semua Fitur Paket Populer (Buku Tamu &amp; Layar TV)</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-slate-700">
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
                   <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Tema Eternal Noir Luxury (Monokrom)</span>
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-purple-700">
-                  <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0" />
+                <p className="flex items-center gap-2 font-semibold text-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Tema Pixel RPG 2D &amp; Cyberpunk 2077</span>
                 </p>
-                <p className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <p className="flex items-center gap-2 text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Tiket E-Pass QR Tamu &amp; NPC Interaktif</span>
                 </p>
-                <p className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <p className="flex items-center gap-2 text-slate-700">
+                  <CheckCircle2 className="w-4 h-4 text-[#c9a84c] shrink-0" />
                   <span>Prioritas Dukungan Teknis Khusus</span>
                 </p>
               </div>
