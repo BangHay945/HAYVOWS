@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { TemplateComponentProps, RSVPSubmitData } from "@/types/template";
-import { CheckCircle2, Send, Sparkles, UserCheck, UserX, Users } from "lucide-react";
+import { CheckCircle2, Send, Sparkles, UserCheck, UserX, Users, Lock } from "lucide-react";
+import { isDemoWedding } from "@/lib/demo";
 
 export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
   const { wedding, guest } = context;
+  const isDemo = Boolean(wedding?.isDemo || isDemoWedding(wedding?.slug));
 
   const [status, setStatus] = useState<"attending" | "not_attending">("attending");
   const [pax, setPax] = useState(1);
@@ -17,7 +19,7 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!onRSVPSubmit) return;
+    if (isDemo || !onRSVPSubmit) return;
 
     setIsSubmitting(true);
     setErrorMsg("");
@@ -102,6 +104,18 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Demo Mode Notice */}
+              {isDemo && (
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[#e8d5b5] text-xs">
+                  <span className="font-mono font-bold text-[9px] uppercase tracking-wider bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2 py-0.5 rounded-full shrink-0">
+                    Mode Demo
+                  </span>
+                  <span className="text-neutral-300 text-xs leading-snug">
+                    Halaman pratinjau demo. Pengisian konfirmasi kehadiran dan doa restu dinonaktifkan.
+                  </span>
+                </div>
+              )}
+
               {guest && (
                 <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 text-xs">
                   <span className="text-neutral-400 block text-[10px] uppercase font-mono tracking-wider">
@@ -121,10 +135,15 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={() => setStatus("attending")}
-                    className={`py-3 px-3 rounded-xl text-xs font-mono tracking-wider flex items-center justify-center gap-2 border transition-all cursor-pointer ${
+                    disabled={isDemo}
+                    onClick={() => !isDemo && setStatus("attending")}
+                    className={`py-3 px-3 rounded-xl text-xs font-mono tracking-wider flex items-center justify-center gap-2 border transition-all ${
+                      isDemo ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+                    } ${
                       status === "attending"
-                        ? "bg-[#e8d5b5] text-neutral-950 font-bold border-[#e8d5b5] shadow-md"
+                        ? isDemo
+                          ? "bg-[#e8d5b5]/30 text-neutral-300 border-[#e8d5b5]/40"
+                          : "bg-[#e8d5b5] text-neutral-950 font-bold border-[#e8d5b5] shadow-md"
                         : "bg-white/[0.04] text-neutral-300 border-white/10 hover:bg-white/[0.08]"
                     }`}
                   >
@@ -133,10 +152,15 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                   </button>
                   <button
                     type="button"
-                    onClick={() => setStatus("not_attending")}
-                    className={`py-3 px-3 rounded-xl text-xs font-mono tracking-wider flex items-center justify-center gap-2 border transition-all cursor-pointer ${
+                    disabled={isDemo}
+                    onClick={() => !isDemo && setStatus("not_attending")}
+                    className={`py-3 px-3 rounded-xl text-xs font-mono tracking-wider flex items-center justify-center gap-2 border transition-all ${
+                      isDemo ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+                    } ${
                       status === "not_attending"
-                        ? "bg-neutral-800 text-white font-bold border-neutral-600 shadow-md"
+                        ? isDemo
+                          ? "bg-neutral-800/60 text-neutral-400 border-neutral-700"
+                          : "bg-neutral-800 text-white font-bold border-neutral-600 shadow-md"
                         : "bg-white/[0.04] text-neutral-300 border-white/10 hover:bg-white/[0.08]"
                     }`}
                   >
@@ -157,10 +181,15 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                       <button
                         key={num}
                         type="button"
-                        onClick={() => setPax(num)}
-                        className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
+                        disabled={isDemo}
+                        onClick={() => !isDemo && setPax(num)}
+                        className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold border transition-all ${
+                          isDemo ? "cursor-not-allowed opacity-75" : "cursor-pointer"
+                        } ${
                           pax === num
-                            ? "bg-[#e8d5b5] text-neutral-950 border-[#e8d5b5]"
+                            ? isDemo
+                              ? "bg-[#e8d5b5]/30 text-neutral-300 border-[#e8d5b5]/40"
+                              : "bg-[#e8d5b5] text-neutral-950 border-[#e8d5b5]"
                             : "bg-white/[0.04] text-neutral-300 border-white/10 hover:bg-white/[0.08]"
                         }`}
                       >
@@ -178,10 +207,17 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                 </label>
                 <textarea
                   rows={3}
+                  disabled={isDemo}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tuliskan ucapan dan doa restu untuk kedua mempelai..."
-                  className="w-full rounded-xl bg-white/[0.04] border border-white/15 p-3 text-xs text-[#fdfbf7] placeholder:text-neutral-500 focus:outline-none focus:border-[#e8d5b5] transition-colors resize-none font-sans"
+                  placeholder={
+                    isDemo
+                      ? "Pengisian ucapan dan doa restu dinonaktifkan pada mode demo."
+                      : "Tuliskan ucapan dan doa restu untuk kedua mempelai..."
+                  }
+                  className={`w-full rounded-xl bg-white/[0.04] border border-white/15 p-3 text-xs text-[#fdfbf7] placeholder:text-neutral-500 focus:outline-none focus:border-[#e8d5b5] transition-colors resize-none font-sans ${
+                    isDemo ? "cursor-not-allowed opacity-75 bg-white/[0.02]" : ""
+                  }`}
                 />
               </div>
 
@@ -194,11 +230,26 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3.5 px-4 rounded-xl bg-[#e8d5b5] hover:bg-[#f3e7cf] active:scale-[0.98] text-[#111115] font-bold text-xs uppercase tracking-[0.2em] shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                disabled={isDemo || isSubmitting}
+                className={`w-full py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-[0.2em] shadow-lg transition-all flex items-center justify-center gap-2 ${
+                  isDemo
+                    ? "bg-white/10 text-neutral-400 border border-white/10 cursor-not-allowed opacity-60"
+                    : "bg-[#e8d5b5] hover:bg-[#f3e7cf] active:scale-[0.98] text-[#111115] cursor-pointer"
+                }`}
               >
-                <Send className="w-3.5 h-3.5 text-[#111115]" />
-                <span>{isSubmitting ? "Mengirim..." : "Kirim Konfirmasi Kehadiran"}</span>
+                {isDemo ? (
+                  <>
+                    <Lock className="w-3.5 h-3.5 text-neutral-400" />
+                    <span>Pengisian Dinonaktifkan (Mode Demo)</span>
+                  </>
+                ) : isSubmitting ? (
+                  <span>Mengirim...</span>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5 text-[#111115]" />
+                    <span>Kirim Konfirmasi Kehadiran</span>
+                  </>
+                )}
               </button>
             </form>
           )}

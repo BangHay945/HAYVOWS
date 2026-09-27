@@ -463,5 +463,219 @@ export async function ensureDemoWeddingSeeded(slug: string): Promise<boolean> {
     }
   }
 
+  // Handle prasetyo-kinanti auto-seed (Batik Jawa Heritage)
+  if (normalizedSlug === "prasetyo-kinanti") {
+    try {
+      // 1. Ensure batik-jawa template exists
+      const tplBatikJawa = await prisma.template.upsert({
+        where: { slug: "batik-jawa" },
+        update: {},
+        create: {
+          slug: "batik-jawa",
+          name: "Batik Jawa Heritage",
+          description:
+            "Kemegahan pernikahan adat Jawa bernuansa kraton Jogja-Solo dengan motif parang, kawung, ornamen wayang gunungan, serta gending gamelan sakral.",
+          isPremium: false,
+          isActive: true,
+          version: "1.0.0",
+        },
+      });
+
+      // 2. Ensure demo user exists
+      const hashedPassword =
+        "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
+      const demoUser = await prisma.user.upsert({
+        where: { email: "admin@hayvows.com" },
+        update: { plan: "luxury", role: "admin" },
+        create: {
+          email: "admin@hayvows.com",
+          name: "Super Admin Hayvows",
+          password: hashedPassword,
+          role: "admin",
+          plan: "luxury",
+        },
+      });
+
+      // 3. Upsert prasetyo-kinanti wedding
+      const batikWedding = await prisma.wedding.upsert({
+        where: { slug: "prasetyo-kinanti" },
+        update: { templateId: tplBatikJawa.id, status: "published" },
+        create: {
+          userId: demoUser.id,
+          slug: "prasetyo-kinanti",
+          templateId: tplBatikJawa.id,
+          status: "published",
+          messageMode: "auto",
+          couple: {
+            create: {
+              groomName: "Raden Prasetyo Wibowo, S.T.",
+              groomNickname: "Prasetyo",
+              groomFather: "Bpk. Suryo Wibowo",
+              groomMother: "Ibu Endah Rahayu",
+              groomInstagram: "prasetyo.wibowo",
+              brideName: "Raden Roro Kinanti Larasati, S.Pd.",
+              brideNickname: "Kinanti",
+              brideFather: "Bpk. Heri Larasati",
+              brideMother: "Ibu Wulandari",
+              brideInstagram: "kinanti.larasati",
+              couplePhoto:
+                "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+              groomPhoto:
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+              bridePhoto:
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+            },
+          },
+          events: {
+            create: [
+              {
+                title: "Upacara Panggih & Akad Nikah",
+                date: "2026-12-05",
+                startTime: "08:00",
+                endTime: "10:30",
+                venue: "Ndalem Ngabean Keraton Yogyakarta",
+                address: "Jl. Alun-Alun Kidul No.17, Kraton, Yogyakarta",
+                mapsUrl: "https://maps.google.com",
+                description: "Prosesi ijab kabul dan adat panggih pengantin gaya Yogyakarta Hadiningrat",
+                sortOrder: 1,
+              },
+              {
+                title: "Pahargyan Pahargyan (Resepsi Adat)",
+                date: "2026-12-05",
+                startTime: "11:00",
+                endTime: "14:00",
+                venue: "Pendopo Sasana Hinggil Dwi Abad",
+                address: "Kawasan Alun-Alun Kidul, Yogyakarta",
+                mapsUrl: "https://maps.google.com",
+                description: "Jamuan makan adat kembul bujana diiringi gamelan gending Jawa",
+                sortOrder: 2,
+              },
+            ],
+          },
+          stories: {
+            create: [
+              {
+                title: "Awal Pepanggihan di Selokan Mataram",
+                date: "2020",
+                description: "Takdir mempertemukan kami di sudut kota budaya, diawali dari diskusi kecil tentang sastra dan sejarah Jawa hingga bersemi rasa saling menghormati.",
+                sortOrder: 1,
+              },
+              {
+                title: "Nglamar & Sungkeman Kulawarga",
+                date: "2024",
+                description: "Dengan restu kedua orang tua dan leluhur, sebuah niat tulus diikat dalam prosesi lamaran adat yang hangat dan penuh kidung doa.",
+                sortOrder: 2,
+              },
+              {
+                title: "Manunggal Ing Roso",
+                date: "2026",
+                description: "Kini kami siap melangkah bersama dalam mahligai rumah tangga yang sakinah, mawaddah, warahmah, nyawiji ing katresnan.",
+                sortOrder: 3,
+              },
+            ],
+          },
+          galleries: {
+            create: [
+              {
+                imageUrl: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=80",
+                caption: "Busana Kanigaran Kasultanan",
+                sortOrder: 1,
+              },
+              {
+                imageUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+                caption: "Tatapan Katresnan",
+                sortOrder: 2,
+              },
+              {
+                imageUrl: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+                caption: "Janji Suci ing Ngayogyakarta",
+                sortOrder: 3,
+              },
+              {
+                imageUrl: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&q=80",
+                caption: "Kidung Asmaradana",
+                sortOrder: 4,
+              },
+            ],
+          },
+          giftAccounts: {
+            create: [
+              {
+                bankName: "BCA",
+                accountName: "Raden Prasetyo Wibowo",
+                accountNo: "8820194821",
+                type: "bank",
+                sortOrder: 1,
+              },
+              {
+                bankName: "Mandiri",
+                accountName: "Rr Kinanti Larasati",
+                accountNo: "1370098472619",
+                type: "bank",
+                sortOrder: 2,
+              },
+            ],
+          },
+        },
+      });
+
+      // 4. Ensure demo guest exists
+      const batikGuest = await prisma.guest.upsert({
+        where: {
+          weddingId_slug: {
+            weddingId: batikWedding.id,
+            slug: "budi-santoso",
+          },
+        },
+        update: {},
+        create: {
+          weddingId: batikWedding.id,
+          name: "Budi Santoso",
+          slug: "budi-santoso",
+          phone: "081234567890",
+          category: "VIP",
+          guestCount: 2,
+        },
+      });
+
+      // 5. Ensure demo message exists
+      const msgCount = await prisma.guestMessage.count({
+        where: { weddingId: batikWedding.id },
+      });
+      if (msgCount === 0) {
+        await prisma.guestMessage.create({
+          data: {
+            weddingId: batikWedding.id,
+            guestId: batikGuest.id,
+            message:
+              "Nderek mangayubagya dumateng Mas Prasetyo & Mbak Kinanti. Mugi tansah pinaringan berkah dalem Gusti, ayem tentrem, lan langgeng dumugi kaken-kaken ninen-ninen.",
+            status: "approved",
+            isPinned: true,
+          },
+        });
+      }
+
+      // 6. Ensure music exists
+      const musicCount = await prisma.music.count({
+        where: { weddingId: batikWedding.id },
+      });
+      if (musicCount === 0) {
+        await prisma.music.create({
+          data: {
+            weddingId: batikWedding.id,
+            title: "Gamelan Kraton Ngayogyakarta",
+            fileUrl: "/music/presets/gamelan-jawa.mp3",
+            isActive: true,
+          },
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Failed to auto-seed prasetyo-kinanti demo wedding:", err);
+      return false;
+    }
+  }
+
   return false;
 }

@@ -6,6 +6,7 @@ import type { TemplateComponentProps, RSVPSubmitData } from '@/types/template';
 import type { GuestMessage } from '@/types/wedding';
 import { KawungBorder, SulurDivider } from './Ornaments';
 import { Check, UserCheck, MessageSquare, Send, Users, Lock } from 'lucide-react';
+import { isDemoWedding } from '@/lib/demo';
 
 type AttendanceStatus = 'attending' | 'not_attending';
 
@@ -19,7 +20,7 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
 
   const wedding = context?.wedding;
   const guest = context?.guest;
-  const isDemo = Boolean(wedding?.isDemo);
+  const isDemo = Boolean(wedding?.isDemo || isDemoWedding(wedding?.slug));
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {

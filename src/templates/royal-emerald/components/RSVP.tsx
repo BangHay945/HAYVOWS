@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { TemplateComponentProps, RSVPSubmitData } from "@/types/template";
-import { CheckCircle2, Send, Loader2 } from "lucide-react";
+import { CheckCircle2, Send, Loader2, Lock } from "lucide-react";
 import { RoyalDivider, RoyalCrown } from "./Ornaments";
+import { isDemoWedding } from "@/lib/demo";
 
 export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
-  const { guest } = context;
+  const { guest, wedding } = context;
+  const isDemo = Boolean(wedding?.isDemo || isDemoWedding(wedding?.slug));
 
   const [name, setName] = useState(guest?.name || "");
   const [attendance, setAttendance] = useState<"attending" | "declined">("attending");
@@ -18,7 +20,7 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (isDemo || !name.trim()) return;
 
     setIsSubmitting(true);
     try {
@@ -102,6 +104,18 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Demo Mode Notice */}
+              {isDemo && (
+                <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-amber-500/10 border border-[#d4af37]/40 text-[#ffd700] text-xs">
+                  <span className="font-serif font-bold text-[9px] uppercase tracking-wider bg-[#d4af37]/20 border border-[#d4af37]/50 text-[#ffd700] px-2 py-0.5 rounded-full shrink-0">
+                    Mode Demo
+                  </span>
+                  <span className="text-[#b8c9c1] text-xs leading-snug">
+                    Halaman pratinjau demo. Pengisian konfirmasi reservasi dan doa restu dinonaktifkan.
+                  </span>
+                </div>
+              )}
+
               {/* Name Input */}
               <div>
                 <label className="block text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-semibold mb-2">
@@ -110,10 +124,13 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                 <input
                   type="text"
                   required
+                  disabled={isDemo}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Contoh: Budi Santoso &amp; Partner"
-                  className="w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] placeholder-[#b8c9c1]/40 text-sm focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all"
+                  placeholder={isDemo ? "Mode Pratinjau Demo" : "Contoh: Budi Santoso & Partner"}
+                  className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] placeholder-[#b8c9c1]/40 text-sm focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all ${
+                    isDemo ? "cursor-not-allowed opacity-75" : ""
+                  }`}
                 />
               </div>
 
@@ -125,10 +142,15 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setAttendance("attending")}
-                    className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-serif tracking-wider font-semibold border transition-all cursor-pointer ${
+                    disabled={isDemo}
+                    onClick={() => !isDemo && setAttendance("attending")}
+                    className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-serif tracking-wider font-semibold border transition-all ${
+                      isDemo ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+                    } ${
                       attendance === "attending"
-                        ? "border-[#d4af37] bg-gradient-to-r from-[#d4af37] to-[#aa820a] text-[#02241b] shadow-md"
+                        ? isDemo
+                          ? "border-[#d4af37]/50 bg-[#d4af37]/25 text-[#ffd700]"
+                          : "border-[#d4af37] bg-gradient-to-r from-[#d4af37] to-[#aa820a] text-[#02241b] shadow-md"
                         : "border-[#d4af37]/30 bg-[#02241b]/50 text-[#fdfbf7] hover:border-[#d4af37]/60"
                     }`}
                   >
@@ -136,10 +158,15 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setAttendance("declined")}
-                    className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-serif tracking-wider font-semibold border transition-all cursor-pointer ${
+                    disabled={isDemo}
+                    onClick={() => !isDemo && setAttendance("declined")}
+                    className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-serif tracking-wider font-semibold border transition-all ${
+                      isDemo ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+                    } ${
                       attendance === "declined"
-                        ? "border-[#d4af37] bg-gradient-to-r from-[#d4af37] to-[#aa820a] text-[#02241b] shadow-md"
+                        ? isDemo
+                          ? "border-[#d4af37]/50 bg-[#d4af37]/25 text-[#ffd700]"
+                          : "border-[#d4af37] bg-gradient-to-r from-[#d4af37] to-[#aa820a] text-[#02241b] shadow-md"
                         : "border-[#d4af37]/30 bg-[#02241b]/50 text-[#fdfbf7] hover:border-[#d4af37]/60"
                     }`}
                   >
@@ -155,9 +182,12 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                     Jumlah Tamu
                   </label>
                   <select
+                    disabled={isDemo}
                     value={guestCount}
                     onChange={(e) => setGuestCount(Number(e.target.value))}
-                    className="w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] text-sm focus:outline-none focus:border-[#d4af37] transition-all cursor-pointer"
+                    className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] text-sm focus:outline-none focus:border-[#d4af37] transition-all ${
+                      isDemo ? "cursor-not-allowed opacity-75" : "cursor-pointer"
+                    }`}
                   >
                     {[1, 2, 3, 4, 5].map((num) => (
                       <option key={num} value={num} className="bg-[#02241b] text-[#fdfbf7]">
@@ -175,23 +205,41 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                 </label>
                 <textarea
                   rows={4}
+                  disabled={isDemo}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tuliskan doa restu dan ucapan selamat untuk kedua mempelai..."
-                  className="w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] placeholder-[#b8c9c1]/40 text-sm focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all resize-none"
+                  placeholder={
+                    isDemo
+                      ? "Pengisian doa restu dinonaktifkan pada mode demo."
+                      : "Tuliskan doa restu dan ucapan selamat untuk kedua mempelai..."
+                  }
+                  className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] placeholder-[#b8c9c1]/40 text-sm focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all resize-none ${
+                    isDemo ? "cursor-not-allowed opacity-75" : ""
+                  }`}
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3.5 px-6 rounded-xl font-serif text-sm tracking-[0.2em] uppercase font-bold text-[#02241b] shadow-[0_4px_25px_rgba(212,175,55,0.4)] hover:shadow-[0_4px_35px_rgba(212,175,55,0.6)] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                disabled={isDemo || isSubmitting}
+                className={`w-full py-3.5 px-6 rounded-xl font-serif text-sm tracking-[0.2em] uppercase font-bold text-[#02241b] shadow-[0_4px_25px_rgba(212,175,55,0.4)] transition-all flex items-center justify-center gap-2 ${
+                  isDemo
+                    ? "cursor-not-allowed opacity-60"
+                    : "cursor-pointer hover:shadow-[0_4px_35px_rgba(212,175,55,0.6)]"
+                }`}
                 style={{
-                  background: "linear-gradient(135deg, #fff2cc 0%, #e5c158 50%, #aa820a 100%)",
+                  background: isDemo
+                    ? "linear-gradient(135deg, #a89f85 0%, #877f6b 100%)"
+                    : "linear-gradient(135deg, #fff2cc 0%, #e5c158 50%, #aa820a 100%)",
                 }}
               >
-                {isSubmitting ? (
+                {isDemo ? (
+                  <>
+                    <Lock className="w-4 h-4 text-[#02241b]" />
+                    <span>Pengisian Dinonaktifkan (Mode Demo)</span>
+                  </>
+                ) : isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-[#02241b]" />
                     <span>Mengirim Reservasi...</span>
