@@ -216,8 +216,8 @@ export function GuestbookWorkbench({
   return (
     <div className="space-y-6 max-w-7xl mx-auto w-full">
       {/* Header & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
-        <div>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
+        <div className="min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 tracking-tight">
             Buku Tamu Digital &amp; Presensi QR
           </h1>
@@ -226,33 +226,33 @@ export function GuestbookWorkbench({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0 flex-nowrap overflow-x-auto pb-1 lg:pb-0">
+          <Link
+            href={`/display/${weddingSlug}`}
+            target="_blank"
+            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+          >
+            <Tv className="w-4 h-4 text-purple-700 shrink-0" />
+            <span>Layar Sambutan TV ↗</span>
+          </Link>
+
           <button
             type="button"
             onClick={() => setIsOnTheSpotModalOpen(true)}
-            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-bold text-xs bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-bold text-xs bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-xs transition-colors cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <Plus className="w-4 h-4 text-[#fef08a]" />
+            <Plus className="w-4 h-4 text-[#fef08a] shrink-0" />
             <span>Tambah Tamu On-the-Spot</span>
           </button>
 
           <button
             type="button"
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs border border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs border border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
+            <FileSpreadsheet className="w-4 h-4 text-emerald-700 shrink-0" />
             <span>Unduh CSV</span>
           </button>
-
-          <Link
-            href={`/display/${weddingSlug}`}
-            target="_blank"
-            className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl font-semibold text-xs bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 transition-colors cursor-pointer"
-          >
-            <Tv className="w-4 h-4 text-purple-700" />
-            <span>Layar Sambutan TV ↗</span>
-          </Link>
         </div>
       </div>
 
