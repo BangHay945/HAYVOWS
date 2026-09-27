@@ -25,6 +25,7 @@ export default async function EditWeddingPage({
     },
   });
 
+
   if (!wedding) notFound();
 
   return <WeddingEditor initialWedding={wedding} />;

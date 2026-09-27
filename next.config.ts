@@ -12,7 +12,13 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000"],
+      allowedOrigins: [
+        "localhost:3000",
+        "hayvows.com",
+        "www.hayvows.com",
+        // Wildcard subdomain hayvows.com (custom subdomain users)
+        "*.hayvows.com",
+      ],
     },
   },
 };

@@ -103,20 +103,24 @@ model Template {
 model Wedding {
   id              String   @id @default(cuid())
   userId          String
-  slug            String   @unique  // "alex-sara"
-  templateId      String
-  templateVersion String   @default("1.0.0")
-  status          String   @default("draft")  // "draft" | "published"
-  plan            String   @default("trial")  // "trial" | "basic" | "premium" | "luxury"
-  messageMode     String   @default("auto")   // "auto" | "approval"
-  publishedAt     DateTime?
-  expiresAt       DateTime?
-  ogTitle         String?
-  ogDescription   String?
-  ogImage         String?
-  whatsappMessage String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  slug             String   @unique  // "alex-sara"
+  templateId       String
+  templateVersion  String   @default("1.0.0")
+  status           String   @default("draft")  // "draft" | "published"
+  plan             String   @default("trial")  // "trial" | "basic" | "premium" | "luxury"
+  messageMode      String   @default("auto")   // "auto" | "approval"
+  publishedAt      DateTime?
+  expiresAt        DateTime?
+  ogTitle          String?
+  ogDescription    String?
+  ogImage          String?
+  whatsappMessage  String?
+  // Custom Domain (Paket Exclusive)
+  customSubdomain  String?  @unique  // "romeo-juliet" → romeo-juliet.hayvows.com
+  customDomain     String?  @unique  // "romeo-juliet.com" → domain sendiri
+  domainVerified   Boolean  @default(false) // apakah custom domain sudah diverifikasi DNS
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   template        Template         @relation(fields: [templateId], references: [id])
