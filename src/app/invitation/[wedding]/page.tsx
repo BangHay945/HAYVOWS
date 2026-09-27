@@ -5,6 +5,7 @@ import { getTemplate } from "@/templates/registry";
 import { getApprovedMessages } from "@/lib/messages";
 import { trackEvent } from "@/lib/analytics";
 import { isDemoWedding } from "@/lib/demo";
+import { ensureDemoWeddingSeeded } from "@/lib/demo-seeder";
 import InvitationClient from "./[guest]/InvitationClient";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ export async function generateMetadata({
   const decodedWedding = decodeURIComponent(rawWeddingSlug).trim();
   const normalizedWedding = decodedWedding.replace(/\s+/g, "-").toLowerCase();
 
-  const wedding = await prisma.wedding.findFirst({
+  let wedding = await prisma.wedding.findFirst({
     where: {
       OR: [
         { slug: rawWeddingSlug },
@@ -32,6 +33,20 @@ export async function generateMetadata({
     },
     include: { couple: true },
   });
+
+  if (!wedding && isDemoWedding(rawWeddingSlug)) {
+    await ensureDemoWeddingSeeded(rawWeddingSlug);
+    wedding = await prisma.wedding.findFirst({
+      where: {
+        OR: [
+          { slug: rawWeddingSlug },
+          { slug: normalizedWedding },
+          { slug: decodedWedding },
+        ],
+      },
+      include: { couple: true },
+    });
+  }
 
   if (!wedding) return { title: "Undangan Pernikahan" };
 
@@ -110,7 +125,7 @@ export default async function WeddingInvitationPage({
   const decodedWedding = decodeURIComponent(rawWeddingSlug).trim();
   const normalizedWedding = decodedWedding.replace(/\s+/g, "-").toLowerCase();
 
-  const wedding = await prisma.wedding.findFirst({
+  let wedding = await prisma.wedding.findFirst({
     where: {
       OR: [
         { slug: rawWeddingSlug },
@@ -140,6 +155,40 @@ export default async function WeddingInvitationPage({
       },
     },
   });
+
+  if (!wedding && isDemoWedding(rawWeddingSlug)) {
+    await ensureDemoWeddingSeeded(rawWeddingSlug);
+    wedding = await prisma.wedding.findFirst({
+      where: {
+        OR: [
+          { slug: rawWeddingSlug },
+          { slug: normalizedWedding },
+          { slug: decodedWedding },
+        ],
+      },
+      include: {
+        couple: true,
+        events: { orderBy: { sortOrder: "asc" } },
+        stories: { orderBy: { sortOrder: "asc" } },
+        galleries: { orderBy: { sortOrder: "asc" } },
+        musics: { where: { isActive: true } },
+        giftAccounts: { orderBy: { sortOrder: "asc" } },
+        template: true,
+        user: {
+          select: {
+            id: true,
+            plan: true,
+            createdAt: true,
+            role: true,
+            transactions: {
+              where: { status: "settlement" },
+              select: { id: true, status: true },
+            },
+          },
+        },
+      },
+    });
+  }
 
   if (!wedding) notFound();
 
