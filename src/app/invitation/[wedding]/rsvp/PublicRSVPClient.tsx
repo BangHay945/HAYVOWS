@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
@@ -13,7 +12,6 @@ import {
   Send,
   Sparkles,
   QrCode,
-  ExternalLink,
   MessageSquareHeart,
   Phone,
   User,
@@ -214,14 +212,6 @@ export default function PublicRSVPClient({
                   <QrCode className="w-5 h-5" />
                   <span>Buka &amp; Simpan Tiket Presensi QR</span>
                 </button>
-
-                <Link
-                  href={`/invitation/${weddingSlug}`}
-                  className="w-full py-3 px-5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4 text-[#fef08a]" />
-                  <span>Buka Undangan Web Lengkap</span>
-                </Link>
 
                 <button
                   type="button"
