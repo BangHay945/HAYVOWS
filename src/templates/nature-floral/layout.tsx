@@ -285,7 +285,7 @@ export function FloralLayout({
   const props = { context, onRSVPSubmit: submitRSVP, onTrack: track };
 
   return (
-    <div className="w-full min-h-[100dvh] flex flex-col lg:flex-row bg-[#13231c] font-sans-floral text-[#2d4a3e] relative selection:bg-[#e8eee5] selection:text-[#2d4a3e]">
+    <div className={`w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#13231c] font-sans-floral text-[#2d4a3e] relative selection:bg-[#e8eee5] selection:text-[#2d4a3e]`}>
       {/* Resilient YouTube Player Iframe */}
       {isYT && ytId && (
         <div
@@ -307,7 +307,7 @@ export function FloralLayout({
       <DesktopSplitSidePanel context={context} themeSlug="nature-floral" />
 
       {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className="w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] min-h-[100dvh] bg-[#fbf8f3] relative shadow-2xl lg:border-l border-[#c5a880]/20 flex flex-col justify-start">
+      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#fbf8f3] relative shadow-2xl lg:border-l border-[#c5a880]/20 flex flex-col justify-start`}>
         {/* Top-Right Floating Controls (Gift Button & Music Button Parallel - Only Shown When Invitation is Opened) */}
         <AnimatePresence>
           {isOpen && (
@@ -354,7 +354,7 @@ export function FloralLayout({
               key="cover"
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.4 }}
-              className="w-full min-h-[100dvh]"
+              className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
               <FloralCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
             </motion.div>

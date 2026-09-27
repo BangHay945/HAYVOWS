@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getTemplate } from "@/templates/registry";
 import type { Wedding, Guest, GuestMessage } from "@/types/wedding";
 import { TrialWatermark } from "@/components/invitation/TrialWatermark";
@@ -21,6 +21,39 @@ export default function InvitationClient({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
+
+  // Kunci scroll layar saat cover masih aktif agar pas 100dvh dan tidak bisa di-scroll di mobile
+  useEffect(() => {
+    if (!isOpen) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalBodyHeight = document.body.style.height;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+      const originalHtmlHeight = document.documentElement.style.height;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100dvh";
+      document.body.style.overscrollBehavior = "none";
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.height = "100dvh";
+      document.documentElement.style.overscrollBehavior = "none";
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.body.style.height = originalBodyHeight;
+        document.body.style.overscrollBehavior = "";
+        document.documentElement.style.overflow = originalHtmlOverflow;
+        document.documentElement.style.height = originalHtmlHeight;
+        document.documentElement.style.overscrollBehavior = "";
+      };
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.body.style.overscrollBehavior = "";
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+      document.documentElement.style.overscrollBehavior = "";
+    }
+  }, [isOpen]);
   const template = getTemplate(templateSlug);
 
   if (!template) return <div className="p-8 text-center">Template not found</div>;

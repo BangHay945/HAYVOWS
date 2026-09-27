@@ -52,7 +52,7 @@ export function MonogramLayout({
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#1e1914] text-slate-800 font-sans selection:bg-[#2d4a3e]/15 selection:text-[#2d4a3e] relative">
+    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#1e1914] text-slate-800 font-sans selection:bg-[#2d4a3e]/15 selection:text-[#2d4a3e]`}>
       {/* Audio Element with Built-in Romantic Preset */}
       <audio
         ref={audioRef}
@@ -65,15 +65,21 @@ export function MonogramLayout({
       <DesktopSplitSidePanel context={context} themeSlug="modern-monogram" />
 
       {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className="w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] min-h-screen bg-[#faf8f5] relative shadow-2xl lg:border-l border-[#c5a880]/20 flex flex-col justify-start">
+      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#faf8f5] relative shadow-2xl lg:border-l border-[#c5a880]/20 flex flex-col justify-start`}>
         <AnimatePresence mode="wait">
           {!isOpen ? (
-            <MonogramCover
+            <motion.div
               key="cover"
-              context={context}
-              onOpen={handleOpen}
-              onOpenTicket={onOpenTicket}
-            />
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
+            >
+              <MonogramCover
+                context={context}
+                onOpen={handleOpen}
+                onOpenTicket={onOpenTicket}
+              />
+            </motion.div>
           ) : (
             <motion.div
               key="content"

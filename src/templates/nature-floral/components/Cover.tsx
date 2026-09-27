@@ -21,7 +21,7 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden font-sans-floral select-none px-4 bg-gradient-to-b from-[#f7f4ee] via-[#fbf9f5] to-[#f0ece4]">
+    <div className="relative h-[100dvh] max-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden touch-none font-sans-floral select-none px-3 sm:px-4 bg-gradient-to-b from-[#f7f4ee] via-[#fbf9f5] to-[#f0ece4]">
       {/* Background Subtle Organic Mesh / Botanical Vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -67,40 +67,40 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, scale: 0.94, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="relative z-10 max-w-md w-full my-auto flex flex-col items-center"
+        className="relative z-10 max-w-sm sm:max-w-md w-full my-auto flex flex-col items-center"
       >
         {/* Top Botanical Wreath Badge */}
-        <div className="flex items-center gap-2 mb-3 text-[#5a7263]">
-          <span className="text-sm">🌿</span>
-          <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#5a7263]">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 text-[#5a7263]">
+          <span className="text-xs sm:text-sm">🌿</span>
+          <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[#5a7263]">
             THE WEDDING CELEBRATION
           </span>
-          <span className="text-sm">🌿</span>
+          <span className="text-xs sm:text-sm">🌿</span>
         </div>
 
         {/* Central Card with Elegant Double Border */}
-        <div className="relative w-full rounded-2xl bg-white/85 backdrop-blur-md p-7 sm:p-9 shadow-[0_15px_40px_rgba(45,74,62,0.08)] border border-[#d8cfc4] text-center">
+        <div className="relative w-full rounded-2xl bg-white/85 backdrop-blur-md p-4 sm:p-7 shadow-[0_15px_40px_rgba(45,74,62,0.08)] border border-[#d8cfc4] text-center">
           {/* Inner Accent Inset Border */}
-          <div className="absolute inset-2.5 rounded-xl border border-[#c5a880]/35 pointer-events-none" />
+          <div className="absolute inset-2 sm:inset-2.5 rounded-xl border border-[#c5a880]/35 pointer-events-none" />
 
           {/* Couple Nicknames in Elegant Serif */}
-          <div className="py-2">
-            <h1 className="font-serif-floral text-3xl sm:text-4xl text-[#2d4a3e] tracking-tight font-medium">
+          <div className="py-1">
+            <h1 className="font-serif-floral text-2xl sm:text-4xl text-[#2d4a3e] tracking-tight font-medium leading-tight">
               {couple?.groomNickname || couple?.groomName || "Alexander"}
             </h1>
-            <div className="flex items-center justify-center gap-3 my-1.5">
-              <div className="w-10 h-[1px] bg-[#c5a880]/60" />
-              <span className="font-serif-floral text-xl sm:text-2xl text-[#c5a880] italic">&amp;</span>
-              <div className="w-10 h-[1px] bg-[#c5a880]/60" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 my-1">
+              <div className="w-8 sm:w-10 h-[1px] bg-[#c5a880]/60" />
+              <span className="font-serif-floral text-lg sm:text-2xl text-[#c5a880] italic">&amp;</span>
+              <div className="w-8 sm:w-10 h-[1px] bg-[#c5a880]/60" />
             </div>
-            <h1 className="font-serif-floral text-3xl sm:text-4xl text-[#2d4a3e] tracking-tight font-medium">
+            <h1 className="font-serif-floral text-2xl sm:text-4xl text-[#2d4a3e] tracking-tight font-medium leading-tight">
               {couple?.brideNickname || couple?.brideName || "Sara"}
             </h1>
           </div>
 
           {/* Event Date If Available */}
           {firstEvent?.date && (
-            <p className="text-xs tracking-[0.2em] font-medium text-[#7a8c7e] uppercase mt-2">
+            <p className="text-[11px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] font-medium text-[#7a8c7e] uppercase mt-1 sm:mt-2">
               {new Date(firstEvent.date).toLocaleDateString("id-ID", {
                 weekday: "long",
                 day: "numeric",
@@ -111,22 +111,22 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
           )}
 
           {/* Soft Floral Divider */}
-          <div className="flex items-center justify-center gap-2 my-5 text-[#c5a880]">
-            <span className="w-12 h-[1px] bg-[#c5a880]/40" />
+          <div className="flex items-center justify-center gap-2 my-2.5 sm:my-4 text-[#c5a880]">
+            <span className="w-8 sm:w-12 h-[1px] bg-[#c5a880]/40" />
             <span className="text-xs">❀</span>
-            <span className="w-12 h-[1px] bg-[#c5a880]/40" />
+            <span className="w-8 sm:w-12 h-[1px] bg-[#c5a880]/40" />
           </div>
 
           {/* Honored Guest Envelope Card */}
-          <div className="bg-[#fcfaf7] border border-[#e8ded1] rounded-xl p-3.5 my-3 shadow-inner">
-            <p className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#7a8c7e] font-semibold">
+          <div className="bg-[#fcfaf7] border border-[#e8ded1] rounded-xl p-2.5 sm:p-3.5 my-2 sm:my-3 shadow-inner">
+            <p className="text-[9px] sm:text-[11px] uppercase tracking-wider text-[#7a8c7e] font-semibold">
               Kepada Yth. Bapak/Ibu/Saudara/i:
             </p>
-            <p className="font-serif-floral text-xl sm:text-2xl text-[#2d4a3e] font-bold mt-1 tracking-wide">
+            <p className="font-serif-floral text-lg sm:text-2xl text-[#2d4a3e] font-bold mt-0.5 sm:mt-1 tracking-wide line-clamp-2">
               {guest?.name || "Tamu Undangan"}
             </p>
             {guest?.category && (
-              <span className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#e8eee5] text-[#2d4a3e] border border-[#b2c5b2]/60">
+              <span className="inline-block mt-1 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#e8eee5] text-[#2d4a3e] border border-[#b2c5b2]/60">
                 {guest.category}
               </span>
             )}
@@ -137,7 +137,7 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
             onClick={handleStart}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full mt-4 bg-[#2d4a3e] hover:bg-[#233a30] text-[#fbf8f3] font-semibold text-sm sm:text-base py-3.5 px-6 rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 tracking-wider"
+            className="w-full mt-2.5 sm:mt-3 bg-[#2d4a3e] hover:bg-[#233a30] text-[#fbf8f3] font-semibold text-xs sm:text-base py-2.5 sm:py-3.5 px-4 sm:px-6 rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 tracking-wider"
           >
             <span>🌿</span>
             <span>BUKA UNDANGAN</span>
@@ -151,21 +151,21 @@ export function FloralCover({ context, onOpen, onOpenTicket }: CoverProps) {
               onClick={onOpenTicket}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full mt-2.5 bg-white/90 hover:bg-white text-[#2d4a3e] border border-[#2d4a3e]/30 font-semibold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2 tracking-wide"
+              className="w-full mt-2 bg-white/90 hover:bg-white text-[#2d4a3e] border border-[#2d4a3e]/30 font-semibold text-xs sm:text-sm py-2 sm:py-2.5 px-3 rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2 tracking-wide"
             >
-              <QrCode className="w-4 h-4 text-[#c5a880]" />
+              <QrCode className="w-3.5 h-3.5 text-[#c5a880]" />
               <span>Lihat Tiket E-Pass QR</span>
             </motion.button>
           )}
         </div>
 
         {/* Footer Subtext */}
-        <p className="text-[#63756b] text-xs mt-4 tracking-wide text-center font-medium">
+        <p className="text-[#63756b] text-[10px] sm:text-xs mt-2.5 sm:mt-3 tracking-wide text-center font-medium">
           Mohon maaf apabila ada kesalahan penulisan nama/gelar
         </p>
 
         {/* Platform Backlink */}
-        <p className="text-[10px] text-[#7a8c7e] mt-2 tracking-wider text-center">
+        <p className="text-[9px] sm:text-[10px] text-[#7a8c7e] mt-1 sm:mt-1.5 tracking-wider text-center">
           Undangan Pernikahan Digital &bull;{" "}
           <a
             href="https://www.hayvows.com"

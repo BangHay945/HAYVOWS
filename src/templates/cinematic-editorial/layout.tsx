@@ -219,7 +219,11 @@ export function EditorialLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className="relative w-full min-h-[100dvh] flex flex-col lg:flex-row bg-[#0a0a0c] font-sans selection:bg-[#e8d5b5] selection:text-[#0a0a0c]">
+    <div
+      className={`relative w-full flex flex-col lg:flex-row bg-[#0a0a0c] font-sans selection:bg-[#e8d5b5] selection:text-[#0a0a0c] ${
+        !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+      }`}
+    >
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div
@@ -241,14 +245,18 @@ export function EditorialLayout({
       <DesktopSplitSidePanel context={context} themeSlug="cinematic-editorial" />
 
       {/* RIGHT COLUMN (500px on Desktop, Full Width on Mobile) */}
-      <div className="w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] min-h-[100dvh] bg-[#0a0a0c] relative shadow-2xl lg:border-l border-white/10 flex flex-col justify-start">
+      <div
+        className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] bg-[#0a0a0c] relative shadow-2xl lg:border-l border-white/10 flex flex-col justify-start ${
+          !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+        }`}
+      >
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
               key="cover"
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full min-h-[100dvh]"
+              className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
               <EditorialCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
             </motion.div>

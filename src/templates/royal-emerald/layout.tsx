@@ -214,7 +214,7 @@ export function RoyalLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className="relative w-full min-h-[100dvh] flex flex-col lg:flex-row bg-[#021a13] font-sans selection:bg-[#d4af37] selection:text-[#02241b]">
+    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#021a13] font-sans selection:bg-[#d4af37] selection:text-[#02241b]`}>
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -233,14 +233,14 @@ export function RoyalLayout({
       <DesktopSplitSidePanel context={context} themeSlug="royal-emerald" />
 
       {/* RIGHT COLUMN (500px on Desktop, Full Width on Mobile) */}
-      <div className="w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] min-h-[100dvh] bg-[#02241b] relative shadow-2xl lg:border-l border-[#d4af37]/30 flex flex-col justify-start">
+      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#02241b] relative shadow-2xl lg:border-l border-[#d4af37]/30 flex flex-col justify-start`}>
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
               key="cover"
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full min-h-[100dvh]"
+              className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
               <RoyalCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
             </motion.div>

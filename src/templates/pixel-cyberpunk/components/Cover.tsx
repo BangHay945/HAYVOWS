@@ -18,7 +18,7 @@ export function CyberCover({
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden font-pixel select-none px-4 bg-[#070913]">
+    <div className="relative h-[100dvh] max-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden touch-none font-pixel select-none px-3 sm:px-4 bg-[#070913]">
       {/* 1. Full-Screen Cyberpunk Neon City Rooftop Map */}
       <img
         src="/assets/templates/pixel-cyberpunk/maps/skyline-district-v1/ground-map.png"
@@ -90,7 +90,7 @@ export function CyberCover({
         initial={{ scale: 0.88, opacity: 0, y: 25 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative z-10 max-w-sm sm:max-w-md w-full bg-[#0b0f19fa] border-3 sm:border-4 border-[#00f0ff] p-4 sm:p-6 text-center shadow-[0_0_35px_rgba(0,240,255,0.4),inset_0_0_20px_rgba(255,0,127,0.2)]"
+        className="relative z-10 max-w-xs sm:max-w-md w-full bg-[#0b0f19fa] border-3 sm:border-4 border-[#00f0ff] p-3 sm:p-6 text-center shadow-[0_0_35px_rgba(0,240,255,0.4),inset_0_0_20px_rgba(255,0,127,0.2)]"
       >
         {/* Neon HUD Corner Brackets */}
         <div className="absolute -top-2.5 -left-2.5 w-4 h-4 bg-[#ff007f] border border-[#00f0ff] shadow-[0_0_8px_#ff007f]" />
@@ -99,15 +99,15 @@ export function CyberCover({
         <div className="absolute -bottom-2.5 -right-2.5 w-4 h-4 bg-[#ff007f] border border-[#00f0ff] shadow-[0_0_8px_#ff007f]" />
 
         {/* Top Terminal Status Header */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#121829] border border-[#00f0ff]/60 text-[#00f0ff] text-[8px] sm:text-[9px] font-black uppercase tracking-widest mb-3 shadow-[0_0_8px_rgba(0,240,255,0.3)]">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 bg-[#121829] border border-[#00f0ff]/60 text-[#00f0ff] text-[8px] sm:text-[9px] font-black uppercase tracking-widest mb-2 sm:mb-3 shadow-[0_0_8px_rgba(0,240,255,0.3)]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-ping" />
           <span>CYBER-VOWS // NEO-TOKYO 2077</span>
         </div>
 
         {/* Couple Portraits Display */}
-        <div className="flex justify-center items-center gap-3 my-3">
+        <div className="flex justify-center items-center gap-2 sm:gap-3 my-2 sm:my-3">
           <div className="relative group">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 border-2 border-[#00f0ff] bg-[#121829] p-0.5 overflow-hidden shadow-[0_0_12px_rgba(0,240,255,0.5)]">
+            <div className="w-13 h-13 sm:w-20 sm:h-20 border-2 border-[#00f0ff] bg-[#121829] p-0.5 overflow-hidden shadow-[0_0_12px_rgba(0,240,255,0.5)]">
               <img
                 src={
                   couple?.groomPhoto ||
@@ -117,7 +117,7 @@ export function CyberCover({
                 className="w-full h-full object-cover [image-rendering:pixelated]"
               />
             </div>
-            <span className="text-[8px] font-bold text-[#00f0ff] block mt-1">
+            <span className="text-[7px] sm:text-[8px] font-bold text-[#00f0ff] block mt-0.5 sm:mt-1">
               GROOM
             </span>
           </div>
@@ -126,13 +126,13 @@ export function CyberCover({
           <motion.div
             animate={{ scale: [1, 1.25, 1], rotate: [0, 5, -5, 0] }}
             transition={{ duration: 1.6, repeat: Infinity }}
-            className="text-2xl sm:text-3xl text-[#ff007f] drop-shadow-[0_0_12px_#ff007f]"
+            className="text-xl sm:text-3xl text-[#ff007f] drop-shadow-[0_0_12px_#ff007f]"
           >
             💖
           </motion.div>
 
           <div className="relative group">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 border-2 border-[#ff007f] bg-[#121829] p-0.5 overflow-hidden shadow-[0_0_12px_rgba(255,0,127,0.5)]">
+            <div className="w-13 h-13 sm:w-20 sm:h-20 border-2 border-[#ff007f] bg-[#121829] p-0.5 overflow-hidden shadow-[0_0_12px_rgba(255,0,127,0.5)]">
               <img
                 src={
                   couple?.bridePhoto ||
@@ -142,41 +142,41 @@ export function CyberCover({
                 className="w-full h-full object-cover [image-rendering:pixelated]"
               />
             </div>
-            <span className="text-[8px] font-bold text-[#ff007f] block mt-1">
+            <span className="text-[7px] sm:text-[8px] font-bold text-[#ff007f] block mt-0.5 sm:mt-1">
               BRIDE
             </span>
           </div>
         </div>
 
         {/* Couple Names */}
-        <h1 className="text-xl sm:text-2xl font-black text-white tracking-wider my-1 drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]">
+        <h1 className="text-lg sm:text-2xl font-black text-white tracking-wider my-0.5 sm:my-1 drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]">
           <span className="text-[#00f0ff]">
             {couple?.groomNickname || couple?.groomName || "LIAM"}
           </span>
-          <span className="text-[#ff007f] mx-1.5">&amp;</span>
+          <span className="text-[#ff007f] mx-1 sm:mx-1.5">&amp;</span>
           <span className="text-[#ff007f]">
             {couple?.brideNickname || couple?.brideName || "ELARA"}
           </span>
         </h1>
 
-        <p className="text-[9px] sm:text-[10px] text-[#94a3b8] tracking-widest uppercase mb-3">
+        <p className="text-[8px] sm:text-[10px] text-[#94a3b8] tracking-widest uppercase mb-2 sm:mb-3">
           ROYAL CYBERNETIC WEDDING CEREMONY
         </p>
 
         {/* Guest Security Pass Box */}
-        <div className="my-3 p-2.5 bg-[#0f172a]/90 border border-[#00f0ff]/40 text-left">
-          <div className="flex items-center justify-between text-[7px] sm:text-[8px] text-[#00f0ff] font-bold uppercase tracking-wider mb-1">
+        <div className="my-2 sm:my-3 p-2 sm:p-2.5 bg-[#0f172a]/90 border border-[#00f0ff]/40 text-left">
+          <div className="flex items-center justify-between text-[7px] sm:text-[8px] text-[#00f0ff] font-bold uppercase tracking-wider mb-0.5 sm:mb-1">
             <span>VIP ACCESS PROTOCOL</span>
             <span className="text-[#ff007f]">AUTHENTICATED</span>
           </div>
-          <div className="text-[8px] sm:text-[9px] text-gray-400">
+          <div className="text-[7px] sm:text-[9px] text-gray-400">
             Kepada Yth. Tamu Terhormat:
           </div>
-          <div className="text-xs sm:text-sm font-black text-[#ffe600] tracking-wide mt-0.5 drop-shadow-[0_0_6px_rgba(255,230,0,0.6)]">
+          <div className="text-[11px] sm:text-sm font-black text-[#ffe600] tracking-wide mt-0.5 drop-shadow-[0_0_6px_rgba(255,230,0,0.6)] line-clamp-1">
             {guest?.name || "Tamu Kehormatan VIP"}
           </div>
           {guest?.guestCount && guest.guestCount > 1 && (
-            <div className="text-[8px] text-[#38bdf8] mt-0.5">
+            <div className="text-[7px] sm:text-[8px] text-[#38bdf8] mt-0.5">
               Kapasitas Akses: {guest.guestCount} Orang
             </div>
           )}
@@ -187,7 +187,7 @@ export function CyberCover({
           onClick={handleOpen}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.94 }}
-          className="w-full mt-2 py-3 bg-gradient-to-r from-[#00f0ff] via-[#38bdf8] to-[#ff007f] text-[#0b0f19] font-black text-xs sm:text-sm tracking-wider uppercase border-2 border-white shadow-[0_0_20px_rgba(0,240,255,0.7)] cursor-pointer active:scale-95 transition-all flex items-center justify-center gap-2"
+          className="w-full mt-1.5 sm:mt-2 py-2.5 sm:py-3 bg-gradient-to-r from-[#00f0ff] via-[#38bdf8] to-[#ff007f] text-[#0b0f19] font-black text-[11px] sm:text-sm tracking-wider uppercase border-2 border-white shadow-[0_0_20px_rgba(0,240,255,0.7)] cursor-pointer active:scale-95 transition-all flex items-center justify-center gap-1.5 sm:gap-2"
         >
           <span>🚀</span>
           <span>BUKA UNDANGAN [START]</span>
@@ -201,18 +201,18 @@ export function CyberCover({
             onClick={onOpenTicket}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full mt-2.5 py-2.5 bg-[#0a0a14]/90 hover:bg-[#00f0ff]/20 text-[#00f0ff] font-mono text-[10px] sm:text-xs tracking-widest uppercase border border-[#00f0ff] shadow-[0_0_12px_rgba(0,240,255,0.3)] cursor-pointer transition-all flex items-center justify-center gap-2"
+            className="w-full mt-2 py-2 sm:py-2.5 bg-[#0a0a14]/90 hover:bg-[#00f0ff]/20 text-[#00f0ff] font-mono text-[9px] sm:text-xs tracking-widest uppercase border border-[#00f0ff] shadow-[0_0_12px_rgba(0,240,255,0.3)] cursor-pointer transition-all flex items-center justify-center gap-2"
           >
-            <Zap className="w-3.5 h-3.5 text-[#fcee0a] animate-pulse" />
+            <Zap className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#fcee0a] animate-pulse" />
             <span>LIHAT TIKET E-PASS QR</span>
           </motion.button>
         )}
 
-        <div className="mt-2 text-center space-y-0.5">
+        <div className="mt-1.5 sm:mt-2 text-center space-y-0.5">
           <p className="text-[7px] sm:text-[8px] text-gray-500 font-mono">
             PRESS START TO ENTER THE CYBER DISTRICT
           </p>
-          <p className="text-[8px] sm:text-[9px] text-gray-400 font-mono">
+          <p className="text-[7px] sm:text-[9px] text-gray-400 font-mono">
             DIGITAL WEDDING BY{" "}
             <a
               href="https://www.hayvows.com"

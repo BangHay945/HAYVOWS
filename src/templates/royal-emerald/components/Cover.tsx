@@ -26,7 +26,7 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
   const coupleInitials = `${groomName.charAt(0)}&${brideName.charAt(0)}`;
 
   return (
-    <div className="relative w-full h-[100dvh] flex flex-col items-center justify-between overflow-hidden bg-[#02241b] text-[#fdfbf7] select-none">
+    <div className="relative w-full h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-between overflow-hidden bg-[#02241b] text-[#fdfbf7] select-none touch-none">
       {/* Background Image / Texture with Emerald & Gold Vignette */}
       {coupleImage ? (
         <div className="absolute inset-0">
@@ -56,17 +56,17 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
       )}
 
       {/* Royal Corner Filigree Ornaments */}
-      <div className="absolute top-4 left-4 z-20 pointer-events-none">
-        <RoyalCorner className="w-12 h-12 text-[#d4af37]/60" position="top-left" />
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 pointer-events-none">
+        <RoyalCorner className="w-8 h-8 sm:w-12 sm:h-12 text-[#d4af37]/60" position="top-left" />
       </div>
-      <div className="absolute top-4 right-4 z-20 pointer-events-none">
-        <RoyalCorner className="w-12 h-12 text-[#d4af37]/60" position="top-right" />
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 pointer-events-none">
+        <RoyalCorner className="w-8 h-8 sm:w-12 sm:h-12 text-[#d4af37]/60" position="top-right" />
       </div>
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
-        <RoyalCorner className="w-12 h-12 text-[#d4af37]/60" position="bottom-left" />
+      <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 z-20 pointer-events-none">
+        <RoyalCorner className="w-8 h-8 sm:w-12 sm:h-12 text-[#d4af37]/60" position="bottom-left" />
       </div>
-      <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
-        <RoyalCorner className="w-12 h-12 text-[#d4af37]/60" position="bottom-right" />
+      <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 pointer-events-none">
+        <RoyalCorner className="w-8 h-8 sm:w-12 sm:h-12 text-[#d4af37]/60" position="bottom-right" />
       </div>
 
       {/* Top Header / Royal Monogram */}
@@ -74,10 +74,10 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
-        className="relative z-10 pt-10 text-center flex flex-col items-center"
+        className="relative z-10 pt-4 sm:pt-8 text-center flex flex-col items-center shrink-0"
       >
-        <RoyalSeal initials={coupleInitials} className="w-16 h-16 sm:w-20 sm:h-20" />
-        <p className="mt-4 text-[9px] sm:text-[10px] tracking-[0.45em] uppercase text-[#d4af37] font-semibold">
+        <RoyalSeal initials={coupleInitials} className="w-12 h-12 sm:w-16 sm:h-16" />
+        <p className="mt-2 sm:mt-3 text-[8px] sm:text-[10px] tracking-[0.35em] sm:tracking-[0.45em] uppercase text-[#d4af37] font-semibold">
           The Royal Wedding Invitation
         </p>
       </motion.div>
@@ -87,20 +87,20 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-        className="relative z-10 w-full max-w-md mx-auto px-6 text-center my-auto py-2"
+        className="relative z-10 w-full max-w-md mx-auto px-4 sm:px-6 text-center my-auto py-1 sm:py-2 shrink"
       >
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide text-[#fdfbf7] leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-wide text-[#fdfbf7] leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           {groomName}
         </h1>
 
-        <RoyalDivider className="max-w-[220px] mx-auto my-3" />
+        <RoyalDivider className="max-w-[160px] sm:max-w-[220px] mx-auto my-1.5 sm:my-3" />
 
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide text-[#fdfbf7] leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-wide text-[#fdfbf7] leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           {brideName}
         </h1>
 
         {firstEvent?.date && (
-          <p className="text-[11px] sm:text-xs tracking-[0.3em] uppercase text-[#d4af37] font-medium mt-4">
+          <p className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[#d4af37] font-medium mt-2 sm:mt-4">
             {new Date(firstEvent.date).toLocaleDateString("id-ID", {
               day: "numeric",
               month: "long",
@@ -115,14 +115,14 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.4 }}
-        className="relative z-10 w-full max-w-sm mx-auto px-6 pb-10 text-center flex flex-col items-center"
+        className="relative z-10 w-full max-w-sm mx-auto px-4 sm:px-6 pb-4 sm:pb-8 text-center flex flex-col items-center shrink-0"
       >
         {/* Guest Pill */}
-        <div className="w-full bg-[#063c2f]/80 backdrop-blur-md border border-[#d4af37]/40 rounded-2xl py-3 px-4 mb-5 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#d4af37]/80 mb-0.5">
+        <div className="w-full bg-[#063c2f]/80 backdrop-blur-md border border-[#d4af37]/40 rounded-xl sm:rounded-2xl py-2 sm:py-3 px-3.5 sm:px-4 mb-3 sm:mb-4 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+          <p className="text-[8px] sm:text-[9px] tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[#d4af37]/80 mb-0.5">
             Kepada Yth. Bapak/Ibu/Saudara/i
           </p>
-          <p className="font-serif text-lg sm:text-xl text-[#fdfbf7] font-semibold tracking-wide">
+          <p className="font-serif text-base sm:text-xl text-[#fdfbf7] font-semibold tracking-wide">
             {guest?.name || "Tamu Undangan Terhormat"}
           </p>
           {guest?.address && (
@@ -133,11 +133,11 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
         </div>
 
         {/* Open Button with Gold Shimmer */}
-        <div className="w-full flex flex-col gap-2.5 items-center">
+        <div className="w-full flex flex-col gap-2 items-center">
           <button
             type="button"
             onClick={onOpen}
-            className="w-full relative group overflow-hidden py-3.5 px-6 rounded-xl font-serif text-sm tracking-[0.2em] uppercase font-bold text-[#02241b] shadow-[0_4px_25px_rgba(212,175,55,0.4)] transition-all duration-300 hover:shadow-[0_4px_35px_rgba(212,175,55,0.65)] hover:scale-[1.02] cursor-pointer"
+            className="w-full relative group overflow-hidden py-3 sm:py-3.5 px-5 sm:px-6 rounded-xl font-serif text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-[#02241b] shadow-[0_4px_25px_rgba(212,175,55,0.4)] transition-all duration-300 hover:shadow-[0_4px_35px_rgba(212,175,55,0.65)] hover:scale-[1.02] cursor-pointer"
             style={{
               background: "linear-gradient(135deg, #fff2cc 0%, #e5c158 50%, #aa820a 100%)",
             }}
@@ -155,7 +155,7 @@ export function RoyalCover({ context, onOpen, onOpenTicket }: CoverProps) {
             <button
               type="button"
               onClick={onOpenTicket}
-              className="inline-flex items-center gap-1.5 text-[11px] text-[#d4af37] hover:text-[#fff2cc] transition-colors py-1 cursor-pointer tracking-wider"
+              className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] text-[#d4af37] hover:text-[#fff2cc] transition-colors py-1 cursor-pointer tracking-wider"
             >
               <QrCode className="w-3.5 h-3.5" />
               <span>Lihat E-Pass Presensi QR</span>

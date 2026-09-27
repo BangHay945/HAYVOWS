@@ -24,7 +24,7 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
   const brideName = couple?.brideNickname || couple?.brideName || "Sara";
 
   return (
-    <div className="relative w-full h-[100dvh] flex flex-col items-center justify-end overflow-hidden bg-[#0a0a0a] select-none">
+    <div className="relative w-full h-[100dvh] max-h-[100dvh] flex flex-col items-center justify-end overflow-hidden touch-none bg-[#0a0a0a] select-none">
       {/* Full-bleed Background — grayscale photo */}
       {coupleImage ? (
         <div className="absolute inset-0">
@@ -59,30 +59,30 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-        className="relative z-10 w-full max-w-md mx-auto px-8 pb-14 text-center"
+        className="relative z-10 w-full max-w-md mx-auto px-5 sm:px-8 pb-5 sm:pb-12 text-center"
       >
         {/* Small top label */}
-        <p className="font-noir-sans text-[9px] sm:text-[10px] tracking-[0.4em] uppercase text-[#888888] mb-6">
+        <p className="font-noir-sans text-[9px] sm:text-[10px] tracking-[0.35em] sm:tracking-[0.4em] uppercase text-[#888888] mb-3 sm:mb-6">
           Undangan Pernikahan
         </p>
 
         {/* Names */}
-        <h1 className="font-noir-serif text-4xl sm:text-5xl font-light text-[#fafafa] leading-tight tracking-wide">
+        <h1 className="font-noir-serif text-3xl sm:text-5xl font-light text-[#fafafa] leading-tight tracking-wide">
           {groomName}
         </h1>
         {/* Gold hairline divider */}
-        <div className="flex items-center justify-center gap-3 my-4">
+        <div className="flex items-center justify-center gap-3 my-2 sm:my-4">
           <div className="flex-1 h-px bg-[#c9a84c] max-w-[80px]" />
-          <span className="font-noir-serif text-[#c9a84c] text-xl font-light italic">&amp;</span>
+          <span className="font-noir-serif text-[#c9a84c] text-lg sm:text-xl font-light italic">&amp;</span>
           <div className="flex-1 h-px bg-[#c9a84c] max-w-[80px]" />
         </div>
-        <h1 className="font-noir-serif text-4xl sm:text-5xl font-light text-[#fafafa] leading-tight tracking-wide">
+        <h1 className="font-noir-serif text-3xl sm:text-5xl font-light text-[#fafafa] leading-tight tracking-wide">
           {brideName}
         </h1>
 
         {/* Event date */}
         {firstEvent?.date && (
-          <p className="font-noir-sans text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-[#aaaaaa] mt-5">
+          <p className="font-noir-sans text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[#aaaaaa] mt-2.5 sm:mt-5">
             {new Date(firstEvent.date).toLocaleDateString("id-ID", {
               day: "numeric",
               month: "long",
@@ -92,11 +92,11 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
         )}
 
         {/* Guest name */}
-        <div className="mt-5 mb-8">
-          <p className="font-noir-sans text-[9px] tracking-[0.25em] uppercase text-[#666666] mb-1">
+        <div className="mt-3 sm:mt-5 mb-4 sm:mb-7">
+          <p className="font-noir-sans text-[8px] sm:text-[9px] tracking-[0.25em] uppercase text-[#666666] mb-0.5 sm:mb-1">
             Kepada Yth.
           </p>
-          <p className="font-noir-serif text-lg sm:text-xl text-[#fafafa] italic font-light">
+          <p className="font-noir-serif text-base sm:text-xl text-[#fafafa] italic font-light line-clamp-2">
             {guest?.name || "Tamu Undangan"}
           </p>
         </div>
@@ -106,7 +106,7 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
           onClick={onOpen}
           whileHover={{ backgroundColor: "rgba(201,168,76,0.08)" }}
           whileTap={{ scale: 0.97 }}
-          className="w-full border border-[#fafafa]/50 hover:border-[#c9a84c] text-[#fafafa] font-noir-sans text-[10px] sm:text-xs tracking-[0.35em] uppercase py-4 px-6 transition-all duration-300 cursor-pointer"
+          className="w-full border border-[#fafafa]/50 hover:border-[#c9a84c] text-[#fafafa] font-noir-sans text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase py-3 sm:py-4 px-5 transition-all duration-300 cursor-pointer"
         >
           Buka Undangan
         </motion.button>
@@ -118,7 +118,7 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
             onClick={onOpenTicket}
             whileHover={{ backgroundColor: "rgba(201,168,76,0.15)", borderColor: "#c9a84c" }}
             whileTap={{ scale: 0.97 }}
-            className="w-full mt-3 border border-[#c9a84c]/50 text-[#c9a84c] font-noir-sans text-[10px] sm:text-xs tracking-[0.25em] uppercase py-3 px-4 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2"
+            className="w-full mt-2.5 border border-[#c9a84c]/50 text-[#c9a84c] font-noir-sans text-[10px] sm:text-xs tracking-[0.25em] uppercase py-2.5 sm:py-3 px-4 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2"
           >
             <QrCode className="w-3.5 h-3.5 text-[#c9a84c]" />
             <span>Lihat Tiket E-Pass QR</span>
@@ -126,7 +126,7 @@ export function NoirCover({ context, onOpen, onOpenTicket }: CoverProps) {
         )}
 
         {/* Platform Backlink */}
-        <p className="mt-4 text-[9px] text-[#666666] font-noir-sans tracking-[0.25em] uppercase text-center">
+        <p className="mt-3 text-[9px] text-[#666666] font-noir-sans tracking-[0.25em] uppercase text-center">
           Undangan Digital &bull;{" "}
           <a
             href="https://www.hayvows.com"

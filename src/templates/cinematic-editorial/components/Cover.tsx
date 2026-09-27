@@ -54,7 +54,7 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
     : "The Wedding Day";
 
   return (
-    <div className="relative w-full h-[100dvh] flex flex-col justify-between overflow-hidden bg-[#0a0a0c] text-[#fdfbf7] select-none">
+    <div className="relative w-full h-[100dvh] max-h-[100dvh] flex flex-col justify-between overflow-hidden bg-[#0a0a0c] text-[#fdfbf7] select-none touch-none">
       {/* ── BACKGROUND PHOTO SLIDESHOW (KEN BURNS CROSSFADE) ── */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="popLayout">
@@ -84,38 +84,38 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative z-10 pt-7 px-6 text-center space-y-1.5"
+        className="relative z-10 pt-4 sm:pt-6 px-4 sm:px-6 text-center space-y-1 shrink-0"
       >
-        <div className="flex items-center justify-center gap-3 text-[10px] sm:text-[11px] font-mono tracking-[0.3em] uppercase text-[#e8d5b5] font-semibold border-b border-white/15 pb-2.5 max-w-sm mx-auto">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 text-[9px] sm:text-[11px] font-mono tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[#e8d5b5] font-semibold border-b border-white/15 pb-2 max-w-xs sm:max-w-sm mx-auto">
           <span>THE WEDDING ISSUE</span>
           <span>&bull;</span>
           <span>VOL. 2026</span>
           <span>&bull;</span>
           <span>SPECIAL EDIT</span>
         </div>
-        <p className="text-[9px] tracking-[0.4em] uppercase text-neutral-400 font-sans">
+        <p className="text-[8px] sm:text-[9px] tracking-[0.35em] uppercase text-neutral-400 font-sans mt-0.5">
           A Celebration of True Love &amp; Devotion
         </p>
       </motion.header>
 
       {/* ── CENTER TYPOGRAPHY (EDITORIAL HERO TITLE) ── */}
-      <div className="relative z-10 my-auto px-6 text-center max-w-md mx-auto space-y-3 py-4">
+      <div className="relative z-10 my-auto px-4 sm:px-6 text-center max-w-md mx-auto py-2 sm:py-3 shrink">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="space-y-1"
+          className="space-y-0.5 sm:space-y-1"
         >
-          <span className="text-[10px] sm:text-xs uppercase font-sans tracking-[0.45em] text-[#e8d5b5]/90 block mb-2 font-medium">
+          <span className="text-[9px] sm:text-xs uppercase font-sans tracking-[0.4em] text-[#e8d5b5]/90 block mb-1 sm:mb-2 font-medium">
             WE INVITE YOU TO WITNESS
           </span>
-          <h1 className="font-serif text-5xl sm:text-6xl font-light tracking-tight text-[#fdfbf7] leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#fdfbf7] leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
             {groomName}
           </h1>
-          <span className="font-serif italic text-3xl sm:text-4xl text-[#e8d5b5] block py-0.5">
+          <span className="font-serif italic text-2xl sm:text-3xl md:text-4xl text-[#e8d5b5] block py-0.5 sm:py-1">
             &amp;
           </span>
-          <h1 className="font-serif text-5xl sm:text-6xl font-light tracking-tight text-[#fdfbf7] leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#fdfbf7] leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
             {brideName}
           </h1>
         </motion.div>
@@ -124,21 +124,21 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="pt-2 flex items-center justify-center gap-3 text-xs tracking-widest uppercase text-white/80 font-mono"
+          className="pt-2 flex items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-xs tracking-widest uppercase text-white/80 font-mono"
         >
-          <span className="w-8 h-px bg-white/30" />
+          <span className="w-6 sm:w-8 h-px bg-white/30" />
           <span>{formattedDate}</span>
-          <span className="w-8 h-px bg-white/30" />
+          <span className="w-6 sm:w-8 h-px bg-white/30" />
         </motion.div>
 
         {/* Slideshow Indicator Dots */}
         {photos.length > 1 && (
-          <div className="flex items-center justify-center gap-1.5 pt-3">
+          <div className="flex items-center justify-center gap-1.5 pt-2">
             {photos.slice(0, 5).map((_, idx) => (
               <span
                 key={idx}
                 className={`h-1 rounded-full transition-all duration-500 ${
-                  currentSlide === idx ? "w-6 bg-[#e8d5b5]" : "w-1.5 bg-white/30"
+                  currentSlide === idx ? "w-5 sm:w-6 bg-[#e8d5b5]" : "w-1.5 bg-white/30"
                 }`}
               />
             ))}
@@ -151,29 +151,29 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
-        className="relative z-10 pb-8 px-5 sm:px-6 w-full max-w-md mx-auto space-y-3.5"
+        className="relative z-10 pb-4 sm:pb-8 px-4 sm:px-6 w-full max-w-md mx-auto space-y-2 sm:space-y-3 shrink-0"
       >
         {/* Guest Badge */}
-        <div className="bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-white/15 text-center shadow-2xl space-y-1">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-neutral-400 font-sans font-medium">
+        <div className="bg-black/60 backdrop-blur-md rounded-xl sm:rounded-2xl py-2 px-3 sm:p-3.5 border border-white/15 text-center shadow-2xl space-y-0.5">
+          <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-neutral-400 font-sans font-medium">
             Dear Esteemed Guest:
           </p>
-          <h2 className="text-base sm:text-lg font-bold text-[#fdfbf7] truncate tracking-wide">
+          <h2 className="text-sm sm:text-base md:text-lg font-bold text-[#fdfbf7] truncate tracking-wide">
             {guest?.name || "Tamu Undangan"}
           </h2>
           {guest?.address && (
-            <p className="text-[11px] text-[#e8d5b5] truncate font-sans">
+            <p className="text-[10px] sm:text-[11px] text-[#e8d5b5] truncate font-sans">
               {guest.address}
             </p>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-2">
+        <div className="space-y-1.5 sm:space-y-2">
           <button
             type="button"
             onClick={onOpen}
-            className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#e8d5b5] via-[#f5ede0] to-[#d8c3a0] hover:from-[#f3e7cf] hover:to-[#e0cdad] active:scale-[0.98] text-[#111115] font-bold text-xs uppercase tracking-[0.2em] shadow-[0_8px_32px_rgba(232,213,181,0.3)] transition-all flex items-center justify-center gap-2.5 cursor-pointer group"
+            className="w-full py-3 sm:py-3.5 px-5 sm:px-6 rounded-xl bg-gradient-to-r from-[#e8d5b5] via-[#f5ede0] to-[#d8c3a0] hover:from-[#f3e7cf] hover:to-[#e0cdad] active:scale-[0.98] text-[#111115] font-bold text-xs uppercase tracking-[0.2em] shadow-[0_8px_32px_rgba(232,213,181,0.3)] transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
             <MailOpen className="w-4 h-4 text-[#111115] transition-transform group-hover:scale-110" />
             <span>Buka Undangan</span>
@@ -185,9 +185,9 @@ export function EditorialCover({ context, onOpen, onOpenTicket }: CoverProps) {
               onClick={onOpenTicket}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-3 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] active:scale-[0.98] text-[#e8d5b5] font-mono text-[11px] uppercase tracking-[0.2em] border border-[#e8d5b5]/40 backdrop-blur-md transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] active:scale-[0.98] text-[#e8d5b5] font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.15em] border border-[#e8d5b5]/40 backdrop-blur-md transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
             >
-              <QrCode className="w-4 h-4 text-[#e8d5b5]" />
+              <QrCode className="w-3.5 h-3.5 text-[#e8d5b5]" />
               <span>Lihat Tiket QR / E-Pass</span>
             </motion.button>
           )}

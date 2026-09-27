@@ -215,7 +215,11 @@ export function BatikJawaLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className="relative w-full min-h-[100dvh] flex flex-col lg:flex-row font-jawa-body bg-[#1A0F08]">
+    <div
+      className={`relative w-full flex flex-col lg:flex-row font-jawa-body bg-[#1A0F08] ${
+        !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+      }`}
+    >
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -234,14 +238,18 @@ export function BatikJawaLayout({
       <DesktopSplitSidePanel context={context} themeSlug="batik-jawa" />
 
       {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className="w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] min-h-[100dvh] bg-[#2D1B0E] relative shadow-2xl lg:border-l border-[#D4A853]/20 flex flex-col justify-start">
+      <div
+        className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] bg-[#2D1B0E] relative shadow-2xl lg:border-l border-[#D4A853]/20 flex flex-col justify-start ${
+          !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+        }`}
+      >
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
               key="cover"
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full min-h-[100dvh]"
+              className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
               <BatikJawaCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
             </motion.div>
