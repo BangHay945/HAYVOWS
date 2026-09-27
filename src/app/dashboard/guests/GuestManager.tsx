@@ -283,66 +283,21 @@ export default function GuestManager({
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto w-full">
-      {/* Top Header & Fast Action */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
+      {/* Top Header & Primary Action */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div>
+          <div className="text-[11px] font-mono tracking-wider font-semibold text-emerald-700 uppercase mb-1">
+            Manajemen Kontak &amp; Buku Tamu
+          </div>
           <h1 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 tracking-tight">
             Manajemen Daftar Tamu Undangan
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
             Buat tautan personal per tamu, atur nomor meja, alamat asal domisili, dan kirim undangan otomatis via WhatsApp.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          {/* 1. Format Pesan WA */}
-          <button
-            type="button"
-            onClick={() => setWaModalOpen(true)}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
-            title="Kustomisasi Format Pesan Undangan WhatsApp"
-          >
-            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Format WA</span>
-          </button>
-
-          {/* 2. Import CSV / Excel */}
-          <button
-            type="button"
-            onClick={() => {
-              if (
-                guests.length >=
-                (userRole === "admin" || userPlan === "luxury"
-                  ? 999999
-                  : userPlan === "premium"
-                  ? 500
-                  : 50)
-              ) {
-                setUpgradeModalOpen(true);
-                return;
-              }
-              setImportModalOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 shadow-2xs transition-colors cursor-pointer"
-            title="Import Banyak Tamu dari File Excel / CSV"
-          >
-            <Upload className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Import CSV</span>
-          </button>
-
-          {/* 3. Export CSV / Excel */}
-          <button
-            type="button"
-            onClick={handleExportCSV}
-            disabled={guests.length === 0}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Download Rekap Daftar Tamu & RSVP ke File CSV / Excel"
-          >
-            <Download className="w-3.5 h-3.5 text-slate-600" />
-            <span>Export CSV</span>
-          </button>
-
-          {/* 4. Tambah Tamu Manual */}
+        <div className="shrink-0">
           <button
             type="button"
             onClick={() => {
@@ -360,7 +315,7 @@ export default function GuestManager({
               }
               setShowAddForm(!showAddForm);
             }}
-            className={`inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl shadow-xs transition-all cursor-pointer shrink-0 ${
+            className={`inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer ${
               showAddForm
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
                 : "bg-[#2d4a3e] hover:bg-[#233a30] text-white"
@@ -579,17 +534,18 @@ export default function GuestManager({
         </form>
       )}
 
-      {/* Filter & Search Bar */}
-      <div className="bg-white border border-slate-200/80 rounded-xl p-3.5 shadow-2xs">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <div className="relative flex-1">
+      {/* Filter, Search & Data Operations Bar */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 shadow-2xs space-y-3 xl:space-y-0 xl:flex xl:items-center xl:justify-between gap-3">
+        {/* Left: Search & Filter Dropdowns */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 min-w-0">
+          <div className="relative flex-1 min-w-[200px]">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari berdasarkan nama, alamat, meja, atau no. WhatsApp..."
-              className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-white"
+              className="w-full pl-9 pr-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 hover:bg-white focus:bg-white transition-all"
             />
           </div>
 
@@ -597,7 +553,7 @@ export default function GuestManager({
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-lg px-2.5 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
+              className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
             >
               <option value="all">Semua Kategori</option>
               <option value="VIP">VIP</option>
@@ -610,7 +566,7 @@ export default function GuestManager({
             <select
               value={rsvpFilter}
               onChange={(e) => setRsvpFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-lg px-2.5 py-2 bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
+              className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
             >
               <option value="all">Semua Status</option>
               <option value="attending">Hadir</option>
@@ -618,6 +574,53 @@ export default function GuestManager({
               <option value="pending">Belum Respon</option>
             </select>
           </div>
+        </div>
+
+        {/* Right: Data Actions (Format WA, Import CSV, Export CSV) */}
+        <div className="flex items-center gap-2 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-100 flex-wrap sm:flex-nowrap">
+          <button
+            type="button"
+            onClick={() => setWaModalOpen(true)}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
+            title="Kustomisasi Format Pesan Undangan WhatsApp"
+          >
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Format WA</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                guests.length >=
+                (userRole === "admin" || userPlan === "luxury"
+                  ? 999999
+                  : userPlan === "premium"
+                  ? 500
+                  : 50)
+              ) {
+                setUpgradeModalOpen(true);
+                return;
+              }
+              setImportModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
+            title="Import Banyak Tamu dari File Excel / CSV"
+          >
+            <Upload className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Import CSV</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleExportCSV}
+            disabled={guests.length === 0}
+            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Download Rekap Daftar Tamu & RSVP ke File CSV / Excel"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-600" />
+            <span>Export CSV</span>
+          </button>
         </div>
       </div>
 

@@ -218,10 +218,13 @@ export function GuestbookWorkbench({
       {/* Header & Quick Actions */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div className="min-w-0">
+          <div className="text-[11px] font-mono tracking-wider font-semibold text-emerald-700 uppercase mb-1">
+            Presensi Resepsi &amp; Check-In QR
+          </div>
           <h1 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 tracking-tight">
             Buku Tamu Digital &amp; Presensi QR
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
             Kelola kehadiran tamu hari H secara real-time dengan pemindai QR Code, pencatatan souvenir, dan alamat domisili tamu.
           </p>
         </div>
