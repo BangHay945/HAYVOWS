@@ -63,6 +63,7 @@ export function GuestTicketModal({
   const isBatik = templateSlug === "batik-jawa";
   const isPixel = templateSlug === "pixel-adventure";
   const isMonogram = templateSlug === "modern-monogram";
+  const isEditorial = templateSlug === "cinematic-editorial";
 
   const qrColors = isCyberpunk
     ? { dark: "#00f0ff", light: "#0a0a14" }
@@ -74,6 +75,8 @@ export function GuestTicketModal({
     ? { dark: "#000000", light: "#ffffff" }
     : isMonogram
     ? { dark: "#ffffff", light: "#18181b" }
+    : isEditorial
+    ? { dark: "#0d0d11", light: "#fdfbf7" }
     : { dark: "#2d4a3e", light: "#ffffff" }; // Nature Floral (Default)
 
   useEffect(() => {
@@ -438,7 +441,150 @@ export function GuestTicketModal({
     );
   }
 
-  // 5. NATURE FLORAL & MODERN MONOGRAM (STANDARD ELEGANT HAYVOWS)
+  // 5. CINEMATIC EDITORIAL THEME (THE WEDDING JOURNAL / VOGUE LUXURY)
+  if (isEditorial) {
+    return (
+      <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[500px] z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="relative w-full max-w-md bg-[#0d0d11] rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] border border-[#e8d5b5]/40 text-[#fdfbf7] max-h-[92vh] flex flex-col font-sans overflow-hidden">
+          {/* Header Banner */}
+          <div className="bg-gradient-to-b from-[#181822] via-[#121218] to-[#0d0d11] p-6 border-b border-white/10 text-center relative shrink-0">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-[#e8d5b5] flex items-center justify-center cursor-pointer transition-colors"
+              aria-label="Tutup Tiket"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="flex items-center justify-center gap-2 mb-1.5">
+              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-[#e8d5b5] font-semibold">
+                THE WEDDING JOURNAL • GUEST PASS
+              </span>
+            </div>
+            <h2 className="text-2xl font-serif font-light tracking-tight text-[#fdfbf7] leading-snug">
+              {coupleTitle}
+            </h2>
+            {eventDate && (
+              <p className="text-[11px] text-neutral-400 font-mono tracking-wider mt-1.5 flex items-center justify-center gap-1.5">
+                <Calendar className="w-3 h-3 text-[#e8d5b5]" />
+                <span>{eventDate}</span>
+                {venueName && <span>• {venueName}</span>}
+              </p>
+            )}
+          </div>
+
+          {/* Ticket Body Content */}
+          <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1" ref={ticketRef}>
+            {/* Guest Identity Card */}
+            <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#e8d5b5] block">
+                    ESTEEMED GUEST
+                  </span>
+                  <h3 className="text-lg font-serif text-[#fdfbf7] font-normal leading-snug mt-0.5">
+                    {guestName}
+                  </h3>
+                </div>
+                <span
+                  className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
+                    isVip
+                      ? "bg-[#e8d5b5]/20 text-[#fef08a] border-[#e8d5b5]"
+                      : "bg-white/10 text-white/90 border-white/20"
+                  }`}
+                >
+                  {guestCategory || "Reguler"}
+                </span>
+              </div>
+
+              {guestAddress && (
+                <div className="flex items-center gap-1.5 text-xs text-neutral-300 pt-2 border-t border-white/10">
+                  <MapPin className="w-3.5 h-3.5 text-[#e8d5b5] shrink-0" />
+                  <span className="font-sans">Domisili: {guestAddress}</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-xs">
+                <div>
+                  <span className="text-[10px] font-mono text-neutral-400 block uppercase tracking-wider">
+                    Alokasi Kuota
+                  </span>
+                  <span className="font-bold text-[#fdfbf7] font-mono">{guestCount} Pax</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-neutral-400 block uppercase tracking-wider">
+                    Nomor Meja
+                  </span>
+                  <span className="font-bold text-[#e8d5b5] font-mono">{tableNumber || "Bebas"}</span>
+                </div>
+              </div>
+
+              {sessionName && (
+                <div className="text-xs text-neutral-300 bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                  <span className="text-[10px] font-mono text-neutral-400 block uppercase tracking-wider">
+                    Sesi Acara
+                  </span>
+                  <span className="font-medium text-white">{sessionName}</span>
+                </div>
+              )}
+            </div>
+
+            {/* QR Code Presentation Box */}
+            <div className="flex flex-col items-center justify-center p-5 rounded-2xl bg-white/[0.03] border border-[#e8d5b5]/30 text-center">
+              {isGenerating ? (
+                <div className="w-44 h-44 flex items-center justify-center">
+                  <span className="text-xs text-neutral-400 font-mono animate-pulse">Menyiapkan QR Pass...</span>
+                </div>
+              ) : qrDataUrl ? (
+                <div className="space-y-2.5">
+                  <div className="p-3 bg-[#fdfbf7] rounded-2xl border border-[#e8d5b5] shadow-xl inline-block">
+                    <img
+                      src={qrDataUrl}
+                      alt={`QR Code Presensi ${guestName}`}
+                      className="w-44 h-44 object-contain mx-auto rounded-xl"
+                    />
+                  </div>
+                  <p className="font-mono text-xs font-bold text-[#e8d5b5] tracking-widest">
+                    {qrToken}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xs text-rose-400">Gagal memuat kode QR</p>
+              )}
+
+              <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-neutral-400 max-w-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#e8d5b5] shrink-0" />
+                <p className="text-[11px] font-serif italic leading-tight text-neutral-300">
+                  Tunjukkan tiket E-Pass ini kepada resepsionis di lokasi acara untuk presensi cepat.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="p-4 bg-[#111116] border-t border-white/10 flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={!qrDataUrl}
+              className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-[#e8d5b5] via-[#f5ede0] to-[#d8c3a0] hover:from-[#f3e7cf] hover:to-[#e0cdad] active:scale-[0.98] text-[#111115] font-bold text-xs uppercase tracking-[0.2em] shadow-[0_4px_20px_rgba(232,213,181,0.25)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              <Download className="w-4 h-4 text-[#111115]" />
+              <span>Simpan Gambar QR</span>
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="py-3 px-5 rounded-xl font-mono text-xs uppercase tracking-wider border border-white/20 hover:bg-white/10 text-white/90 transition-colors cursor-pointer"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 6. NATURE FLORAL & MODERN MONOGRAM (STANDARD ELEGANT HAYVOWS)
   return (
     <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[500px] z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/90 text-slate-900 max-h-[92vh] flex flex-col">
