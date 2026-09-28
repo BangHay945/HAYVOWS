@@ -77,10 +77,10 @@ export function NoirHero({ context, onReadyToScroll }: NoirHeroProps) {
         setDisplayedText(VERSE_FULL_TEXT.slice(0, currentIndex));
 
         const lastChar = VERSE_FULL_TEXT[currentIndex - 1];
-        // Organic pacing: pause slightly longer at punctuation for handwriting feel
-        let delay = 18;
-        if (lastChar === "," || lastChar === ";") delay = 80;
-        else if (lastChar === ".") delay = 120;
+        // Organic handwriting pacing: relaxed, readable cadence with pauses at punctuation
+        let delay = 45;
+        if (lastChar === "," || lastChar === ";") delay = 220;
+        else if (lastChar === ".") delay = 380;
 
         timerId = setTimeout(typeNextChar, delay);
       } else {
@@ -88,16 +88,16 @@ export function NoirHero({ context, onReadyToScroll }: NoirHeroProps) {
         setIsTyping(false);
         setAnimStep(3);
 
-        // After 600ms, reveal scroll indicator and unlock scroll
+        // After a calm pause, reveal scroll indicator and unlock scroll
         setTimeout(() => {
           setAnimStep(4);
           setIsCompleted(true);
           readyCallbackRef.current?.();
-        }, 700);
+        }, 800);
       }
     };
 
-    timerId = setTimeout(typeNextChar, 100);
+    timerId = setTimeout(typeNextChar, 300);
 
     return () => {
       if (timerId) clearTimeout(timerId);
