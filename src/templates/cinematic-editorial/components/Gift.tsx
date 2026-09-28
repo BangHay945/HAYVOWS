@@ -68,7 +68,7 @@ export function EditorialGift({ context, isModalOpen, setIsModalOpen }: GiftProp
                 weddingId={wedding.id}
                 giftAccounts={giftAccounts}
                 defaultSenderName={context.guest?.name || ""}
-                theme="noir"
+                theme="editorial"
                 onClose={() => setOpen(false)}
                 isDemo={Boolean(wedding.isDemo)}
               />

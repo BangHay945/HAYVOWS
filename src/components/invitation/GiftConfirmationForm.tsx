@@ -16,7 +16,7 @@ interface GiftConfirmationFormProps {
   weddingId: string;
   giftAccounts: GiftAccountOption[];
   defaultSenderName?: string;
-  theme?: "cyberpunk" | "adventure" | "standard" | "noir" | "jawa" | "monogram" | "floral" | "emerald" | "ivory";
+  theme?: "cyberpunk" | "adventure" | "standard" | "noir" | "jawa" | "monogram" | "floral" | "emerald" | "ivory" | "editorial";
   onSuccess?: () => void;
   onClose?: () => void;
   isDemo?: boolean;
@@ -162,6 +162,7 @@ export function GiftConfirmationForm({
   const isJawa = theme === "jawa";
   const isEmerald = theme === "emerald";
   const isIvory = theme === "ivory";
+  const isEditorial = theme === "editorial";
   const isMonogram = theme === "monogram";
   const isFloral = theme === "floral" || theme === "standard";
 
@@ -169,7 +170,9 @@ export function GiftConfirmationForm({
     return (
       <div
         className={`p-5 text-center rounded-2xl animate-in zoom-in-95 duration-200 ${
-          isIvory
+          isEditorial
+            ? "border border-[#e8d5b5]/35 bg-[#111115] text-[#fdfbf7] shadow-2xl"
+            : isIvory
             ? "border border-[#d4c4b0]/35 bg-[#141519] text-[#f5f3ef] shadow-2xl"
             : isEmerald
             ? "border border-[#d4af37]/40 bg-[#02241b] text-[#fdfbf7] shadow-2xl"
@@ -188,7 +191,9 @@ export function GiftConfirmationForm({
       >
         <div
           className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${
-            isIvory
+            isEditorial
+              ? "bg-[#e8d5b5]/20 text-[#e8d5b5] border border-[#e8d5b5]/40"
+              : isIvory
               ? "bg-[#d4c4b0]/20 text-[#d4c4b0] border border-[#d4c4b0]/40"
               : isEmerald
               ? "bg-[#ffd700]/20 text-[#ffd700] border border-[#ffd700]/40"
@@ -209,7 +214,9 @@ export function GiftConfirmationForm({
         </div>
         <h3
           className={`font-bold text-base sm:text-lg mb-1 ${
-            isIvory
+            isEditorial
+              ? "text-[#fdfbf7] font-serif font-light text-xl tracking-wide"
+              : isIvory
               ? "text-[#f5f3ef] font-serif font-light text-xl tracking-wide"
               : isEmerald
               ? "text-[#ffd700] font-serif font-light text-xl tracking-wide"
@@ -230,7 +237,9 @@ export function GiftConfirmationForm({
         </h3>
         <p
           className={`text-xs mb-3 max-w-sm mx-auto ${
-            isIvory
+            isEditorial
+              ? "text-neutral-400 font-sans leading-relaxed"
+              : isIvory
               ? "text-[#b0b0b8] leading-relaxed"
               : isEmerald
               ? "text-[#b8c9c1] leading-relaxed"
@@ -251,7 +260,9 @@ export function GiftConfirmationForm({
         </p>
         <div
           className={`inline-block py-1.5 px-3 rounded-lg text-xs font-mono font-bold shadow-2xs mb-4 ${
-            isIvory
+            isEditorial
+              ? "bg-[#0a0a0c] border border-[#e8d5b5]/35 text-[#e8d5b5]"
+              : isIvory
               ? "bg-[#18191d] border border-[#d4c4b0]/35 text-[#d4c4b0]"
               : isEmerald
               ? "bg-[#043327] border border-[#d4af37]/35 text-[#ffd700]"
@@ -279,7 +290,9 @@ export function GiftConfirmationForm({
               onClose?.();
             }}
             className={`px-5 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-              isIvory
+              isEditorial
+                ? "bg-[#e8d5b5] hover:bg-[#d6c19e] text-neutral-950 font-mono font-bold uppercase tracking-wider shadow-md active:scale-98"
+                : isIvory
                 ? "bg-[#d4c4b0] hover:bg-[#c4b39e] text-[#0c0d0e] tracking-wider uppercase font-medium shadow-md"
                 : isEmerald
                 ? "bg-gradient-to-r from-[#ffd700] via-[#e5c158] to-[#b38f2a] hover:brightness-105 text-[#02241b] tracking-wider uppercase font-bold shadow-md"
@@ -307,7 +320,9 @@ export function GiftConfirmationForm({
     <form
       onSubmit={handleSubmit}
       className={`space-y-3.5 p-4 sm:p-5 rounded-2xl text-left ${
-        isIvory
+        isEditorial
+          ? "border border-white/15 bg-[#111115] text-[#fdfbf7] shadow-2xl"
+          : isIvory
           ? "border border-white/10 bg-[#141519] text-[#f5f3ef] shadow-2xl"
           : isEmerald
           ? "border border-[#d4af37]/30 bg-[#042d22] text-[#fdfbf7] shadow-2xl"
@@ -324,7 +339,9 @@ export function GiftConfirmationForm({
     >
       <div
         className={`flex items-center justify-between pb-2.5 border-b ${
-          isIvory
+          isEditorial
+            ? "border-white/10"
+            : isIvory
             ? "border-white/10"
             : isEmerald
             ? "border-[#d4af37]/25"
@@ -342,7 +359,9 @@ export function GiftConfirmationForm({
         <div className="flex items-center gap-2">
           <span
             className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm ${
-              isIvory
+              isEditorial
+                ? "bg-[#e8d5b5]/15 text-[#e8d5b5] border border-[#e8d5b5]/30"
+                : isIvory
                 ? "bg-[#d4c4b0]/15 text-[#d4c4b0] border border-[#d4c4b0]/30"
                 : isEmerald
                 ? "bg-[#ffd700]/15 text-[#ffd700] border border-[#ffd700]/30"
@@ -362,7 +381,9 @@ export function GiftConfirmationForm({
           <div>
             <h4
               className={`text-xs sm:text-sm font-bold leading-tight ${
-                isIvory
+                isEditorial
+                  ? "text-[#fdfbf7] font-serif font-light text-base tracking-wide"
+                  : isIvory
                   ? "text-[#f5f3ef] font-serif font-light text-base tracking-wide"
                   : isEmerald
                   ? "text-[#fdfbf7] font-serif font-normal text-base tracking-wide"
@@ -381,7 +402,9 @@ export function GiftConfirmationForm({
             </h4>
             <p
               className={`text-[10px] ${
-                isIvory
+                isEditorial
+                  ? "text-neutral-400 font-mono"
+                  : isIvory
                   ? "text-[#8a8b90]"
                   : isEmerald
                   ? "text-[#b8c9c1]"
@@ -406,7 +429,9 @@ export function GiftConfirmationForm({
       {isDemo && (
         <div
           className={`p-3 rounded-xl flex items-center gap-2.5 text-xs font-medium border ${
-            isIvory
+            isEditorial
+              ? "bg-[#0a0a0c] border border-white/10 text-[#e8d5b5] font-mono text-[11px]"
+              : isIvory
               ? "bg-[#18191d] border border-white/10 text-[#d4c4b0]"
               : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/40 text-[#ffd700]"
@@ -431,7 +456,9 @@ export function GiftConfirmationForm({
       {error && (
         <div
           className={`text-xs px-3 py-2 rounded-lg ${
-            isIvory
+            isEditorial
+              ? "bg-red-950/40 border border-red-800/60 text-red-300 font-mono"
+              : isIvory
               ? "bg-red-950/40 border border-red-800/60 text-red-300 font-sans"
               : isEmerald
               ? "bg-red-950/60 border border-red-800 text-red-300"
@@ -449,7 +476,9 @@ export function GiftConfirmationForm({
         <div className="flex items-center justify-between mb-1">
           <label
             className={`block text-[11px] font-semibold ${
-              isIvory
+              isEditorial
+                ? "text-[#e8d5b5] font-mono uppercase tracking-[0.25em] text-[10px] font-medium"
+                : isIvory
                 ? "text-[#d4c4b0] uppercase tracking-[0.25em] text-[10px] font-medium"
                 : isEmerald
                 ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
@@ -468,7 +497,9 @@ export function GiftConfirmationForm({
           </label>
           <span
             className={`text-[9px] font-mono flex items-center gap-1 ${
-              isIvory
+              isEditorial
+                ? "text-[#e8d5b5] font-mono tracking-wider uppercase text-[8px]"
+                : isIvory
                 ? "text-[#d4c4b0] tracking-wider uppercase text-[8px]"
                 : isEmerald
                 ? "text-[#ffd700] tracking-wider uppercase text-[8px]"
@@ -492,7 +523,9 @@ export function GiftConfirmationForm({
           readOnly
           value={guestName || resolvedSenderName}
           className={`w-full text-xs px-3 py-2 rounded-lg border font-mono font-bold cursor-not-allowed select-none transition-colors ${
-            isIvory
+            isEditorial
+              ? "bg-[#0a0a0c] border border-white/10 text-[#fdfbf7] font-serif italic shadow-inner"
+              : isIvory
               ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-serif italic shadow-inner"
               : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#ffd700] font-serif italic shadow-inner"
@@ -513,7 +546,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isIvory
+            isEditorial
+              ? "text-[#e8d5b5] font-mono uppercase tracking-[0.25em] text-[10px] font-medium"
+              : isIvory
               ? "text-[#d4c4b0] uppercase tracking-[0.25em] text-[10px] font-medium"
               : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
@@ -543,7 +578,9 @@ export function GiftConfirmationForm({
                 }
               }}
               className={`w-full text-xs px-3 py-2 rounded-lg border focus:outline-none cursor-pointer transition-colors ${
-                isIvory
+                isEditorial
+                  ? "bg-[#0a0a0c] border border-white/10 text-[#fdfbf7] font-mono focus:border-[#e8d5b5]"
+                  : isIvory
                   ? "bg-[#121316] border border-white/10 text-[#f5f3ef] focus:border-[#d4c4b0]"
                   : isEmerald
                   ? "bg-[#021f17] border border-[#d4af37]/40 text-[#fdfbf7] focus:border-[#ffd700]"
@@ -568,7 +605,54 @@ export function GiftConfirmationForm({
             {/* Dynamic Card Rekening Terpilih */}
             {selectedAccount && (
               <div className="mt-2.5 animate-in fade-in-50 duration-200">
-                {isIvory ? (
+                {isEditorial ? (
+                  /* The Wedding Journal (Cinematic Editorial) Theme Card — Editorial Champagne #e8d5b5 & Neutral Black #111115 */
+                  <div className="bg-[#111115] border border-[#e8d5b5]/30 p-3.5 rounded-2xl text-left shadow-lg">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-[#e8d5b5] font-semibold tracking-[0.2em] uppercase text-[11px]">
+                        {selectedAccount.bankName}
+                      </span>
+                      {selectedAccount.accountName && (
+                        <span className="text-[11px] font-sans text-neutral-400">
+                          a.n {selectedAccount.accountName}
+                        </span>
+                      )}
+                    </div>
+                    {selectedAccount.accountNo && (
+                      <div className="mt-2.5 flex items-center justify-between gap-2 p-2.5 bg-[#0a0a0c] rounded-xl border border-white/10">
+                        <span className="font-mono text-sm sm:text-base font-bold text-[#fdfbf7] tracking-wider select-all">
+                          {selectedAccount.accountNo}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(selectedAccount.accountNo)}
+                          className="px-3 py-1.5 bg-[#e8d5b5]/15 hover:bg-[#e8d5b5] text-[#e8d5b5] hover:text-[#0a0a0c] border border-[#e8d5b5]/40 text-[9px] tracking-[0.2em] uppercase font-mono font-medium rounded-xl transition-all duration-200 cursor-pointer flex items-center gap-1.5 active:scale-95"
+                        >
+                          {copied ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                              <span>Tersalin</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Salin No. Rekening</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                    {selectedAccount.qrisUrl && (
+                      <div className="my-2.5 p-2.5 bg-white rounded-xl border border-[#e8d5b5]/30 flex justify-center">
+                        <img
+                          src={selectedAccount.qrisUrl}
+                          alt="QRIS"
+                          className="w-36 h-36 object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : isIvory ? (
                   /* Cinematic Ivory Theme Card — Midnight Charcoal & Platinum Ivory / Champagne */
                   <div className="bg-[#18191d] border border-[rgba(212,196,176,0.3)] p-3.5 rounded-2xl text-left shadow-lg">
                     <div className="flex items-center justify-between text-xs">
@@ -938,7 +1022,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isIvory
+            isEditorial
+              ? "text-[#e8d5b5] font-mono uppercase tracking-[0.2em] text-[10px] font-medium"
+              : isIvory
               ? "text-[#d4c4b0] uppercase tracking-[0.2em] text-[10px] font-medium"
               : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
@@ -966,7 +1052,9 @@ export function GiftConfirmationForm({
                 isDemo ? "cursor-not-allowed opacity-60" : "cursor-pointer"
               } ${
                 Number(amount) === amt
-                  ? isIvory
+                  ? isEditorial
+                    ? "bg-[#e8d5b5] text-neutral-950 font-bold border-[#e8d5b5] shadow-sm"
+                    : isIvory
                     ? "bg-[#d4c4b0] text-[#0c0d0e] font-bold border-[#d4c4b0] shadow-sm"
                     : isEmerald
                     ? "bg-gradient-to-r from-[#ffd700] via-[#e5c158] to-[#b38f2a] text-[#02241b] font-bold border-transparent shadow-[0_0_10px_rgba(255,215,0,0.35)]"
@@ -979,6 +1067,8 @@ export function GiftConfirmationForm({
                     : isCyber
                     ? "bg-[#00f0ff] text-[#0b0f19] font-black border-[#00f0ff] shadow-[0_0_8px_#00f0ff]"
                     : "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                  : isEditorial
+                  ? "bg-[#0a0a0c] text-neutral-300 border border-white/10 hover:border-[#e8d5b5]/40 hover:text-[#fdfbf7]"
                   : isIvory
                   ? "bg-[#18191d] text-[#8a8b90] border border-white/10 hover:border-[#d4c4b0]/40 hover:text-[#f5f3ef]"
                   : isEmerald
@@ -1001,7 +1091,9 @@ export function GiftConfirmationForm({
         <div className="relative">
           <span
             className={`absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold ${
-              isIvory
+              isEditorial
+                ? "text-[#e8d5b5]"
+                : isIvory
                 ? "text-[#d4c4b0]"
                 : isEmerald
                 ? "text-[#ffd700]"
@@ -1029,7 +1121,9 @@ export function GiftConfirmationForm({
             className={`w-full text-xs pl-9 pr-3 py-2 rounded-xl border font-mono font-bold focus:outline-none transition-colors ${
               isDemo ? "cursor-not-allowed opacity-60" : ""
             } ${
-              isIvory
+              isEditorial
+                ? "bg-[#0a0a0c] border border-white/10 text-[#fdfbf7] focus:border-[#e8d5b5]"
+                : isIvory
                 ? "bg-[#121316] border border-white/10 text-[#f5f3ef] focus:border-[#d4c4b0]"
                 : isEmerald
                 ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] focus:border-[#ffd700]"
@@ -1051,7 +1145,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isIvory
+            isEditorial
+              ? "text-[#e8d5b5] font-mono uppercase tracking-[0.2em] text-[10px] font-medium"
+              : isIvory
               ? "text-[#d4c4b0] font-ci-sans uppercase tracking-[0.2em] text-[10px]"
               : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
@@ -1077,7 +1173,9 @@ export function GiftConfirmationForm({
           className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
-            isIvory
+            isEditorial
+              ? "bg-[#0a0a0c] border border-white/10 text-[#fdfbf7] font-mono placeholder:text-neutral-500 focus:border-[#e8d5b5]"
+              : isIvory
               ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-ci-sans placeholder:text-[#55565d] focus:border-[#d4c4b0]"
               : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] placeholder:text-[#527065] focus:border-[#ffd700]"
@@ -1098,7 +1196,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isIvory
+            isEditorial
+              ? "text-[#e8d5b5] font-mono uppercase tracking-[0.2em] text-[10px] font-medium"
+              : isIvory
               ? "text-[#d4c4b0] font-ci-sans uppercase tracking-[0.2em] text-[10px]"
               : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
@@ -1128,7 +1228,9 @@ export function GiftConfirmationForm({
           className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors resize-none ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
-            isIvory
+            isEditorial
+              ? "bg-[#0a0a0c] border border-white/10 text-[#fdfbf7] font-sans placeholder:text-neutral-500 focus:border-[#e8d5b5]"
+              : isIvory
               ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-ci-sans placeholder:text-[#55565d] focus:border-[#d4c4b0]"
               : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] placeholder:text-[#527065] focus:border-[#ffd700]"
@@ -1152,7 +1254,9 @@ export function GiftConfirmationForm({
             type="button"
             onClick={onClose}
             className={`px-3 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-              isIvory
+              isEditorial
+                ? "text-neutral-400 hover:text-white font-mono"
+                : isIvory
                 ? "text-[#8a8b90] hover:text-[#f5f3ef] font-ci-sans"
                 : isEmerald
                 ? "text-[#b8c9c1] hover:text-[#fdfbf7]"
@@ -1177,7 +1281,9 @@ export function GiftConfirmationForm({
             isDemo || loading ? "cursor-not-allowed" : "cursor-pointer"
           } ${
             isDemo
-              ? isIvory
+              ? isEditorial
+                ? "bg-[#0a0a0c] border border-white/10 text-neutral-400 font-mono uppercase tracking-wider opacity-75"
+                : isIvory
                 ? "bg-[#18191d] border border-white/10 text-[#8a8b90] font-ci-sans uppercase tracking-wider opacity-75"
                 : isEmerald
                 ? "bg-[#021f17] border border-[#d4af37]/30 text-[#b8c9c1] uppercase tracking-wider opacity-75"
@@ -1192,6 +1298,8 @@ export function GiftConfirmationForm({
                 : isMonogram
                 ? "bg-slate-100 border border-[#e2d9cc] text-slate-500 font-sans opacity-75"
                 : "bg-slate-100 border border-emerald-200/60 text-slate-500 opacity-75"
+              : isEditorial
+              ? "bg-[#e8d5b5] hover:bg-[#d6c19e] text-neutral-950 font-mono font-bold tracking-[0.15em] uppercase shadow-md active:scale-98 cursor-pointer"
               : isIvory
               ? "bg-[#d4c4b0] hover:bg-[#c4b39e] text-[#0c0d0e] font-ci-sans font-medium tracking-[0.2em] uppercase shadow-md active:scale-98"
               : isEmerald
