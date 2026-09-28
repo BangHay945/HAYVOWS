@@ -222,7 +222,7 @@ export function NoirLayout({
           const el = document.getElementById(sec.id);
           if (el && el.offsetTop <= scrollY) found = i;
         });
-        setActiveSection(found);
+        setActiveSection((prev) => (prev !== found ? found : prev));
       };
 
       updateActive();
@@ -246,7 +246,7 @@ export function NoirLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className={`relative w-full ${(!isOpen || isHeroLocked) ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
+    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -265,7 +265,7 @@ export function NoirLayout({
       <DesktopSplitSidePanel context={context} themeSlug="eternal-noir" />
 
       {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${(!isOpen || isHeroLocked) ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#0a0a0a] relative shadow-2xl lg:border-l border-[#c9a84c]/20 flex flex-col justify-start`}>
+      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#0a0a0a] relative shadow-2xl lg:border-l border-[#c9a84c]/20 flex flex-col justify-start`}>
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
