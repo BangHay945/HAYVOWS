@@ -31,6 +31,34 @@ export function NoirLayout({
   const ytPlayerRef = useRef<any>(null);
   const shouldPlayRef = useRef(false);
 
+  const [isHeroLocked, setIsHeroLocked] = useState(true);
+
+  // Scroll lock while hero sequential animation is in progress
+  useEffect(() => {
+    if (!isOpen || !isHeroLocked) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const preventScroll = (e: TouchEvent | WheelEvent) => {
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
+    };
+  }, [isOpen, isHeroLocked]);
+
+
 
   const musicUrl =
     context.wedding.musics?.[0]?.fileUrl || ETERNAL_NOIR_THEME.presetMusic;
@@ -100,6 +128,7 @@ export function NoirLayout({
   }, [isYT, musicUrl]);
 
   const handleOpen = () => {
+    setIsHeroLocked(true);
     onOpen();
     if (isYT) {
       shouldPlayRef.current = true;
@@ -217,7 +246,7 @@ export function NoirLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
+    <div className={`relative w-full ${(!isOpen || isHeroLocked) ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -236,7 +265,7 @@ export function NoirLayout({
       <DesktopSplitSidePanel context={context} themeSlug="eternal-noir" />
 
       {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#0a0a0a] relative shadow-2xl lg:border-l border-[#c9a84c]/20 flex flex-col justify-start`}>
+      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${(!isOpen || isHeroLocked) ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#0a0a0a] relative shadow-2xl lg:border-l border-[#c9a84c]/20 flex flex-col justify-start`}>
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
@@ -302,7 +331,13 @@ export function NoirLayout({
               </nav>
 
               {/* Sections */}
-              <div id="section-hero"><NoirHero {...props} /></div>
+              <div id="section-hero">
+                <NoirHero
+                  {...props}
+                  onReadyToScroll={() => setIsHeroLocked(false)}
+                  isLocked={isHeroLocked}
+                />
+              </div>
               <div id="section-couple"><NoirCouple {...props} /></div>
 
               {(context.wedding.stories ?? []).length > 0 && (
