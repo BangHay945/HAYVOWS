@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react";
+import { Disc3, VolumeX } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -10,10 +10,6 @@ interface MusicButtonProps {
   onToggle: () => void;
   className?: string;
 }
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -24,63 +20,46 @@ export function CinematicIvoryMusicButton({
 }: MusicButtonProps) {
   return (
     <motion.button
+      type="button"
       onClick={onToggle}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.92 }}
       whileHover={{
-        borderColor: "rgba(212, 196, 176, 0.8)",
+        borderColor: "rgba(212, 196, 176, 0.9)",
+        scale: 1.05,
       }}
       className={`relative flex items-center justify-center rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.6)] ${className}`}
       style={{
         width: 44,
         height: 44,
         background: "rgba(22, 23, 27, 0.92)",
-        border: "1px solid rgba(212, 196, 176, 0.35)",
+        border: "1px solid rgba(212, 196, 176, 0.4)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         cursor: "pointer",
         outline: "none",
         flexShrink: 0,
-        transition: "border-color 0.25s ease",
+        transition: "border-color 0.25s ease, transform 0.2s ease",
       }}
-      aria-label={isPlaying ? "Pause music" : "Play music"}
+      title={isPlaying ? "Jeda Musik" : "Putar Alunan Musik"}
+      aria-label={isPlaying ? "Jeda Musik" : "Putar Alunan Musik"}
     >
-      {/* Icon with conditional rotation */}
-      <motion.span
-        className="flex items-center justify-center"
-        animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
-        transition={
-          isPlaying
-            ? {
-                rotate: {
-                  duration: 10,
-                  ease: "linear",
-                  repeat: Infinity,
-                  repeatType: "loop",
-                },
-              }
-            : {
-                rotate: {
-                  duration: 0.5,
-                  ease: EASE,
-                },
-              }
-        }
-        style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-      >
+      {/* Vinyl record outer subtle groove */}
+      <span className="absolute inset-0.5 rounded-full border border-white/5 pointer-events-none" />
+
+      {/* Icon with continuous smooth spin */}
+      <span className="flex items-center justify-center">
         {isPlaying ? (
-          <Volume2
-            size={16}
+          <Disc3
+            className="w-5 h-5 text-[#f5f3ef] animate-spin [animation-duration:4s]"
             strokeWidth={1.5}
-            color="#f5f3ef"
           />
         ) : (
           <VolumeX
-            size={16}
+            className="w-5 h-5 text-[#8a8b90]"
             strokeWidth={1.5}
-            color="#8a8b90"
           />
         )}
-      </motion.span>
+      </span>
     </motion.button>
   );
 }

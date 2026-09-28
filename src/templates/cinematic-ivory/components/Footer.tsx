@@ -46,52 +46,16 @@ export function CinematicIvoryFooter({ context }: TemplateComponentProps) {
         : null;
 
   return (
-    <section className="relative overflow-hidden bg-[#0c0d0e]" style={{ minHeight: "100vh" }}>
-      {/* ── Ken Burns background ── */}
-      {couplePhoto ? (
-        <>
-          {/* CSS keyframe for ken burns */}
-          <style>{`
-            @keyframes ci-kenburns {
-              from { transform: scale(1.0); }
-              to   { transform: scale(1.06); }
-            }
-            .ci-kenburns-img {
-              animation: ci-kenburns 14s linear forwards;
-            }
-          `}</style>
-
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={couplePhoto}
-            alt="Foto pasangan"
-            className="ci-kenburns-img absolute inset-0 w-full h-full object-cover"
-            style={{ borderRadius: 0, filter: "brightness(0.75) contrast(1.15)" }}
-            aria-hidden
-            draggable={false}
-          />
-
-          {/* Dark Cinematic overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(12,13,14,0.96) 0%, rgba(12,13,14,0.80) 50%, rgba(12,13,14,0.55) 100%)",
-            }}
-            aria-hidden
-          />
-        </>
-      ) : (
-        /* Subtle glow when no photo */
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(212,196,176,0.06) 0%, #0c0d0e 70%)",
-          }}
-          aria-hidden
-        />
-      )}
+    <section className="relative overflow-hidden bg-[#0c0d0e]/82 backdrop-blur-[2px]" style={{ minHeight: "100vh" }}>
+      {/* ── Translucent dark wash over stationary slideshow ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(12,13,14,0.96) 0%, rgba(12,13,14,0.78) 50%, rgba(12,13,14,0.65) 100%)",
+        }}
+        aria-hidden
+      />
 
       {/* ── Content ── */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-24 text-center text-[#f5f3ef]">

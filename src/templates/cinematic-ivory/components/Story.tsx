@@ -76,31 +76,23 @@ function StoryEntry({ item, index }: StoryEntryProps) {
         </p>
       )}
 
-      {/* Photo — full width, 16:9, clip-path reveal */}
+      {/* Photo — full width, 16:9, GPU reveal */}
       {photoUrl && (
         <motion.div
           className="relative w-full overflow-hidden border border-white/10 rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
-          style={{ aspectRatio: "16/9" }}
-          initial={{ clipPath: "inset(0 0 100% 0)" }}
-          whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 1.2, delay: delay + 0.25, ease: EASE }}
+          style={{ aspectRatio: "16/9", transform: "translateZ(0)" }}
+          initial={{ opacity: 0, scale: 1.04 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, delay: delay + 0.1, ease: EASE }}
         >
-          <motion.div
-            className="w-full h-full"
-            initial={{ scale: 1.06 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: delay + 0.25, ease: EASE }}
-          >
-            <Image
-              src={photoUrl}
-              alt={item.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 500px"
-            />
-          </motion.div>
+          <Image
+            src={photoUrl}
+            alt={item.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 500px"
+          />
         </motion.div>
       )}
     </motion.div>
@@ -129,7 +121,7 @@ export function CinematicIvoryStory({ context }: TemplateComponentProps) {
   }));
 
   return (
-    <section style={{ backgroundColor: "#121316" }} className="py-20 sm:py-28 relative">
+    <section style={{ backgroundColor: "#121316" }} className="py-20 sm:py-28 relative z-10">
       {/* Top hairline */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 

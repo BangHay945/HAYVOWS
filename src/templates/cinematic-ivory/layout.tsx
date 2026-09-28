@@ -16,6 +16,7 @@ import { CinematicIvoryRSVP } from "./components/RSVP";
 import { CinematicIvoryGift } from "./components/Gift";
 import { CinematicIvoryFooter } from "./components/Footer";
 import { CinematicIvoryMusicButton } from "./components/MusicButton";
+import { CinematicIvoryBackgroundSlideshow } from "./components/BackgroundSlideshow";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { CINEMATIC_IVORY_THEME } from "./theme";
 
@@ -245,8 +246,8 @@ export function CinematicIvoryLayout({
           {!isOpen ? (
             <motion.div
               key="cover"
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
               <CinematicIvoryCover
@@ -260,9 +261,11 @@ export function CinematicIvoryLayout({
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full relative bg-[#0c0d0e]"
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full relative bg-transparent"
             >
+              {/* Stationary Background Slideshow across Hero, Event & Footer */}
+              <CinematicIvoryBackgroundSlideshow context={context} />
               {/* Floating Music Button */}
               <div className="fixed bottom-6 left-4 sm:bottom-8 sm:left-6 lg:left-auto lg:right-[436px] z-50 select-none">
                 <CinematicIvoryMusicButton

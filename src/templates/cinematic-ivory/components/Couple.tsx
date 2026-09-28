@@ -37,28 +37,21 @@ function PersonBlock({
         {photoUrl ? (
           <motion.div
             className="absolute inset-0 w-full h-full"
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.4, ease: EASE }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            style={{ transform: "translateZ(0)" }}
           >
-            <motion.div
-              className="w-full h-full"
-              initial={{ scale: 1.08 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.4, ease: EASE }}
-            >
-              <Image
-                src={photoUrl}
-                alt={name}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, 500px"
-              />
-              {/* Subtle bottom vignette on photo */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d0e]/60 via-transparent to-transparent pointer-events-none" />
-            </motion.div>
+            <Image
+              src={photoUrl}
+              alt={name}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 500px"
+            />
+            {/* Subtle bottom vignette on photo */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d0e]/60 via-transparent to-transparent pointer-events-none" />
           </motion.div>
         ) : (
           /* Dark placeholder with initial */
@@ -162,7 +155,7 @@ export function CinematicIvoryCouple({ context }: TemplateComponentProps) {
   };
 
   return (
-    <section style={{ backgroundColor: "#0c0d0e" }} className="py-20 sm:py-28 relative">
+    <section style={{ backgroundColor: "#0c0d0e" }} className="py-20 sm:py-28 relative z-10">
       {/* Top hairline */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 

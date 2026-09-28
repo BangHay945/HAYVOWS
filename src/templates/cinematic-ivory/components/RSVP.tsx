@@ -116,7 +116,7 @@ export function CinematicIvoryRSVP({
   };
 
   return (
-    <section className="relative w-full bg-[#0c0d0e] flex flex-col items-center justify-center px-6 py-24 sm:py-28 overflow-hidden text-[#f5f3ef]">
+    <section className="relative w-full bg-[#0c0d0e] flex flex-col items-center justify-center px-6 py-24 sm:py-28 overflow-hidden text-[#f5f3ef] z-10">
       {/* Top hairline */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 

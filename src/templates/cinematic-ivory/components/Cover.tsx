@@ -38,9 +38,9 @@ const fadeUp = (delay: number, duration: number) => ({
   transition: { delay, duration, ease: EASE },
 });
 
-const clipReveal = (delay: number, duration: number) => ({
-  initial: { opacity: 0, clipPath: "inset(100% 0 0 0)" },
-  animate: { opacity: 1, clipPath: "inset(0% 0 0 0)" },
+const revealText = (delay: number, duration: number) => ({
+  initial: { opacity: 0, y: 32 },
+  animate: { opacity: 1, y: 0 },
   transition: { delay, duration, ease: EASE },
 });
 
@@ -51,7 +51,7 @@ const scaleX = (delay: number, duration: number) => ({
 });
 
 const subtleFadeUp = (delay: number, duration: number) => ({
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
   transition: { delay, duration, ease: EASE },
 });
@@ -85,10 +85,7 @@ export function CinematicIvoryCover({
   function handleOpen() {
     if (isOpening) return;
     setIsOpening(true);
-    // Button fades + photo zooms, then onOpen fires at 800ms total
-    setTimeout(() => {
-      onOpen();
-    }, 800);
+    onOpen();
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -98,21 +95,19 @@ export function CinematicIvoryCover({
       {/* Ken Burns keyframe injection */}
       <style>{`
         @keyframes ci-ken-burns {
-          from { transform: scale(1.08); }
-          to   { transform: scale(1.0);  }
+          from { transform: scale(1.08) translateZ(0); }
+          to   { transform: scale(1.0) translateZ(0);  }
         }
       `}</style>
 
       <div className="relative w-full h-full min-h-screen flex flex-col items-center justify-end overflow-hidden bg-[#0c0d0e]">
         {/* ── Background Photo / Ambient Dark Atmosphere ────────────────── */}
-        <motion.div
+        <div
           className="absolute inset-0 z-0"
-          animate={isOpening ? { scale: 1.05 } : { scale: 1 }}
-          transition={
-            isOpening
-              ? { duration: 0.7, ease: EASE }
-              : { duration: 0 }
-          }
+          style={{
+            transform: "translateZ(0)",
+            WebkitTransform: "translateZ(0)",
+          }}
         >
           {couplePhoto ? (
             <img
@@ -124,6 +119,8 @@ export function CinematicIvoryCover({
                 transformOrigin: "center center",
                 willChange: "transform",
                 filter: "brightness(0.85) contrast(1.1)",
+                transform: "translateZ(0)",
+                WebkitTransform: "translateZ(0)",
               }}
               draggable={false}
             />
@@ -137,7 +134,7 @@ export function CinematicIvoryCover({
               }}
             />
           )}
-        </motion.div>
+        </div>
 
         {/* ── Deep Cinematic Film Vignette ──────────────────────────────── */}
         <div
@@ -184,7 +181,7 @@ export function CinematicIvoryCover({
           {/* Groom Name */}
           <div className="overflow-hidden">
             <motion.h1
-              {...clipReveal(1.0, 1.2)}
+              {...revealText(1.0, 1.2)}
               className="text-center"
               style={{
                 fontFamily:
@@ -232,7 +229,7 @@ export function CinematicIvoryCover({
           {/* Bride Name */}
           <div className="overflow-hidden">
             <motion.h1
-              {...clipReveal(1.6, 1.2)}
+              {...revealText(1.6, 1.2)}
               className="text-center"
               style={{
                 fontFamily:

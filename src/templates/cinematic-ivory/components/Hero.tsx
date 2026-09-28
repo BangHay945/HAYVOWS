@@ -39,26 +39,16 @@ export function CinematicIvoryHero({ context }: TemplateComponentProps) {
 
   return (
     <section
-      style={{ backgroundColor: "#0c0d0e" }}
-      className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden px-6 py-12 sm:py-16 text-[#f5f3ef]"
+      className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden px-6 py-12 sm:py-16 text-[#f5f3ef] bg-transparent"
     >
-      {/* ── AMBIENT PHOTO BACKGROUND WITH CINEMATIC DARK OVERLAY ── */}
+      {/* ── ATMOSPHERIC GRADIENT WASH OVER STATIONARY SLIDESHOW ── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <motion.img
-          src={heroBgPhoto}
-          alt={`${groomName} & ${brideName}`}
-          className="w-full h-full object-cover object-center"
-          initial={{ scale: 1.08 }}
-          animate={{ scale: 1.0 }}
-          transition={{ duration: 16, ease: "linear" }}
-          style={{ filter: "brightness(0.8) contrast(1.15)" }}
-        />
         {/* Deep Atmospheric Film Wash */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(12,13,14,0.92) 0%, rgba(12,13,14,0.60) 35%, rgba(12,13,14,0.90) 80%, #0c0d0e 100%)",
+              "linear-gradient(180deg, rgba(12,13,14,0.65) 0%, rgba(12,13,14,0.30) 35%, rgba(12,13,14,0.75) 75%, #0c0d0e 100%)",
           }}
         />
         {/* Subtle Vignette for Depth */}
@@ -66,7 +56,7 @@ export function CinematicIvoryHero({ context }: TemplateComponentProps) {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 50% 45%, transparent 35%, rgba(0,0,0,0.6) 100%)",
+              "radial-gradient(circle at 50% 45%, transparent 35%, rgba(0,0,0,0.55) 100%)",
           }}
         />
       </div>

@@ -272,11 +272,20 @@ export function CinematicIvoryEvent({ context }: TemplateComponentProps) {
   const calUrl = events[0] ? buildGoogleCalUrl(events[0]) : "#";
 
   return (
-    <section className="relative bg-[#0c0d0e] py-24 sm:py-28 px-6 text-[#f5f3ef]">
+    <section className="relative bg-[#0c0d0e]/82 backdrop-blur-[2px] py-24 sm:py-28 px-6 text-[#f5f3ef]">
+      {/* Translucent dark atmospheric wash */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(12,13,14,0.92) 0%, rgba(12,13,14,0.76) 50%, rgba(12,13,14,0.92) 100%)",
+        }}
+      />
+
       {/* Top hairline */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto relative z-10">
         {/* ── Section header ── */}
         <motion.div {...fadeUp(0)} className="text-center mb-16">
           <p className="font-ci-sans text-[8px] tracking-[0.5em] uppercase text-[#8a8b90] mb-4">

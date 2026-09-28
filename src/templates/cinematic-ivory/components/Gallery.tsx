@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -30,16 +31,15 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface SlotConfig {
   colSpan: "col-span-2" | "col-span-1";
-  aspectClass: string;
   aspect: string;
 }
 
 function getSlotConfig(index: number): SlotConfig {
   const pos = index % 3;
   if (pos === 0) {
-    return { colSpan: "col-span-2", aspectClass: "", aspect: "16 / 9" };
+    return { colSpan: "col-span-2", aspect: "16 / 9" };
   }
-  return { colSpan: "col-span-1", aspectClass: "", aspect: "1 / 1" };
+  return { colSpan: "col-span-1", aspect: "1 / 1" };
 }
 
 // ---------------------------------------------------------------------------
@@ -63,31 +63,30 @@ function Lightbox({ photo, onClose }: LightboxProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease: EASE }}
+      transition={{ duration: 0.3, ease: EASE }}
       onClick={onClose}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0c0d0e]/95 backdrop-blur-md px-4"
     >
       {/* Close button */}
       <button
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
         aria-label="Tutup"
-        className="
-          absolute top-6 right-6
-          text-[#f5f3ef]/70 hover:text-[#d4c4b0]
-          transition-colors duration-300
-          z-10
-        "
+        className="absolute top-6 right-6 text-[#f5f3ef]/70 hover:text-[#d4c4b0] transition-colors duration-300 z-10"
       >
-        <X size={22} strokeWidth={1.2} />
+        <X size={24} strokeWidth={1.2} />
       </button>
 
       {/* Image */}
       <motion.div
         key="lightbox-image-wrap"
-        initial={{ scale: 0.92, opacity: 0 }}
+        initial={{ scale: 0.94, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.92, opacity: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
+        exit={{ scale: 0.94, opacity: 0 }}
+        transition={{ duration: 0.4, ease: EASE }}
         onClick={(e) => e.stopPropagation()}
         className="relative max-w-3xl w-full"
       >
@@ -95,8 +94,8 @@ function Lightbox({ photo, onClose }: LightboxProps) {
         <img
           src={src}
           alt={caption || "Galeri foto"}
-          className="w-full max-h-[80vh] object-contain mx-auto block rounded-lg shadow-2xl"
-          style={{ borderRadius: 0 }}
+          className="w-full max-h-[80vh] object-contain mx-auto block shadow-2xl"
+          draggable={false}
         />
 
         {caption && (
@@ -128,42 +127,36 @@ function PhotoTile({ photo, index, onClick }: PhotoTileProps) {
 
   return (
     <motion.div
-      className={`${colSpan} relative overflow-hidden cursor-pointer group`}
-      style={{ aspectRatio: aspect }}
-      initial={{ clipPath: "inset(100% 0 0 0)" }}
-      whileInView={{ clipPath: "inset(0% 0 0 0)" }}
-      viewport={{ once: true, margin: "-40px" }}
+      className={`${colSpan} relative overflow-hidden cursor-pointer group bg-[#16171b]`}
+      style={{
+        aspectRatio: aspect,
+        transform: "translateZ(0)",
+      }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.05 }}
       transition={{
-        duration: 1.2,
-        delay: (index % 6) * 0.08,
+        duration: 0.6,
+        delay: (index % 4) * 0.06,
         ease: EASE,
       }}
       onClick={onClick}
     >
-      <motion.div
-        className="w-full h-full"
-        initial={{ scale: 1.08 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{
-          duration: 1.2,
-          delay: (index % 6) * 0.08,
-          ease: EASE,
-        }}
-        whileHover={{ scale: 1.04 }}
-      >
+      <div className="w-full h-full overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover block"
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700 ease-out"
           style={{
-            borderRadius: 0,
-            transition: "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+            transform: "translateZ(0)",
+            willChange: "transform",
           }}
           draggable={false}
         />
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -189,17 +182,17 @@ export function CinematicIvoryGallery({ context }: TemplateComponentProps) {
   if (galleries.length === 0) return null;
 
   return (
-    <section className="relative bg-[#121316] py-24 sm:py-28 px-6 text-[#f5f3ef]">
+    <section className="relative bg-[#121316] py-24 sm:py-28 px-6 text-[#f5f3ef] z-10">
       {/* Top hairline */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       <div className="max-w-2xl mx-auto">
         {/* ── Section header ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.9, ease: EASE }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: EASE }}
           className="text-center mb-14"
         >
           <p className="font-ci-sans text-[8px] tracking-[0.5em] uppercase text-[#8a8b90] mb-4">
@@ -213,7 +206,7 @@ export function CinematicIvoryGallery({ context }: TemplateComponentProps) {
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
             style={{ originX: 0.5 }}
             className="w-8 h-px bg-[#d4c4b0] mx-auto mt-5"
           />
