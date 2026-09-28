@@ -10,17 +10,17 @@ interface BackgroundSlideshowProps {
 }
 
 const DEFAULT_PHOTOS = [
-  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
   "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
   "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
   "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
   "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
 ];
 
 export function CinematicIvoryBackgroundSlideshow({ context }: BackgroundSlideshowProps) {
   const { wedding } = context;
 
-  // Collect all photos from galleries, couple photo, groom & bride
+  // Collect all photos with vibrant wedding gallery photos prioritized
   const photos = useMemo(() => {
     const rawGalleries = (wedding?.galleries || [])
       .map((g) => g.imageUrl?.trim())
@@ -30,27 +30,33 @@ export function CinematicIvoryBackgroundSlideshow({ context }: BackgroundSlidesh
     const groomPhoto = wedding?.couple?.groomPhoto?.trim();
     const bridePhoto = wedding?.couple?.bridePhoto?.trim();
 
+    // Reorder so bright, colorful gallery moments appear immediately
+    const orderedGalleries = rawGalleries.length >= 2
+      ? [rawGalleries[1], rawGalleries[2], rawGalleries[0], ...rawGalleries.slice(3)]
+      : rawGalleries;
+
     const candidates = [
+      ...orderedGalleries,
       couplePhoto,
-      ...rawGalleries,
       groomPhoto,
       bridePhoto,
       ...DEFAULT_PHOTOS,
     ].filter((url): url is string => Boolean(url));
 
-    // Deduplicate preserving order
     return Array.from(new Set(candidates));
   }, [wedding]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
 
   useEffect(() => {
     if (photos.length <= 1) return;
     const interval = setInterval(() => {
+      setPrevIndex(currentIndex);
       setCurrentIndex((prev) => (prev + 1) % photos.length);
-    }, 6000);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [photos.length]);
+  }, [photos.length, currentIndex]);
 
   return (
     <div
@@ -61,43 +67,38 @@ export function CinematicIvoryBackgroundSlideshow({ context }: BackgroundSlidesh
         WebkitTransform: "translateZ(0)",
       }}
     >
-      {/* Slideshow image layers */}
+      {/* Slideshow image layers — seamless cross-fade with no black gaps */}
       {photos.map((photoUrl, index) => {
-        const isActive = index === currentIndex;
+        const isCurrent = index === currentIndex;
+        const isPrev = index === prevIndex;
+        const zIndex = isCurrent ? 2 : isPrev ? 1 : 0;
+
         return (
           <div
             key={photoUrl + index}
-            className="absolute inset-0 transition-opacity duration-1500 ease-in-out"
+            className="absolute inset-0"
             style={{
-              opacity: isActive ? 1 : 0,
-              zIndex: isActive ? 1 : 0,
+              zIndex,
+              opacity: isCurrent ? 1 : isPrev ? 1 : 0,
+              transition: isCurrent ? "opacity 1.2s ease-in-out" : "none",
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={photoUrl}
               alt=""
-              loading={index < 2 ? "eager" : "lazy"}
+              loading={index < 3 ? "eager" : "lazy"}
               decoding="async"
-              className="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.12]"
+              className="w-full h-full object-cover object-center"
               style={{
-                transform: isActive ? "scale(1.05)" : "scale(1.0)",
-                transition: "transform 7s ease-out",
+                transform: isCurrent ? "scale(1.04)" : "scale(1.0)",
+                transition: "transform 5s ease-out",
                 willChange: "transform, opacity",
               }}
             />
           </div>
         );
       })}
-
-      {/* Global dark cinematic atmospheric tint & vignette */}
-      <div
-        className="absolute inset-0 z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(12,13,14,0.40) 0%, rgba(12,13,14,0.20) 40%, rgba(12,13,14,0.50) 100%)",
-        }}
-      />
     </div>
   );
 }

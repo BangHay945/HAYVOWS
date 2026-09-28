@@ -48,7 +48,7 @@ export function CinematicIvoryHero({ context }: TemplateComponentProps) {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(12,13,14,0.65) 0%, rgba(12,13,14,0.30) 35%, rgba(12,13,14,0.75) 75%, #0c0d0e 100%)",
+              "linear-gradient(180deg, rgba(12,13,14,0.50) 0%, rgba(12,13,14,0.18) 35%, rgba(12,13,14,0.65) 75%, #0c0d0e 100%)",
           }}
         />
         {/* Subtle Vignette for Depth */}
@@ -56,7 +56,7 @@ export function CinematicIvoryHero({ context }: TemplateComponentProps) {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 50% 45%, transparent 35%, rgba(0,0,0,0.55) 100%)",
+              "radial-gradient(circle at 50% 45%, transparent 40%, rgba(0,0,0,0.45) 100%)",
           }}
         />
       </div>

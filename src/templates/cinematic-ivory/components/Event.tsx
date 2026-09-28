@@ -272,13 +272,13 @@ export function CinematicIvoryEvent({ context }: TemplateComponentProps) {
   const calUrl = events[0] ? buildGoogleCalUrl(events[0]) : "#";
 
   return (
-    <section className="relative bg-[#0c0d0e]/82 backdrop-blur-[2px] py-24 sm:py-28 px-6 text-[#f5f3ef]">
-      {/* Translucent dark atmospheric wash */}
+    <section className="relative bg-transparent py-24 sm:py-28 px-6 text-[#f5f3ef]">
+      {/* Translucent dark veil over stationary slideshow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(12,13,14,0.92) 0%, rgba(12,13,14,0.76) 50%, rgba(12,13,14,0.92) 100%)",
+            "linear-gradient(180deg, rgba(12,13,14,0.72) 0%, rgba(12,13,14,0.46) 50%, rgba(12,13,14,0.75) 100%)",
         }}
       />
 

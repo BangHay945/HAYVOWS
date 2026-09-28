@@ -46,13 +46,13 @@ export function CinematicIvoryFooter({ context }: TemplateComponentProps) {
         : null;
 
   return (
-    <section className="relative overflow-hidden bg-[#0c0d0e]/82 backdrop-blur-[2px]" style={{ minHeight: "100vh" }}>
+    <section className="relative overflow-hidden bg-transparent" style={{ minHeight: "100vh" }}>
       {/* ── Translucent dark wash over stationary slideshow ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top, rgba(12,13,14,0.96) 0%, rgba(12,13,14,0.78) 50%, rgba(12,13,14,0.65) 100%)",
+            "linear-gradient(to top, rgba(12,13,14,0.85) 0%, rgba(12,13,14,0.46) 50%, rgba(12,13,14,0.68) 100%)",
         }}
         aria-hidden
       />
