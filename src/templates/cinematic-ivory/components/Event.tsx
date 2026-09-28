@@ -324,16 +324,16 @@ export function CinematicIvoryEvent({ context }: TemplateComponentProps) {
               rel="noopener noreferrer"
               className="
                 group
-                inline-flex items-center gap-2
-                border border-white/15 hover:border-[#d4c4b0]
-                text-[#f5f3ef] hover:text-[#0c0d0e]
-                bg-white/[0.05] hover:bg-[#d4c4b0]
-                px-6 py-3 rounded-full
-                font-ci-sans text-[9px] tracking-[0.3em] uppercase
-                transition-all duration-300 shadow-sm
+                inline-flex items-center gap-2.5
+                border border-[#d4c4b0]
+                text-[#0c0d0e] hover:text-[#0c0d0e]
+                bg-[#d4c4b0] hover:bg-[#c4b39e]
+                px-7 py-3 rounded-full
+                font-ci-sans text-[10px] tracking-[0.25em] uppercase font-semibold
+                transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_8px_30px_rgba(212,196,176,0.35)] active:scale-98 cursor-pointer
               "
             >
-              <Calendar size={11} className="flex-shrink-0 text-[#d4c4b0] group-hover:text-[#0c0d0e] transition-colors duration-300" />
+              <Calendar size={13} className="flex-shrink-0 text-[#0c0d0e]" />
               Simpan ke Kalender
             </a>
           </motion.div>

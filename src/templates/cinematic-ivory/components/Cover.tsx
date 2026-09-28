@@ -398,13 +398,13 @@ export function CinematicIvoryCover({
           >
             <span>Dibuat dengan</span>
             <a
-              href="https://hayvows.com"
+              href="https://www.hayvows.com"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-0.5 hover:text-[#f5f3ef] transition-colors"
               style={{ color: "#dcd8cf" }}
             >
-              hayvows.com
+              www.hayvows.com
               <ExternalLink size={8} strokeWidth={1.5} />
             </a>
           </motion.div>

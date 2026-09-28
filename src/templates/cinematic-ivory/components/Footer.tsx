@@ -136,21 +136,34 @@ export function CinematicIvoryFooter({ context }: TemplateComponentProps) {
           </motion.div>
         )}
 
-        {/* Copyright */}
-        <motion.p
+        {/* ── Backlink & Copyright ── */}
+        <motion.div
           {...fadeUp(0.85)}
-          className="absolute bottom-8 font-ci-sans text-[8px] tracking-[0.3em] uppercase text-[#72737a]"
+          className="mt-16 space-y-2 text-center"
         >
-          Dibuat dengan{" "}
-          <a
-            href="https://hayvows.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#d4c4b0] hover:text-[#f5f3ef] transition-colors duration-300"
-          >
-            HayVows
-          </a>
-        </motion.p>
+          <p className="font-ci-sans text-[9px] tracking-[0.3em] uppercase text-[#8a8b90]">
+            Dibuat dengan penuh cinta oleh{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#d4c4b0] hover:text-[#f5f3ef] font-semibold underline underline-offset-4 decoration-[#d4c4b0]/40 hover:decoration-[#f5f3ef] transition-colors duration-300"
+            >
+              Hayvows
+            </a>
+          </p>
+          <p className="font-ci-sans text-[8px] tracking-[0.25em] uppercase text-[#72737a]">
+            &copy; {new Date().getFullYear()} &bull;{" "}
+            <a
+              href="https://www.hayvows.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#d4c4b0] transition-colors duration-300"
+            >
+              www.hayvows.com
+            </a>
+          </p>
+        </motion.div>
       </div>
     </section>
   );
