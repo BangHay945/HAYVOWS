@@ -16,7 +16,7 @@ interface GiftConfirmationFormProps {
   weddingId: string;
   giftAccounts: GiftAccountOption[];
   defaultSenderName?: string;
-  theme?: "cyberpunk" | "adventure" | "standard" | "noir" | "jawa" | "monogram" | "floral" | "emerald";
+  theme?: "cyberpunk" | "adventure" | "standard" | "noir" | "jawa" | "monogram" | "floral" | "emerald" | "ivory";
   onSuccess?: () => void;
   onClose?: () => void;
   isDemo?: boolean;
@@ -161,6 +161,7 @@ export function GiftConfirmationForm({
   const isNoir = theme === "noir";
   const isJawa = theme === "jawa";
   const isEmerald = theme === "emerald";
+  const isIvory = theme === "ivory";
   const isMonogram = theme === "monogram";
   const isFloral = theme === "floral" || theme === "standard";
 
@@ -168,7 +169,9 @@ export function GiftConfirmationForm({
     return (
       <div
         className={`p-5 text-center rounded-2xl animate-in zoom-in-95 duration-200 ${
-          isEmerald
+          isIvory
+            ? "border border-[#d4c4b0]/35 bg-[#141519] text-[#f5f3ef] shadow-2xl"
+            : isEmerald
             ? "border border-[#d4af37]/40 bg-[#02241b] text-[#fdfbf7] shadow-2xl"
             : isJawa
             ? "border border-[#B8860B]/40 bg-[#2D1B0E] text-[#EDE0C4] shadow-2xl font-jawa-body"
@@ -185,7 +188,9 @@ export function GiftConfirmationForm({
       >
         <div
           className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${
-            isEmerald
+            isIvory
+              ? "bg-[#d4c4b0]/20 text-[#d4c4b0] border border-[#d4c4b0]/40"
+              : isEmerald
               ? "bg-[#ffd700]/20 text-[#ffd700] border border-[#ffd700]/40"
               : isJawa
               ? "bg-[#B8860B]/20 text-[#D4A853] border border-[#B8860B]/40"
@@ -204,7 +209,9 @@ export function GiftConfirmationForm({
         </div>
         <h3
           className={`font-bold text-base sm:text-lg mb-1 ${
-            isEmerald
+            isIvory
+              ? "text-[#f5f3ef] font-serif font-light text-xl tracking-wide"
+              : isEmerald
               ? "text-[#ffd700] font-serif font-light text-xl tracking-wide"
               : isJawa
               ? "text-[#EDE0C4] font-jawa-serif font-light text-xl tracking-wide"
@@ -223,7 +230,9 @@ export function GiftConfirmationForm({
         </h3>
         <p
           className={`text-xs mb-3 max-w-sm mx-auto ${
-            isEmerald
+            isIvory
+              ? "text-[#b0b0b8] leading-relaxed"
+              : isEmerald
               ? "text-[#b8c9c1] leading-relaxed"
               : isJawa
               ? "text-[#A89078] font-jawa-body leading-relaxed"
@@ -242,7 +251,9 @@ export function GiftConfirmationForm({
         </p>
         <div
           className={`inline-block py-1.5 px-3 rounded-lg text-xs font-mono font-bold shadow-2xs mb-4 ${
-            isEmerald
+            isIvory
+              ? "bg-[#18191d] border border-[#d4c4b0]/35 text-[#d4c4b0]"
+              : isEmerald
               ? "bg-[#043327] border border-[#d4af37]/35 text-[#ffd700]"
               : isJawa
               ? "bg-[#3D2B1F] border border-[#B8860B]/30 text-[#D4A853]"
@@ -268,7 +279,9 @@ export function GiftConfirmationForm({
               onClose?.();
             }}
             className={`px-5 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-              isEmerald
+              isIvory
+                ? "bg-[#d4c4b0] hover:bg-[#c4b39e] text-[#0c0d0e] tracking-wider uppercase font-medium shadow-md"
+                : isEmerald
                 ? "bg-gradient-to-r from-[#ffd700] via-[#e5c158] to-[#b38f2a] hover:brightness-105 text-[#02241b] tracking-wider uppercase font-bold shadow-md"
                 : isJawa
                 ? "bg-gradient-to-r from-[#E6C687] via-[#D4A853] to-[#B8860B] hover:brightness-105 text-[#1A0F07] font-jawa-body tracking-wider uppercase font-bold shadow-md"
@@ -294,7 +307,9 @@ export function GiftConfirmationForm({
     <form
       onSubmit={handleSubmit}
       className={`space-y-3.5 p-4 sm:p-5 rounded-2xl text-left ${
-        isEmerald
+        isIvory
+          ? "border border-white/10 bg-[#141519] text-[#f5f3ef] shadow-2xl"
+          : isEmerald
           ? "border border-[#d4af37]/30 bg-[#042d22] text-[#fdfbf7] shadow-2xl"
           : isJawa
           ? "border border-[rgba(184,134,11,0.35)] bg-[#3D2B1F] text-[#EDE0C4] shadow-2xl font-jawa-body"
@@ -309,7 +324,9 @@ export function GiftConfirmationForm({
     >
       <div
         className={`flex items-center justify-between pb-2.5 border-b ${
-          isEmerald
+          isIvory
+            ? "border-white/10"
+            : isEmerald
             ? "border-[#d4af37]/25"
             : isJawa
             ? "border-[#B8860B]/25"
@@ -325,7 +342,9 @@ export function GiftConfirmationForm({
         <div className="flex items-center gap-2">
           <span
             className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm ${
-              isEmerald
+              isIvory
+                ? "bg-[#d4c4b0]/15 text-[#d4c4b0] border border-[#d4c4b0]/30"
+                : isEmerald
                 ? "bg-[#ffd700]/15 text-[#ffd700] border border-[#ffd700]/30"
                 : isJawa
                 ? "bg-[rgba(184,134,11,0.15)] text-[#D4A853] border border-[#B8860B]/35"
@@ -343,7 +362,9 @@ export function GiftConfirmationForm({
           <div>
             <h4
               className={`text-xs sm:text-sm font-bold leading-tight ${
-                isEmerald
+                isIvory
+                  ? "text-[#f5f3ef] font-serif font-light text-base tracking-wide"
+                  : isEmerald
                   ? "text-[#fdfbf7] font-serif font-normal text-base tracking-wide"
                   : isJawa
                   ? "text-[#EDE0C4] font-jawa-serif font-semibold text-base tracking-wide"
@@ -360,7 +381,9 @@ export function GiftConfirmationForm({
             </h4>
             <p
               className={`text-[10px] ${
-                isEmerald
+                isIvory
+                  ? "text-[#8a8b90]"
+                  : isEmerald
                   ? "text-[#b8c9c1]"
                   : isJawa
                   ? "text-[#A89078] font-jawa-body"
@@ -383,7 +406,9 @@ export function GiftConfirmationForm({
       {isDemo && (
         <div
           className={`p-3 rounded-xl flex items-center gap-2.5 text-xs font-medium border ${
-            isEmerald
+            isIvory
+              ? "bg-[#18191d] border border-white/10 text-[#d4c4b0]"
+              : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/40 text-[#ffd700]"
               : isJawa
               ? "bg-[#2D1B0E]/90 border-[rgba(184,134,11,0.4)] text-[#D4A853] font-jawa-body"
@@ -406,7 +431,9 @@ export function GiftConfirmationForm({
       {error && (
         <div
           className={`text-xs px-3 py-2 rounded-lg ${
-            isEmerald
+            isIvory
+              ? "bg-red-950/40 border border-red-800/60 text-red-300 font-sans"
+              : isEmerald
               ? "bg-red-950/60 border border-red-800 text-red-300"
               : isNoir
               ? "bg-red-950/40 border border-red-800/60 text-red-300 font-noir-sans"
@@ -422,7 +449,9 @@ export function GiftConfirmationForm({
         <div className="flex items-center justify-between mb-1">
           <label
             className={`block text-[11px] font-semibold ${
-              isEmerald
+              isIvory
+                ? "text-[#d4c4b0] uppercase tracking-[0.25em] text-[10px] font-medium"
+                : isEmerald
                 ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
                 : isJawa
                 ? "text-[#D4A853] font-jawa-body uppercase tracking-wider text-[10px]"
@@ -439,7 +468,9 @@ export function GiftConfirmationForm({
           </label>
           <span
             className={`text-[9px] font-mono flex items-center gap-1 ${
-              isEmerald
+              isIvory
+                ? "text-[#d4c4b0] tracking-wider uppercase text-[8px]"
+                : isEmerald
                 ? "text-[#ffd700] tracking-wider uppercase text-[8px]"
                 : isJawa
                 ? "text-[#D4A853] font-jawa-body tracking-wider uppercase text-[8px]"
@@ -461,7 +492,9 @@ export function GiftConfirmationForm({
           readOnly
           value={guestName || resolvedSenderName}
           className={`w-full text-xs px-3 py-2 rounded-lg border font-mono font-bold cursor-not-allowed select-none transition-colors ${
-            isEmerald
+            isIvory
+              ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-serif italic shadow-inner"
+              : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#ffd700] font-serif italic shadow-inner"
               : isJawa
               ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] text-[#D4A853] font-jawa-body italic shadow-inner"
@@ -480,7 +513,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isEmerald
+            isIvory
+              ? "text-[#d4c4b0] uppercase tracking-[0.25em] text-[10px] font-medium"
+              : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
               : isJawa
               ? "text-[#D4A853] font-jawa-body uppercase tracking-wider text-[10px]"
@@ -508,7 +543,9 @@ export function GiftConfirmationForm({
                 }
               }}
               className={`w-full text-xs px-3 py-2 rounded-lg border focus:outline-none cursor-pointer transition-colors ${
-                isEmerald
+                isIvory
+                  ? "bg-[#121316] border border-white/10 text-[#f5f3ef] focus:border-[#d4c4b0]"
+                  : isEmerald
                   ? "bg-[#021f17] border border-[#d4af37]/40 text-[#fdfbf7] focus:border-[#ffd700]"
                   : isJawa
                   ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.4)] text-[#EDE0C4] font-jawa-body focus:border-[#D4A853]"
@@ -531,7 +568,54 @@ export function GiftConfirmationForm({
             {/* Dynamic Card Rekening Terpilih */}
             {selectedAccount && (
               <div className="mt-2.5 animate-in fade-in-50 duration-200">
-                {isEmerald ? (
+                {isIvory ? (
+                  /* Cinematic Ivory Theme Card — Midnight Charcoal & Platinum Ivory / Champagne */
+                  <div className="bg-[#18191d] border border-[rgba(212,196,176,0.3)] p-3.5 rounded-2xl text-left shadow-lg">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-[#d4c4b0] font-medium tracking-[0.2em] uppercase text-[11px]">
+                        {selectedAccount.bankName}
+                      </span>
+                      {selectedAccount.accountName && (
+                        <span className="text-[11px] text-[#8a8b90]">
+                          a.n {selectedAccount.accountName}
+                        </span>
+                      )}
+                    </div>
+                    {selectedAccount.accountNo && (
+                      <div className="mt-2.5 flex items-center justify-between gap-2 p-2.5 bg-[#0f1013] rounded-xl border border-white/10">
+                        <span className="font-mono text-sm sm:text-base font-bold text-[#f5f3ef] tracking-wider select-all">
+                          {selectedAccount.accountNo}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(selectedAccount.accountNo)}
+                          className="px-3 py-1.5 bg-[#d4c4b0]/15 hover:bg-[#d4c4b0] text-[#d4c4b0] hover:text-[#0c0d0e] border border-[#d4c4b0]/35 text-[9px] tracking-[0.2em] uppercase font-medium rounded-xl transition-all duration-200 cursor-pointer flex items-center gap-1.5 active:scale-95"
+                        >
+                          {copied ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                              <span>Tersalin</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Salin No. Rekening</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                    {selectedAccount.qrisUrl && (
+                      <div className="my-2.5 p-2.5 bg-white rounded-xl border border-[#d4c4b0]/30 flex justify-center">
+                        <img
+                          src={selectedAccount.qrisUrl}
+                          alt="QRIS"
+                          className="w-36 h-36 object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : isEmerald ? (
                   /* Royal Emerald Theme Card */
                   <div className="bg-[#021f17] border border-[#d4af37]/35 p-3.5 rounded-2xl text-left shadow-md">
                     <div className="flex items-center justify-between text-xs">
@@ -840,7 +924,9 @@ export function GiftConfirmationForm({
             onChange={(e) => setBankName(e.target.value)}
             placeholder="BCA / Mandiri / QRIS"
             className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none ${
-              isNoir
+              isIvory
+                ? "bg-[#141414] border-white/10 text-[#f5f3ef] focus:border-[#d4c4b0]"
+                : isNoir
                 ? "bg-[#141414] border-[#262626] text-[#fafafa] focus:border-[#c9a84c]"
                 : "border-slate-300 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-emerald-500"
             }`}
@@ -852,7 +938,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isEmerald
+            isIvory
+              ? "text-[#d4c4b0] uppercase tracking-[0.2em] text-[10px] font-medium"
+              : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
               : isJawa
               ? "text-[#D4A853] font-jawa-body uppercase tracking-wider text-[10px]"
@@ -878,7 +966,9 @@ export function GiftConfirmationForm({
                 isDemo ? "cursor-not-allowed opacity-60" : "cursor-pointer"
               } ${
                 Number(amount) === amt
-                  ? isEmerald
+                  ? isIvory
+                    ? "bg-[#d4c4b0] text-[#0c0d0e] font-bold border-[#d4c4b0] shadow-sm"
+                    : isEmerald
                     ? "bg-gradient-to-r from-[#ffd700] via-[#e5c158] to-[#b38f2a] text-[#02241b] font-bold border-transparent shadow-[0_0_10px_rgba(255,215,0,0.35)]"
                     : isJawa
                     ? "bg-gradient-to-r from-[#E6C687] via-[#D4A853] to-[#B8860B] text-[#1A0F07] font-bold border-transparent shadow-[0_0_10px_rgba(212,168,83,0.35)]"
@@ -889,6 +979,8 @@ export function GiftConfirmationForm({
                     : isCyber
                     ? "bg-[#00f0ff] text-[#0b0f19] font-black border-[#00f0ff] shadow-[0_0_8px_#00f0ff]"
                     : "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                  : isIvory
+                  ? "bg-[#18191d] text-[#8a8b90] border border-white/10 hover:border-[#d4c4b0]/40 hover:text-[#f5f3ef]"
                   : isEmerald
                   ? "bg-[#021f17] text-[#b8c9c1] border border-[#d4af37]/30 hover:border-[#ffd700] hover:text-[#ffd700]"
                   : isJawa
@@ -909,7 +1001,9 @@ export function GiftConfirmationForm({
         <div className="relative">
           <span
             className={`absolute left-3 top-1/2 -translate-y-1/2 text-xs font-mono font-bold ${
-              isEmerald
+              isIvory
+                ? "text-[#d4c4b0]"
+                : isEmerald
                 ? "text-[#ffd700]"
                 : isJawa
                 ? "text-[#D4A853]"
@@ -935,7 +1029,9 @@ export function GiftConfirmationForm({
             className={`w-full text-xs pl-9 pr-3 py-2 rounded-xl border font-mono font-bold focus:outline-none transition-colors ${
               isDemo ? "cursor-not-allowed opacity-60" : ""
             } ${
-              isEmerald
+              isIvory
+                ? "bg-[#121316] border border-white/10 text-[#f5f3ef] focus:border-[#d4c4b0]"
+                : isEmerald
                 ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] focus:border-[#ffd700]"
                 : isJawa
                 ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] text-[#EDE0C4] focus:border-[#D4A853]"
@@ -955,7 +1051,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isEmerald
+            isIvory
+              ? "text-[#d4c4b0] font-ci-sans uppercase tracking-[0.2em] text-[10px]"
+              : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
               : isJawa
               ? "text-[#D4A853] font-jawa-body uppercase tracking-wider text-[10px]"
@@ -979,7 +1077,9 @@ export function GiftConfirmationForm({
           className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
-            isEmerald
+            isIvory
+              ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-ci-sans placeholder:text-[#55565d] focus:border-[#d4c4b0]"
+              : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] placeholder:text-[#527065] focus:border-[#ffd700]"
               : isJawa
               ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] text-[#EDE0C4] font-jawa-body placeholder:text-[#A89078] focus:border-[#D4A853]"
@@ -998,7 +1098,9 @@ export function GiftConfirmationForm({
       <div>
         <label
           className={`block text-[11px] font-semibold mb-1 ${
-            isEmerald
+            isIvory
+              ? "text-[#d4c4b0] font-ci-sans uppercase tracking-[0.2em] text-[10px]"
+              : isEmerald
               ? "text-[#ffd700] uppercase tracking-wider text-[10px] font-semibold"
               : isJawa
               ? "text-[#D4A853] font-jawa-body uppercase tracking-wider text-[10px]"
@@ -1026,7 +1128,9 @@ export function GiftConfirmationForm({
           className={`w-full text-xs px-3 py-2 rounded-xl border focus:outline-none transition-colors resize-none ${
             isDemo ? "cursor-not-allowed opacity-60" : ""
           } ${
-            isEmerald
+            isIvory
+              ? "bg-[#121316] border border-white/10 text-[#f5f3ef] font-ci-sans placeholder:text-[#55565d] focus:border-[#d4c4b0]"
+              : isEmerald
               ? "bg-[#021f17] border border-[#d4af37]/35 text-[#fdfbf7] placeholder:text-[#527065] focus:border-[#ffd700]"
               : isJawa
               ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.35)] text-[#EDE0C4] font-jawa-body placeholder:text-[#A89078] focus:border-[#D4A853]"
@@ -1048,7 +1152,9 @@ export function GiftConfirmationForm({
             type="button"
             onClick={onClose}
             className={`px-3 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-              isEmerald
+              isIvory
+                ? "text-[#8a8b90] hover:text-[#f5f3ef] font-ci-sans"
+                : isEmerald
                 ? "text-[#b8c9c1] hover:text-[#fdfbf7]"
                 : isJawa
                 ? "text-[#A89078] hover:text-[#EDE0C4] font-jawa-body"
@@ -1071,7 +1177,9 @@ export function GiftConfirmationForm({
             isDemo || loading ? "cursor-not-allowed" : "cursor-pointer"
           } ${
             isDemo
-              ? isEmerald
+              ? isIvory
+                ? "bg-[#18191d] border border-white/10 text-[#8a8b90] font-ci-sans uppercase tracking-wider opacity-75"
+                : isEmerald
                 ? "bg-[#021f17] border border-[#d4af37]/30 text-[#b8c9c1] uppercase tracking-wider opacity-75"
                 : isJawa
                 ? "bg-[#2D1B0E] border border-[rgba(184,134,11,0.3)] text-[#A89078] font-jawa-body uppercase tracking-wider opacity-75"
@@ -1084,6 +1192,8 @@ export function GiftConfirmationForm({
                 : isMonogram
                 ? "bg-slate-100 border border-[#e2d9cc] text-slate-500 font-sans opacity-75"
                 : "bg-slate-100 border border-emerald-200/60 text-slate-500 opacity-75"
+              : isIvory
+              ? "bg-[#d4c4b0] hover:bg-[#c4b39e] text-[#0c0d0e] font-ci-sans font-medium tracking-[0.2em] uppercase shadow-md active:scale-98"
               : isEmerald
               ? "bg-gradient-to-r from-[#ffd700] via-[#e5c158] to-[#b38f2a] hover:brightness-105 text-[#02241b] font-bold tracking-wider uppercase shadow-md active:scale-98"
               : isJawa

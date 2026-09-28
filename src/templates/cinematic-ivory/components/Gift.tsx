@@ -70,7 +70,7 @@ export function CinematicIvoryGift({
               weddingId={context.wedding.id}
               giftAccounts={gifts}
               defaultSenderName={context.guest?.name || ""}
-              theme="noir"
+              theme="ivory"
               onClose={() => setOpen(false)}
               isDemo={Boolean(context.wedding?.isDemo)}
             />

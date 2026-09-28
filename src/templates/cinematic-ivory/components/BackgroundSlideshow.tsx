@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import type { WeddingData } from "@/types/template";
+import type { WeddingContextData } from "@/types/template";
 
 interface BackgroundSlideshowProps {
-  context: {
-    wedding: WeddingData;
-  };
+  context: WeddingContextData;
 }
 
 const DEFAULT_PHOTOS = [
@@ -22,7 +20,7 @@ export function CinematicIvoryBackgroundSlideshow({ context }: BackgroundSlidesh
 
   // Collect all photos with vibrant wedding gallery photos prioritized
   const photos = useMemo(() => {
-    const rawGalleries = (wedding?.galleries || [])
+    const rawGalleries = ((wedding?.galleries as Array<{ imageUrl?: string }>) || [])
       .map((g) => g.imageUrl?.trim())
       .filter((url): url is string => Boolean(url));
 
