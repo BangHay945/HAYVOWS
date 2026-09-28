@@ -13,7 +13,7 @@ import {
 
 interface DesktopSplitSidePanelProps {
   context: WeddingContextData;
-  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald" | "cinematic-editorial";
+  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald" | "cinematic-editorial" | "cinematic-ivory";
 }
 
 export function DesktopSplitSidePanel({
@@ -102,6 +102,18 @@ export function DesktopSplitSidePanel({
   // Theme-specific styles & color palettes
   const getThemeStyles = () => {
     switch (themeSlug) {
+      case "cinematic-ivory":
+        return {
+          bgGradient: "from-[#0c0d0e] via-[#131417] to-[#08080a]",
+          overlayGradient: "from-[#0c0d0e]/92 via-[#131417]/75 to-[#08080a]/95",
+          accentGold: "text-[#d4c4b0]",
+          accentGoldBg: "bg-[#d4c4b0]/15 border-[#d4c4b0]/35 text-[#f5f3ef]",
+          cardBg: "bg-[#121316]/75 border-white/10 backdrop-blur-md",
+          fontTitle: "font-serif text-[#f5f3ef] tracking-tight",
+          fontBody: "font-sans text-[#b0b0b8]",
+          particleColor: "bg-[#d4c4b0]/20",
+          ornamentBorder: "border-[#d4c4b0]/30",
+        };
       case "cinematic-editorial":
         return {
           bgGradient: "from-[#0a0a0c] via-[#121216] to-[#08080a]",

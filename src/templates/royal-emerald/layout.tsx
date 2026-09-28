@@ -289,10 +289,10 @@ export function RoyalLayout({
                     onClick={() => scrollToSection(sec.id)}
                     title={sec.label}
                     aria-label={sec.label}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    className={`transition-all duration-500 cursor-pointer rounded-full ${
                       activeSection === i
-                        ? "bg-[#ffd700] scale-150 shadow-[0_0_8px_rgba(255,215,0,0.8)]"
-                        : "bg-[#064e3b] hover:bg-[#d4af37]"
+                        ? "w-1.5 h-4 bg-[#ffd700]"
+                        : "w-1.5 h-1.5 bg-white/20 hover:bg-white/50"
                     }`}
                   />
                 ))}

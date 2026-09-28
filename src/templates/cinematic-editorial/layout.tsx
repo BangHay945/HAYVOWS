@@ -305,10 +305,10 @@ export function EditorialLayout({
                     onClick={() => scrollToSection(sec.id)}
                     title={sec.label}
                     aria-label={sec.label}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    className={`transition-all duration-500 cursor-pointer rounded-full ${
                       activeSection === i
-                        ? "bg-[#e8d5b5] scale-150 shadow-[0_0_8px_rgba(232,213,181,0.8)]"
-                        : "bg-white/20 hover:bg-white/50"
+                        ? "w-1.5 h-4 bg-[#e8d5b5]"
+                        : "w-1.5 h-1.5 bg-white/20 hover:bg-white/50"
                     }`}
                   />
                 ))}

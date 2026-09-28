@@ -1,23 +1,25 @@
 "use client";
+
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import type { TemplateLayoutProps, RSVPSubmitData } from "@/types/template";
 import { AnimatePresence, motion } from "framer-motion";
 import { isYouTubeUrl, extractYouTubeId } from "@/lib/utils/youtube";
 import { Gift as GiftIcon } from "lucide-react";
-import { NoirCover } from "./components/Cover";
-import { NoirHero } from "./components/Hero";
-import { NoirCouple } from "./components/Couple";
-import { NoirStory } from "./components/Story";
-import { NoirEvent } from "./components/Event";
-import { NoirGallery } from "./components/Gallery";
-import { NoirRSVP } from "./components/RSVP";
-import { NoirGift } from "./components/Gift";
-import { NoirFooter } from "./components/Footer";
-import { NoirMusicButton } from "./components/MusicButton";
-import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
-import { ETERNAL_NOIR_THEME } from "./theme";
 
-export function NoirLayout({
+import { CinematicIvoryCover } from "./components/Cover";
+import { CinematicIvoryHero } from "./components/Hero";
+import { CinematicIvoryCouple } from "./components/Couple";
+import { CinematicIvoryStory } from "./components/Story";
+import { CinematicIvoryEvent } from "./components/Event";
+import { CinematicIvoryGallery } from "./components/Gallery";
+import { CinematicIvoryRSVP } from "./components/RSVP";
+import { CinematicIvoryGift } from "./components/Gift";
+import { CinematicIvoryFooter } from "./components/Footer";
+import { CinematicIvoryMusicButton } from "./components/MusicButton";
+import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
+import { CINEMATIC_IVORY_THEME } from "./theme";
+
+export function CinematicIvoryLayout({
   context,
   isOpen,
   onOpen,
@@ -31,13 +33,11 @@ export function NoirLayout({
   const ytPlayerRef = useRef<any>(null);
   const shouldPlayRef = useRef(false);
 
-
   const musicUrl =
-    context.wedding.musics?.[0]?.fileUrl || ETERNAL_NOIR_THEME.presetMusic;
+    context.wedding.musics?.[0]?.fileUrl || CINEMATIC_IVORY_THEME.presetMusic;
   const isYT = isYouTubeUrl(musicUrl);
   const ytId = extractYouTubeId(musicUrl);
 
-  // YouTube support
   const sendYtCommand = useCallback((func: string, args: any[] = []) => {
     if (ytIframeRef.current?.contentWindow) {
       try {
@@ -62,10 +62,10 @@ export function NoirLayout({
 
   useEffect(() => {
     if (!isYT || !ytId) return;
-    let isMounted = true;
     const handleMsg = (event: MessageEvent) => {
       try {
-        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+        const data =
+          typeof event.data === "string" ? JSON.parse(event.data) : event.data;
         if (data?.event === "onStateChange") {
           if (data.info === 1) setIsPlaying(true);
           else if (data.info === 2) setIsPlaying(false);
@@ -74,10 +74,7 @@ export function NoirLayout({
       } catch {}
     };
     window.addEventListener("message", handleMsg);
-    return () => {
-      isMounted = false;
-      window.removeEventListener("message", handleMsg);
-    };
+    return () => window.removeEventListener("message", handleMsg);
   }, [isYT, ytId, sendYtCommand]);
 
   useEffect(() => {
@@ -163,28 +160,26 @@ export function NoirLayout({
     }
   };
 
-  const visibleSections = useMemo(() => [
-    { id: "section-hero", label: "Pembuka" },
-    { id: "section-couple", label: "Mempelai" },
-    ...((context.wedding.stories ?? []).length > 0
-      ? [{ id: "section-story", label: "Kisah" }]
-      : []),
-    { id: "section-event", label: "Acara" },
-    ...((context.wedding.galleries ?? []).length > 0
-      ? [{ id: "section-gallery", label: "Galeri" }]
-      : []),
-    { id: "section-rsvp", label: "Kehadiran & Doa" },
-    { id: "section-footer", label: "Penutup" },
-  ], [context.wedding.stories, context.wedding.galleries]);
+  const visibleSections = useMemo(
+    () => [
+      { id: "section-hero", label: "Pembuka" },
+      { id: "section-couple", label: "Mempelai" },
+      ...((context.wedding.stories ?? []).length > 0
+        ? [{ id: "section-story", label: "Kisah Cinta" }]
+        : []),
+      { id: "section-event", label: "Agenda Acara" },
+      ...((context.wedding.galleries ?? []).length > 0
+        ? [{ id: "section-gallery", label: "Galeri Foto" }]
+        : []),
+      { id: "section-rsvp", label: "RSVP & Doa" },
+      { id: "section-footer", label: "Penutup" },
+    ],
+    [context.wedding.stories, context.wedding.galleries]
+  );
 
-  // Dot nav active section detection via scroll event (more reliable than IntersectionObserver
-  // when sections render after Framer Motion animation completes)
   useEffect(() => {
     if (!isOpen) return;
-
     let removeListener: (() => void) | null = null;
-
-    // Wait for Framer Motion animation to finish before attaching listener
     const timer = setTimeout(() => {
       const updateActive = () => {
         const scrollY = window.scrollY + window.innerHeight * 0.4;
@@ -195,12 +190,10 @@ export function NoirLayout({
         });
         setActiveSection(found);
       };
-
       updateActive();
       window.addEventListener("scroll", updateActive, { passive: true });
       removeListener = () => window.removeEventListener("scroll", updateActive);
     }, 700);
-
     return () => {
       clearTimeout(timer);
       removeListener?.();
@@ -217,73 +210,93 @@ export function NoirLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
+    <div
+      className={`relative w-full flex flex-col lg:flex-row bg-[#0c0d0e] text-[#f5f3ef] ${
+        !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+      }`}
+    >
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
-        <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden"
+          aria-hidden="true"
+        >
           <iframe
             ref={ytIframeRef}
-            id="noir-youtube-bgm-iframe"
+            id="ci-youtube-bgm-iframe"
             src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&autoplay=0&loop=1&playlist=${ytId}&playsinline=1&controls=0`}
             allow="autoplay; encrypted-media"
             className="w-full h-full border-0"
-            title="Wedding Background Music"
+            title="Cinematic Ivory Background Music"
           />
         </div>
       )}
 
-      {/* DESKTOP LEFT FIXED PANEL (Statis / Diam) */}
-      <DesktopSplitSidePanel context={context} themeSlug="eternal-noir" />
+      {/* Desktop Left Fixed Panel */}
+      <DesktopSplitSidePanel context={context} themeSlug="cinematic-ivory" />
 
-      {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
-      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#0a0a0a] relative shadow-2xl lg:border-l border-[#c9a84c]/20 flex flex-col justify-start`}>
+      {/* Right Column — 500px on Desktop, Full Width on Mobile */}
+      <div
+        className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] bg-[#0c0d0e] relative shadow-2xl lg:border-l border-white/10 flex flex-col justify-start ${
+          !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+        }`}
+      >
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
               key="cover"
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
-              <NoirCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
+              <CinematicIvoryCover
+                {...props}
+                onOpen={handleOpen}
+                onOpenTicket={onOpenTicket}
+              />
             </motion.div>
           ) : (
             <motion.div
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="w-full relative"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full relative bg-[#0c0d0e]"
             >
-              {/* Floating Music Button (Fixed at Bottom Left of Right 500px Frame) */}
+              {/* Floating Music Button */}
               <div className="fixed bottom-6 left-4 sm:bottom-8 sm:left-6 lg:left-auto lg:right-[436px] z-50 select-none">
-                <NoirMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
+                <CinematicIvoryMusicButton
+                  isPlaying={isPlaying}
+                  onToggle={toggleMusic}
+                />
               </div>
 
-              {/* Floating Gift Button (Fixed at Bottom Right of Right 500px Frame) */}
+              {/* Floating Gift Button */}
               {(context.wedding.giftAccounts ?? []).length > 0 && (
                 <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
                   <motion.button
                     type="button"
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.92 }}
+                    transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ scale: 1.06, borderColor: "#d4c4b0" }}
+                    whileTap={{ scale: 0.94 }}
                     onClick={() => setIsGiftModalOpen(true)}
-                    className="w-11 h-11 rounded-full bg-[#111111]/90 backdrop-blur-md border border-[#c9a84c]/60 text-[#c9a84c] shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex items-center justify-center cursor-pointer transition-all hover:border-[#c9a84c] hover:bg-[#1a1a1a] relative group"
+                    className="w-11 h-11 rounded-full bg-[#16171b]/95 backdrop-blur-md border border-white/15 text-[#f5f3ef] shadow-[0_4px_24px_rgba(0,0,0,0.5)] flex items-center justify-center cursor-pointer transition-colors duration-300 relative group"
                     title="Amplop Digital / Tanda Kasih"
                     aria-label="Amplop Digital / Tanda Kasih"
                   >
+                    {/* Subtle indicator dot */}
                     <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c9a84c] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#c9a84c] border-2 border-[#111111]"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d4c4b0] opacity-60" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#d4c4b0] border-2 border-[#16171b]" />
                     </span>
-                    <GiftIcon className="w-5 h-5 text-[#c9a84c] transition-transform group-hover:scale-110" />
+                    <GiftIcon className="w-4.5 h-4.5 text-[#f5f3ef]" />
                   </motion.button>
                 </div>
               )}
 
-              {/* Dot navigation — fixed on right edge of 500px card */}
+              {/* Dot navigation — fixed right edge of 500px frame */}
               <nav className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5 items-center select-none">
                 {visibleSections.map((sec, i) => (
                   <button
@@ -294,33 +307,46 @@ export function NoirLayout({
                     aria-label={sec.label}
                     className={`transition-all duration-500 cursor-pointer rounded-full ${
                       activeSection === i
-                        ? "w-1.5 h-4 bg-[#c9a84c]"
+                        ? "w-1.5 h-4 bg-[#f5f3ef]"
                         : "w-1.5 h-1.5 bg-white/20 hover:bg-white/50"
                     }`}
                   />
                 ))}
               </nav>
 
-              {/* Sections */}
-              <div id="section-hero"><NoirHero {...props} /></div>
-              <div id="section-couple"><NoirCouple {...props} /></div>
+              {/* Invitation Sections */}
+              <div id="section-hero">
+                <CinematicIvoryHero {...props} />
+              </div>
+              <div id="section-couple">
+                <CinematicIvoryCouple {...props} />
+              </div>
 
               {(context.wedding.stories ?? []).length > 0 && (
-                <div id="section-story"><NoirStory {...props} /></div>
+                <div id="section-story">
+                  <CinematicIvoryStory {...props} />
+                </div>
               )}
 
-              <div id="section-event"><NoirEvent {...props} /></div>
+              <div id="section-event">
+                <CinematicIvoryEvent {...props} />
+              </div>
 
               {(context.wedding.galleries ?? []).length > 0 && (
-                <div id="section-gallery"><NoirGallery {...props} /></div>
+                <div id="section-gallery">
+                  <CinematicIvoryGallery {...props} />
+                </div>
               )}
 
-              <div id="section-rsvp"><NoirRSVP {...props} /></div>
+              <div id="section-rsvp">
+                <CinematicIvoryRSVP {...props} />
+              </div>
+              <div id="section-footer">
+                <CinematicIvoryFooter {...props} />
+              </div>
 
-              <div id="section-footer"><NoirFooter {...props} /></div>
-
-              {/* Gift Modal Dialog */}
-              <NoirGift
+              {/* Digital Gift Modal */}
+              <CinematicIvoryGift
                 {...props}
                 isModalOpen={isGiftModalOpen}
                 setIsModalOpen={setIsGiftModalOpen}

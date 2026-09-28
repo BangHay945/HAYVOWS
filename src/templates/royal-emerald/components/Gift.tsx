@@ -67,7 +67,7 @@ export function RoyalGift({
               weddingId={context.wedding.id}
               giftAccounts={gifts}
               defaultSenderName={context.guest?.name || ""}
-              theme="noir"
+              theme="emerald"
               onClose={() => setOpen(false)}
               isDemo={Boolean(context.wedding?.isDemo)}
             />

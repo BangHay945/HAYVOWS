@@ -179,6 +179,20 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     ],
     demoPath: "/invitation/julian-claire/budi-santoso",
   },
+  "cinematic-ivory": {
+    slug: "cinematic-ivory",
+    iconBg: "bg-[#fbf8f2] text-[#1a1715]",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: "bg-[#f4efe6] text-[#7a5c32] border-[#dcd3c4]",
+    versionTag: "v1.0.0 • Editorial Ivory",
+    bannerImage: "/assets/templates/cinematic-ivory/banner.jpg",
+    highlights: [
+      "Kanvas: Warm Ivory & Cream Editorial Paper (Vogue/Kinfolk Vibes)",
+      "Tipografi: Deep Charcoal & Cormorant Garamond dengan Clip-Path Reveal",
+      "Layout: Portrait 3:4 Megah, Timeline Kisah Cinta Bersih, & Galeri Asimetris",
+    ],
+    demoPath: "/invitation/alexander-sara/budi-santoso",
+  },
 };
 
 export default function TemplateSelector({

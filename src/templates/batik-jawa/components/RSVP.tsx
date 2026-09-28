@@ -12,7 +12,22 @@ type AttendanceStatus = 'attending' | 'not_attending';
 
 export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
   const [attendanceStatus, setAttendanceStatus] = useState<AttendanceStatus>('attending');
-  const [guestCount, setGuestCount] = useState<number>(1);
+  const initialGuestCount = context?.guest?.guestCount ?? 1;
+  const [guestCount, setGuestCount] = useState<number | string>(initialGuestCount);
+  const [isManualCount, setIsManualCount] = useState<boolean>(initialGuestCount > 4);
+
+  const handleGuestCountChange = (val: string) => {
+    if (val === 'manual') {
+      setIsManualCount(true);
+      if (typeof guestCount === 'number' && guestCount <= 4) {
+        setGuestCount(5);
+      }
+    } else {
+      setIsManualCount(false);
+      setGuestCount(Number(val));
+    }
+  };
+
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,12 +45,17 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
     setErrorMessage(null);
     setLoading(true);
     try {
+      const finalCount =
+        attendanceStatus === 'attending'
+          ? Math.min(20, Math.max(1, Number(guestCount) || 1))
+          : 0;
+
       if (onRSVPSubmit) {
         const data: RSVPSubmitData = {
           guestId: guest?.id ?? '',
           weddingId: wedding.id,
           attendanceStatus,
-          guestCount: attendanceStatus === 'attending' ? guestCount : 1,
+          guestCount: finalCount,
           message: message.trim(),
         };
         await onRSVPSubmit(data);
@@ -268,36 +288,82 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                     className="overflow-hidden space-y-2"
                   >
                     <label
-                      className="font-jawa-body block text-xs uppercase tracking-widest font-semibold flex items-center gap-1.5"
+                      className="font-jawa-body block text-xs uppercase tracking-widest font-semibold flex items-center gap-1.5 mb-2"
                       style={{ color: '#D4A853', fontStyle: 'normal' }}
                     >
                       <Users size={14} />
                       <span>Jumlah Tamu yang Hadir</span>
                     </label>
-                    <div className="flex items-center gap-3">
-                      <select
-                        disabled={isDemo}
-                        value={guestCount}
-                        onChange={(e) => setGuestCount(Number(e.target.value))}
-                        className={`px-4 py-2.5 rounded-lg text-sm font-jawa-body outline-none ${
-                          isDemo ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'
-                        }`}
-                        style={{
-                          backgroundColor: '#3D2B1F',
-                          border: '1px solid rgba(184,134,11,0.5)',
-                          color: '#EDE0C4',
-                          fontStyle: 'normal',
-                        }}
-                      >
-                        {[1, 2, 3, 4, 5].map((num) => (
-                          <option key={num} value={num}>
-                            {num} Orang
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <select
+                          disabled={isDemo}
+                          value={isManualCount ? 'manual' : String(guestCount)}
+                          onChange={(e) => handleGuestCountChange(e.target.value)}
+                          className={`w-full px-4 py-2.5 rounded-lg text-sm font-jawa-body outline-none cursor-pointer ${
+                            isDemo ? 'cursor-not-allowed opacity-75' : ''
+                          }`}
+                          style={{
+                            backgroundColor: '#3D2B1F',
+                            border: '1px solid rgba(184,134,11,0.5)',
+                            color: '#EDE0C4',
+                            fontStyle: 'normal',
+                          }}
+                        >
+                          {[1, 2, 3, 4].map((num) => (
+                            <option key={num} value={String(num)}>
+                              {num} Orang
+                            </option>
+                          ))}
+                          <option value="manual" style={{ color: '#D4A853' }}>
+                            Lebih dari 4 Orang (Input Manual)
                           </option>
-                        ))}
-                      </select>
-                      <span className="font-jawa-body text-xs text-[#A89078]" style={{ fontStyle: 'normal' }}>
-                        (Termasuk Anda)
-                      </span>
+                        </select>
+                      </div>
+
+                      {isManualCount && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25 }}
+                        >
+                          <label
+                            className="font-jawa-body block text-[11px] uppercase tracking-wider font-semibold mb-1"
+                            style={{ color: '#D4A853', fontStyle: 'normal' }}
+                          >
+                            Tuliskan Jumlah Tamu (&gt; 4 Orang)
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              min={1}
+                              max={20}
+                              disabled={isDemo}
+                              value={guestCount}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setGuestCount(val === '' ? '' : Math.max(1, parseInt(val) || 1));
+                              }}
+                              placeholder="Masukkan jumlah tamu (misal: 5)"
+                              className={`w-full px-4 py-2.5 rounded-lg text-sm font-jawa-body outline-none ${
+                                isDemo ? 'cursor-not-allowed opacity-75' : ''
+                              }`}
+                              style={{
+                                backgroundColor: '#2D1B0E',
+                                border: '1px solid #D4A853',
+                                color: '#EDE0C4',
+                                fontStyle: 'normal',
+                              }}
+                            />
+                            <span
+                              className="absolute right-4 top-1/2 -translate-y-1/2 font-jawa-body text-xs pointer-events-none"
+                              style={{ color: '#A89078', fontStyle: 'normal' }}
+                            >
+                              Orang
+                            </span>
+                          </div>
+                        </motion.div>
+                      )}
                     </div>
                   </motion.div>
                 )}

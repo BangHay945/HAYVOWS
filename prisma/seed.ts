@@ -127,6 +127,22 @@ async function main() {
   });
   console.log("✅ Seeded template: The Wedding Journal (Cinematic Editorial)");
 
+  // 1.12. Seed Template Cinematic Ivory (Dark Cinematic Luxury)
+  const tplIvory = await prisma.template.upsert({
+    where: { slug: "cinematic-ivory" },
+    update: {},
+    create: {
+      slug: "cinematic-ivory",
+      name: "Cinematic Ivory",
+      description:
+        "Kemewahan sinematik gelap pekat dengan aksen ivory & champagne gold. Animasi opening stagger Ken Burns, portrait editorial mempelai, timeline storytelling tanpa card, dan galeri asimetris.",
+      isPremium: true,
+      isActive: true,
+      version: "1.0.0",
+    },
+  });
+  console.log("✅ Seeded template: Cinematic Ivory");
+
   // 2. Seed Demo User (password: admin123)
   const hashedPassword =
     "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";

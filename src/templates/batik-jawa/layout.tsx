@@ -303,14 +303,11 @@ export function BatikJawaLayout({
                     onClick={() => scrollToSection(sec.id)}
                     title={sec.label}
                     aria-label={sec.label}
-                    className={`rounded-full transition-all duration-300 cursor-pointer ${
+                    className={`transition-all duration-500 cursor-pointer rounded-full ${
                       activeSection === i
-                        ? "w-2 h-2 scale-150"
-                        : "w-1.5 h-1.5 hover:opacity-80"
+                        ? "w-1.5 h-4 bg-[#B8860B]"
+                        : "w-1.5 h-1.5 bg-[#8B6E5A]/70 hover:bg-[#B8860B]/70"
                     }`}
-                    style={{
-                      background: activeSection === i ? "#B8860B" : "#8B6E5A",
-                    }}
                   />
                 ))}
               </nav>

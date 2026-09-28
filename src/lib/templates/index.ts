@@ -130,11 +130,13 @@ export const getTemplateArchetype = (slug: string): TemplateArchetype => {
     slug === "vintage-royal" ||
     slug === "royal-emerald" ||
     slug === "cinematic-editorial" ||
+    slug === "cinematic-ivory" ||
     slug.includes("editorial") ||
     slug.includes("journal") ||
     slug.includes("noir") ||
     slug.includes("luxury") ||
     slug.includes("emerald") ||
+    slug.includes("ivory") ||
     slug.includes("sapphire")
   ) {
     return "luxury";
@@ -173,7 +175,8 @@ export const getRequiredPlan = (slug: string): SubscriptionTier => {
     slug === "pixel-rpg" ||
     slug === "eternal-noir" ||
     slug === "royal-emerald" ||
-    slug === "cinematic-editorial"
+    slug === "cinematic-editorial" ||
+    slug === "cinematic-ivory"
   ) {
     return "luxury";
   }

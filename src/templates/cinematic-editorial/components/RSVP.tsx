@@ -11,7 +11,22 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
   const isDemo = Boolean(wedding?.isDemo || isDemoWedding(wedding?.slug));
 
   const [status, setStatus] = useState<"attending" | "not_attending">("attending");
-  const [pax, setPax] = useState(1);
+  const initialPax = guest?.guestCount ?? 1;
+  const [pax, setPax] = useState<number | string>(initialPax);
+  const [isManualPax, setIsManualPax] = useState<boolean>(initialPax > 4);
+
+  const handlePaxDropdownChange = (val: string) => {
+    if (val === "manual") {
+      setIsManualPax(true);
+      if (typeof pax === "number" && pax <= 4) {
+        setPax(5);
+      }
+    } else {
+      setIsManualPax(false);
+      setPax(Number(val));
+    }
+  };
+
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -25,11 +40,16 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
     setErrorMsg("");
 
     try {
+      const finalPax =
+        status === "attending"
+          ? Math.min(20, Math.max(1, Number(pax) || 1))
+          : 0;
+
       const data: RSVPSubmitData = {
         guestId: guest?.id || "guest-public",
         weddingId: wedding.id,
         attendanceStatus: status,
-        guestCount: status === "attending" ? pax : 0,
+        guestCount: finalPax,
         message: message.trim() || undefined,
       };
 
@@ -172,31 +192,61 @@ export function EditorialRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
 
               {/* Guest Count Pax (Jika Hadir) */}
               {status === "attending" && (
-                <div className="space-y-1.5 pt-1">
-                  <label className="block text-xs font-mono tracking-wider uppercase text-neutral-300">
-                    Jumlah Orang yang Hadir:
-                  </label>
-                  <div className="flex items-center gap-2">
-                    {[1, 2, 3, 4].map((num) => (
-                      <button
-                        key={num}
-                        type="button"
-                        disabled={isDemo}
-                        onClick={() => !isDemo && setPax(num)}
-                        className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold border transition-all ${
-                          isDemo ? "cursor-not-allowed opacity-75" : "cursor-pointer"
-                        } ${
-                          pax === num
-                            ? isDemo
-                              ? "bg-[#e8d5b5]/30 text-neutral-300 border-[#e8d5b5]/40"
-                              : "bg-[#e8d5b5] text-neutral-950 border-[#e8d5b5]"
-                            : "bg-white/[0.04] text-neutral-300 border-white/10 hover:bg-white/[0.08]"
-                        }`}
-                      >
-                        {num} Orang
-                      </button>
-                    ))}
+                <div className="space-y-3 pt-1">
+                  <div>
+                    <label className="block text-xs font-mono tracking-wider uppercase text-neutral-300 mb-2">
+                      Jumlah Orang yang Hadir:
+                    </label>
+                    <select
+                      disabled={isDemo}
+                      value={isManualPax ? "manual" : String(pax)}
+                      onChange={(e) => handlePaxDropdownChange(e.target.value)}
+                      className={`w-full px-3 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-neutral-200 text-xs font-mono focus:outline-none focus:border-[#e8d5b5] transition-colors cursor-pointer ${
+                        isDemo ? "cursor-not-allowed opacity-75" : ""
+                      }`}
+                    >
+                      {[1, 2, 3, 4].map((num) => (
+                        <option key={num} value={String(num)} className="bg-neutral-900 text-neutral-200">
+                          {num} Orang
+                        </option>
+                      ))}
+                      <option value="manual" className="bg-neutral-900 text-[#e8d5b5]">
+                        Lebih dari 4 Orang (Input Manual)
+                      </option>
+                    </select>
                   </div>
+
+                  {isManualPax && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <label className="block text-[10px] font-mono tracking-wider uppercase text-[#e8d5b5] mb-1.5">
+                        Tuliskan Jumlah Tamu (&gt; 4 Orang):
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          min={1}
+                          max={20}
+                          disabled={isDemo}
+                          value={pax}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setPax(val === "" ? "" : Math.max(1, parseInt(val) || 1));
+                          }}
+                          placeholder="Masukkan jumlah tamu (misal: 5)"
+                          className={`w-full px-3 py-2.5 rounded-xl bg-white/[0.04] border border-[#e8d5b5]/50 text-white text-xs font-mono focus:outline-none focus:border-[#e8d5b5] transition-colors ${
+                            isDemo ? "cursor-not-allowed opacity-75" : ""
+                          }`}
+                        />
+                        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-neutral-400 pointer-events-none">
+                          Orang
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               )}
 

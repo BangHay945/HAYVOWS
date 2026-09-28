@@ -677,5 +677,234 @@ export async function ensureDemoWeddingSeeded(slug: string): Promise<boolean> {
     }
   }
 
+  // Handle alexander-sara auto-seed (Cinematic Ivory - Dark Luxury)
+  if (normalizedSlug === "alexander-sara") {
+    try {
+      // 1. Ensure cinematic-ivory template exists in DB
+      const tplIvory = await prisma.template.upsert({
+        where: { slug: "cinematic-ivory" },
+        update: {},
+        create: {
+          slug: "cinematic-ivory",
+          name: "Cinematic Ivory",
+          description:
+            "Kemewahan sinematik gelap pekat dengan aksen ivory & champagne gold. Animasi opening stagger Ken Burns, portrait editorial mempelai, timeline storytelling tanpa card, dan galeri asimetris.",
+          isPremium: true,
+          isActive: true,
+          version: "1.0.0",
+        },
+      });
+
+      // 2. Ensure demo user exists
+      const hashedPassword =
+        "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
+      const demoUser = await prisma.user.upsert({
+        where: { email: "admin@hayvows.com" },
+        update: { plan: "luxury", role: "admin" },
+        create: {
+          email: "admin@hayvows.com",
+          name: "Super Admin Hayvows",
+          password: hashedPassword,
+          role: "admin",
+          plan: "luxury",
+        },
+      });
+
+      // 3. Upsert alexander-sara wedding
+      const ivoryWedding = await prisma.wedding.upsert({
+        where: { slug: "alexander-sara" },
+        update: { templateId: tplIvory.id, status: "published" },
+        create: {
+          userId: demoUser.id,
+          slug: "alexander-sara",
+          templateId: tplIvory.id,
+          status: "published",
+          messageMode: "auto",
+          couple: {
+            create: {
+              groomName: "Alexander Hayes, M.Sc.",
+              groomNickname: "Alexander",
+              groomFather: "Jonathan Hayes",
+              groomMother: "Eleanor Hayes",
+              groomInstagram: "alexander.hayes",
+              groomPhoto:
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
+              brideName: "Sara Montgomery, B.Des.",
+              brideNickname: "Sara",
+              brideFather: "William Montgomery",
+              brideMother: "Katherine Montgomery",
+              brideInstagram: "sara.montgomery",
+              bridePhoto:
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+              couplePhoto:
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+            },
+          },
+          events: {
+            create: [
+              {
+                title: "Sacred Matrimony & Vows",
+                date: "2026-11-14",
+                startTime: "09:30",
+                endTime: "11:30",
+                venue: "St. Regis Private Sanctuary",
+                address: "Jl. Rajawali Selatan No. 12, Senayan, Jakarta Pusat",
+                mapsUrl: "https://maps.google.com",
+                description:
+                  "Pengucapan janji suci dan penukaran cincin dalam suasana intim nan khidmat",
+                sortOrder: 1,
+              },
+              {
+                title: "Cinematic Noir Gala Dinner",
+                date: "2026-11-14",
+                startTime: "18:30",
+                endTime: "22:00",
+                venue: "The Grand Astor Ballroom",
+                address: "The St. Regis Jakarta, Kuningan, Jakarta Selatan",
+                mapsUrl: "https://maps.google.com",
+                description:
+                  "Malam perayaan bertabur kehangatan, jamuan istimewa, dan alunan quartet klasik",
+                sortOrder: 2,
+              },
+            ],
+          },
+          stories: {
+            create: [
+              {
+                title: "The Silent Glance",
+                date: "2020",
+                description:
+                  "Sebuah tatap mata singkat di tengah hiruk pikuk kota menjadi awal dari kisah yang tak pernah kami duga.",
+                sortOrder: 1,
+              },
+              {
+                title: "Two Solitudes That Protect",
+                date: "2022",
+                description:
+                  "Belajar saling melengkapi dalam diam dan saling menjaga ruang untuk bertumbuh bersama.",
+                sortOrder: 2,
+              },
+              {
+                title: "The Eternal Chapter",
+                date: "2025",
+                description:
+                  "Ketika seluruh keraguan runtuh dan yang tersisa hanyalah kepastian untuk melangkah berdampingan selamanya.",
+                sortOrder: 3,
+              },
+            ],
+          },
+          galleries: {
+            create: [
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+                caption: "The Opening Overture",
+                sortOrder: 1,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+                caption: "Whispers of Devotion",
+                sortOrder: 2,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+                caption: "Velvet Reflections",
+                sortOrder: 3,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
+                caption: "Sunset Soliloquy",
+                sortOrder: 4,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80",
+                caption: "Timeless Embrace",
+                sortOrder: 5,
+              },
+            ],
+          },
+          giftAccounts: {
+            create: [
+              {
+                bankName: "BCA",
+                accountName: "Alexander Hayes",
+                accountNo: "7310892716",
+                type: "bank",
+                sortOrder: 1,
+              },
+              {
+                bankName: "Mandiri",
+                accountName: "Sara Montgomery",
+                accountNo: "1240098263152",
+                type: "bank",
+                sortOrder: 2,
+              },
+            ],
+          },
+        },
+      });
+
+      // 4. Ensure demo guest exists
+      const demoGuest = await prisma.guest.upsert({
+        where: {
+          weddingId_slug: {
+            weddingId: ivoryWedding.id,
+            slug: "budi-santoso",
+          },
+        },
+        update: {},
+        create: {
+          weddingId: ivoryWedding.id,
+          name: "Budi Santoso & Keluarga",
+          slug: "budi-santoso",
+          phone: "081234567890",
+          category: "VIP",
+          guestCount: 2,
+        },
+      });
+
+      // 5. Ensure guest message exists
+      const msgCount = await prisma.guestMessage.count({
+        where: { weddingId: ivoryWedding.id },
+      });
+      if (msgCount === 0) {
+        await prisma.guestMessage.create({
+          data: {
+            weddingId: ivoryWedding.id,
+            guestId: demoGuest.id,
+            message:
+              "Selamat menempuh hidup baru untuk Alexander & Sara. Semoga pernikahan kalian dipenuhi berkah, kedamaian, dan kehangatan abadi.",
+            status: "approved",
+            isPinned: true,
+          },
+        });
+      }
+
+      // 6. Ensure music exists
+      const musicCount = await prisma.music.count({
+        where: { weddingId: ivoryWedding.id },
+      });
+      if (musicCount === 0) {
+        await prisma.music.create({
+          data: {
+            weddingId: ivoryWedding.id,
+            title: "Canon in D — Harp & Strings Quartet",
+            fileUrl: "/music/presets/canon-harp-strings.mp3",
+            isActive: true,
+          },
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Failed to auto-seed alexander-sara demo wedding:", err);
+      return false;
+    }
+  }
+
   return false;
 }

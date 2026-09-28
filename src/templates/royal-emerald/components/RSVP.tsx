@@ -13,7 +13,22 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
 
   const [name, setName] = useState(guest?.name || "");
   const [attendance, setAttendance] = useState<"attending" | "declined">("attending");
-  const [guestCount, setGuestCount] = useState(1);
+  const initialGuestCount = guest?.guestCount ?? 1;
+  const [guestCount, setGuestCount] = useState<number | string>(initialGuestCount);
+  const [isManualCount, setIsManualCount] = useState<boolean>(initialGuestCount > 4);
+
+  const handleGuestCountChange = (val: string) => {
+    if (val === "manual") {
+      setIsManualCount(true);
+      if (typeof guestCount === "number" && guestCount <= 4) {
+        setGuestCount(5);
+      }
+    } else {
+      setIsManualCount(false);
+      setGuestCount(Number(val));
+    }
+  };
+
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -24,11 +39,16 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
 
     setIsSubmitting(true);
     try {
+      const finalCount =
+        attendance === "attending"
+          ? Math.min(20, Math.max(1, Number(guestCount) || 1))
+          : 0;
+
       const data: RSVPSubmitData = {
         guestId: guest?.id || "",
         weddingId: context.wedding.id,
         attendanceStatus: attendance === "attending" ? "attending" : "not_attending",
-        guestCount: attendance === "attending" ? guestCount : 0,
+        guestCount: finalCount,
         message: message.trim() || undefined,
       };
 
@@ -177,24 +197,61 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
 
               {/* Guest Count (if attending) */}
               {attendance === "attending" && (
-                <div>
-                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-semibold mb-2">
-                    Jumlah Tamu
-                  </label>
-                  <select
-                    disabled={isDemo}
-                    value={guestCount}
-                    onChange={(e) => setGuestCount(Number(e.target.value))}
-                    className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] text-sm focus:outline-none focus:border-[#d4af37] transition-all ${
-                      isDemo ? "cursor-not-allowed opacity-75" : "cursor-pointer"
-                    }`}
-                  >
-                    {[1, 2, 3, 4, 5].map((num) => (
-                      <option key={num} value={num} className="bg-[#02241b] text-[#fdfbf7]">
-                        {num} Orang
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-semibold mb-2">
+                      Jumlah Tamu Hadir
+                    </label>
+                    <select
+                      disabled={isDemo}
+                      value={isManualCount ? "manual" : String(guestCount)}
+                      onChange={(e) => handleGuestCountChange(e.target.value)}
+                      className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] text-sm focus:outline-none focus:border-[#d4af37] transition-all cursor-pointer ${
+                        isDemo ? "cursor-not-allowed opacity-75" : ""
+                      }`}
+                    >
+                      {[1, 2, 3, 4].map((num) => (
+                        <option key={num} value={String(num)} className="bg-[#02241b] text-[#fdfbf7]">
+                          {num} Orang
+                        </option>
+                      ))}
+                      <option value="manual" className="bg-[#02241b] text-[#ffd700]">
+                        Lebih dari 4 Orang (Input Manual)
                       </option>
-                    ))}
-                  </select>
+                    </select>
+                  </div>
+
+                  {isManualCount && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <label className="block text-[10px] uppercase tracking-[0.25em] text-[#ffd700] font-semibold mb-1.5">
+                        Tuliskan Jumlah Tamu (&gt; 4 Orang)
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          min={1}
+                          max={20}
+                          disabled={isDemo}
+                          value={guestCount}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setGuestCount(val === "" ? "" : Math.max(1, parseInt(val) || 1));
+                          }}
+                          placeholder="Masukkan jumlah tamu (misal: 5)"
+                          className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/90 border border-[#d4af37]/50 text-[#fdfbf7] text-sm focus:outline-none focus:border-[#ffd700] transition-all ${
+                            isDemo ? "cursor-not-allowed opacity-75" : ""
+                          }`}
+                        />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs uppercase tracking-wider text-[#d4af37]/80 pointer-events-none">
+                          Orang
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               )}
 

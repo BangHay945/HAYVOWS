@@ -8,7 +8,22 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
   const { guest, wedding, messages: initialMessages } = context;
 
   const [attendance, setAttendance] = useState<"attending" | "not_attending">("attending");
-  const [count, setCount] = useState(guest?.guestCount ?? 1);
+  const initialCount = guest?.guestCount ?? 1;
+  const [count, setCount] = useState<number | string>(initialCount);
+  const [isManualCount, setIsManualCount] = useState<boolean>(initialCount > 4);
+
+  const handleCountDropdownChange = (val: string) => {
+    if (val === "manual") {
+      setIsManualCount(true);
+      if (typeof count === "number" && count <= 4) {
+        setCount(5);
+      }
+    } else {
+      setIsManualCount(false);
+      setCount(Number(val));
+    }
+  };
+
   const [message, setMessage] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,12 +62,17 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
     setLoading(true);
 
     try {
+      const finalCount =
+        attendance === "attending"
+          ? Math.min(20, Math.max(1, Number(count) || 1))
+          : 0;
+
       // 1. Submit RSVP
       await onRSVPSubmit?.({
         guestId: guest.id,
         weddingId: wedding.id,
         attendanceStatus: attendance,
-        guestCount: count,
+        guestCount: finalCount,
         message: message.trim() || undefined,
       });
       onTrack?.("rsvp_submit");
@@ -173,24 +193,61 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
 
             {/* Guest Count (if attending) */}
             {attendance === "attending" && (
-              <div>
-                <p className="font-noir-sans text-[9px] tracking-[0.3em] uppercase text-[#7d7568] mb-2">
-                  Jumlah Tamu Hadir
-                </p>
-                <select
-                  disabled={isDemo}
-                  value={count}
-                  onChange={(e) => setCount(Number(e.target.value))}
-                  className={`w-full bg-[#eee8dc] border border-[#ded7c8] text-[#171717] font-noir-sans text-xs px-3 py-2.5 focus:border-[#b38e36] focus:outline-none transition-colors ${
-                    isDemo ? "cursor-not-allowed opacity-75" : ""
-                  }`}
-                >
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <option key={n} value={n}>
-                      {n} Orang
+              <div className="space-y-3">
+                <div>
+                  <p className="font-noir-sans text-[9px] tracking-[0.3em] uppercase text-[#7d7568] mb-2">
+                    Jumlah Tamu Hadir
+                  </p>
+                  <select
+                    disabled={isDemo}
+                    value={isManualCount ? "manual" : String(count)}
+                    onChange={(e) => handleCountDropdownChange(e.target.value)}
+                    className={`w-full bg-[#eee8dc] border border-[#ded7c8] text-[#171717] font-noir-sans text-xs px-3 py-2.5 focus:border-[#b38e36] focus:outline-none transition-colors cursor-pointer ${
+                      isDemo ? "cursor-not-allowed opacity-75" : ""
+                    }`}
+                  >
+                    {[1, 2, 3, 4].map((n) => (
+                      <option key={n} value={String(n)}>
+                        {n} Orang
+                      </option>
+                    ))}
+                    <option value="manual">
+                      Lebih dari 4 Orang (Input Manual)
                     </option>
-                  ))}
-                </select>
+                  </select>
+                </div>
+
+                {isManualCount && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <p className="font-noir-sans text-[9px] tracking-[0.3em] uppercase text-[#b38e36] mb-1.5">
+                      Tuliskan Jumlah Tamu (&gt; 4 Orang)
+                    </p>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={1}
+                        max={20}
+                        disabled={isDemo}
+                        value={count}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setCount(val === "" ? "" : Math.max(1, parseInt(val) || 1));
+                        }}
+                        placeholder="Masukkan jumlah tamu (misal: 5)"
+                        className={`w-full bg-[#eee8dc] border border-[#b38e36]/60 text-[#171717] font-noir-sans text-xs px-3 py-2.5 focus:border-[#b38e36] focus:outline-none transition-colors ${
+                          isDemo ? "cursor-not-allowed opacity-75" : ""
+                        }`}
+                      />
+                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 font-noir-sans text-[10px] text-[#7d7568] pointer-events-none">
+                        Orang
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             )}
 
