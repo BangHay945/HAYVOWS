@@ -6,7 +6,8 @@ services:
     container_name: hayvows-app
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      # Bind hanya ke localhost (127.0.0.1) agar port 3000 tidak terekspos ke internet publik
+      - "127.0.0.1:3000:3000"
     env_file:
       - .env
     volumes:
