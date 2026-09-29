@@ -13,10 +13,37 @@ import { getToken } from "next-auth/jwt";
 const BASE_DOMAIN = process.env.NEXT_PUBLIC_BASE_DOMAIN || "hayvows.com";
 
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
   const hostname = req.headers.get("host") || "";
-  // Bersihkan port jika ada (localhost:3000 → localhost)
-  const hostWithoutPort = hostname.split(":")[0];
+  // Bersihkan port jika ada (contoh: 103.13.207.35:3000 → 103.13.207.35)
+  const [hostWithoutPort, port] = hostname.split(":");
+
+  // ── 0. Anti-Direct IP & Canonical Domain Enforcement ───────────────────────
+  // Deteksi apakah host berupa IP address (IPv4 atau IPv6)
+  const isIpAddress =
+    /^(\d{1,3}\.){3}\d{1,3}$/.test(hostWithoutPort) ||
+    hostWithoutPort.startsWith("[");
+
+  const isLocalDev =
+    hostWithoutPort === "localhost" ||
+    hostWithoutPort === "127.0.0.1" ||
+    hostWithoutPort === "0.0.0.0";
+
+  // Jika bukan local dev dan diakses menggunakan IP address (contoh: 103.13.207.35 atau :3000)
+  if (!isLocalDev && (isIpAddress || (port && port !== "80" && port !== "443"))) {
+    // Return 301 Permanent Redirect ke domain resmi https://hayvows.com
+    // Ditambah header X-Robots-Tag: noindex, nofollow agar Google langsung menghapus URL IP dari hasil pencarian
+    const redirectUrl = new URL(`https://${BASE_DOMAIN}${pathname}${search}`);
+    const response = NextResponse.redirect(redirectUrl, { status: 301 });
+    response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    return response;
+  }
+
+  // Redirect www.hayvows.com ke hayvows.com (canonical domain non-www)
+  if (!isLocalDev && hostWithoutPort === `www.${BASE_DOMAIN}`) {
+    const redirectUrl = new URL(`https://${BASE_DOMAIN}${pathname}${search}`);
+    return NextResponse.redirect(redirectUrl, { status: 301 });
+  }
 
   // ── 1. Custom Subdomain / Custom Domain Routing ──────────────────────────
   // Deteksi apakah request datang dari subdomain hayvows atau custom domain
@@ -40,9 +67,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  // Jika request dari custom domain (domain pribadi pengguna — bukan hayvows.com, bukan localhost)
+  // Jika request dari custom domain (domain pribadi pengguna — bukan hayvows.com, bukan localhost, bukan IP)
   const isCustomDomain =
-    !hostWithoutPort.startsWith("localhost") &&
+    !isLocalDev &&
+    !isIpAddress &&
     !hostWithoutPort.endsWith(`.${BASE_DOMAIN}`) &&
     hostWithoutPort !== BASE_DOMAIN &&
     hostWithoutPort !== `www.${BASE_DOMAIN}` &&

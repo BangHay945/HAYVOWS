@@ -5,7 +5,7 @@ import JsonLd from "@/components/seo/JsonLd";
 
 const geist = Geist({ subsets: ["latin"] });
 
-const baseUrl = process.env.NEXTAUTH_URL || "https://hayvows.com";
+const siteUrl = "https://hayvows.com";
 
 export const viewport: Viewport = {
   themeColor: "#2d4a3e",
@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Hayvows - Platform Undangan Pernikahan Digital & Resepsi Pintar",
     template: "%s | Hayvows",
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://hayvows.com",
   },
   openGraph: {
     title: "Hayvows - Platform Undangan Pernikahan Digital & Resepsi Pintar",
     description:
       "Platform undangan pernikahan digital interaktif dengan tema 2D Pixel RPG, Adat Nusantara, dan sistem buku tamu QR Code live display.",
-    url: baseUrl,
+    url: siteUrl,
     siteName: "Hayvows",
     locale: "id_ID",
     type: "website",

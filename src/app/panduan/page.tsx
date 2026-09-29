@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PanduanClient from "./PanduanClient";
 
-const baseUrl = process.env.NEXTAUTH_URL || "https://hayvows.com";
+const baseUrl = "https://hayvows.com";
 
 export const metadata: Metadata = {
   title: "Pusat Panduan & Dokumentasi Fitur | Hayvows Digital Wedding",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "panduan hayvows",
   ],
   alternates: {
-    canonical: "/panduan",
+    canonical: "https://hayvows.com/panduan",
   },
   openGraph: {
     title: "Pusat Panduan & Fitur | Hayvows Digital Wedding",
