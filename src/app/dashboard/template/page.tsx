@@ -86,7 +86,7 @@ export default async function TemplateSelectionPage({
               <span>Selamat Datang di Katalog Tema Undangan!</span>
             </h2>
             <p className="text-xs text-emerald-800/80 mt-1 max-w-2xl leading-relaxed">
-              Anda belum membuat undangan. Jangan ragu untuk mencoba interaksi masing-masing tema melalui tombol <strong>Uji Coba Demo</strong>, lalu buat undangan Anda.
+              Anda belum membuat undangan. Jangan ragu untuk mencoba interaksi masing-masing tema melalui tombol <strong>Lihat Demo</strong>, lalu buat undangan Anda.
             </p>
           </div>
         </div>

@@ -803,7 +803,7 @@ export function OverviewWorkbench({
                   className="inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-[#2d4a3e] hover:bg-[#233a30] text-white font-medium rounded-xl transition-all shadow-xs text-center"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Uji Coba Demo</span>
+                  <span>Lihat Demo</span>
                 </Link>
                 <Link
                   href={`/dashboard/template${weddingParam}`}

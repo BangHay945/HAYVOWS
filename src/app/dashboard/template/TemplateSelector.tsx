@@ -668,7 +668,7 @@ export default function TemplateSelector({
                   className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors"
                 >
                   <Play className="w-3 h-3 text-slate-500 fill-slate-400" />
-                  <span>Uji Coba Demo</span>
+                  <span>Lihat Demo</span>
                 </Link>
               </div>
             </div>
