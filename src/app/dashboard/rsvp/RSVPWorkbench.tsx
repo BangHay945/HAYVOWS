@@ -91,11 +91,11 @@ export default function RSVPWorkbench({
         </div>
 
         {wedding && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setIsPrintModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-xs transition-transform active:scale-98 cursor-pointer"
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-xs transition-transform active:scale-98 cursor-pointer"
             >
               <Printer className="w-4 h-4 text-[#fef08a]" />
               <span>Cetak Kartu QR RSVP (Undangan Fisik)</span>
@@ -104,8 +104,8 @@ export default function RSVPWorkbench({
         )}
       </div>
 
-      {/* 4 Primary Metric Cards (Matching DesainPakeAI target.page.html) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 4 Primary Metric Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-slate-500 font-medium">Total Respon</span>
@@ -176,22 +176,22 @@ export default function RSVPWorkbench({
       <div className="bg-white border border-slate-200/80 rounded-xl p-3.5 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari nama tamu konfirmasi..."
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            className="w-full pl-9 pr-4 py-2 min-h-[42px] text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
 
         {/* Tab Buttons (Responsive Grid on Mobile) */}
-        <div className="grid grid-cols-3 sm:flex items-center gap-1 bg-slate-100/80 p-1 rounded-lg text-center">
+        <div className="grid grid-cols-3 sm:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl text-center">
           <button
             type="button"
             onClick={() => setFilterTab("all")}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-md text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate ${
+            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
               filterTab === "all"
                 ? "bg-white text-slate-900 shadow-2xs font-semibold"
                 : "text-slate-600 hover:text-slate-900"
@@ -202,7 +202,7 @@ export default function RSVPWorkbench({
           <button
             type="button"
             onClick={() => setFilterTab("attending")}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-md text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate ${
+            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
               filterTab === "attending"
                 ? "bg-white text-emerald-700 shadow-2xs font-semibold"
                 : "text-slate-600 hover:text-slate-900"
@@ -213,7 +213,7 @@ export default function RSVPWorkbench({
           <button
             type="button"
             onClick={() => setFilterTab("not_attending")}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-md text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate ${
+            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
               filterTab === "not_attending"
                 ? "bg-white text-rose-700 shadow-2xs font-semibold"
                 : "text-slate-600 hover:text-slate-900"

@@ -48,6 +48,7 @@ export function WhatsAppTemplateModal({
   const [template, setTemplate] = useState(currentTemplate || DEFAULT_WA_TEMPLATE);
   const [loading, setLoading] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -110,9 +111,13 @@ export function WhatsAppTemplateModal({
   };
 
   const handleReset = () => {
-    if (confirm("Kembalikan format pesan ke template bawaan standar Hayvows?")) {
-      setTemplate(DEFAULT_WA_TEMPLATE);
+    if (!confirmReset) {
+      setConfirmReset(true);
+      setTimeout(() => setConfirmReset(false), 4000);
+      return;
     }
+    setTemplate(DEFAULT_WA_TEMPLATE);
+    setConfirmReset(false);
   };
 
   // Preview formatting
@@ -202,10 +207,14 @@ export function WhatsAppTemplateModal({
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                className={`inline-flex items-center gap-1.5 text-xs transition-colors cursor-pointer ${
+                  confirmReset
+                    ? "text-amber-700 font-bold bg-amber-50 px-2 py-1 rounded-lg border border-amber-200"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset ke Bawaan</span>
+                <span>{confirmReset ? "Klik lagi untuk reset ke template awal" : "Reset ke Bawaan"}</span>
               </button>
 
               <span className="text-[11px] text-slate-400">

@@ -90,6 +90,10 @@ export default function GuestManager({
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [rsvpFilter, setRsvpFilter] = useState("all");
 
+  // In-app Delete Confirmation Modal State
+  const [guestToDelete, setGuestToDelete] = useState<GuestWithRsvp | null>(null);
+  const [deletingGuest, setDeletingGuest] = useState(false);
+
   const getGuestMessage = (
     nameOrGuest:
       | string
@@ -244,10 +248,22 @@ export default function GuestManager({
     setLoading(false);
   };
 
-  const deleteGuest = async (id: string) => {
-    if (!confirm("Hapus tamu ini dari daftar undangan?")) return;
-    await fetch(`/api/wedding/${weddingId}/guests/${id}`, { method: "DELETE" });
-    setGuests((prev) => prev.filter((g) => g.id !== id));
+  const confirmDeleteGuest = async () => {
+    if (!guestToDelete) return;
+    setDeletingGuest(true);
+    try {
+      const res = await fetch(`/api/wedding/${weddingId}/guests/${guestToDelete.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setGuests((prev) => prev.filter((g) => g.id !== guestToDelete.id));
+        setGuestToDelete(null);
+      }
+    } catch (err) {
+      console.error("Gagal menghapus tamu:", err);
+    } finally {
+      setDeletingGuest(false);
+    }
   };
 
   // Filtered list
@@ -297,7 +313,7 @@ export default function GuestManager({
           </p>
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => {
@@ -315,7 +331,7 @@ export default function GuestManager({
               }
               setShowAddForm(!showAddForm);
             }}
-            className={`inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer ${
+            className={`w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer ${
               showAddForm
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
                 : "bg-[#2d4a3e] hover:bg-[#233a30] text-white"
@@ -539,13 +555,13 @@ export default function GuestManager({
         {/* Left: Search & Filter Dropdowns */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 min-w-0">
           <div className="relative flex-1 min-w-[200px]">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari berdasarkan nama, alamat, meja, atau no. WhatsApp..."
-              className="w-full pl-9 pr-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 hover:bg-white focus:bg-white transition-all"
+              className="w-full pl-9 pr-3.5 py-2 min-h-[42px] text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 hover:bg-white focus:bg-white transition-all"
             />
           </div>
 
@@ -553,7 +569,7 @@ export default function GuestManager({
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
+              className="text-xs border border-slate-200 rounded-xl px-3 py-2 min-h-[42px] bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
             >
               <option value="all">Semua Kategori</option>
               <option value="VIP">VIP</option>
@@ -566,7 +582,7 @@ export default function GuestManager({
             <select
               value={rsvpFilter}
               onChange={(e) => setRsvpFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-xl px-3 py-2 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
+              className="text-xs border border-slate-200 rounded-xl px-3 py-2 min-h-[42px] bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
             >
               <option value="all">Semua Status</option>
               <option value="attending">Hadir</option>
@@ -577,11 +593,11 @@ export default function GuestManager({
         </div>
 
         {/* Right: Data Actions (Format WA, Import CSV, Export CSV) */}
-        <div className="flex items-center gap-2 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-100 flex-wrap sm:flex-nowrap">
+        <div className="flex items-center gap-2 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-100 overflow-x-auto pb-1 sm:pb-0">
           <button
             type="button"
             onClick={() => setWaModalOpen(true)}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 min-h-[40px] py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer shrink-0 whitespace-nowrap"
             title="Kustomisasi Format Pesan Undangan WhatsApp"
           >
             <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
@@ -604,7 +620,7 @@ export default function GuestManager({
               }
               setImportModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 min-h-[40px] py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer shrink-0 whitespace-nowrap"
             title="Import Banyak Tamu dari File Excel / CSV"
           >
             <Upload className="w-3.5 h-3.5 text-emerald-700" />
@@ -615,7 +631,7 @@ export default function GuestManager({
             type="button"
             onClick={handleExportCSV}
             disabled={guests.length === 0}
-            className="inline-flex items-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 min-h-[40px] py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0 whitespace-nowrap"
             title="Download Rekap Daftar Tamu & RSVP ke File CSV / Excel"
           >
             <Download className="w-3.5 h-3.5 text-slate-600" />
@@ -635,8 +651,172 @@ export default function GuestManager({
           </h2>
         </div>
 
-        {/* Desktop View Table */}
-        <div className="overflow-x-auto">
+        {/* Mobile View: Touch-Friendly Guest Cards (visible on mobile < md only) */}
+        <div className="block md:hidden divide-y divide-slate-100">
+          {filteredGuests.map((guest) => {
+            const isAttending = guest.rsvp?.attendanceStatus === "attending";
+            const isNotAttending = guest.rsvp?.attendanceStatus === "not_attending";
+            const isCopied = copiedId === guest.id;
+            const isMsgCopied = copiedMsgId === guest.id;
+            const personalUrl = `/invitation/${weddingSlug}/${guest.slug}`;
+            const initial = guest.name.charAt(0).toUpperCase();
+
+            return (
+              <div key={guest.id} className="p-4 space-y-3 hover:bg-slate-50/50 transition-colors">
+                {/* Header: Avatar, Name, Category & RSVP */}
+                <div className="flex items-start justify-between gap-2.5">
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
+                      {initial}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
+                          {guest.name}
+                        </span>
+                        <span
+                          className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold border shrink-0 ${
+                            guest.category === "VIP"
+                              ? "bg-amber-50 text-amber-700 border-amber-200"
+                              : guest.category === "Keluarga"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : "bg-slate-50 text-slate-600 border-slate-200"
+                          }`}
+                        >
+                          {guest.category || "Reguler"}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-500 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                        <span>{guest.phone || "Tanpa No. WA"}</span>
+                        {guest.tableNumber && (
+                          <span className="font-semibold text-[#2d4a3e]">
+                            • Meja: {guest.tableNumber}
+                          </span>
+                        )}
+                        {guest.guestCount > 1 && (
+                          <span className="text-slate-400">
+                            • {guest.guestCount} Pax
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RSVP status */}
+                  <div className="shrink-0">
+                    {isAttending ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <span>Hadir</span>
+                      </span>
+                    ) : isNotAttending ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                        <span>Tidak Hadir</span>
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                        <span>Belum Respon</span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Domisili / Address if present */}
+                {guest.address && (
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-100">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="truncate">{guest.address}</span>
+                  </div>
+                )}
+
+                {/* Primary Thumb Actions (min-h-[44px]) */}
+                <div className="grid grid-cols-2 gap-2 pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => openWhatsApp(guest.phone, guest)}
+                    className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl shadow-xs transition-colors cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Kirim WA</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => copyWhatsAppMessage(guest.id, guest)}
+                    className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-3 text-xs font-medium bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 rounded-xl transition-colors cursor-pointer"
+                  >
+                    {isMsgCopied ? (
+                      <>
+                        <Check className="w-4 h-4 text-emerald-600" />
+                        <span className="text-emerald-700 font-semibold">Tersalin</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 text-slate-500" />
+                        <span>Salin Pesan</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Secondary Action Bar (QR Tiket, Salin Link, Buka Web, Hapus) */}
+                <div className="flex items-center justify-between gap-1 pt-1.5 border-t border-slate-100 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTicketGuest(guest)}
+                      className="inline-flex items-center gap-1 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-emerald-50 text-slate-700 text-xs font-medium cursor-pointer"
+                    >
+                      <QrCode className="w-3.5 h-3.5 text-[#2d4a3e]" />
+                      <span>Tiket QR</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => copyPersonalLink(guest.id, guest.slug)}
+                      className="inline-flex items-center gap-1 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs cursor-pointer"
+                    >
+                      {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{isCopied ? "Tersalin" : "Link"}</span>
+                    </button>
+
+                    <a
+                      href={personalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 cursor-pointer"
+                      title="Buka Undangan"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setGuestToDelete(guest)}
+                    className="inline-flex items-center gap-1 min-h-[36px] px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Hapus</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+
+          {filteredGuests.length === 0 && (
+            <div className="p-8 text-center text-slate-400 text-xs">
+              {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all"
+                ? "Tidak ada tamu yang sesuai dengan filter pencarian."
+                : "Belum ada tamu terdaftar. Klik '+ Tambah Tamu Baru' di atas."}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View Table (visible on tablet/desktop >= md) */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               <tr>
@@ -796,7 +976,7 @@ export default function GuestManager({
 
                         <button
                           type="button"
-                          onClick={() => deleteGuest(guest.id)}
+                          onClick={() => setGuestToDelete(guest)}
                           className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
                           title="Hapus Tamu"
                         >
@@ -821,6 +1001,62 @@ export default function GuestManager({
           </table>
         </div>
       </div>
+
+      {/* Modal Konfirmasi Hapus Tamu (Bottom Sheet di Mobile, Centered di Desktop) */}
+      {guestToDelete && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-slate-200 p-5 sm:p-6 space-y-4 animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-2 duration-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 shrink-0">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                  Hapus Tamu Undangan?
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Data tamu dan tautan undangan personal akan dihapus.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+              <p className="font-semibold text-slate-800">
+                {guestToDelete.name}
+              </p>
+              <p className="text-slate-500 font-mono text-[11px]">
+                {guestToDelete.phone || "Tanpa nomor WhatsApp"} • Kategori: {guestToDelete.category || "Reguler"}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setGuestToDelete(null)}
+                disabled={deletingGuest}
+                className="flex-1 min-h-[44px] px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteGuest}
+                disabled={deletingGuest}
+                className="flex-1 min-h-[44px] px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {deletingGuest ? (
+                  <span>Menghapus...</span>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    <span>Ya, Hapus</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal Tiket E-Pass QR Code Tamu */}
       {selectedTicketGuest && (
