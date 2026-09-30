@@ -688,57 +688,55 @@ export default function GuestManager({
                       )}
                     </div>
 
-                    {/* Secondary Actions (Single Row) */}
-                    <div className="flex items-center justify-between gap-1 pt-0.5">
-                      <div className="flex items-center gap-1 sm:gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedTicketGuest(guest)}
-                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-medium cursor-pointer shadow-2xs shrink-0"
-                          title="Lihat Tiket QR Tamu"
-                        >
-                          <QrCode className="w-3.5 h-3.5 text-[#2d4a3e]" />
-                          <span>Tiket QR</span>
-                        </button>
+                    {/* Secondary Actions (Single Row - Even Spacing) */}
+                    <div className="flex items-center gap-1.5 pt-0.5">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedTicketGuest(guest)}
+                        className="flex-1 inline-flex items-center justify-center gap-1 min-h-[32px] px-1.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-[11px] font-medium cursor-pointer shadow-2xs"
+                        title="Lihat Tiket QR Tamu"
+                      >
+                        <QrCode className="w-3.5 h-3.5 text-[#2d4a3e] shrink-0" />
+                        <span className="truncate">Tiket QR</span>
+                      </button>
 
-                        <button
-                          type="button"
-                          onClick={() => copyWhatsAppMessage(guest.id, guest)}
-                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs shrink-0"
-                          title="Salin pesan undangan WhatsApp"
-                        >
-                          {isMsgCopied ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                          <span>{isMsgCopied ? "Tersalin" : "Pesan"}</span>
-                        </button>
+                      <button
+                        type="button"
+                        onClick={() => copyWhatsAppMessage(guest.id, guest)}
+                        className="flex-1 inline-flex items-center justify-center gap-1 min-h-[32px] px-1.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-[11px] cursor-pointer shadow-2xs"
+                        title="Salin pesan undangan WhatsApp"
+                      >
+                        {isMsgCopied ? (
+                          <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5 shrink-0" />
+                        )}
+                        <span className="truncate">{isMsgCopied ? "Tersalin" : "Pesan"}</span>
+                      </button>
 
-                        <button
-                          type="button"
-                          onClick={() => copyPersonalLink(guest.id, guest.slug)}
-                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs shrink-0"
-                          title="Salin link undangan website"
-                        >
-                          {isCopied ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                          <span>{isCopied ? "Tersalin" : "Link"}</span>
-                        </button>
+                      <button
+                        type="button"
+                        onClick={() => copyPersonalLink(guest.id, guest.slug)}
+                        className="flex-1 inline-flex items-center justify-center gap-1 min-h-[32px] px-1.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-[11px] cursor-pointer shadow-2xs"
+                        title="Salin link undangan website"
+                      >
+                        {isCopied ? (
+                          <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5 shrink-0" />
+                        )}
+                        <span className="truncate">{isCopied ? "Tersalin" : "Link"}</span>
+                      </button>
 
-                        <a
-                          href={personalUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 cursor-pointer shadow-2xs shrink-0"
-                          title="Buka Web Undangan"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      </div>
+                      <a
+                        href={personalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 cursor-pointer shadow-2xs shrink-0"
+                        title="Buka Web Undangan"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
 
                       <button
                         type="button"
