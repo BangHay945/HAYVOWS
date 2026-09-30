@@ -416,7 +416,7 @@ export default function GuestManager({
       </div>
 
       {/* Filter, Search & Data Operations Bar */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 shadow-2xs space-y-3 xl:space-y-0 xl:flex xl:items-center xl:justify-between gap-3">
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 shadow-2xs space-y-3 xl:space-y-0 xl:flex xl:items-center xl:justify-between gap-3 relative z-20">
         {/* Left: Search & Filter Dropdowns */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 min-w-0">
           <div className="relative flex-1 min-w-[200px]">
@@ -458,7 +458,7 @@ export default function GuestManager({
         </div>
 
         {/* Right: Data Actions (Format WA, Import CSV, Export CSV) */}
-        <div className="flex items-center gap-2 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-100 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-2 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-100 flex-wrap sm:flex-nowrap">
           <button
             type="button"
             onClick={() => setWaModalOpen(true)}
@@ -511,23 +511,25 @@ export default function GuestManager({
             </button>
 
             {exportMenuOpen && (
-              <div className="absolute right-0 mt-1.5 w-56 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-100">
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">
+              <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200/90 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">
                   Format Unduhan Rekap
                 </div>
                 <button
                   type="button"
                   onClick={handleExportExcel}
-                  className="w-full flex items-center justify-between px-3 py-2 text-xs text-left text-slate-800 hover:bg-emerald-50 hover:text-emerald-950 transition-colors cursor-pointer group"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs text-left text-slate-800 hover:bg-emerald-50 hover:text-emerald-950 transition-colors cursor-pointer group"
                 >
-                  <div className="flex items-center gap-2">
-                    <FileSpreadsheet className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-100/70 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-200/80 group-hover:scale-105 transition-all">
+                      <FileSpreadsheet className="w-4 h-4" />
+                    </div>
                     <div>
-                      <p className="font-bold leading-tight">Microsoft Excel (.xlsx)</p>
-                      <p className="text-[10px] text-slate-400 leading-tight">Rapi &amp; siap diedit di Excel</p>
+                      <p className="font-bold text-slate-800 leading-tight">Microsoft Excel (.xlsx)</p>
+                      <p className="text-[10px] text-slate-500 leading-tight mt-0.5">Rapi &amp; siap diedit di Excel</p>
                     </div>
                   </div>
-                  <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-full">
+                  <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-full shrink-0 ml-1">
                     Disarankan
                   </span>
                 </button>
@@ -535,12 +537,14 @@ export default function GuestManager({
                 <button
                   type="button"
                   onClick={handleExportCSV}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-left text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer group"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-left text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer group"
                 >
-                  <Download className="w-4 h-4 text-slate-500 group-hover:scale-110 transition-transform" />
+                  <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 group-hover:bg-slate-200 group-hover:scale-105 transition-all">
+                    <Download className="w-4 h-4" />
+                  </div>
                   <div>
-                    <p className="font-semibold leading-tight">File Teks CSV (.csv)</p>
-                    <p className="text-[10px] text-slate-400 leading-tight">Format teks polos standar</p>
+                    <p className="font-semibold text-slate-800 leading-tight">File Teks CSV (.csv)</p>
+                    <p className="text-[10px] text-slate-500 leading-tight mt-0.5">Format teks polos standar</p>
                   </div>
                 </button>
               </div>
