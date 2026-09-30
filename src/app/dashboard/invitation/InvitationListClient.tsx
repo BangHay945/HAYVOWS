@@ -20,6 +20,7 @@ import {
   Calendar,
   Layers,
   SlidersHorizontal,
+  Filter,
 } from "lucide-react";
 
 export interface WeddingListItem {
@@ -242,41 +243,18 @@ export function InvitationListClient({
             )}
           </div>
 
-          {/* Status Filter Pill Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-            <button
-              type="button"
-              onClick={() => setStatusFilter("all")}
-              className={`px-3 py-2 text-xs font-semibold rounded-xl transition-all shrink-0 cursor-pointer min-h-[38px] ${
-                statusFilter === "all"
-                  ? "bg-[#2d4a3e] text-white shadow-2xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
+          {/* Status Filter Dropdown with Filter Icon */}
+          <div className="relative shrink-0 w-full sm:w-auto">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as "all" | "published" | "draft")}
+              className="w-full sm:w-auto appearance-none pl-3.5 pr-8 py-2.5 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer shadow-2xs"
             >
-              Semua ({totalWeddings})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatusFilter("published")}
-              className={`px-3 py-2 text-xs font-semibold rounded-xl transition-all shrink-0 cursor-pointer min-h-[38px] ${
-                statusFilter === "published"
-                  ? "bg-[#2d4a3e] text-white shadow-2xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
-            >
-              Published ({publishedCount})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatusFilter("draft")}
-              className={`px-3 py-2 text-xs font-semibold rounded-xl transition-all shrink-0 cursor-pointer min-h-[38px] ${
-                statusFilter === "draft"
-                  ? "bg-[#2d4a3e] text-white shadow-2xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
-            >
-              Draft ({totalWeddings - publishedCount})
-            </button>
+              <option value="all">Semua Undangan ({totalWeddings})</option>
+              <option value="published">Published ({publishedCount})</option>
+              <option value="draft">Draft ({totalWeddings - publishedCount})</option>
+            </select>
+            <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
       )}

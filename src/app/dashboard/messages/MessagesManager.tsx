@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Clock,
   CheckCircle2,
+  Filter,
 } from "lucide-react";
 
 type MsgWithGuest = {
@@ -153,52 +154,19 @@ export default function MessagesManager({
           />
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-1.5 bg-slate-100/80 p-1 rounded-lg">
-          <button
-            type="button"
-            onClick={() => setActiveTab("all")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-              activeTab === "all"
-                ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+        {/* Filter Dropdown with Filter Icon */}
+        <div className="relative shrink-0 w-full sm:w-auto">
+          <select
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value as any)}
+            className="w-full sm:w-auto appearance-none pl-3.5 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all cursor-pointer shadow-2xs"
           >
-            Semua ({totalCount})
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("approved")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-              activeTab === "approved"
-                ? "bg-white text-emerald-700 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Disetujui ({approvedCount})
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("pinned")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-              activeTab === "pinned"
-                ? "bg-white text-amber-700 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Tersemat ({pinnedCount})
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("hidden")}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
-              activeTab === "hidden"
-                ? "bg-white text-rose-700 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Disembunyikan ({hiddenCount})
-          </button>
+            <option value="all">Semua Pesan ({totalCount})</option>
+            <option value="approved">Disetujui ({approvedCount})</option>
+            <option value="pinned">Tersemat ({pinnedCount})</option>
+            <option value="hidden">Disembunyikan ({hiddenCount})</option>
+          </select>
+          <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
 

@@ -15,6 +15,7 @@ import {
   ChevronDown,
   Copy,
   Check,
+  Filter,
 } from "lucide-react";
 import { PrintableRSVPCardModal } from "@/components/dashboard/PrintableRSVPCardModal";
 
@@ -205,41 +206,18 @@ export default function RSVPWorkbench({
           />
         </div>
 
-        {/* Tab Buttons (Responsive Grid on Mobile) */}
-        <div className="grid grid-cols-3 sm:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl text-center">
-          <button
-            type="button"
-            onClick={() => setFilterTab("all")}
-            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
-              filterTab === "all"
-                ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+        {/* Filter Dropdown with Filter Icon */}
+        <div className="relative shrink-0 w-full sm:w-auto">
+          <select
+            value={filterTab}
+            onChange={(e) => setFilterTab(e.target.value as "all" | "attending" | "not_attending")}
+            className="w-full sm:w-auto appearance-none pl-3.5 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all cursor-pointer shadow-2xs"
           >
-            Semua ({totalResponses})
-          </button>
-          <button
-            type="button"
-            onClick={() => setFilterTab("attending")}
-            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
-              filterTab === "attending"
-                ? "bg-white text-emerald-700 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Hadir ({attendingList.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setFilterTab("not_attending")}
-            className={`min-h-[38px] px-2.5 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-colors cursor-pointer truncate flex items-center justify-center ${
-              filterTab === "not_attending"
-                ? "bg-white text-rose-700 shadow-2xs font-semibold"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Absen ({notAttendingList.length})
-          </button>
+            <option value="all">Semua Status ({totalResponses})</option>
+            <option value="attending">Hadir ({attendingList.length})</option>
+            <option value="not_attending">Absen ({notAttendingList.length})</option>
+          </select>
+          <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
 

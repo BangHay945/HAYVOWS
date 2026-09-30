@@ -11,6 +11,7 @@ import {
   ChevronRight,
   ArrowUpRight,
   AlertCircle,
+  Filter,
 } from "lucide-react";
 
 interface UserItem {
@@ -150,16 +151,19 @@ export default function AdminUsersClient({
           <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
             Filter Paket:
           </span>
-          <select
-            value={filterPlan}
-            onChange={(e) => setFilterPlan(e.target.value)}
-            className="px-3 py-2 text-xs rounded-xl border border-slate-200 bg-[#faf8f5] font-medium text-slate-700 focus:outline-none focus:border-[#2d4a3e] cursor-pointer"
-          >
-            <option value="all">Semua Paket ({stats.total})</option>
-            <option value="basic">Basic / Uji Coba ({stats.basic})</option>
-            <option value="premium">Premium ({stats.premium})</option>
-            <option value="luxury">Luxury ({stats.luxury})</option>
-          </select>
+          <div className="relative w-full sm:w-auto">
+            <select
+              value={filterPlan}
+              onChange={(e) => setFilterPlan(e.target.value)}
+              className="w-full sm:w-auto appearance-none pl-3.5 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-[#faf8f5] hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer shadow-2xs"
+            >
+              <option value="all">Semua Paket ({stats.total})</option>
+              <option value="basic">Basic / Uji Coba ({stats.basic})</option>
+              <option value="premium">Premium ({stats.premium})</option>
+              <option value="luxury">Luxury ({stats.luxury})</option>
+            </select>
+            <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
         </div>
       </div>
 

@@ -22,6 +22,7 @@ import {
   Crown,
   ChevronRight,
   X,
+  Filter,
 } from "lucide-react";
 import { PLAN_PRICING, PlanType } from "@/lib/midtrans";
 
@@ -484,41 +485,37 @@ export default function AdminPaymentsClient({
           />
         </div>
 
-        {/* Status Filter Tabs */}
-        <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl text-center shrink-0 overflow-x-auto">
-          {[
-            { id: "all", label: `Semua (${transactions.length})` },
-            { id: "settlement", label: `Lunas (${stats.settlementCount})` },
-            { id: "pending", label: `Pending (${stats.pendingCount})` },
-            { id: "failed", label: `Batal (${stats.failedCount})` },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
-                statusFilter === tab.id
-                  ? "bg-white text-purple-950 font-bold shadow-2xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
+        {/* Filters (Status & Plan Dropdowns) */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+          {/* Status Filter Dropdown */}
+          <div className="relative">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full appearance-none pl-3.5 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all cursor-pointer shadow-2xs"
             >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+              <option value="all">Semua Status ({transactions.length})</option>
+              <option value="settlement">Lunas ({stats.settlementCount})</option>
+              <option value="pending">Pending ({stats.pendingCount})</option>
+              <option value="failed">Batal ({stats.failedCount})</option>
+            </select>
+            <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
 
-        {/* Plan Filter */}
-        <div className="shrink-0">
-          <select
-            value={planFilter}
-            onChange={(e) => setPlanFilter(e.target.value)}
-            className="text-xs py-2 px-3 rounded-xl border border-slate-200 bg-white font-medium text-slate-700 focus:ring-2 focus:ring-purple-500 outline-hidden"
-          >
-            <option value="all">Semua Paket</option>
-            <option value="basic">Paket Basic</option>
-            <option value="premium">Paket Populer</option>
-            <option value="luxury">Paket Exclusive</option>
-          </select>
+          {/* Plan Filter Dropdown */}
+          <div className="relative">
+            <select
+              value={planFilter}
+              onChange={(e) => setPlanFilter(e.target.value)}
+              className="w-full appearance-none pl-3.5 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all cursor-pointer shadow-2xs"
+            >
+              <option value="all">Semua Paket</option>
+              <option value="basic">Paket Basic</option>
+              <option value="premium">Paket Populer</option>
+              <option value="luxury">Paket Exclusive</option>
+            </select>
+            <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
         </div>
       </div>
 

@@ -432,29 +432,35 @@ export default function GuestManager({
           </div>
 
           <div className="grid grid-cols-2 sm:flex items-center gap-2">
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-xl px-3 py-2 min-h-[42px] bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
-            >
-              <option value="all">Semua Kategori</option>
-              <option value="VIP">VIP</option>
-              <option value="Keluarga">Keluarga</option>
-              <option value="Teman">Teman</option>
-              <option value="Rekan Kerja">Rekan Kerja</option>
-              <option value="Reguler">Reguler</option>
-            </select>
+            <div className="relative">
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full appearance-none pl-3 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer shadow-2xs"
+              >
+                <option value="all">Semua Kategori</option>
+                <option value="VIP">VIP</option>
+                <option value="Keluarga">Keluarga</option>
+                <option value="Teman">Teman</option>
+                <option value="Rekan Kerja">Rekan Kerja</option>
+                <option value="Reguler">Reguler</option>
+              </select>
+              <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
-            <select
-              value={rsvpFilter}
-              onChange={(e) => setRsvpFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-xl px-3 py-2 min-h-[42px] bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer"
-            >
-              <option value="all">Semua Status</option>
-              <option value="attending">Hadir</option>
-              <option value="not_attending">Tidak Hadir</option>
-              <option value="pending">Belum Respon</option>
-            </select>
+            <div className="relative">
+              <select
+                value={rsvpFilter}
+                onChange={(e) => setRsvpFilter(e.target.value)}
+                className="w-full appearance-none pl-3 pr-8 py-2 min-h-[42px] text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] transition-all cursor-pointer shadow-2xs"
+              >
+                <option value="all">Semua Status</option>
+                <option value="attending">Hadir</option>
+                <option value="not_attending">Tidak Hadir</option>
+                <option value="pending">Belum Respon</option>
+              </select>
+              <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
         </div>
 
