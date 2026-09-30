@@ -12,6 +12,7 @@ export default function JsonLd() {
         logo: "https://hayvows.com/icon-512.png",
         description:
           "Platform undangan pernikahan digital modern, interaktif 2D Pixel RPG, dan sistem manajemen resepsi pintar terdepan di Indonesia.",
+        email: "admin@hayvows.com",
         sameAs: [
           "https://instagram.com/hayvows",
           "https://tiktok.com/@hayvows",

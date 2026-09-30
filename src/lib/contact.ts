@@ -8,7 +8,7 @@ export const CONTACT_INFO = {
   whatsappUrl: "https://wa.me/6285855556433",
   whatsappDefaultMessage:
     "Halo Admin Hayvows, saya ingin tanya seputar undangan pernikahan digital",
-  email: "support@hayvows.com",
+  email: "admin@hayvows.com",
 } as const;
 
 export function getWhatsAppUrl(customMessage?: string): string {

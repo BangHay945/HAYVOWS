@@ -1849,7 +1849,14 @@ export default function LandingPage() {
                     <span>WhatsApp CS: {CONTACT_INFO.phoneFormatted}</span>
                   </a>
                 </li>
-                <li><span>Email: {CONTACT_INFO.email}</span></li>
+                <li>
+                  <a
+                    href={`mailto:${CONTACT_INFO.email}`}
+                    className="hover:text-white transition-colors"
+                  >
+                    <span>Email: {CONTACT_INFO.email}</span>
+                  </a>
+                </li>
                 <li><span>Jam Operasional: 09:00 - 21:00 WIB</span></li>
               </ul>
             </div>
