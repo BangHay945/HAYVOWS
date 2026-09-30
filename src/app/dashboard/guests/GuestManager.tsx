@@ -627,7 +627,7 @@ export default function GuestManager({
                     </div>
                   </div>
 
-                  {/* Right: Quick Action Buttons (Kirim WA & Salin Pesan) + Chevron */}
+                  {/* Right: Quick Action Buttons (Kirim WA via Send Icon) + Chevron */}
                   <div
                     className="flex items-center gap-1.5 shrink-0"
                     onClick={(e) => e.stopPropagation()}
@@ -635,24 +635,11 @@ export default function GuestManager({
                     <button
                       type="button"
                       onClick={() => openWhatsApp(guest.phone, guest)}
-                      className="inline-flex items-center justify-center gap-1 min-h-[36px] px-2.5 sm:px-3 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl shadow-2xs transition-colors cursor-pointer"
+                      className="inline-flex items-center justify-center gap-1.5 min-h-[36px] px-2.5 sm:px-3 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl shadow-2xs transition-colors cursor-pointer"
                       title="Kirim pesan undangan WhatsApp"
                     >
-                      <MessageCircle className="w-3.5 h-3.5" />
-                      <span className="text-[11px] font-bold">WA</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => copyWhatsAppMessage(guest.id, guest)}
-                      className="inline-flex items-center justify-center min-h-[36px] min-w-[36px] p-2 text-xs font-medium bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 rounded-xl transition-colors cursor-pointer"
-                      title="Salin pesan undangan"
-                    >
-                      {isMsgCopied ? (
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      ) : (
-                        <Copy className="w-3.5 h-3.5 text-slate-600" />
-                      )}
+                      <Send className="w-3.5 h-3.5" />
+                      <span className="text-[11px] font-bold">Kirim</span>
                     </button>
 
                     <button
@@ -672,7 +659,7 @@ export default function GuestManager({
 
                 {/* 2. Expandable Accordion Drawer (Secondary Details & Actions) */}
                 {isExpanded && (
-                  <div className="px-3.5 pb-3.5 pt-1 space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-150 border-t border-slate-100 text-xs">
+                  <div className="px-3.5 pb-3.5 pt-0 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-150 text-xs">
                     {/* Detail Grid */}
                     <div className="grid grid-cols-2 gap-2 text-slate-600 bg-white p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
                       <div>
@@ -694,7 +681,7 @@ export default function GuestManager({
                       </div>
 
                       {guest.address && (
-                        <div className="col-span-2 pt-1 border-t border-slate-100 flex items-center gap-1.5 text-[11px] text-slate-600">
+                        <div className="col-span-2 pt-1 flex items-center gap-1.5 text-[11px] text-slate-600">
                           <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                           <span className="truncate">{guest.address}</span>
                         </div>
@@ -702,8 +689,8 @@ export default function GuestManager({
                     </div>
 
                     {/* Secondary Actions */}
-                    <div className="flex items-center justify-between gap-1 pt-0.5">
-                      <div className="flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5 pt-0.5">
+                      <div className="flex flex-wrap items-center gap-1.5">
                         <button
                           type="button"
                           onClick={() => setSelectedTicketGuest(guest)}
@@ -715,10 +702,29 @@ export default function GuestManager({
 
                         <button
                           type="button"
+                          onClick={() => copyWhatsAppMessage(guest.id, guest)}
+                          className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs"
+                          title="Salin pesan undangan WhatsApp"
+                        >
+                          {isMsgCopied ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                          <span>{isMsgCopied ? "Tersalin" : "Pesan"}</span>
+                        </button>
+
+                        <button
+                          type="button"
                           onClick={() => copyPersonalLink(guest.id, guest.slug)}
                           className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs"
+                          title="Salin link undangan website"
                         >
-                          {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                          {isCopied ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
                           <span>{isCopied ? "Tersalin" : "Link"}</span>
                         </button>
 
