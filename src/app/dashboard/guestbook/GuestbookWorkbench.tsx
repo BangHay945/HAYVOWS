@@ -27,7 +27,6 @@ import {
   Heart,
   RefreshCw,
   ChevronDown,
-  Send,
 } from "lucide-react";
 import { OnTheSpotGuestModal } from "@/components/dashboard/OnTheSpotGuestModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
@@ -81,13 +80,6 @@ export function GuestbookWorkbench({
   const [loadingGuestId, setLoadingGuestId] = useState<string | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [expandedGuestId, setExpandedGuestId] = useState<string | null>(null);
-
-  const openWhatsApp = (phone: string, name: string) => {
-    const cleanPhone = phone.replace(/[^0-9]/g, "");
-    if (!cleanPhone) return;
-    const text = `Halo Kak ${name}, terima kasih banyak sudah hadir di acara resepsi pernikahan kami! 🙏`;
-    window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, "_blank");
-  };
 
   // Stats Calculations
   const stats = useMemo(() => {
@@ -615,37 +607,26 @@ export function GuestbookWorkbench({
                         </div>
 
                         {/* Secondary Actions (Single Row - Even Spacing) */}
-                        <div className="flex items-center gap-1.5 pt-0.5">
+                        <div className="flex items-center gap-2 pt-0.5">
                           <button
                             type="button"
                             onClick={() => setSelectedTicketGuest(guest)}
-                            className="flex-1 inline-flex items-center justify-center gap-1 min-h-[32px] px-1.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-[11px] font-medium cursor-pointer shadow-2xs"
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[34px] px-3 py-1 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-semibold cursor-pointer shadow-2xs transition-colors"
                             title="Lihat Tiket QR Tamu"
                           >
                             <QrCode className="w-3.5 h-3.5 text-[#2d4a3e] shrink-0" />
-                            <span className="truncate">Tiket QR</span>
+                            <span>Tiket QR</span>
                           </button>
-
-                          {guest.phone ? (
-                            <button
-                              type="button"
-                              onClick={() => openWhatsApp(guest.phone, guest.name)}
-                              className="flex-1 inline-flex items-center justify-center gap-1 min-h-[32px] px-1.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-[11px] font-medium cursor-pointer shadow-2xs"
-                              title="Kirim pesan WhatsApp"
-                            >
-                              <Send className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                              <span className="truncate">Chat WA</span>
-                            </button>
-                          ) : null}
 
                           <a
                             href={personalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 cursor-pointer shadow-2xs shrink-0"
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[34px] px-3 py-1 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs font-medium cursor-pointer shadow-2xs transition-colors"
                             title="Buka Web Undangan"
                           >
-                            <ExternalLink className="w-3.5 h-3.5" />
+                            <ExternalLink className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            <span>Buka Undangan</span>
                           </a>
                         </div>
                       </div>
