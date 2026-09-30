@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   Plus,
   Copy,
@@ -20,11 +20,16 @@ import {
   Download,
   Upload,
   FileSpreadsheet,
+  ChevronDown,
 } from "lucide-react";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
 import { ImportGuestsModal } from "./ImportGuestsModal";
 import { WhatsAppTemplateModal, DEFAULT_WA_TEMPLATE } from "./WhatsAppTemplateModal";
+import {
+  exportGuestsToExcel,
+  exportGuestsToCSV,
+} from "@/lib/utils/guestSpreadsheet";
 
 export type GuestWithRsvp = {
   id: string;
@@ -180,63 +185,38 @@ export default function GuestManager({
     window.open(waUrl, "_blank");
   };
 
-  // Export full guest list and RSVP status to CSV with UTF-8 BOM
+  // Export handlers (Excel & CSV)
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setExportMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleExportExcel = async () => {
+    setIsExporting(true);
+    setExportMenuOpen(false);
+    try {
+      const targetList = filteredGuests.length > 0 ? filteredGuests : guests;
+      await exportGuestsToExcel(targetList, weddingSlug);
+    } catch (err) {
+      console.error("Export Excel error:", err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const handleExportCSV = () => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://hayvows.com";
-    const headers = [
-      "No",
-      "Nama Tamu",
-      "Nomor WhatsApp",
-      "Kategori",
-      "Alamat / Domisili",
-      "Nomor Meja",
-      "Sesi Acara",
-      "Status RSVP",
-      "Pax Hadir",
-      "Status Check-in",
-      "Tautan Undangan Personal",
-      "Kode Tiket QR",
-    ];
-
+    setExportMenuOpen(false);
     const targetList = filteredGuests.length > 0 ? filteredGuests : guests;
-    const dataRows = targetList.map((g, idx) => {
-      const personalUrl = `${origin}/invitation/${weddingSlug}/${g.slug}`;
-      const rsvpStatus =
-        g.rsvp?.attendanceStatus === "attending"
-          ? "Hadir"
-          : g.rsvp?.attendanceStatus === "not_attending"
-          ? "Tidak Hadir"
-          : "Belum Respon";
-      const paxCount =
-        g.rsvp?.attendanceStatus === "attending" ? g.rsvp?.guestCount || g.guestCount : 0;
-      const checkInStatus = g.checkedIn ? "Sudah Check-in" : "Belum Check-in";
-
-      return [
-        idx + 1,
-        `"${(g.name || "").replace(/"/g, '""')}"`,
-        `"${(g.phone || "").replace(/"/g, '""')}"`,
-        `"${(g.category || "").replace(/"/g, '""')}"`,
-        `"${(g.address || "").replace(/"/g, '""')}"`,
-        `"${(g.tableNumber || "").replace(/"/g, '""')}"`,
-        `"${(g.sessionName || "").replace(/"/g, '""')}"`,
-        `"${rsvpStatus}"`,
-        paxCount,
-        `"${checkInStatus}"`,
-        `"${personalUrl}"`,
-        `"${(g.qrCode || "").replace(/"/g, '""')}"`,
-      ].join(",");
-    });
-
-    const csvContent = "\uFEFF" + [headers.join(","), ...dataRows].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    const dateStr = new Date().toISOString().slice(0, 10);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `daftar-tamu-${weddingSlug}-${dateStr}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    exportGuestsToCSV(targetList, weddingSlug);
   };
 
   const addGuest = async (e: React.FormEvent) => {
@@ -509,19 +489,63 @@ export default function GuestManager({
             title="Import Banyak Tamu dari File Excel / CSV"
           >
             <Upload className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Import CSV</span>
+            <span>Import Excel / CSV</span>
           </button>
 
-          <button
-            type="button"
-            onClick={handleExportCSV}
-            disabled={guests.length === 0}
-            className="inline-flex items-center gap-1.5 min-h-[40px] py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0 whitespace-nowrap"
-            title="Download Rekap Daftar Tamu & RSVP ke File CSV / Excel"
-          >
-            <Download className="w-3.5 h-3.5 text-slate-600" />
-            <span>Export CSV</span>
-          </button>
+          {/* Export Dropdown Menu (Excel .xlsx & CSV) */}
+          <div className="relative shrink-0" ref={exportMenuRef}>
+            <button
+              type="button"
+              onClick={() => setExportMenuOpen((prev) => !prev)}
+              disabled={guests.length === 0 || isExporting}
+              className="inline-flex items-center gap-1.5 min-h-[40px] py-2 px-3 sm:px-3.5 rounded-xl font-semibold text-xs bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0 whitespace-nowrap"
+              title="Unduh Rekap Daftar Tamu & RSVP ke File Excel atau CSV"
+            >
+              {isExporting ? (
+                <FileSpreadsheet className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+              ) : (
+                <Download className="w-3.5 h-3.5 text-slate-600" />
+              )}
+              <span>Export Rekap</span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
+            </button>
+
+            {exportMenuOpen && (
+              <div className="absolute right-0 mt-1.5 w-56 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-100">
+                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">
+                  Format Unduhan Rekap
+                </div>
+                <button
+                  type="button"
+                  onClick={handleExportExcel}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs text-left text-slate-800 hover:bg-emerald-50 hover:text-emerald-950 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <p className="font-bold leading-tight">Microsoft Excel (.xlsx)</p>
+                      <p className="text-[10px] text-slate-400 leading-tight">Rapi &amp; siap diedit di Excel</p>
+                    </div>
+                  </div>
+                  <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-full">
+                    Disarankan
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleExportCSV}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-left text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer group"
+                >
+                  <Download className="w-4 h-4 text-slate-500 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <p className="font-semibold leading-tight">File Teks CSV (.csv)</p>
+                    <p className="text-[10px] text-slate-400 leading-tight">Format teks polos standar</p>
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
