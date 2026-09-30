@@ -49,6 +49,7 @@ import {
 } from "lucide-react";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { CONTACT_INFO, getWhatsAppUrl } from "@/lib/contact";
+import { TEMPLATE_DESCRIPTIONS } from "@/lib/templates/descriptions";
 
 export type ThemeCategory = "all" | "adat" | "floral" | "rpg" | "luxury" | "minimalist" | "basic";
 
@@ -189,7 +190,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Monogram",
       viewBadge: "Live Monogram Crest View",
       viewBadgeStyle: "border-[#c5a880]/50 text-[#fef08a]",
-      description: "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
+      description: TEMPLATE_DESCRIPTIONS["modern-monogram"],
       demoUrl: "/invitation/adrian-nadia/budi-santoso",
       bannerImage: "/assets/templates/modern-monogram/banner.jpg",
       highlights: ["Monogram Inisial Artistik", "Tipografi Bersih Tanpa Bunga", "Musik Romantis Preset"],
@@ -207,7 +208,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Floral Edition",
       viewBadge: "Live Botanical Split View",
       viewBadgeStyle: "border-emerald-400/50 text-emerald-300",
-      description: "Estetika botani hijau sage & emas mewah dengan tipografi Playfair Display puitis. Lengkap dengan 11 komponen interaktif dan efek suara akustik lembut.",
+      description: TEMPLATE_DESCRIPTIONS["nature-floral"],
       demoUrl: "/invitation/dimas-anindya/budi-santoso",
       bannerImage: "/assets/templates/nature-floral/banner.jpg",
       highlights: ["Desain Botani Mewah", "Modal Amplop Digital", "Sound FX Akustik"],
@@ -225,7 +226,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Adat Jawa",
       viewBadge: "Live Kraton Heritage Split View",
       viewBadgeStyle: "border-amber-600/50 text-amber-300",
-      description: "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
+      description: TEMPLATE_DESCRIPTIONS["batik-jawa"],
       demoUrl: "/invitation/prasetyo-kinanti/budi-santoso",
       bannerImage: "/assets/templates/batik-jawa/banner.jpg",
       highlights: ["Ornamen Gunungan & Kawung SVG", "Tipografi Prasasti Kraton", "Musik Gamelan Jawa"],
@@ -243,7 +244,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Eternal Noir",
       viewBadge: "Live Editorial Split View",
       viewBadgeStyle: "border-[#c9a84c]/40 text-[#c9a84c]",
-      description: "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
+      description: TEMPLATE_DESCRIPTIONS["eternal-noir"],
       demoUrl: "/invitation/eleanor-xavier/budi-santoso",
       bannerImage: "/assets/templates/eternal-noir/banner.jpg",
       highlights: ["Kemewahan Noir & Emas", "Layout Split Desktop", "Animasi Ken Burns"],
@@ -261,7 +262,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Royal Emerald",
       viewBadge: "Live Royal Velvet View",
       viewBadgeStyle: "border-emerald-400/40 text-amber-300",
-      description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
+      description: TEMPLATE_DESCRIPTIONS["royal-emerald"],
       demoUrl: "/invitation/arthur-guinevere/budi-santoso",
       bannerImage: "/assets/templates/royal-emerald/banner.jpg",
       highlights: ["Emerald Velvet & Emas Bangsawan", "Mahkota & Ornamen Kerajaan", "Layout Sinematik Split Desktop"],
@@ -279,7 +280,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Editorial Journal",
       viewBadge: "Live Vogue Lookbook View",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
-      description: "Desain majalah mode editorial kelas atas (Vogue / Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik, dan background galeri dinamis.",
+      description: TEMPLATE_DESCRIPTIONS["cinematic-editorial"],
       demoUrl: "/invitation/julian-claire/budi-santoso",
       bannerImage: "/assets/templates/cinematic-editorial/banner.jpg",
       highlights: ["Tipografi Majalah Mode", "Slideshow Foto Sinematik", "Background Galeri Dinamis"],
@@ -297,7 +298,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Editorial Ivory",
       viewBadge: "Live Warm Ivory View",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
-      description: "Kemewahan sinematik film pernikahan kelas atas bernuansa midnight charcoal & tipografi platinum ivory bercahaya. Transisi film dramatis, portrait 3:4 artistik, timeline storytelling tanpa card, dan galeri asimetris elegan.",
+      description: TEMPLATE_DESCRIPTIONS["cinematic-ivory"],
       demoUrl: "/invitation/alexander-sara/budi-santoso",
       bannerImage: "/assets/templates/cinematic-ivory/banner.jpg",
       highlights: ["Midnight & Platinum Ivory", "Portrait Editorial 3:4", "Cinematic Film Storytelling"],
@@ -315,7 +316,7 @@ export default function LandingPage() {
       versionTag: "v1.0.0 • Pulau Langit",
       viewBadge: "Live Pulau Langit Map",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
-      description: "Pengalaman seperti bermain game RPG 16-bit! Tamu diajak berkeliling di pulau langit terapung, berbicara dengan 5 NPC interaktif, dan membuka fitur pernikahan.",
+      description: TEMPLATE_DESCRIPTIONS["pixel-adventure"],
       demoUrl: "/invitation/alex-sara/budi-santoso",
       bannerImage: "/assets/templates/pixel-adventure/banner.jpg",
       highlights: ["Petualangan Game 2D", "Pulau Langit Eksplorasi", "Gerakan Karakter WASD"],
@@ -333,7 +334,7 @@ export default function LandingPage() {
       versionTag: "v2.4.0 • RPG 2D",
       viewBadge: "Live Skyline District Map",
       viewBadgeStyle: "border-cyan-400/40 text-cyan-300",
-      description: "Pengalaman pernikahan futuristik bernuansa neon cyberpunk! Dilengkapi eksplorasi peta kota Skyline District, 7 NPC interaktif, audio synthwave, dan visual retro-futuristik.",
+      description: TEMPLATE_DESCRIPTIONS["pixel-cyberpunk"],
       demoUrl: "/invitation/neo-2077/budi-santoso",
       bannerImage: "/assets/templates/pixel-cyberpunk/banner.jpg",
       highlights: ["Kota Cyberpunk Futuristik", "Audio Synthwave", "7 NPC Interaktif"],

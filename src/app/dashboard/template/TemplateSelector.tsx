@@ -27,6 +27,7 @@ import {
   getTemplateArchetype,
   type TemplateArchetype,
 } from "@/lib/templates";
+import { TEMPLATE_DESCRIPTIONS } from "@/lib/templates/descriptions";
 
 interface RichTemplateDetail {
   slug: string;
@@ -54,8 +55,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Basic"],
     versionTag: "v1.0.0 • Basic Edition",
     bannerImage: "/assets/templates/modern-monogram/banner.jpg",
-    description:
-      "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
+    description: TEMPLATE_DESCRIPTIONS["modern-monogram"],
     highlights: [
       "Tipografi: Monogram Elegan & Desain Clean Editorial",
       "Fitur Paket Basic: Musik Romantis & Countdown Acara",
@@ -70,8 +70,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v2.4.0 • RPG 2D",
     bannerImage: "/assets/templates/pixel-cyberpunk/banner.jpg",
-    description:
-      "Pengalaman pernikahan futuristik bernuansa neon cyberpunk! Dilengkapi eksplorasi peta kota Skyline District, 7 NPC interaktif, audio synthwave, dan visual retro-futuristik.",
+    description: TEMPLATE_DESCRIPTIONS["pixel-cyberpunk"],
     highlights: [
       "Gerakan Mulus: WASD, Virtual Joystick, & Auto-walk",
       "7 NPC Interaktif: Mempelai, RSVP, Galeri, Kado, Jam",
@@ -86,8 +85,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Populer"],
     versionTag: "v1.0.0 • Floral Edition",
     bannerImage: "/assets/templates/nature-floral/banner.jpg",
-    description:
-      "Estetika botani hijau sage & emas mewah dengan tipografi Playfair Display puitis. Lengkap dengan 11 komponen interaktif dan efek suara akustik lembut.",
+    description: TEMPLATE_DESCRIPTIONS["nature-floral"],
     highlights: [
       "Tipografi: Playfair Display Serif & Desain Botani Mewah",
       "11 Komponen: Cover, Kisah, RSVP, Kado, Galeri, dsb.",
@@ -102,8 +100,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.0.0 • Pulau Langit",
     bannerImage: "/assets/templates/pixel-adventure/banner.jpg",
-    description:
-      "Pengalaman seperti bermain game RPG 16-bit! Tamu diajak berkeliling di pulau langit terapung, berbicara dengan 5 NPC interaktif, dan membuka fitur pernikahan.",
+    description: TEMPLATE_DESCRIPTIONS["pixel-adventure"],
     highlights: [
       "Eksplorasi: Peta Pulau Langit 2.5D Isometrik",
       "Interaktif: 5 NPC Bicara & Buka Fitur Undangan",
@@ -117,8 +114,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryTag: "Paket Exclusive",
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.8.2 • 16-Bit JRPG",
-    description:
-      "Pengalaman unik bernuansa retro 16-bit JRPG! Karakter mempelai menjelajahi ballroom kerajaan dengan musik romantis 8-bit.",
+    description: TEMPLATE_DESCRIPTIONS["pixel-rpg"],
     highlights: [
       "Gerakan: 8-Direction Sprite Top-Down RPG",
       "Lokasi: Fantasy Royal Ballroom & Courtyard",
@@ -132,8 +128,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryTag: "Paket Populer",
     categoryStyle: PLAN_BADGE_STYLES["Paket Populer"],
     versionTag: "v1.0.0 • Editorial",
-    description:
-      "Estetika floral klasik berpadu arsitektur editorial nan megah, ornamen wax seal digital, dan instrumen piano romantis.",
+    description: TEMPLATE_DESCRIPTIONS["vintage-royal"],
     highlights: [
       "Audio: Classical Strings & Piano Romance",
       "Fitur: Digital Envelope Wax Seal & Gold Lettering",
@@ -148,8 +143,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.0.0 • Eternal Noir",
     bannerImage: "/assets/templates/eternal-noir/banner.jpg",
-    description:
-      "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
+    description: TEMPLATE_DESCRIPTIONS["eternal-noir"],
     highlights: [
       "Tipografi: Cormorant Garamond Ultra-Elegan & Montserrat",
       "Efek: Grayscale Auto-Convert + Hover De-Grayscale Galeri",
@@ -164,8 +158,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.0.0 • Royal Emerald",
     bannerImage: "/assets/templates/royal-emerald/banner.jpg",
-    description:
-      "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
+    description: TEMPLATE_DESCRIPTIONS["royal-emerald"],
     highlights: [
       "Estetika: Emerald Velvet Aristokrat & Emas Bangsawan",
       "Ornamen: Mahkota Kerajaan, Sudut Baroque, & Monogram Emas",
@@ -180,8 +173,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Populer"],
     versionTag: "v1.0.0 • Adat Jawa",
     bannerImage: "/assets/templates/batik-jawa/banner.jpg",
-    description:
-      "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
+    description: TEMPLATE_DESCRIPTIONS["batik-jawa"],
     highlights: [
       "Ornamen: Gunungan Wayang & Motif Kawung SVG Inline",
       "Tipografi: Prasasti IM Fell English & Lora Editorial",
@@ -196,8 +188,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.0.0 • Editorial Journal",
     bannerImage: "/assets/templates/cinematic-editorial/banner.jpg",
-    description:
-      "Desain majalah mode editorial kelas atas (Vogue / Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik, dan background galeri dinamis.",
+    description: TEMPLATE_DESCRIPTIONS["cinematic-editorial"],
     highlights: [
       "Tipografi: Vogue & Kinfolk Editorial Serif & Bold Headlines",
       "Galeri: Slideshow Sinematik Otomatis & Grid Lookbook",
@@ -212,8 +203,7 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
     categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
     versionTag: "v1.0.0 • Editorial Ivory",
     bannerImage: "/assets/templates/cinematic-ivory/banner.jpg",
-    description:
-      "Kemewahan sinematik film pernikahan kelas atas bernuansa midnight charcoal & tipografi platinum ivory bercahaya. Transisi film dramatis, portrait 3:4 artistik, timeline storytelling tanpa card, dan galeri asimetris elegan.",
+    description: TEMPLATE_DESCRIPTIONS["cinematic-ivory"],
     highlights: [
       "Kanvas: Warm Ivory & Cream Editorial Paper (Vogue/Kinfolk Vibes)",
       "Tipografi: Deep Charcoal & Cormorant Garamond dengan Clip-Path Reveal",
@@ -438,6 +428,7 @@ export default function TemplateSelector({
             categoryTag: "Interactive",
             categoryStyle: "bg-slate-50 text-slate-700 border-slate-200",
             versionTag: `v${tpl.version}`,
+            description: TEMPLATE_DESCRIPTIONS[tpl.slug] || tpl.description,
             highlights: [
               "Fitur Interaktif & Responsif",
               "Background Music Player",
@@ -606,7 +597,8 @@ export default function TemplateSelector({
                       <span>{tpl.name}</span>
                     </h2>
                     <p className="text-xs text-slate-500 leading-relaxed mt-1 line-clamp-3">
-                      {extra.description ||
+                      {TEMPLATE_DESCRIPTIONS[tpl.slug] ||
+                        extra.description ||
                         tpl.description ||
                         "Tema interaktif dengan visual responsif dan gameplay yang menghibur tamu undangan."}
                     </p>

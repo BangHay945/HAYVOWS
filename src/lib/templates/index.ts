@@ -208,13 +208,25 @@ export const isPlanAllowed = (reqPlan: string, curPlan: string, role?: string) =
   return false;
 };
 
+export * from "./descriptions";
+import { TEMPLATE_DESCRIPTIONS } from "./descriptions";
+
 export async function getTemplates() {
-  return prisma.template.findMany({
+  const templates = await prisma.template.findMany({
     where: { isActive: true },
     orderBy: { name: "asc" },
   });
+  return templates.map((tpl) => ({
+    ...tpl,
+    description: TEMPLATE_DESCRIPTIONS[tpl.slug] || tpl.description,
+  }));
 }
 
 export async function getTemplateBySlug(slug: string) {
-  return prisma.template.findUnique({ where: { slug } });
+  const tpl = await prisma.template.findUnique({ where: { slug } });
+  if (!tpl) return null;
+  return {
+    ...tpl,
+    description: TEMPLATE_DESCRIPTIONS[tpl.slug] || tpl.description,
+  };
 }

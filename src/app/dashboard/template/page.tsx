@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { TEMPLATE_DESCRIPTIONS } from "@/lib/templates";
 import TemplateSelector from "./TemplateSelector";
 
 export default async function TemplateSelectionPage({
@@ -42,7 +43,10 @@ export default async function TemplateSelectionPage({
     }),
   ]);
 
-  const templates = rawTemplates;
+  const templates = rawTemplates.map((t) => ({
+    ...t,
+    description: TEMPLATE_DESCRIPTIONS[t.slug] || t.description,
+  }));
 
   const hasWeddings = weddings.length > 0;
   const selectedWedding = hasWeddings

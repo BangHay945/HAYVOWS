@@ -22,6 +22,7 @@ import {
   getTemplateArchetype,
   type SubscriptionTier,
   type TemplateArchetype,
+  TEMPLATE_DESCRIPTIONS,
 } from "@/lib/templates";
 
 interface Template {
@@ -342,7 +343,9 @@ export function NewWeddingClient({
                       </div>
 
                       <p className="text-xs text-slate-500 leading-relaxed">
-                        {tpl.description || "Template undangan digital yang responsif dan interaktif."}
+                        {TEMPLATE_DESCRIPTIONS[tpl.slug] ||
+                          tpl.description ||
+                          "Template undangan digital yang responsif dan interaktif."}
                       </p>
                     </div>
                   </div>
