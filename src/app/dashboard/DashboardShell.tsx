@@ -163,6 +163,8 @@ export function DashboardShell({
     if (path.startsWith("/dashboard/rsvp")) return "Konfirmasi RSVP";
     if (path.startsWith("/dashboard/template")) return "Pilihan Template";
     if (path.startsWith("/dashboard/messages")) return "Ucapan & Doa";
+    if (path.startsWith("/dashboard/invitation/new")) return "Undangan Baru";
+    if (path.startsWith("/dashboard/invitation/")) return "Edit Undangan";
     if (path.startsWith("/dashboard/invitation")) return "Kelola Undangan";
     if (path.startsWith("/dashboard/analytics")) return "Statistik";
     if (path.startsWith("/dashboard/settings")) return "Pengaturan";
@@ -410,15 +412,23 @@ export function DashboardShell({
         <header className="flex sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-3.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 items-center justify-between gap-2 sm:gap-3">
           {/* Left Context */}
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            {/* Mobile View: If on Subpage, show Back to Overview Button */}
+            {/* Mobile View: If on Subpage, show Back to Parent Button */}
             {!isOverview ? (
               <div className="flex md:hidden items-center gap-1.5 min-w-0">
                 <Link
-                  href={getHrefWithWedding("/dashboard")}
+                  href={
+                    pathname.startsWith("/dashboard/invitation/")
+                      ? "/dashboard/invitation"
+                      : getHrefWithWedding("/dashboard")
+                  }
                   className="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 py-1.5 px-2 rounded-lg transition-colors shrink-0"
                 >
                   <ChevronLeft className="w-4 h-4 text-slate-600 shrink-0" />
-                  <span>Overview</span>
+                  <span>
+                    {pathname.startsWith("/dashboard/invitation/")
+                      ? "Kelola"
+                      : "Overview"}
+                  </span>
                 </Link>
                 <span className="text-slate-300 font-light shrink-0">/</span>
                 <span className="text-xs font-bold text-slate-900 truncate">

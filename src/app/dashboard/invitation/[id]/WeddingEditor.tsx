@@ -123,7 +123,6 @@ export default function WeddingEditor({
   const [successMsg, setSuccessMsg] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deletingWedding, setDeletingWedding] = useState(false);
-  const [mobileTabSelectorOpen, setMobileTabSelectorOpen] = useState(false);
   const [deleteItemTarget, setDeleteItemTarget] = useState<{
     type: "event" | "story" | "gallery" | "music" | "gift";
     id: string;
@@ -620,18 +619,7 @@ Terima kasih.`,
 
   return (
     <div className="space-y-5 sm:space-y-6 w-full max-w-7xl mx-auto pb-12">
-      {/* 1. Back button & Breadcrumb */}
-      <div className="flex items-center justify-between">
-        <Link
-          href="/dashboard/invitation"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200/90 px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer min-h-[38px]"
-        >
-          <ChevronLeft className="w-4 h-4 text-slate-400" />
-          <span>Kembali ke Kelola Undangan</span>
-        </Link>
-      </div>
-
-      {/* 2. Top Header (Responsive Mobile & Tablet) */}
+      {/* 1. Top Header (Responsive Mobile & Tablet) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/70 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-slate-200/70 sm:border-0 shadow-2xs sm:shadow-none">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5 flex-wrap">
@@ -691,7 +679,7 @@ Terima kasih.`,
         </div>
       </div>
 
-      {/* 3. Notification Toast Banner */}
+      {/* 2. Notification Toast Banner */}
       {successMsg && (
         <div className="bg-emerald-50 border border-emerald-200 text-[#2d4a3e] text-xs sm:text-sm px-4 py-3 rounded-xl flex items-center gap-2.5 shadow-2xs animate-in fade-in duration-200">
           <CheckCircle2 className="w-4 h-4 text-[#2d4a3e] shrink-0" />
@@ -699,35 +687,7 @@ Terima kasih.`,
         </div>
       )}
 
-      {/* 4. Mobile Current Section Quick Bar & Drawer Trigger */}
-      <div className="sm:hidden bg-white border border-slate-200/90 rounded-2xl p-3 shadow-2xs">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-[#2d4a3e]/10 text-[#2d4a3e] border border-[#2d4a3e]/15 flex items-center justify-center shrink-0">
-              {React.createElement(tabs.find((t) => t.key === activeTab)?.icon || Heart, { className: "w-4 h-4" })}
-            </div>
-            <div className="min-w-0">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
-                Bagian Aktif
-              </span>
-              <span className="text-xs font-bold text-slate-900 truncate block">
-                {tabs.find((t) => t.key === activeTab)?.label}
-              </span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setMobileTabSelectorOpen(true)}
-            className="inline-flex items-center gap-1.5 bg-[#2d4a3e] hover:bg-[#233a30] text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-2xs transition-all cursor-pointer shrink-0 min-h-[38px]"
-          >
-            <span>Pilih Bagian</span>
-            <ChevronDown className="w-3.5 h-3.5 text-[#c9a84c]" />
-          </button>
-        </div>
-      </div>
-
-      {/* 5. Modern Tab Navigation (Horizontal Scroll with Touch Snap on Mobile, Clean Pills on Tablet/Desktop) */}
+      {/* 3. Modern Tab Navigation (Horizontal Scroll with Touch Snap on Mobile, Clean Pills on Tablet/Desktop) */}
       <div className="border-b border-slate-200/90 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 scrollbar-none snap-x -mx-1 px-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -748,77 +708,6 @@ Terima kasih.`,
           );
         })}
       </div>
-
-      {/* 6. Mobile Tab Selector Bottom Sheet Drawer */}
-      {mobileTabSelectorOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200 space-y-4 animate-in slide-in-from-bottom sm:zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto">
-            {/* Sheet Handle */}
-            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto sm:hidden -mt-1 mb-2" />
-
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  Pilih Bagian Undangan
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Ketuk salah satu bagian untuk langsung mengedit kontennya
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setMobileTabSelectorOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-2">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.key;
-                return (
-                  <button
-                    key={tab.key}
-                    type="button"
-                    onClick={() => {
-                      setActiveTab(tab.key);
-                      setMobileTabSelectorOpen(false);
-                    }}
-                    className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[50px] ${
-                      isActive
-                        ? "bg-emerald-50/70 border-emerald-300 text-emerald-950 font-semibold"
-                        : "bg-slate-50/60 hover:bg-slate-100 border-slate-200 text-slate-700"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                        isActive ? "bg-[#2d4a3e] text-[#c9a84c]" : "bg-white border border-slate-200 text-slate-600"
-                      }`}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs sm:text-sm font-bold truncate">
-                          {tab.label}
-                        </p>
-                        <p className="text-[11px] text-slate-400 font-normal truncate">
-                          {tab.desc}
-                        </p>
-                      </div>
-                    </div>
-                    {isActive && (
-                      <span className="w-5 h-5 rounded-full bg-[#2d4a3e] text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                        ✓
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Mempelai Tab */}
       {activeTab === "couple" && (
