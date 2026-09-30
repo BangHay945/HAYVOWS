@@ -688,13 +688,14 @@ export default function GuestManager({
                       )}
                     </div>
 
-                    {/* Secondary Actions */}
-                    <div className="flex flex-wrap items-center justify-between gap-1.5 pt-0.5">
-                      <div className="flex flex-wrap items-center gap-1.5">
+                    {/* Secondary Actions (Single Row) */}
+                    <div className="flex items-center justify-between gap-1 pt-0.5">
+                      <div className="flex items-center gap-1 sm:gap-1.5">
                         <button
                           type="button"
                           onClick={() => setSelectedTicketGuest(guest)}
-                          className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-medium cursor-pointer shadow-2xs"
+                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-medium cursor-pointer shadow-2xs shrink-0"
+                          title="Lihat Tiket QR Tamu"
                         >
                           <QrCode className="w-3.5 h-3.5 text-[#2d4a3e]" />
                           <span>Tiket QR</span>
@@ -703,7 +704,7 @@ export default function GuestManager({
                         <button
                           type="button"
                           onClick={() => copyWhatsAppMessage(guest.id, guest)}
-                          className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs"
+                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs shrink-0"
                           title="Salin pesan undangan WhatsApp"
                         >
                           {isMsgCopied ? (
@@ -717,7 +718,7 @@ export default function GuestManager({
                         <button
                           type="button"
                           onClick={() => copyPersonalLink(guest.id, guest.slug)}
-                          className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs"
+                          className="inline-flex items-center gap-1 min-h-[32px] px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs cursor-pointer shadow-2xs shrink-0"
                           title="Salin link undangan website"
                         >
                           {isCopied ? (
@@ -732,7 +733,7 @@ export default function GuestManager({
                           href={personalUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 cursor-pointer shadow-2xs"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 cursor-pointer shadow-2xs shrink-0"
                           title="Buka Web Undangan"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -742,10 +743,10 @@ export default function GuestManager({
                       <button
                         type="button"
                         onClick={() => setGuestToDelete(guest)}
-                        className="inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer text-xs font-medium"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-rose-600 cursor-pointer shadow-2xs shrink-0 transition-colors"
+                        title="Hapus Tamu"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
-                        <span>Hapus</span>
                       </button>
                     </div>
                   </div>
