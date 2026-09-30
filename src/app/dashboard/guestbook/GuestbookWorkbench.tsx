@@ -21,7 +21,6 @@ import {
   Check,
   Undo2,
   Trash2,
-  ExternalLink,
   Crown,
   FileSpreadsheet,
   Heart,
@@ -451,7 +450,6 @@ export function GuestbookWorkbench({
               filteredGuests.map((guest, idx) => {
                 const isVip = guest.category?.toLowerCase().includes("vip");
                 const isExpanded = expandedGuestId === guest.id;
-                const personalUrl = `/invitation/${weddingSlug}/${guest.slug}`;
 
                 return (
                   <div
@@ -606,28 +604,17 @@ export function GuestbookWorkbench({
                           )}
                         </div>
 
-                        {/* Secondary Actions (Single Row - Even Spacing) */}
-                        <div className="flex items-center gap-2 pt-0.5">
+                        {/* Secondary Actions */}
+                        <div className="pt-0.5">
                           <button
                             type="button"
                             onClick={() => setSelectedTicketGuest(guest)}
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[34px] px-3 py-1 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-semibold cursor-pointer shadow-2xs transition-colors"
-                            title="Lihat Tiket QR Tamu"
+                            className="w-full inline-flex items-center justify-center gap-1.5 min-h-[36px] px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 text-xs font-semibold cursor-pointer shadow-2xs transition-colors"
+                            title="Lihat Tiket QR Code E-Pass"
                           >
                             <QrCode className="w-3.5 h-3.5 text-[#2d4a3e] shrink-0" />
-                            <span>Tiket QR</span>
+                            <span>Lihat Tiket QR Code</span>
                           </button>
-
-                          <a
-                            href={personalUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 min-h-[34px] px-3 py-1 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 text-xs font-medium cursor-pointer shadow-2xs transition-colors"
-                            title="Buka Web Undangan"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                            <span>Buka Undangan</span>
-                          </a>
                         </div>
                       </div>
                     )}
