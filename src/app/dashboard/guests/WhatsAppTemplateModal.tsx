@@ -11,6 +11,7 @@ import {
   Loader2,
   Copy,
 } from "lucide-react";
+import { WHATSAPP_PRESETS, WhatsAppPreset } from "@/lib/whatsappPresets";
 
 export const DEFAULT_WA_TEMPLATE = `Kepada Yth.
 Bapak/Ibu/Saudara/i: *{nama}*
@@ -49,7 +50,16 @@ export function WhatsAppTemplateModal({
   const [loading, setLoading] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
+  const [presetNotice, setPresetNotice] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const applyPreset = (preset: WhatsAppPreset) => {
+    setTemplate(preset.template);
+    setActivePresetId(preset.id);
+    setPresetNotice(`Preset diterapkan: ${preset.name}`);
+    setTimeout(() => setPresetNotice(null), 3000);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -160,6 +170,49 @@ export function WhatsAppTemplateModal({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-y-auto flex-1">
           {/* Left Column: Editor & Variable Pills */}
           <div className="lg:col-span-7 p-5 sm:p-6 space-y-4 border-b lg:border-b-0 lg:border-r border-slate-200">
+            {/* Pilihan Draf Ucapan Siap Pakai */}
+            <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-200 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Pilihan Draf Ucapan Siap Pakai</span>
+                </span>
+                {presetNotice && (
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1 animate-in fade-in">
+                    <Check className="w-3 h-3" />
+                    <span>{presetNotice}</span>
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                {WHATSAPP_PRESETS.map((p) => {
+                  const isActive =
+                    activePresetId === p.id || template.trim() === p.template.trim();
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => applyPreset(p)}
+                      className={`flex flex-col items-start p-2 rounded-lg text-left transition-all cursor-pointer border ${
+                        isActive
+                          ? "bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-500 shadow-2xs font-bold"
+                          : "bg-white border-slate-200 hover:border-emerald-300 hover:bg-slate-50 text-slate-700"
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 w-full">
+                        <span className="text-sm">{p.icon}</span>
+                        <span className="font-bold text-[11px] truncate">{p.name}</span>
+                      </div>
+                      <span className="text-[9px] text-slate-400 line-clamp-1 mt-0.5 leading-tight font-normal">
+                        {p.badge}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div>
               <label className="text-xs font-bold text-slate-800 flex items-center justify-between mb-1.5">
                 <span>Variabel Dinamis (Klik untuk menyisipkan)</span>

@@ -39,7 +39,6 @@ import {
 
 import ImageUploadDropzone from "@/components/ui/ImageUploadDropzone";
 import GalleryUploader from "@/components/ui/GalleryUploader";
-import { WHATSAPP_PRESETS, WhatsAppPreset } from "@/lib/whatsappPresets";
 import { PRESET_MUSICS, PresetMusicItem } from "@/lib/constants/presetMusic";
 import { extractYouTubeId, isYouTubeUrl, getYouTubeEmbedUrl } from "@/lib/utils/youtube";
 
@@ -230,8 +229,6 @@ Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
 Terima kasih.`,
   });
 
-  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
-  const [presetNotice, setPresetNotice] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   // Domain state (tab Domain)
@@ -295,22 +292,6 @@ Terima kasih.`,
 
 
 
-  const applyPreset = (preset: WhatsAppPreset) => {
-    setSettingsData((prev) => ({
-      ...prev,
-      whatsappMessage: preset.template,
-    }));
-    setSelectedPresetId(preset.id);
-    setPresetNotice(`Ucapan ${preset.name} berhasil diterapkan!`);
-    setTimeout(() => setPresetNotice(null), 3000);
-  };
-
-  const insertVariable = (variableTag: string) => {
-    setSettingsData((prev) => ({
-      ...prev,
-      whatsappMessage: (prev.whatsappMessage || "") + " " + variableTag,
-    }));
-  };
 
   const coupleTitle = `${couple.groomNickname || couple.groomName || "Pengantin"} & ${couple.brideNickname || couple.brideName || "Pengantin"}`;
   const origin = mounted && typeof window !== "undefined" ? window.location.origin : "https://undangan.me";
@@ -610,7 +591,7 @@ Terima kasih.`,
     { key: "gallery", label: "Galeri Foto", icon: ImageIcon, desc: "Koleksi foto prewedding & kenangan" },
     { key: "music", label: "Musik Latar", icon: Music, desc: "Preset lagu, YouTube, atau custom" },
     { key: "gift", label: "Amplop & Kado", icon: Gift, desc: "Nomor rekening & dompet digital" },
-    { key: "settings", label: "Pengaturan & SEO", icon: Settings2, desc: "Pesan WhatsApp & link preview" },
+    { key: "settings", label: "Pengaturan & SEO", icon: Settings2, desc: "Tautan URL, status, & preview link" },
     { key: "domain", label: "Link Web Sendiri", icon: Crown, desc: "Subdomain & custom domain pribadi" },
   ] as const;
 
@@ -1760,152 +1741,36 @@ Terima kasih.`,
             </div>
           </div>
 
-          {/* SECTION 2: WHATSAPP BROADCAST TEMPLATE */}
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-            <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-emerald-600" />
-                  <span>Format Pesan Broadcast WhatsApp</span>
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Draf teks yang akan otomatis terisi saat Anda menekan tombol bagikan undangan ke nomor WhatsApp tamu.
-                </p>
-              </div>
-              <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                WhatsApp Ready
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-7 space-y-3">
-                <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-200 space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Pilihan Ucapan Siap Pakai:</span>
-                    </div>
-                    {presetNotice && (
-                      <span className="text-[11px] font-medium text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" />
-                        {presetNotice}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                    {WHATSAPP_PRESETS.map((p) => {
-                      const isActive =
-                        selectedPresetId === p.id ||
-                        settingsData.whatsappMessage.trim() === p.template.trim();
-                      return (
-                        <button
-                          key={p.id}
-                          type="button"
-                          onClick={() => applyPreset(p)}
-                          className={`flex flex-col items-start p-2 rounded-lg text-left transition-all cursor-pointer border ${
-                            isActive
-                              ? "bg-emerald-50 border-emerald-500 text-emerald-950 ring-1 ring-emerald-500 shadow-2xs"
-                              : "bg-white border-slate-200 hover:border-emerald-300 hover:bg-slate-50 text-slate-700"
-                          }`}
-                        >
-                          <div className="flex items-center gap-1.5 w-full">
-                            <span className="text-sm">{p.icon}</span>
-                            <span className="font-bold text-[11px] truncate">{p.name}</span>
-                          </div>
-                          <span className="text-[10px] text-slate-500 line-clamp-1 mt-0.5 leading-tight">
-                            {p.badge}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
-                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
-                      <span>Sisipkan:</span>
-                      <button
-                        type="button"
-                        onClick={() => insertVariable("{nama}")}
-                        className="px-2 py-0.5 bg-white hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 text-[11px] rounded-md border border-slate-300 cursor-pointer font-mono font-medium"
-                      >
-                        + {"{nama}"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertVariable("{mempelai}")}
-                        className="px-2 py-0.5 bg-white hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 text-[11px] rounded-md border border-slate-300 cursor-pointer font-mono font-medium"
-                      >
-                        + {"{mempelai}"}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => insertVariable("{link}")}
-                        className="px-2 py-0.5 bg-white hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 text-[11px] rounded-md border border-slate-300 cursor-pointer font-mono font-medium"
-                      >
-                        + {"{link}"}
-                      </button>
-                    </div>
-                  </div>
+          {/* SECTION 2: FORMAT PESAN WHATSAPP (DIPUSATKAN DI DAFTAR TAMU) */}
+          <div className="bg-gradient-to-r from-emerald-50/70 via-teal-50/40 to-slate-50 border border-emerald-200/80 rounded-2xl p-5 sm:p-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-emerald-600/10 border border-emerald-600/20 flex items-center justify-center shrink-0 text-emerald-700 mt-0.5 sm:mt-0">
+                  <MessageSquare className="w-5 h-5" />
                 </div>
-
-                <div className="relative">
-                  <textarea
-                    rows={12}
-                    value={settingsData.whatsappMessage}
-                    onChange={(e) => {
-                      setSettingsData({ ...settingsData, whatsappMessage: e.target.value });
-                      setSelectedPresetId(null);
-                    }}
-                    placeholder="Ketik format pesan WhatsApp..."
-                    className="w-full rounded-xl border border-slate-300 p-3 text-xs font-mono text-slate-800 focus:ring-2 focus:ring-emerald-500 leading-relaxed bg-white"
-                  />
-                  <div className="text-[10px] text-slate-400 mt-1 flex justify-between">
-                    <span>Tag dinamis akan otomatis terisi sesuai nama dan link khusus tamu.</span>
-                    <span>{settingsData.whatsappMessage.length} karakter</span>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-bold text-slate-900 text-sm">
+                      Format Pesan Broadcast WhatsApp
+                    </h3>
+                    <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      Dipusatkan di Daftar Tamu
+                    </span>
                   </div>
+                  <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
+                    Template pesan, pilihan ucapan (Islami, Formal, Kasual, Jawa, dll), variabel khusus nama & meja, serta simulasi gelembung chat WhatsApp kini dipusatkan langsung di menu <strong>Daftar Tamu</strong> agar terintegrasi penuh saat membagikan link ke masing-masing tamu.
+                  </p>
                 </div>
               </div>
 
-              {/* Live WhatsApp Bubble Preview */}
-              <div className="lg:col-span-5 space-y-2">
-                <label className="text-xs font-bold text-slate-700 block">
-                  Simulasi Gelembung Chat WhatsApp
-                </label>
-
-                <div className="bg-[#e5ddd5] p-3.5 rounded-2xl border border-[#c7bcaf] shadow-xs">
-                  <div className="bg-[#d9fdd3] rounded-2xl rounded-tr-xs p-3.5 shadow-xs border border-emerald-200/50 space-y-2">
-                    <div className="bg-white/80 rounded-xl p-2.5 border border-emerald-600/10 flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-800 font-bold text-sm">
-                        💍
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-bold text-slate-900 truncate">
-                          The Wedding of {coupleTitle}
-                        </p>
-                        <p suppressHydrationWarning className="text-[10px] text-slate-500 font-mono truncate">
-                          {hostName}/invitation/{settingsData.slug}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div
-                      suppressHydrationWarning
-                      className="text-[11px] text-slate-800 whitespace-pre-line leading-relaxed font-sans max-h-[380px] overflow-y-auto pr-1"
-                    >
-                      {settingsData.whatsappMessage
-                        .replace(/\{nama\}/g, "Budi Santoso")
-                        .replace(/\{mempelai\}/g, coupleTitle)
-                        .replace(/\{link\}/g, `${origin}/invitation/${settingsData.slug}?to=Budi+Santoso`)}
-                    </div>
-
-                    <div className="flex items-center justify-end gap-1 text-[9px] text-slate-500 pt-0.5">
-                      <span>10:45</span>
-                      <span className="text-sky-500 font-bold">✓✓</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Link
+                href="/dashboard/guests"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm hover:shadow transition-all shrink-0 cursor-pointer"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Atur Format Pesan di Daftar Tamu</span>
+                <ExternalLinkIcon className="w-3.5 h-3.5 opacity-80" />
+              </Link>
             </div>
           </div>
 
