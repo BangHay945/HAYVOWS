@@ -928,7 +928,7 @@ export default function GuestManager({
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors cursor-pointer shadow-2xs"
                           title="Buka Chat WA"
                         >
-                          <MessageCircle className="w-3 h-3" />
+                          <Send className="w-3 h-3" />
                           <span>Kirim</span>
                         </button>
 
