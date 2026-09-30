@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -32,6 +32,9 @@ import {
   Link2,
   AlertCircle,
   CheckCheck,
+  ChevronLeft,
+  ChevronDown,
+  X,
 } from "lucide-react";
 
 import ImageUploadDropzone from "@/components/ui/ImageUploadDropzone";
@@ -120,6 +123,13 @@ export default function WeddingEditor({
   const [successMsg, setSuccessMsg] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deletingWedding, setDeletingWedding] = useState(false);
+  const [mobileTabSelectorOpen, setMobileTabSelectorOpen] = useState(false);
+  const [deleteItemTarget, setDeleteItemTarget] = useState<{
+    type: "event" | "story" | "gallery" | "music" | "gift";
+    id: string;
+    title: string;
+  } | null>(null);
+  const [deletingItem, setDeletingItem] = useState(false);
 
   // Couple State
   const [couple, setCouple] = useState({
@@ -541,130 +551,129 @@ Terima kasih.`,
     setSaving(false);
   };
 
-  const handleDeleteEvent = async (id: string) => {
-    if (!confirm("Hapus jadwal acara ini?")) return;
-    setSaving(true);
-    const res = await fetch(`/api/wedding/${wedding.id}/events?itemId=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setEvents((prev) => prev.filter((item) => item.id !== id));
-      showNotification("Jadwal acara berhasil dihapus!");
+  const handleConfirmDeleteItem = async () => {
+    if (!deleteItemTarget) return;
+    setDeletingItem(true);
+    const { type, id, title } = deleteItemTarget;
+    try {
+      let endpoint = "";
+      if (type === "event") endpoint = `/api/wedding/${wedding.id}/events?itemId=${id}`;
+      else if (type === "story") endpoint = `/api/wedding/${wedding.id}/story?itemId=${id}`;
+      else if (type === "gallery") endpoint = `/api/wedding/${wedding.id}/gallery?itemId=${id}`;
+      else if (type === "music") endpoint = `/api/wedding/${wedding.id}/music?itemId=${id}`;
+      else if (type === "gift") endpoint = `/api/wedding/${wedding.id}/gift?itemId=${id}`;
+
+      const res = await fetch(endpoint, { method: "DELETE" });
+      if (res.ok) {
+        if (type === "event") setEvents((prev) => prev.filter((item) => item.id !== id));
+        else if (type === "story") setStories((prev) => prev.filter((item) => item.id !== id));
+        else if (type === "gallery") setGalleries((prev) => prev.filter((item) => item.id !== id));
+        else if (type === "music") setMusics((prev) => prev.filter((item) => item.id !== id));
+        else if (type === "gift") setGifts((prev) => prev.filter((item) => item.id !== id));
+        showNotification(`${title || "Item"} berhasil dihapus!`);
+        setDeleteItemTarget(null);
+      } else {
+        alert("Gagal menghapus item.");
+      }
+    } catch {
+      alert("Terjadi kesalahan koneksi.");
+    } finally {
+      setDeletingItem(false);
     }
-    setSaving(false);
   };
 
-  const handleDeleteStory = async (id: string) => {
-    if (!confirm("Hapus cerita cinta ini?")) return;
-    setSaving(true);
-    const res = await fetch(`/api/wedding/${wedding.id}/story?itemId=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setStories((prev) => prev.filter((item) => item.id !== id));
-      showNotification("Cerita berhasil dihapus!");
-    }
-    setSaving(false);
+  const handleDeleteEvent = (id: string, title?: string) => {
+    setDeleteItemTarget({ type: "event", id, title: title ? `Jadwal "${title}"` : "Jadwal Acara" });
   };
 
-  const handleDeleteGallery = async (id: string) => {
-    if (!confirm("Hapus foto ini dari galeri?")) return;
-    setSaving(true);
-    const res = await fetch(`/api/wedding/${wedding.id}/gallery?itemId=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setGalleries((prev) => prev.filter((item) => item.id !== id));
-      showNotification("Foto berhasil dihapus dari galeri!");
-    }
-    setSaving(false);
+  const handleDeleteStory = (id: string, title?: string) => {
+    setDeleteItemTarget({ type: "story", id, title: title ? `Momen "${title}"` : "Cerita Cinta" });
   };
 
-  const handleDeleteMusic = async (id: string) => {
-    if (!confirm("Hapus musik latar ini?")) return;
-    setSaving(true);
-    const res = await fetch(`/api/wedding/${wedding.id}/music?itemId=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setMusics((prev) => prev.filter((item) => item.id !== id));
-      showNotification("Musik berhasil dihapus!");
-    }
-    setSaving(false);
+  const handleDeleteGallery = (id: string) => {
+    setDeleteItemTarget({ type: "gallery", id, title: "Foto Galeri" });
   };
 
-  const handleDeleteGift = async (id: string) => {
-    if (!confirm("Hapus nomor rekening ini?")) return;
-    setSaving(true);
-    const res = await fetch(`/api/wedding/${wedding.id}/gift?itemId=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      setGifts((prev) => prev.filter((item) => item.id !== id));
-      showNotification("Nomor rekening berhasil dihapus!");
-    }
-    setSaving(false);
+  const handleDeleteMusic = (id: string, title?: string) => {
+    setDeleteItemTarget({ type: "music", id, title: title ? `Musik "${title}"` : "Musik Latar" });
+  };
+
+  const handleDeleteGift = (id: string, bankName?: string) => {
+    setDeleteItemTarget({ type: "gift", id, title: bankName ? `Rekening ${bankName}` : "Rekening Hadiah" });
   };
 
   const isLuxury = wedding.plan === "luxury";
 
   const tabs = [
-    { key: "couple", label: "Mempelai", icon: Heart },
-    { key: "events", label: "Jadwal Acara", icon: Calendar },
-    { key: "story", label: "Cerita Cinta", icon: BookOpen },
-    { key: "gallery", label: "Galeri Foto", icon: ImageIcon },
-    { key: "music", label: "Musik Latar", icon: Music },
-    { key: "gift", label: "Amplop & Kado", icon: Gift },
-    { key: "settings", label: "Pengaturan & SEO", icon: Settings2 },
-    { key: "domain", label: "Link Web Sendiri", icon: Crown },
+    { key: "couple", label: "Mempelai", icon: Heart, desc: "Data & foto kedua mempelai" },
+    { key: "events", label: "Jadwal Acara", icon: Calendar, desc: "Akad nikah, resepsi & peta lokasi" },
+    { key: "story", label: "Cerita Cinta", icon: BookOpen, desc: "Timeline kisah perjalanan cinta" },
+    { key: "gallery", label: "Galeri Foto", icon: ImageIcon, desc: "Koleksi foto prewedding & kenangan" },
+    { key: "music", label: "Musik Latar", icon: Music, desc: "Preset lagu, YouTube, atau custom" },
+    { key: "gift", label: "Amplop & Kado", icon: Gift, desc: "Nomor rekening & dompet digital" },
+    { key: "settings", label: "Pengaturan & SEO", icon: Settings2, desc: "Pesan WhatsApp & link preview" },
+    { key: "domain", label: "Link Web Sendiri", icon: Crown, desc: "Subdomain & custom domain pribadi" },
   ] as const;
 
 
   const isPublished = wedding.status === "published";
 
   return (
-    <div className="space-y-6 w-full">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-slate-900">
+    <div className="space-y-5 sm:space-y-6 w-full max-w-7xl mx-auto pb-12">
+      {/* 1. Back button & Breadcrumb */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/dashboard/invitation"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200/90 px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer min-h-[38px]"
+        >
+          <ChevronLeft className="w-4 h-4 text-slate-400" />
+          <span>Kembali ke Kelola Undangan</span>
+        </Link>
+      </div>
+
+      {/* 2. Top Header (Responsive Mobile & Tablet) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/70 sm:bg-transparent p-4 sm:p-0 rounded-2xl border border-slate-200/70 sm:border-0 shadow-2xs sm:shadow-none">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif tracking-tight">
               Edit Undangan
             </h1>
             <span
-              className={`text-xs px-2.5 py-0.5 font-medium rounded-full ${
+              className={`text-xs px-2.5 py-0.5 font-semibold rounded-full ${
                 isPublished
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  ? "bg-emerald-50 text-[#2d4a3e] border border-emerald-200/80"
                   : "bg-slate-100 text-slate-600 border border-slate-200"
               }`}
             >
-              {isPublished ? "Published" : "Draft"}
+              {isPublished ? "Live • Published" : "Draft"}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1 flex items-center gap-2">
-            <span>Slug: <strong className="font-mono text-slate-700">/{wedding.slug}</strong></span>
-            <span>•</span>
-            <span>Template: <strong className="text-slate-700">{wedding.template?.name}</strong></span>
+          <p className="text-xs text-slate-500 flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>Slug: <strong className="font-mono text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-[11px]">/{wedding.slug}</strong></span>
+            <span className="text-slate-300">•</span>
+            <span>Tema: <strong className="text-slate-700">{wedding.template?.name || "Katalog Tema"}</strong></span>
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        {/* Action Buttons: 2-column on mobile, right-aligned on tablet/desktop */}
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto shrink-0">
           <Link
             href={`/invitation/${wedding.slug}/preview`}
             target="_blank"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-slate-300 text-xs font-medium rounded-xl shadow-2xs transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-slate-300 text-xs font-semibold rounded-xl shadow-2xs transition-colors min-h-[44px]"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
             <span>Lihat Preview</span>
           </Link>
 
           <button
+            type="button"
             onClick={handleStatusToggle}
             disabled={saving}
-            className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer ${
+            className={`inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer min-h-[44px] ${
               isPublished
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
-                : "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white"
+                : "bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] text-white"
             }`}
           >
             {isPublished ? (
@@ -674,24 +683,52 @@ Terima kasih.`,
               </>
             ) : (
               <>
-                <Globe className="w-3.5 h-3.5" />
-                <span>Publikasikan Undangan</span>
+                <Globe className="w-3.5 h-3.5 text-[#c9a84c]" />
+                <span>Publikasikan</span>
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Notification */}
+      {/* 3. Notification Toast Banner */}
       {successMsg && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm px-4 py-3 rounded-lg flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>{successMsg}</span>
+        <div className="bg-emerald-50 border border-emerald-200 text-[#2d4a3e] text-xs sm:text-sm px-4 py-3 rounded-xl flex items-center gap-2.5 shadow-2xs animate-in fade-in duration-200">
+          <CheckCircle2 className="w-4 h-4 text-[#2d4a3e] shrink-0" />
+          <span className="font-medium">{successMsg}</span>
         </div>
       )}
 
-      {/* Modern Tabs */}
-      <div className="border-b border-slate-200 flex gap-1.5 sm:gap-2 overflow-x-auto pb-px scrollbar-none">
+      {/* 4. Mobile Current Section Quick Bar & Drawer Trigger */}
+      <div className="sm:hidden bg-white border border-slate-200/90 rounded-2xl p-3 shadow-2xs">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#2d4a3e]/10 text-[#2d4a3e] border border-[#2d4a3e]/15 flex items-center justify-center shrink-0">
+              {React.createElement(tabs.find((t) => t.key === activeTab)?.icon || Heart, { className: "w-4 h-4" })}
+            </div>
+            <div className="min-w-0">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
+                Bagian Aktif
+              </span>
+              <span className="text-xs font-bold text-slate-900 truncate block">
+                {tabs.find((t) => t.key === activeTab)?.label}
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMobileTabSelectorOpen(true)}
+            className="inline-flex items-center gap-1.5 bg-[#2d4a3e] hover:bg-[#233a30] text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-2xs transition-all cursor-pointer shrink-0 min-h-[38px]"
+          >
+            <span>Pilih Bagian</span>
+            <ChevronDown className="w-3.5 h-3.5 text-[#c9a84c]" />
+          </button>
+        </div>
+      </div>
+
+      {/* 5. Modern Tab Navigation (Horizontal Scroll with Touch Snap on Mobile, Clean Pills on Tablet/Desktop) */}
+      <div className="border-b border-slate-200/90 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 scrollbar-none snap-x -mx-1 px-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
@@ -699,18 +736,89 @@ Terima kasih.`,
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-colors cursor-pointer border-b-2 whitespace-nowrap shrink-0 ${
+              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2.5 text-xs font-semibold rounded-xl sm:rounded-t-xl transition-all cursor-pointer whitespace-nowrap shrink-0 snap-start min-h-[42px] ${
                 isActive
-                  ? "border-emerald-600 text-emerald-700 bg-white"
-                  : "border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
+                  ? "bg-[#2d4a3e] text-white shadow-2xs sm:bg-white sm:text-[#2d4a3e] sm:border-b-2 sm:border-[#2d4a3e] sm:rounded-b-none"
+                  : "bg-white sm:bg-transparent border border-slate-200/80 sm:border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100/50"
               }`}
             >
-              <Icon className="w-3.5 h-3.5 shrink-0" />
+              <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-[#c9a84c] sm:text-[#2d4a3e]" : "text-slate-400"}`} />
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
+
+      {/* 6. Mobile Tab Selector Bottom Sheet Drawer */}
+      {mobileTabSelectorOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-200 space-y-4 animate-in slide-in-from-bottom sm:zoom-in-95 duration-200 max-h-[85vh] overflow-y-auto">
+            {/* Sheet Handle */}
+            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto sm:hidden -mt-1 mb-2" />
+
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Pilih Bagian Undangan
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Ketuk salah satu bagian untuk langsung mengedit kontennya
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileTabSelectorOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => {
+                      setActiveTab(tab.key);
+                      setMobileTabSelectorOpen(false);
+                    }}
+                    className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[50px] ${
+                      isActive
+                        ? "bg-emerald-50/70 border-emerald-300 text-emerald-950 font-semibold"
+                        : "bg-slate-50/60 hover:bg-slate-100 border-slate-200 text-slate-700"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        isActive ? "bg-[#2d4a3e] text-[#c9a84c]" : "bg-white border border-slate-200 text-slate-600"
+                      }`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm font-bold truncate">
+                          {tab.label}
+                        </p>
+                        <p className="text-[11px] text-slate-400 font-normal truncate">
+                          {tab.desc}
+                        </p>
+                      </div>
+                    </div>
+                    {isActive && (
+                      <span className="w-5 h-5 rounded-full bg-[#2d4a3e] text-white flex items-center justify-center text-xs shrink-0 font-bold">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mempelai Tab */}
       {activeTab === "couple" && (
@@ -952,13 +1060,13 @@ Terima kasih.`,
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-5 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-6 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-4 h-4 text-[#c9a84c]" />
               <span>{saving ? "Menyimpan..." : "Simpan Data Mempelai"}</span>
             </button>
           </div>
@@ -997,7 +1105,7 @@ Terima kasih.`,
                   </div>
                   <button
                     type="button"
-                    onClick={() => handleDeleteEvent(ev.id)}
+                    onClick={() => handleDeleteEvent(ev.id, ev.title)}
                     className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors self-end sm:self-center cursor-pointer"
                     title="Hapus Acara"
                   >
@@ -1109,10 +1217,10 @@ Terima kasih.`,
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-5 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>{saving ? "Menyimpan..." : "Simpan Acara"}</span>
+                <Plus className="w-4 h-4 text-[#c9a84c]" />
+                <span>{saving ? "Menyimpan..." : "Simpan Jadwal Acara"}</span>
               </button>
             </form>
           </div>
@@ -1146,7 +1254,7 @@ Terima kasih.`,
                 </div>
                 <button
                   type="button"
-                  onClick={() => handleDeleteStory(st.id)}
+                  onClick={() => handleDeleteStory(st.id, st.title)}
                   className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer shrink-0"
                   title="Hapus Cerita"
                 >
@@ -1193,10 +1301,10 @@ Terima kasih.`,
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-5 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>{saving ? "Menyimpan..." : "Simpan Cerita"}</span>
+              <Plus className="w-4 h-4 text-[#c9a84c]" />
+              <span>{saving ? "Menyimpan..." : "Simpan Cerita Cinta"}</span>
             </button>
           </form>
         </div>
@@ -1324,7 +1432,7 @@ Terima kasih.`,
                       )}
                       <button
                         type="button"
-                        onClick={() => handleDeleteMusic(m.id)}
+                        onClick={() => handleDeleteMusic(m.id, m.title)}
                         className="text-slate-400 hover:text-rose-600 p-2 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
                         title="Hapus Musik"
                       >
@@ -1540,9 +1648,9 @@ Terima kasih.`,
                 <button
                   type="submit"
                   disabled={saving || !extractYouTubeId(youtubeInput.url)}
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-5 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
                 >
-                  <Save className="w-3.5 h-3.5" />
+                  <Save className="w-4 h-4 text-[#c9a84c]" />
                   <span>{saving ? "Menyimpan..." : "Simpan Musik YouTube"}</span>
                 </button>
               </form>
@@ -1581,9 +1689,9 @@ Terima kasih.`,
                 <button
                   type="submit"
                   disabled={saving || !newMusic.fileUrl}
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-5 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-4 h-4 text-[#c9a84c]" />
                   <span>{saving ? "Menyimpan..." : "Simpan File Audio"}</span>
                 </button>
               </form>
@@ -1618,7 +1726,7 @@ Terima kasih.`,
                 </div>
                 <button
                   type="button"
-                  onClick={() => handleDeleteGift(g.id)}
+                  onClick={() => handleDeleteGift(g.id, g.bankName)}
                   className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer shrink-0"
                   title="Hapus Rekening"
                 >
@@ -1668,10 +1776,10 @@ Terima kasih.`,
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-5 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>{saving ? "Menyimpan..." : "Simpan Rekening"}</span>
+              <Plus className="w-4 h-4 text-[#c9a84c]" />
+              <span>{saving ? "Menyimpan..." : "Simpan Rekening Hadiah"}</span>
             </button>
           </form>
         </div>
@@ -2018,11 +2126,11 @@ Terima kasih.`,
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end">
+          <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-5 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-6 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
             >
               <Save className="w-4 h-4 text-[#c9a84c]" />
               <span>{saving ? "Menyimpan..." : "Simpan Pengaturan & SEO"}</span>
@@ -2296,11 +2404,11 @@ Terima kasih.`,
               </div>
 
               {/* Submit */}
-              <div className="flex justify-end">
+              <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
                 <button
                   type="submit"
                   disabled={domainSaving}
-                  className="inline-flex items-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-5 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1b2d26] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold px-6 py-3 sm:py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer min-h-[44px]"
                 >
                   <Save className="w-4 h-4 text-[#c9a84c]" />
                   <span>{domainSaving ? "Menyimpan..." : "Simpan Pengaturan Domain"}</span>
@@ -2311,42 +2419,94 @@ Terima kasih.`,
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {deleteModalOpen && (
+      {/* 7. In-App Item Delete Confirmation Modal (Event, Story, Gallery, Music, Gift) */}
+      {deleteItemTarget && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4 animate-in slide-in-from-bottom sm:zoom-in-95 duration-200">
+            {/* Sheet Handle */}
+            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto sm:hidden -mt-1 mb-2" />
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1 flex-1">
+                <h3 className="text-base font-bold text-slate-900">
+                  Hapus Item Ini?
+                </h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Apakah Anda yakin ingin menghapus:
+                </p>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 mt-1.5">
+                  {deleteItemTarget.title}
+                </div>
+                <p className="text-[11px] text-rose-600 mt-1">
+                  Item yang telah dihapus tidak dapat dipulihkan kembali.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                disabled={deletingItem}
+                onClick={() => setDeleteItemTarget(null)}
+                className="w-full sm:w-auto px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer min-h-[44px] flex items-center justify-center"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                disabled={deletingItem}
+                onClick={handleConfirmDeleteItem}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:opacity-50 rounded-xl shadow-xs transition-all cursor-pointer min-h-[44px]"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>{deletingItem ? "Menghapus..." : "Ya, Hapus Sekarang"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 8. Full Wedding Delete Confirmation Modal */}
+      {deleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4 animate-in slide-in-from-bottom sm:zoom-in-95 duration-200">
+            {/* Sheet Handle */}
+            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto sm:hidden -mt-1 mb-2" />
+
             <div className="flex items-start gap-3.5">
               <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 flex-1">
                 <h3 className="text-base font-bold text-slate-900">
                   Hapus Undangan Pernikahan?
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
                   Apakah Anda yakin ingin menghapus data undangan untuk:
                 </p>
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
-                  <span className="font-bold text-slate-900 block truncate">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs mt-1.5">
+                  <span className="font-bold text-slate-900 block truncate text-sm">
                     {couple.groomName || "Mempelai Pria"} &amp; {couple.brideName || "Mempelai Wanita"}
                   </span>
-                  <span className="font-mono text-slate-500 text-[11px] block">
+                  <span className="font-mono text-slate-500 text-xs block mt-0.5">
                     /{settingsData.slug}
                   </span>
                 </div>
-                <p className="text-[11px] text-rose-700 bg-rose-50/80 p-2.5 rounded-lg border border-rose-200 leading-relaxed">
-                  Tindakan ini tidak dapat dibatalkan. Seluruh data acara, tamu, RSVP, ucapan, dan foto akan dihapus permanen.
+                <p className="text-[11px] text-rose-700 bg-rose-50/80 p-2.5 rounded-xl border border-rose-200 leading-relaxed mt-2">
+                  Tindakan ini permanen. Seluruh data acara, tamu, RSVP, ucapan, dan foto akan dihapus secara menyeluruh.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
               <button
                 type="button"
                 disabled={deletingWedding}
                 onClick={() => setDeleteModalOpen(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer min-h-[44px] flex items-center justify-center"
               >
                 Batal
               </button>
@@ -2370,9 +2530,9 @@ Terima kasih.`,
                     setDeletingWedding(false);
                   }
                 }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:opacity-50 rounded-xl shadow-xs transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:opacity-50 rounded-xl shadow-xs transition-all cursor-pointer min-h-[44px]"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-4 h-4" />
                 <span>{deletingWedding ? "Menghapus..." : "Ya, Hapus Undangan"}</span>
               </button>
             </div>

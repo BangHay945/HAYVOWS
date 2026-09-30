@@ -146,16 +146,16 @@ export function NewWeddingClient({
       {/* Top Header */}
       <div>
         <Link
-          href="/dashboard"
+          href="/dashboard/invitation"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#2d4a3e] transition-colors mb-3"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Kembali ke Overview</span>
+          <span>Kembali ke Kelola Undangan</span>
         </Link>
         <div className="text-[11px] font-mono tracking-wider font-semibold text-[#2d4a3e] uppercase mb-1">
           Undangan Digital Baru
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-serif">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 font-serif">
           Buat Undangan Baru
         </h1>
         <p className="text-xs text-slate-500 mt-1">
@@ -171,7 +171,7 @@ export function NewWeddingClient({
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-2xs space-y-6"
+        className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-6"
       >
         {/* Input Slug */}
         <div>
@@ -179,8 +179,11 @@ export function NewWeddingClient({
             URL Slug Undangan
           </label>
           <div className="flex items-center rounded-xl border border-slate-300 focus-within:border-[#2d4a3e] focus-within:ring-2 focus-within:ring-[#2d4a3e]/20 overflow-hidden bg-white">
-            <span className="bg-[#faf8f5] px-3.5 py-2.5 text-xs font-mono text-slate-500 border-r border-slate-200 select-none">
+            <span className="bg-[#faf8f5] px-3.5 py-2.5 text-xs font-mono text-slate-500 border-r border-slate-200 select-none hidden sm:inline-block">
               hayvows.com/invitation/
+            </span>
+            <span className="bg-[#faf8f5] px-3 py-2.5 text-xs font-mono text-slate-500 border-r border-slate-200 select-none sm:hidden">
+              /
             </span>
             <input
               type="text"
@@ -192,7 +195,7 @@ export function NewWeddingClient({
                 )
               }
               placeholder="alex-sara"
-              className="flex-1 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none"
+              className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none min-h-[44px]"
             />
           </div>
           <p className="text-[11px] text-slate-400 mt-1.5">
