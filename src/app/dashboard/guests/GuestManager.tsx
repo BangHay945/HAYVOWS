@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Plus,
   Copy,
@@ -65,7 +65,7 @@ export default function GuestManager({
   userRole?: string;
 }) {
   const [guests, setGuests] = useState<GuestWithRsvp[]>(initialGuests);
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [selectedTicketGuest, setSelectedTicketGuest] = useState<GuestWithRsvp | null>(null);
   const [importModalOpen, setImportModalOpen] = useState(false);
@@ -93,6 +93,27 @@ export default function GuestManager({
   // In-app Delete Confirmation Modal State
   const [guestToDelete, setGuestToDelete] = useState<GuestWithRsvp | null>(null);
   const [deletingGuest, setDeletingGuest] = useState(false);
+
+  // Lock body scroll when Add Guest Modal is open
+  useEffect(() => {
+    if (isAddModalOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prevOverflow || "unset";
+      };
+    }
+  }, [isAddModalOpen]);
+
+  const closeAddModal = () => {
+    setIsAddModalOpen(false);
+    setNewName("");
+    setNewPhone("");
+    setNewAddress("");
+    setNewCategory("Reguler");
+    setNewGuestCount(1);
+    setNewTableNumber("");
+  };
 
   const getGuestMessage = (
     nameOrGuest:
@@ -243,7 +264,7 @@ export default function GuestManager({
       setNewCategory("Reguler");
       setNewGuestCount(1);
       setNewTableNumber("");
-      setShowAddForm(false);
+      setIsAddModalOpen(false);
     }
     setLoading(false);
   };
@@ -318,36 +339,22 @@ export default function GuestManager({
             type="button"
             onClick={() => {
               if (
-                !showAddForm &&
                 guests.length >=
-                  (userRole === "admin" || userPlan === "luxury"
-                    ? 999999
-                    : userPlan === "premium"
-                    ? 500
-                    : 50)
+                (userRole === "admin" || userPlan === "luxury"
+                  ? 999999
+                  : userPlan === "premium"
+                  ? 500
+                  : 50)
               ) {
                 setUpgradeModalOpen(true);
                 return;
               }
-              setShowAddForm(!showAddForm);
+              setIsAddModalOpen(true);
             }}
-            className={`w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer ${
-              showAddForm
-                ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
-                : "bg-[#2d4a3e] hover:bg-[#233a30] text-white"
-            }`}
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer bg-[#2d4a3e] hover:bg-[#233a30] text-white"
           >
-            {showAddForm ? (
-              <>
-                <X className="w-4 h-4" />
-                <span>Tutup Form</span>
-              </>
-            ) : (
-              <>
-                <Plus className="w-4 h-4 text-[#fef08a]" />
-                <span>Tambah Tamu Baru</span>
-              </>
-            )}
+            <Plus className="w-4 h-4 text-[#fef08a]" />
+            <span>Tambah Tamu Baru</span>
           </button>
         </div>
       </div>
@@ -427,128 +434,6 @@ export default function GuestManager({
           <p className="text-[11px] text-slate-400 mt-0.5 font-mono">Tamu menyatakan hadir</p>
         </div>
       </div>
-
-      {/* Add Guest Form (Collapsible/Interactive) */}
-      {showAddForm && (
-        <form
-          onSubmit={addGuest}
-          className="bg-white border border-emerald-200 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4 animate-in fade-in slide-in-from-top-2 duration-200"
-        >
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Formulir Tambah Tamu Undangan</span>
-            </h3>
-            <span className="text-xs text-slate-400">Link personal &amp; QR E-Pass dibuat otomatis</span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Nama Lengkap Tamu *
-              </label>
-              <input
-                type="text"
-                required
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="cth: Budi Santoso &amp; Rekan"
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Alamat / Asal Kota / Instansi
-              </label>
-              <input
-                type="text"
-                value={newAddress}
-                onChange={(e) => setNewAddress(e.target.value)}
-                placeholder="cth: Bandung / Alumni ITB"
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Nomor WhatsApp
-              </label>
-              <input
-                type="tel"
-                value={newPhone}
-                onChange={(e) => setNewPhone(e.target.value)}
-                placeholder="cth: 08123456789"
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Kategori Tamu
-              </label>
-              <select
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-white"
-              >
-                <option value="Reguler">Reguler</option>
-                <option value="VIP">VIP</option>
-                <option value="Keluarga">Keluarga</option>
-                <option value="Teman">Teman</option>
-                <option value="Rekan Kerja">Rekan Kerja</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Kuota Pax (Orang)
-              </label>
-              <input
-                type="number"
-                min={1}
-                max={20}
-                value={newGuestCount}
-                onChange={(e) => setNewGuestCount(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Nomor Meja
-              </label>
-              <input
-                type="text"
-                value={newTableNumber}
-                onChange={(e) => setNewTableNumber(e.target.value)}
-                placeholder="cth: Meja 02 / VIP A"
-                className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
-            <button
-              type="button"
-              onClick={() => setShowAddForm(false)}
-              className="px-4 py-2.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              disabled={loading || !newName.trim()}
-              className="inline-flex items-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:bg-[#1f332b] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold px-5 py-2.5 rounded-xl shadow-xs hover:shadow-sm transition-all cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5 text-[#fef08a]" />
-              <span>{loading ? "Menyimpan..." : "Simpan Tamu"}</span>
-            </button>
-          </div>
-        </form>
-      )}
 
       {/* Filter, Search & Data Operations Bar */}
       <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 shadow-2xs space-y-3 xl:space-y-0 xl:flex xl:items-center xl:justify-between gap-3">
@@ -808,9 +693,20 @@ export default function GuestManager({
 
           {filteredGuests.length === 0 && (
             <div className="p-8 text-center text-slate-400 text-xs">
-              {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all"
-                ? "Tidak ada tamu yang sesuai dengan filter pencarian."
-                : "Belum ada tamu terdaftar. Klik '+ Tambah Tamu Baru' di atas."}
+              {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all" ? (
+                "Tidak ada tamu yang sesuai dengan filter pencarian."
+              ) : (
+                <span>
+                  Belum ada tamu terdaftar.{" "}
+                  <button
+                    type="button"
+                    onClick={() => setIsAddModalOpen(true)}
+                    className="text-[#2d4a3e] font-bold underline underline-offset-2 hover:text-[#233a30] cursor-pointer inline-flex items-center gap-1"
+                  >
+                    + Tambah Tamu Baru
+                  </button>
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -991,9 +887,20 @@ export default function GuestManager({
               {filteredGuests.length === 0 && (
                 <tr>
                   <td colSpan={6} className="text-center py-10 text-slate-400 text-xs">
-                    {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all"
-                      ? "Tidak ada tamu yang sesuai dengan filter pencarian."
-                      : "Belum ada tamu terdaftar. Klik '+ Tambah Tamu Baru' di atas."}
+                    {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all" ? (
+                      "Tidak ada tamu yang sesuai dengan filter pencarian."
+                    ) : (
+                      <span>
+                        Belum ada tamu terdaftar.{" "}
+                        <button
+                          type="button"
+                          onClick={() => setIsAddModalOpen(true)}
+                          className="text-[#2d4a3e] font-bold underline underline-offset-2 hover:text-[#233a30] cursor-pointer inline-flex items-center gap-1"
+                        >
+                          + Tambah Tamu Baru
+                        </button>
+                      </span>
+                    )}
                   </td>
                 </tr>
               )}
@@ -1054,6 +961,156 @@ export default function GuestManager({
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Tambah Tamu Baru (Popup) */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="relative w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-2 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#2d4a3e] to-[#1e332a] text-white shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#fef08a]">
+                  <Plus className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white">
+                    Tambah Tamu Undangan Baru
+                  </h3>
+                  <p className="text-[11px] text-emerald-200/80">
+                    Tautan personal dan tiket QR E-Pass dibuat otomatis
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={closeAddModal}
+                className="p-1.5 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Form Body */}
+            <form onSubmit={addGuest} className="flex flex-col flex-1 overflow-y-auto">
+              <div className="p-5 sm:p-6 space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Nama Lengkap Tamu <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    autoFocus
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="cth: Budi Santoso &amp; Rekan"
+                    className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 focus:bg-white transition-all"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Nomor WhatsApp
+                    </label>
+                    <input
+                      type="tel"
+                      value={newPhone}
+                      onChange={(e) => setNewPhone(e.target.value)}
+                      placeholder="cth: 08123456789"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 focus:bg-white transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Alamat / Asal Domisili
+                    </label>
+                    <input
+                      type="text"
+                      value={newAddress}
+                      onChange={(e) => setNewAddress(e.target.value)}
+                      placeholder="cth: Bandung / Rekan Kerja"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Kategori Tamu
+                    </label>
+                    <select
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-white cursor-pointer"
+                    >
+                      <option value="Reguler">Reguler</option>
+                      <option value="VIP">VIP</option>
+                      <option value="Keluarga">Keluarga</option>
+                      <option value="Teman">Teman</option>
+                      <option value="Rekan Kerja">Rekan Kerja</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Kuota Pax (Orang)
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={newGuestCount}
+                      onChange={(e) => setNewGuestCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 focus:bg-white transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Nomor Meja
+                    </label>
+                    <input
+                      type="text"
+                      value={newTableNumber}
+                      onChange={(e) => setNewTableNumber(e.target.value)}
+                      placeholder="cth: Meja 02 / VIP A"
+                      className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] bg-slate-50/50 focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex items-center justify-end gap-2.5 px-5 sm:px-6 py-4 bg-slate-50 border-t border-slate-100 shrink-0">
+                <button
+                  type="button"
+                  onClick={closeAddModal}
+                  className="min-h-[44px] px-4 py-2.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200/60 rounded-xl transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || !newName.trim()}
+                  className="min-h-[44px] inline-flex items-center justify-center gap-2 bg-[#2d4a3e] hover:bg-[#233a30] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold px-6 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer"
+                >
+                  {loading ? (
+                    <span>Menyimpan...</span>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4 text-[#fef08a]" />
+                      <span>Simpan Tamu</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
