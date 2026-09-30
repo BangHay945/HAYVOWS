@@ -110,25 +110,9 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedThemeTab, setSelectedThemeTab] = useState<ThemeCategory>("all");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const tabContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleTabClick = (
-    tabKey: ThemeCategory,
-    e?: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleTabClick = (tabKey: ThemeCategory) => {
     setSelectedThemeTab(tabKey);
-    const container = tabContainerRef.current;
-    if (!container || !e) return;
-
-    const target = e.currentTarget;
-    const targetRect = target.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-    const diff = targetRect.left + targetRect.width / 2 - (containerRect.left + containerRect.width / 2);
-
-    container.scrollBy({
-      left: diff,
-      behavior: "smooth",
-    });
   };
 
   const handleSelectCategory = (catId: ThemeCategory) => {
@@ -1317,10 +1301,7 @@ export default function LandingPage() {
             </div>
 
             {/* Desktop: Tab Pills (Styled identically to Dashboard TemplateSelector) */}
-            <div
-              ref={tabContainerRef}
-              className="hidden sm:flex flex-wrap items-center justify-center gap-2"
-            >
+            <div className="hidden sm:flex flex-wrap items-center justify-center gap-2">
               {THEME_CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
                 const isSelected = selectedThemeTab === cat.id;
@@ -1330,11 +1311,11 @@ export default function LandingPage() {
                   <button
                     key={cat.id}
                     type="button"
-                    onClick={(e) => handleTabClick(cat.id, e)}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                    onClick={() => handleTabClick(cat.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1.5 border ${
                       isSelected
-                        ? "bg-[#2d4a3e] text-white shadow-xs"
-                        : "bg-white hover:bg-slate-100 text-slate-600 border border-slate-200"
+                        ? "bg-[#2d4a3e] text-white border-[#2d4a3e] shadow-xs"
+                        : "bg-white hover:bg-slate-100 text-slate-600 border-slate-200"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -1350,36 +1331,36 @@ export default function LandingPage() {
                 );
               })}
             </div>
-          </div>
 
-          {/* Active Category Info Bar */}
-          {selectedThemeTab !== "all" && (
-            <div className="mb-8 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5">
-                <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 shadow-2xs">
-                  {(() => {
-                    const CurrentIcon = THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.icon || Layers;
-                    return <CurrentIcon className="w-4 h-4" />;
-                  })()}
-                </span>
-                <div>
-                  <p className="font-bold text-slate-800">
-                    Kategori: {THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.label} ({filteredThemes.length} Desain)
-                  </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    {THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.description}
-                  </p>
+            {/* Active Category Info Bar */}
+            {selectedThemeTab !== "all" && (
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs animate-in fade-in duration-150">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 shadow-2xs">
+                    {(() => {
+                      const CurrentIcon = THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.icon || Layers;
+                      return <CurrentIcon className="w-4 h-4" />;
+                    })()}
+                  </span>
+                  <div>
+                    <p className="font-bold text-slate-800">
+                      Kategori: {THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.label} ({filteredThemes.length} Desain)
+                    </p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      {THEME_CATEGORIES.find((c) => c.id === selectedThemeTab)?.description}
+                    </p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedThemeTab("all")}
+                  className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline shrink-0 cursor-pointer"
+                >
+                  Lihat Semua Koleksi ({themes.length}) &rarr;
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setSelectedThemeTab("all")}
-                className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline shrink-0 cursor-pointer"
-              >
-                Lihat Semua Koleksi ({themes.length}) &rarr;
-              </button>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Theme Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
