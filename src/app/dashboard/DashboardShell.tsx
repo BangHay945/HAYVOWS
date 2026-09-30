@@ -46,8 +46,8 @@ export const navItems = [
   { href: "/dashboard/invitation", label: "Kelola Undangan", icon: HeartHandshake },
   { href: "/dashboard/template", label: "Pilihan Template", icon: Palette },
   { href: "/dashboard/guests", label: "Daftar Tamu", icon: Users },
-  { href: "/dashboard/guestbook", label: "Buku Tamu (QR)", icon: BookOpenCheck },
   { href: "/dashboard/rsvp", label: "Konfirmasi RSVP", icon: CheckCircle2 },
+  { href: "/dashboard/guestbook", label: "Buku Tamu (QR)", icon: BookOpenCheck },
   { href: "/dashboard/messages", label: "Ucapan & Doa", icon: MessageSquare },
   { href: "/dashboard/analytics", label: "Statistik Kunjungan", icon: BarChart3 },
   { href: "/dashboard/settings", label: "Pengaturan", icon: Settings2 },
@@ -730,19 +730,6 @@ export function DashboardShell({
                   </Link>
 
                   <Link
-                    href={getHrefWithWedding("/dashboard/guestbook")}
-                    onClick={() => setMoreMenuOpen(false)}
-                    className={`p-3 rounded-xl border transition-all flex items-center gap-2.5 text-xs font-medium ${
-                      pathname.startsWith("/dashboard/guestbook")
-                        ? "bg-emerald-50 border-emerald-300 text-[#2d4a3e] font-bold"
-                        : "bg-slate-50/70 border-slate-200/80 text-slate-700 hover:bg-slate-100"
-                    }`}
-                  >
-                    <BookOpenCheck className="w-4 h-4 text-[#2d4a3e] shrink-0" />
-                    <span className="truncate">Buku Tamu (QR)</span>
-                  </Link>
-
-                  <Link
                     href={getHrefWithWedding("/dashboard/rsvp")}
                     onClick={() => setMoreMenuOpen(false)}
                     className={`p-3 rounded-xl border transition-all flex items-center gap-2.5 text-xs font-medium ${
@@ -753,6 +740,19 @@ export function DashboardShell({
                   >
                     <CheckCircle2 className="w-4 h-4 text-[#2d4a3e] shrink-0" />
                     <span className="truncate">Konfirmasi RSVP</span>
+                  </Link>
+
+                  <Link
+                    href={getHrefWithWedding("/dashboard/guestbook")}
+                    onClick={() => setMoreMenuOpen(false)}
+                    className={`p-3 rounded-xl border transition-all flex items-center gap-2.5 text-xs font-medium ${
+                      pathname.startsWith("/dashboard/guestbook")
+                        ? "bg-emerald-50 border-emerald-300 text-[#2d4a3e] font-bold"
+                        : "bg-slate-50/70 border-slate-200/80 text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    <BookOpenCheck className="w-4 h-4 text-[#2d4a3e] shrink-0" />
+                    <span className="truncate">Buku Tamu (QR)</span>
                   </Link>
 
                   <Link
