@@ -471,11 +471,10 @@ export function InvitationListClient({
                           <button
                             type="button"
                             onClick={() => setSelectedWeddingForDelete(w)}
-                            className="inline-flex items-center justify-center gap-1.5 min-h-[34px] px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-rose-600 text-xs font-medium cursor-pointer shadow-2xs transition-colors shrink-0"
+                            className="inline-flex items-center justify-center w-9 h-9 min-h-[34px] rounded-xl border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-rose-600 cursor-pointer shadow-2xs transition-colors shrink-0"
                             title="Hapus Acara"
                           >
                             <Trash2 className="w-3.5 h-3.5 shrink-0" />
-                            <span>Hapus</span>
                           </button>
                         </div>
                       </div>
@@ -615,11 +614,10 @@ export function InvitationListClient({
                       <button
                         type="button"
                         onClick={() => setSelectedWeddingForDelete(w)}
-                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 rounded-xl transition-all cursor-pointer min-h-[38px] md:min-h-0 self-center sm:self-auto"
+                        className="inline-flex items-center justify-center p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 rounded-xl transition-all cursor-pointer min-h-[44px] min-w-[44px]"
                         title="Hapus undangan ini"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span className="sm:hidden">Hapus Acara</span>
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
