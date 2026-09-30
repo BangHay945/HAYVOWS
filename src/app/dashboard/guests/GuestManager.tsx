@@ -566,52 +566,49 @@ export default function GuestManager({
 
         {/* Mobile View: Touch-Friendly Guest Cards (visible on mobile < md only) */}
         <div className="block md:hidden divide-y divide-slate-100">
-          {filteredGuests.map((guest) => {
+          {filteredGuests.map((guest, idx) => {
             const isAttending = guest.rsvp?.attendanceStatus === "attending";
             const isNotAttending = guest.rsvp?.attendanceStatus === "not_attending";
             const isCopied = copiedId === guest.id;
             const isMsgCopied = copiedMsgId === guest.id;
             const personalUrl = `/invitation/${weddingSlug}/${guest.slug}`;
-            const initial = guest.name.charAt(0).toUpperCase();
 
             return (
               <div key={guest.id} className="p-4 space-y-3 hover:bg-slate-50/50 transition-colors">
-                {/* Header: Avatar, Name, Category & RSVP */}
+                {/* Header: Name, No, Category & RSVP */}
                 <div className="flex items-start justify-between gap-2.5">
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
-                      {initial}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded shrink-0">
+                        #{idx + 1}
+                      </span>
+                      <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
+                        {guest.name}
+                      </span>
+                      <span
+                        className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold border shrink-0 ${
+                          guest.category === "VIP"
+                            ? "bg-amber-50 text-amber-700 border-amber-200"
+                            : guest.category === "Keluarga"
+                            ? "bg-blue-50 text-blue-700 border-blue-200"
+                            : "bg-slate-50 text-slate-600 border-slate-200"
+                        }`}
+                      >
+                        {guest.category || "Reguler"}
+                      </span>
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
-                          {guest.name}
+                    <div className="text-[11px] text-slate-500 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                      <span>{guest.phone || "Tanpa No. WA"}</span>
+                      {guest.tableNumber && (
+                        <span className="font-semibold text-[#2d4a3e]">
+                          • Meja: {guest.tableNumber}
                         </span>
-                        <span
-                          className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-bold border shrink-0 ${
-                            guest.category === "VIP"
-                              ? "bg-amber-50 text-amber-700 border-amber-200"
-                              : guest.category === "Keluarga"
-                              ? "bg-blue-50 text-blue-700 border-blue-200"
-                              : "bg-slate-50 text-slate-600 border-slate-200"
-                          }`}
-                        >
-                          {guest.category || "Reguler"}
+                      )}
+                      {guest.guestCount > 1 && (
+                        <span className="text-slate-400">
+                          • {guest.guestCount} Pax
                         </span>
-                      </div>
-                      <div className="text-[11px] text-slate-500 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
-                        <span>{guest.phone || "Tanpa No. WA"}</span>
-                        {guest.tableNumber && (
-                          <span className="font-semibold text-[#2d4a3e]">
-                            • Meja: {guest.tableNumber}
-                          </span>
-                        )}
-                        {guest.guestCount > 1 && (
-                          <span className="text-slate-400">
-                            • {guest.guestCount} Pax
-                          </span>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
 
@@ -744,6 +741,7 @@ export default function GuestManager({
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               <tr>
+                <th className="w-12 px-4 py-3.5 text-center">No</th>
                 <th className="px-5 py-3.5">Nama Tamu &amp; Kontak</th>
                 <th className="px-5 py-3.5">Alamat / Asal Kota</th>
                 <th className="px-5 py-3.5">Kategori &amp; Meja</th>
@@ -753,27 +751,26 @@ export default function GuestManager({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filteredGuests.map((guest) => {
+              {filteredGuests.map((guest, idx) => {
                 const isAttending = guest.rsvp?.attendanceStatus === "attending";
                 const isNotAttending = guest.rsvp?.attendanceStatus === "not_attending";
                 const isCopied = copiedId === guest.id;
                 const isMsgCopied = copiedMsgId === guest.id;
                 const personalUrl = `/invitation/${weddingSlug}/${guest.slug}`;
-                const initial = guest.name.charAt(0).toUpperCase();
 
                 return (
                   <tr key={guest.id} className="hover:bg-slate-50/50 transition-colors">
-                    {/* Name & Avatar */}
+                    {/* No */}
+                    <td className="w-12 px-4 py-3.5 text-center font-mono text-[11px] text-slate-400 font-semibold select-none">
+                      {idx + 1}
+                    </td>
+
+                    {/* Name & Contact (Avatar initial removed) */}
                     <td className="px-5 py-3.5 font-medium text-slate-900">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
-                          {initial}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-slate-900">{guest.name}</div>
-                          <div className="text-[11px] text-slate-400 font-mono">
-                            {guest.phone || "Tidak ada nomor WA"}
-                          </div>
+                      <div>
+                        <div className="font-semibold text-slate-900 text-xs sm:text-sm">{guest.name}</div>
+                        <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                          {guest.phone || "Tidak ada nomor WA"}
                         </div>
                       </div>
                     </td>
@@ -914,7 +911,7 @@ export default function GuestManager({
 
               {filteredGuests.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center py-10 text-slate-400 text-xs">
+                  <td colSpan={7} className="text-center py-10 text-slate-400 text-xs">
                     {searchQuery || categoryFilter !== "all" || rsvpFilter !== "all" ? (
                       "Tidak ada tamu yang sesuai dengan filter pencarian."
                     ) : (
