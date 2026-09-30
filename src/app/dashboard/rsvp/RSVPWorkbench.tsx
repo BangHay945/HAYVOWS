@@ -424,7 +424,8 @@ export default function RSVPWorkbench({
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-3.5">Nama Tamu</th>
+                <th className="w-12 px-4 py-3.5 text-center">No</th>
+                <th className="px-6 py-3.5">Nama Tamu &amp; Kontak</th>
                 <th className="px-6 py-3.5">Kategori</th>
                 <th className="px-6 py-3.5">Status Kehadiran</th>
                 <th className="px-6 py-3.5">Jumlah Pax</th>
@@ -432,26 +433,25 @@ export default function RSVPWorkbench({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filteredRSVP.map((r) => {
+              {filteredRSVP.map((r, idx) => {
                 const isAttending = r.attendanceStatus === "attending";
-                const initial = r.guest.name.charAt(0).toUpperCase();
 
                 return (
                   <tr key={r.id} className="hover:bg-slate-50/50 transition-colors">
-                    {/* Guest Name & Avatar */}
+                    {/* No */}
+                    <td className="w-12 px-4 py-3.5 text-center font-mono text-[11px] text-slate-400 font-semibold select-none">
+                      {idx + 1}
+                    </td>
+
+                    {/* Guest Name & Phone */}
                     <td className="px-6 py-3.5 font-medium text-slate-900">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
-                          {initial}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-slate-900">{r.guest.name}</div>
-                          {r.guest.phone && (
-                            <div className="text-[11px] text-slate-400 font-mono">
-                              {r.guest.phone}
-                            </div>
-                          )}
-                        </div>
+                      <div>
+                        <div className="font-semibold text-slate-900">{r.guest.name}</div>
+                        {r.guest.phone && (
+                          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                            {r.guest.phone}
+                          </div>
+                        )}
                       </div>
                     </td>
 
@@ -505,7 +505,7 @@ export default function RSVPWorkbench({
 
               {filteredRSVP.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="text-center py-10 text-slate-400 text-xs">
+                  <td colSpan={6} className="text-center py-10 text-slate-400 text-xs">
                     {searchQuery || filterTab !== "all"
                       ? "Tidak ada respon RSVP yang cocok dengan filter."
                       : "Belum ada tamu yang mengirimkan konfirmasi kehadiran."}
