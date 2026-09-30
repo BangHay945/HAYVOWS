@@ -12,6 +12,7 @@ import {
   ArrowUpRight,
   ShieldCheck,
   CheckCircle2,
+  Filter,
 } from "lucide-react";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
 import {
@@ -224,41 +225,66 @@ export function NewWeddingClient({
             </Link>
           </div>
 
-          {/* 5 Archetype Quick Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-3 scrollbar-none">
-            <button
-              type="button"
-              onClick={() => setSelectedArchetype("all")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                selectedArchetype === "all"
-                  ? "bg-[#2d4a3e] text-white shadow-xs"
-                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-              }`}
-            >
-              Semua ({initialTemplates.length})
-            </button>
-            {ARCHETYPE_LIST.map((arch) => {
-              const count = initialTemplates.filter(
-                (t) => getTemplateArchetype(t.slug) === arch.id
-              ).length;
-              const isSelected = selectedArchetype === arch.id;
-              return (
-                <button
-                  key={arch.id}
-                  type="button"
-                  onClick={() => setSelectedArchetype(arch.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
-                    isSelected
-                      ? "bg-[#2d4a3e] text-white shadow-xs"
-                      : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-                  }`}
-                >
-                  <span>{arch.badge.split(" ")[0]}</span>
-                  <span>{arch.shortLabel}</span>
-                  <span className="text-[10px] opacity-75">({count})</span>
-                </button>
-              );
-            })}
+          {/* 5 Archetype Quick Filter: Mobile Dropdown & Desktop Pills */}
+          <div className="mb-3">
+            {/* Mobile: Filter Dropdown with Filter Icon */}
+            <div className="sm:hidden relative w-full">
+              <select
+                value={selectedArchetype}
+                onChange={(e) => setSelectedArchetype(e.target.value)}
+                className="w-full appearance-none pl-3.5 pr-9 py-2 bg-white border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-800 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] cursor-pointer"
+              >
+                <option value="all">Semua Archetype ({initialTemplates.length})</option>
+                {ARCHETYPE_LIST.map((arch) => {
+                  const count = initialTemplates.filter(
+                    (t) => getTemplateArchetype(t.slug) === arch.id
+                  ).length;
+                  return (
+                    <option key={arch.id} value={arch.id}>
+                      {arch.badge.split(" ")[0]} {arch.name} ({count})
+                    </option>
+                  );
+                })}
+              </select>
+              <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* Desktop: Pills */}
+            <div className="hidden sm:flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              <button
+                type="button"
+                onClick={() => setSelectedArchetype("all")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  selectedArchetype === "all"
+                    ? "bg-[#2d4a3e] text-white shadow-xs"
+                    : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                }`}
+              >
+                Semua ({initialTemplates.length})
+              </button>
+              {ARCHETYPE_LIST.map((arch) => {
+                const count = initialTemplates.filter(
+                  (t) => getTemplateArchetype(t.slug) === arch.id
+                ).length;
+                const isSelected = selectedArchetype === arch.id;
+                return (
+                  <button
+                    key={arch.id}
+                    type="button"
+                    onClick={() => setSelectedArchetype(arch.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
+                      isSelected
+                        ? "bg-[#2d4a3e] text-white shadow-xs"
+                        : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                    }`}
+                  >
+                    <span>{arch.badge.split(" ")[0]}</span>
+                    <span>{arch.shortLabel}</span>
+                    <span className="text-[10px] opacity-75">({count})</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="space-y-3">

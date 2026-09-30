@@ -1293,11 +1293,31 @@ export default function LandingPage() {
               Pilih dari tema petualangan RPG 2D yang seru hingga tema botani elegan. Anda bebas berganti tema kapan saja tanpa kehilangan data.
             </p>
 
-            {/* Filter Tabs */}
+            {/* Filter Tabs & Mobile Dropdown */}
             <div className="w-full pt-4">
+              {/* Mobile: Filter Dropdown with Filter Icon */}
+              <div className="sm:hidden relative w-full max-w-xs mx-auto">
+                <select
+                  value={selectedThemeTab}
+                  onChange={(e) => setSelectedThemeTab(e.target.value as ThemeCategory)}
+                  className="w-full appearance-none pl-4 pr-10 py-2.5 bg-white border border-slate-200/90 rounded-2xl text-xs font-semibold text-slate-800 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] cursor-pointer"
+                >
+                  {THEME_CATEGORIES.map((cat) => {
+                    const count = cat.id === "all" ? themes.length : themes.filter((t) => t.category === cat.id).length;
+                    return (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.label} ({count})
+                      </option>
+                    );
+                  })}
+                </select>
+                <Filter className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              {/* Desktop: Tab Pills */}
               <div
                 ref={tabContainerRef}
-                className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth px-4 sm:px-0 -mx-4 sm:mx-0 justify-start sm:justify-center py-1"
+                className="hidden sm:flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth justify-center py-1"
               >
                 {THEME_CATEGORIES.map((cat) => {
                   const Icon = cat.icon;

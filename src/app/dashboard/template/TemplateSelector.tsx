@@ -16,6 +16,7 @@ import {
   Layers,
   Crown,
   Landmark,
+  Filter,
 } from "lucide-react";
 import { MonogramSeal } from "@/templates/modern-monogram/components/MonogramSeal";
 import { UpgradeModal } from "@/components/dashboard/UpgradeModal";
@@ -338,9 +339,30 @@ export default function TemplateSelector({
         </div>
       )}
 
-      {/* 5 Archetype Pillar Filter Tabs */}
+      {/* 5 Archetype Pillar Filter: Mobile Dropdown & Desktop Tabs */}
       <div className="space-y-3">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {/* Mobile: Filter Dropdown with Filter Icon */}
+        <div className="sm:hidden relative w-full">
+          <select
+            value={selectedArchetype}
+            onChange={(e) => setSelectedArchetype(e.target.value)}
+            className="w-full appearance-none pl-3.5 pr-9 py-2.5 bg-white border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-800 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e] cursor-pointer"
+          >
+            <option value="all">Semua Tipe ({templateList.length})</option>
+            {ARCHETYPE_LIST.map((arch) => {
+              const count = templateList.filter((t) => getTemplateArchetype(t.slug) === arch.id).length;
+              return (
+                <option key={arch.id} value={arch.id}>
+                  {arch.badge.split(" ")[0]} {arch.name} ({count})
+                </option>
+              );
+            })}
+          </select>
+          <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        </div>
+
+        {/* Desktop: Tab Pills */}
+        <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           <button
             type="button"
             onClick={() => setSelectedArchetype("all")}
