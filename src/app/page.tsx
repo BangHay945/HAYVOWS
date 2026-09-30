@@ -221,7 +221,7 @@ export default function LandingPage() {
       tag: "Adat Nusantara",
       tagColor: "bg-amber-900/30 text-amber-700 border-amber-700/40",
       categoryTag: "Paket Populer",
-      categoryStyle: "bg-amber-100 text-amber-900 border-amber-300",
+      categoryStyle: "bg-emerald-50 text-emerald-800 border-emerald-200",
       versionTag: "v1.0.0 • Adat Jawa",
       viewBadge: "Live Kraton Heritage Split View",
       viewBadgeStyle: "border-amber-600/50 text-amber-300",
@@ -239,7 +239,7 @@ export default function LandingPage() {
       tag: "Monochrome Exclusive",
       tagColor: "bg-slate-800 text-amber-300 border-amber-500/40",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-slate-950 text-[#c9a84c] border-[#c9a84c]/30",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v1.0.0 • Eternal Noir",
       viewBadge: "Live Editorial Split View",
       viewBadgeStyle: "border-[#c9a84c]/40 text-[#c9a84c]",
@@ -257,7 +257,7 @@ export default function LandingPage() {
       tag: "Aristocratic Exclusive",
       tagColor: "bg-emerald-950 text-amber-300 border-amber-500/40",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-emerald-950 text-[#ffd700] border-[#d4af37]/40",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v1.0.0 • Royal Emerald",
       viewBadge: "Live Royal Velvet View",
       viewBadgeStyle: "border-emerald-400/40 text-amber-300",
@@ -275,7 +275,7 @@ export default function LandingPage() {
       tag: "Cinematic Editorial",
       tagColor: "bg-stone-900 text-[#e8d5b5] border-[#e8d5b5]/40",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-slate-950 text-[#e8d5b5] border-[#e8d5b5]/30",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v1.0.0 • Editorial Journal",
       viewBadge: "Live Vogue Lookbook View",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
@@ -293,7 +293,7 @@ export default function LandingPage() {
       tag: "Midnight & Platinum Ivory",
       tagColor: "bg-[#18191d] text-[#d4c4b0] border-white/20",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-[#f4efe6] text-[#7a5c32] border-[#dcd3c4]",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v1.0.0 • Editorial Ivory",
       viewBadge: "Live Warm Ivory View",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
@@ -311,7 +311,7 @@ export default function LandingPage() {
       tag: "Paling Populer & Unik",
       tagColor: "bg-amber-100 text-amber-800 border-amber-300",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/30",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v1.0.0 • Pulau Langit",
       viewBadge: "Live Pulau Langit Map",
       viewBadgeStyle: "border-amber-400/40 text-amber-300",
@@ -329,7 +329,7 @@ export default function LandingPage() {
       tag: "Futuristic 2D RPG",
       tagColor: "bg-cyan-100 text-cyan-900 border-cyan-300",
       categoryTag: "Paket Exclusive",
-      categoryStyle: "bg-slate-900 text-cyan-300 border-cyan-500/30",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/40",
       versionTag: "v2.4.0 • RPG 2D",
       viewBadge: "Live Skyline District Map",
       viewBadgeStyle: "border-cyan-400/40 text-cyan-300",
@@ -1399,7 +1399,9 @@ export default function LandingPage() {
                   <div className="p-5 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-1.5">
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-50 text-emerald-800 border-emerald-200">
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${theme.tagColor}`}
+                        >
                           {theme.badge}
                         </span>
                         <span
