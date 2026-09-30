@@ -184,6 +184,11 @@ export default function LandingPage() {
       name: "Modern Monogram Minimalis",
       tag: "Bersih & Editorial",
       tagColor: "bg-slate-100 text-slate-800 border-slate-300",
+      categoryTag: "Paket Basic",
+      categoryStyle: "bg-teal-50 text-teal-800 border-teal-200",
+      versionTag: "v1.0.0 • Monogram",
+      viewBadge: "Live Monogram Crest View",
+      viewBadgeStyle: "border-[#c5a880]/50 text-[#fef08a]",
       description: "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
       demoUrl: "/invitation/adrian-nadia/budi-santoso",
       bannerImage: "/assets/templates/modern-monogram/banner.jpg",
@@ -197,6 +202,11 @@ export default function LandingPage() {
       name: "Nature Botanical Floral",
       tag: "Terbaru & Elegan",
       tagColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      categoryTag: "Paket Populer",
+      categoryStyle: "bg-emerald-50 text-emerald-800 border-emerald-200",
+      versionTag: "v1.0.0 • Floral Edition",
+      viewBadge: "Live Botanical Split View",
+      viewBadgeStyle: "border-emerald-400/50 text-emerald-300",
       description: "Estetika botani hijau sage & emas mewah dengan tipografi Playfair Display puitis. Lengkap dengan 11 komponen interaktif dan efek suara akustik lembut.",
       demoUrl: "/invitation/dimas-anindya/budi-santoso",
       bannerImage: "/assets/templates/nature-floral/banner.jpg",
@@ -210,6 +220,11 @@ export default function LandingPage() {
       name: "Batik Jawa Heritage",
       tag: "Adat Nusantara",
       tagColor: "bg-amber-900/30 text-amber-700 border-amber-700/40",
+      categoryTag: "Paket Populer",
+      categoryStyle: "bg-amber-100 text-amber-900 border-amber-300",
+      versionTag: "v1.0.0 • Adat Jawa",
+      viewBadge: "Live Kraton Heritage Split View",
+      viewBadgeStyle: "border-amber-600/50 text-amber-300",
       description: "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
       demoUrl: "/invitation/prasetyo-kinanti/budi-santoso",
       bannerImage: "/assets/templates/batik-jawa/banner.jpg",
@@ -223,6 +238,11 @@ export default function LandingPage() {
       name: "Eternal Luxury Noir",
       tag: "Monochrome Exclusive",
       tagColor: "bg-slate-800 text-amber-300 border-amber-500/40",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-slate-950 text-[#c9a84c] border-[#c9a84c]/30",
+      versionTag: "v1.0.0 • Eternal Noir",
+      viewBadge: "Live Editorial Split View",
+      viewBadgeStyle: "border-[#c9a84c]/40 text-[#c9a84c]",
       description: "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
       demoUrl: "/invitation/eleanor-xavier/budi-santoso",
       bannerImage: "/assets/templates/eternal-noir/banner.jpg",
@@ -236,6 +256,11 @@ export default function LandingPage() {
       name: "Royal Emerald & Gold",
       tag: "Aristocratic Exclusive",
       tagColor: "bg-emerald-950 text-amber-300 border-amber-500/40",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-emerald-950 text-[#ffd700] border-[#d4af37]/40",
+      versionTag: "v1.0.0 • Royal Emerald",
+      viewBadge: "Live Royal Velvet View",
+      viewBadgeStyle: "border-emerald-400/40 text-amber-300",
       description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
       demoUrl: "/invitation/arthur-guinevere/budi-santoso",
       bannerImage: "/assets/templates/royal-emerald/banner.jpg",
@@ -249,6 +274,11 @@ export default function LandingPage() {
       name: "The Wedding Journal",
       tag: "Cinematic Editorial",
       tagColor: "bg-stone-900 text-[#e8d5b5] border-[#e8d5b5]/40",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-slate-950 text-[#e8d5b5] border-[#e8d5b5]/30",
+      versionTag: "v1.0.0 • Editorial Journal",
+      viewBadge: "Live Vogue Lookbook View",
+      viewBadgeStyle: "border-amber-400/40 text-amber-300",
       description: "Desain majalah mode editorial kelas atas (Vogue / Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik, dan background galeri dinamis.",
       demoUrl: "/invitation/julian-claire/budi-santoso",
       bannerImage: "/assets/templates/cinematic-editorial/banner.jpg",
@@ -262,6 +292,11 @@ export default function LandingPage() {
       name: "Cinematic Ivory",
       tag: "Midnight & Platinum Ivory",
       tagColor: "bg-[#18191d] text-[#d4c4b0] border-white/20",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-[#f4efe6] text-[#7a5c32] border-[#dcd3c4]",
+      versionTag: "v1.0.0 • Editorial Ivory",
+      viewBadge: "Live Warm Ivory View",
+      viewBadgeStyle: "border-amber-400/40 text-amber-300",
       description: "Kemewahan sinematik film pernikahan kelas atas bernuansa midnight charcoal & tipografi platinum ivory bercahaya. Transisi film dramatis, portrait 3:4 artistik, timeline storytelling tanpa card, dan galeri asimetris elegan.",
       demoUrl: "/invitation/alexander-sara/budi-santoso",
       bannerImage: "/assets/templates/cinematic-ivory/banner.jpg",
@@ -275,6 +310,11 @@ export default function LandingPage() {
       name: "Pixel Adventure RPG 2D",
       tag: "Paling Populer & Unik",
       tagColor: "bg-amber-100 text-amber-800 border-amber-300",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-slate-900 text-[#c9a84c] border-[#c9a84c]/30",
+      versionTag: "v1.0.0 • Pulau Langit",
+      viewBadge: "Live Pulau Langit Map",
+      viewBadgeStyle: "border-amber-400/40 text-amber-300",
       description: "Pengalaman seperti bermain game RPG 16-bit! Tamu diajak berkeliling di pulau langit terapung, berbicara dengan 5 NPC interaktif, dan membuka fitur pernikahan.",
       demoUrl: "/invitation/alex-sara/budi-santoso",
       bannerImage: "/assets/templates/pixel-adventure/banner.jpg",
@@ -288,6 +328,11 @@ export default function LandingPage() {
       name: "Cyberpunk Neo-District 2077",
       tag: "Futuristic 2D RPG",
       tagColor: "bg-cyan-100 text-cyan-900 border-cyan-300",
+      categoryTag: "Paket Exclusive",
+      categoryStyle: "bg-slate-900 text-cyan-300 border-cyan-500/30",
+      versionTag: "v2.4.0 • RPG 2D",
+      viewBadge: "Live Skyline District Map",
+      viewBadgeStyle: "border-cyan-400/40 text-cyan-300",
       description: "Pengalaman pernikahan futuristik bernuansa neon cyberpunk! Dilengkapi eksplorasi peta kota Skyline District, 7 NPC interaktif, audio synthwave, dan visual retro-futuristik.",
       demoUrl: "/invitation/neo-2077/budi-santoso",
       bannerImage: "/assets/templates/pixel-cyberpunk/banner.jpg",
@@ -1323,64 +1368,89 @@ export default function LandingPage() {
             {filteredThemes.map((theme) => (
               <div
                 key={theme.id}
-                className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group"
+                className="bg-white rounded-2xl border border-slate-200/90 hover:border-[#2d4a3e]/40 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between overflow-hidden group"
               >
-                {/* Visual Header / Thumbnail Box */}
-                <div
-                  className={`h-48 bg-gradient-to-tr ${theme.bgColor} p-6 flex flex-col justify-between relative overflow-hidden text-white`}
-                >
-                  {theme.bannerImage && (
-                    <>
-                      <img
-                        src={theme.bannerImage}
-                        alt={theme.name}
-                        className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 brightness-90"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/30" />
-                    </>
-                  )}
-
-                  <div className="flex items-center justify-between z-10">
-                    <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold tracking-wider">
-                      {theme.badge}
-                    </span>
-                    <span className="text-xs bg-emerald-500/80 px-2 py-0.5 rounded-full font-bold">
-                      Aktif
-                    </span>
+                <div>
+                  {/* Hero Banner Visual */}
+                  <div
+                    className={`h-40 flex items-center justify-center border-b border-slate-100 select-none relative overflow-hidden bg-gradient-to-tr ${theme.bgColor}`}
+                  >
+                    {theme.bannerImage ? (
+                      <>
+                        <img
+                          src={theme.bannerImage}
+                          alt={theme.name}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
+                        <div
+                          className={`absolute bottom-2.5 left-3 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs border text-[10px] font-mono font-bold ${theme.viewBadgeStyle}`}
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          <span>{theme.viewBadge}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <Sparkles className="w-10 h-10 text-slate-400" />
+                    )}
                   </div>
 
-                  <div className="z-10">
-                    <span className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase mb-1.5 ${theme.tagColor}`}>
-                      {theme.tag}
-                    </span>
-                    <h3 className="text-xl font-extrabold text-white drop-shadow-md">{theme.name}</h3>
-                  </div>
-                </div>
+                  {/* Card Body */}
+                  <div className="p-5 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-50 text-emerald-800 border-emerald-200">
+                          {theme.badge}
+                        </span>
+                        <span
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${theme.categoryStyle}`}
+                        >
+                          {theme.categoryTag}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-mono">
+                        {theme.versionTag}
+                      </span>
+                    </div>
 
-                {/* Content Details */}
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                      {theme.description}
-                    </p>
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-base flex items-center gap-1.5">
+                        <span>{theme.name}</span>
+                      </h3>
+                      <p className="text-xs text-slate-500 leading-relaxed mt-1 line-clamp-3">
+                        {theme.description}
+                      </p>
+                    </div>
 
-                    <div className="mt-4 space-y-1.5 border-t border-slate-100 pt-3">
-                      {theme.highlights.map((h, i) => (
-                        <p key={i} className="text-xs text-slate-700 font-medium flex items-center gap-1.5">
+                    {/* Highlights */}
+                    <div className="space-y-1.5 pt-3 border-t border-slate-100 text-[11px] text-slate-600">
+                      {theme.highlights.map((hl, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 truncate">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>{h}</span>
-                        </p>
+                          <span className="truncate">{hl}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
+                </div>
 
+                {/* Card Footer Actions */}
+                <div className="p-4 bg-slate-50/70 border-t border-slate-100 grid grid-cols-2 gap-2">
                   <Link
                     href={theme.demoUrl}
                     target="_blank"
-                    className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-100 hover:bg-[#2d4a3e] hover:text-white text-slate-800 text-xs sm:text-sm font-bold transition-all group-hover:bg-[#2d4a3e] group-hover:text-white"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-2xs hover:border-slate-300 transition-colors"
                   >
-                    <span>Lihat Contoh Undangan</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <Play className="w-3 h-3 text-slate-500 fill-slate-400" />
+                    <span>Uji Coba Demo</span>
+                  </Link>
+
+                  <Link
+                    href="/register"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-[#2d4a3e] hover:bg-[#233a30] text-white shadow-2xs transition-colors cursor-pointer"
+                  >
+                    <span>Pakai Tema</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
