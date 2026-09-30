@@ -397,56 +397,60 @@ export function GuestbookWorkbench({
         </div>
       </div>
 
-      {/* Table Section Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-        <div className="flex items-center gap-2 font-bold text-sm text-[#2d4a3e]">
-          <Users className="w-4 h-4" />
-          <span>Daftar Buku Tamu ({guests.length})</span>
+      {/* Search & Tabs Filter Bar */}
+      <div className="bg-white border border-slate-200/80 rounded-xl p-3.5 sm:p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+        {/* Search Input */}
+        <div className="relative flex-1">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari nama tamu, alamat / kota, nomor meja..."
+            className="w-full pl-9 pr-3.5 py-2 min-h-[42px] text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
+          />
+        </div>
+
+        {/* Filter Pills */}
+        <div className="grid grid-cols-2 sm:flex items-center gap-1.5 flex-wrap">
+          {[
+            { id: "all", label: `Semua (${guests.length})` },
+            { id: "checked_in", label: `Sudah Hadir (${stats.totalCheckedInCount})` },
+            { id: "not_checked_in", label: `Belum Hadir (${stats.totalGuests - stats.totalCheckedInCount})` },
+            { id: "vip", label: "Tamu VIP" },
+          ].map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setStatusFilter(f.id as any)}
+              className={`min-h-[38px] px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
+                statusFilter === f.id
+                  ? "bg-[#2d4a3e] text-white shadow-2xs"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* TABLE VIEW */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden space-y-4 p-4 sm:p-5">
-          {/* Filter and Search Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            {/* Search Input */}
-            <div className="relative flex-1 max-w-md">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari nama tamu, alamat / kota, nomor meja..."
-                className="w-full pl-9 pr-3.5 py-2 min-h-[44px] text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2d4a3e]/20 focus:border-[#2d4a3e]"
-              />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+      {/* Guestbook Table & List Container */}
+      <div className="bg-white border border-slate-200/80 rounded-xl overflow-hidden shadow-2xs">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+            <span>Daftar Buku Tamu</span>
+            <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono">
+              {filteredGuests.length} dari {guests.length}
+            </span>
+          </h2>
+          <span className="text-xs text-slate-400 font-mono hidden sm:inline-block">
+            {stats.totalCheckedInCount} hadir ({stats.totalCheckedInPax} pax)
+          </span>
+        </div>
 
-            {/* Filter Pills */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {[
-                { id: "all", label: "Semua Tamu" },
-                { id: "checked_in", label: "Sudah Hadir" },
-                { id: "not_checked_in", label: "Belum Hadir" },
-                { id: "vip", label: "Tamu VIP" },
-              ].map((f) => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setStatusFilter(f.id as any)}
-                  className={`min-h-[40px] py-2 px-3.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
-                    statusFilter === f.id
-                      ? "bg-[#2d4a3e] text-white shadow-2xs"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }`}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile & Tablet Card View (< md: Meja Resepsionis Cepat) */}
-          <div className="block md:hidden divide-y divide-slate-100 border border-slate-200/80 rounded-xl overflow-hidden">
+        {/* Mobile & Tablet Card View (< md: Meja Resepsionis Cepat) */}
+        <div className="block md:hidden divide-y divide-slate-100">
             {filteredGuests.length === 0 ? (
               <div className="text-center py-10 text-slate-400 text-xs">
                 Tidak ada data tamu yang cocok dengan pencarian atau filter.
@@ -653,7 +657,7 @@ export function GuestbookWorkbench({
           </div>
 
           {/* Desktop Table View (>= md) */}
-          <div className="hidden md:block overflow-x-auto rounded-xl border border-slate-200/80">
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-700">
               <thead className="bg-slate-50 border-b border-slate-200/80 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 <tr>
