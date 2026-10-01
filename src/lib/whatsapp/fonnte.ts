@@ -162,20 +162,27 @@ export async function sendRSVPTicketWhatsApp({
   )}&format=png&margin=10`;
 
   const message = [
-    `*E-PASS PRESENSI (RSVP)*`,
+    `Halo Kak *${guestName}*,`,
+    `Terima kasih telah melakukan konfirmasi kehadiran untuk pernikahan:`,
     `💍 *${coupleTitle}*`,
+    "",
+    `Berikut adalah *E-Pass Presensi QR* resmi Anda:`,
     `━━━━━━━━━━━━━━━━━━━━`,
-    `👤 *Nama:* ${guestName}`,
     `🎟️ *Kode Tiket:* \`${qrCode}\``,
-    `📋 *Status:* ${isAttending ? "✓ Hadir" : "✕ Tidak Hadir"}`,
-    isAttending ? `👥 *Jumlah:* ${guestCount} Orang` : null,
-    formattedDate ? `📅 *Tanggal:* ${formattedDate}` : null,
-    eventVenue ? `📍 *Lokasi:* ${eventVenue}` : null,
+    `👤 *Nama Tamu:* ${guestName}`,
+    `📋 *Status Kehadiran:* ${isAttending ? "✓ Hadir" : "✕ Berhalangan"}`,
+    isAttending ? `👥 *Jumlah Kehadiran:* ${guestCount} Orang` : null,
+    formattedDate ? `📅 *Tanggal Acara:* ${formattedDate}` : null,
+    eventVenue ? `📍 *Lokasi Acara:* ${eventVenue}` : null,
     `━━━━━━━━━━━━━━━━━━━━`,
-    `🔗 *Buka E-Pass:*`,
+    "",
+    `🔗 *Buka E-Pass Digital:*`,
     `${ticketUrl}?epass=1`,
     "",
-    `💡 _Tunjukkan QR ini ke penerima tamu saat tiba di lokasi._`,
+    `💡 *Petunjuk Presensi:*`,
+    `Simpan gambar QR di atas dan tunjukkan kepada petugas di meja penerima tamu saat tiba di lokasi untuk verifikasi kehadiran.`,
+    "",
+    `Sampai jumpa di hari bahagia kami! 🙏✨`,
   ]
     .filter((line) => line !== null)
     .join("\n");
