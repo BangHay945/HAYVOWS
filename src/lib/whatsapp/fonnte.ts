@@ -162,30 +162,18 @@ export async function sendRSVPTicketWhatsApp({
   )}&format=png&margin=10`;
 
   const message = [
-    `Halo Kak *${guestName}*,`,
-    "",
-    `Terima kasih telah melakukan konfirmasi kehadiran (RSVP) untuk pernikahan:`,
+    `*E-PASS PRESENSI (RSVP)*`,
     `💍 *${coupleTitle}*`,
-    "",
-    `Berikut adalah *E-Tiket Presensi QR* resmi Anda:`,
     `━━━━━━━━━━━━━━━━━━━━`,
+    `👤 *Nama:* ${guestName}`,
     `🎟️ *Kode Tiket:* \`${qrCode}\``,
-    `👤 *Nama Tamu:* ${guestName}`,
-    `📋 *Status:* ${isAttending ? "✓ Akan Hadir" : "✕ Berhalangan Hadir"}`,
-    isAttending ? `👥 *Jumlah Kehadiran:* ${guestCount} Orang` : null,
+    `📋 *Status:* ${isAttending ? "✓ Hadir" : "✕ Tidak Hadir"}`,
+    isAttending ? `👥 *Jumlah:* ${guestCount} Orang` : null,
     formattedDate ? `📅 *Tanggal:* ${formattedDate}` : null,
     eventVenue ? `📍 *Lokasi:* ${eventVenue}` : null,
     `━━━━━━━━━━━━━━━━━━━━`,
-    "",
-    `🔗 *Buka Tiket Digital & Undangan:*`,
-    `${ticketUrl}`,
-    "",
-    `💡 *Petunjuk Presensi Hari H:*`,
-    `Simpan gambar QR di atas dan tunjukkan kepada petugas penerima tamu saat tiba di lokasi resepsi untuk verifikasi kehadiran instan.`,
-    "",
-    `Sampai jumpa di hari bahagia kami! 🙏✨`,
-    "",
-    `_Pesan otomatis dari Hayvows Smart Wedding Ecosystem_`,
+    `🔗 *Buka E-Pass:*`,
+    `${ticketUrl}?epass=1`,
   ]
     .filter((line) => line !== null)
     .join("\n");
@@ -194,6 +182,6 @@ export async function sendRSVPTicketWhatsApp({
     target: phone,
     message,
     url: qrImageUrl,
-    filename: `Tiket-QR-${guestSlug}.png`,
+    filename: `EPass-${guestSlug}.png`,
   });
 }

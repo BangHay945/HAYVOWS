@@ -22,6 +22,21 @@ export default function InvitationClient({
   const [isOpen, setIsOpen] = useState(false);
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
 
+  // Auto buka modal E-Pass langsung jika link URL mengandung ?epass=1 atau ?ticket=1
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (
+        params.get("epass") === "1" ||
+        params.get("epass") === "true" ||
+        params.get("ticket") === "1" ||
+        params.get("ticket") === "true"
+      ) {
+        setTicketModalOpen(true);
+      }
+    }
+  }, []);
+
   // Kunci scroll layar saat cover masih aktif agar pas 100dvh dan tidak bisa di-scroll di mobile
   useEffect(() => {
     if (!isOpen) {
