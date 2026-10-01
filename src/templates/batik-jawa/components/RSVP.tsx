@@ -29,6 +29,7 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
   };
 
   const [message, setMessage] = useState('');
+  const [phone, setPhone] = useState(context?.guest?.phone || '');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [localMessages, setLocalMessages] = useState<GuestMessage[]>(context?.messages ?? []);
@@ -57,6 +58,7 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
           attendanceStatus,
           guestCount: finalCount,
           message: message.trim(),
+          phone: phone.trim() || undefined,
         };
         await onRSVPSubmit(data);
       }
@@ -205,6 +207,19 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
               <p className="font-jawa-body text-xs sm:text-sm text-[#D4A853] max-w-md mx-auto leading-relaxed" style={{ fontStyle: 'normal' }}>
                 Konfirmasi rencana kehadiran ({attendanceStatus === 'attending' ? `Hadir - ${guestCount} Tamu` : 'Tidak Hadir'}) dan doa restu Anda telah berhasil dicatat. Merupakan suatu kehormatan besar bagi kami sekeluarga.
               </p>
+              {phone.trim() && (
+                <div
+                  className="max-w-md mx-auto p-2.5 rounded-xl text-center"
+                  style={{
+                    backgroundColor: 'rgba(184, 134, 11, 0.15)',
+                    border: '1px solid rgba(184, 134, 11, 0.3)',
+                  }}
+                >
+                  <p className="font-jawa-body text-xs text-[#EDE0C4]" style={{ fontStyle: 'normal' }}>
+                    E-Tiket QR Presensi sedang dikirimkan ke WhatsApp Anda ({phone.trim()}).
+                  </p>
+                </div>
+              )}
               {isDemo && (
                 <div className="pt-2 space-y-2">
                   <p className="font-jawa-body text-[11px] text-[#A89078] italic">
@@ -368,6 +383,49 @@ export function BatikJawaRSVP({ context, onRSVPSubmit }: TemplateComponentProps)
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* WhatsApp Phone Input */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label
+                    className="font-jawa-body block text-xs uppercase tracking-widest font-semibold"
+                    style={{ color: '#D4A853', fontStyle: 'normal' }}
+                  >
+                    Nomor WhatsApp Tamu
+                  </label>
+                  <span
+                    className="font-jawa-body text-[10px] tracking-wider uppercase text-[#B8860B]"
+                    style={{ fontStyle: 'normal' }}
+                  >
+                    Kirim E-Tiket QR
+                  </span>
+                </div>
+                <input
+                  type="tel"
+                  disabled={isDemo}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Contoh: 08123456789 atau 628123456789"
+                  className={`w-full px-4 py-2.5 rounded-lg text-sm font-jawa-body outline-none transition-colors ${
+                    isDemo ? 'cursor-not-allowed opacity-75' : ''
+                  }`}
+                  style={{
+                    backgroundColor: '#3D2B1F',
+                    border: '1px solid rgba(184,134,11,0.4)',
+                    color: '#EDE0C4',
+                    fontStyle: 'normal',
+                  }}
+                  onFocus={(e) => {
+                    if (!isDemo) e.currentTarget.style.borderColor = '#B8860B';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(184,134,11,0.4)';
+                  }}
+                />
+                <p className="font-jawa-body text-[11px] text-[#A89078] mt-1.5" style={{ fontStyle: 'normal' }}>
+                  E-Tiket QR Presensi akan dikirimkan otomatis ke WhatsApp Anda.
+                </p>
+              </div>
 
               {/* Message Textarea */}
               <div>

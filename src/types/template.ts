@@ -12,6 +12,7 @@ export interface RSVPSubmitData {
   weddingId: string;
   attendanceStatus: "attending" | "not_attending";
   guestCount: number;
+  phone?: string;
   message?: string;
 }
 

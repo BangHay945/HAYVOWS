@@ -12,6 +12,7 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
   const isDemo = Boolean(wedding?.isDemo || isDemoWedding(wedding?.slug));
 
   const [name, setName] = useState(guest?.name || "");
+  const [phone, setPhone] = useState(guest?.phone || "");
   const [attendance, setAttendance] = useState<"attending" | "declined">("attending");
   const initialGuestCount = guest?.guestCount ?? 1;
   const [guestCount, setGuestCount] = useState<number | string>(initialGuestCount);
@@ -50,6 +51,7 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
         attendanceStatus: attendance === "attending" ? "attending" : "not_attending",
         guestCount: finalCount,
         message: message.trim() || undefined,
+        phone: phone.trim() || undefined,
       };
 
       if (onRSVPSubmit) {
@@ -65,6 +67,7 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
             status: data.attendanceStatus,
             guestCount: data.guestCount,
             message: data.message,
+            phone: data.phone,
           }),
         });
       }
@@ -121,6 +124,11 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
               <p className="text-xs sm:text-sm text-[#b8c9c1] mt-2 max-w-xs leading-relaxed">
                 Terima kasih atas konfirmasi dan doa tulus yang Anda kirimkan. Sampai jumpa di hari bahagia kami!
               </p>
+              {phone.trim() && (
+                <div className="mt-4 px-4 py-2.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/40 text-[#ffd700] text-xs">
+                  E-Tiket QR Presensi sedang dikirimkan ke WhatsApp Anda ({phone.trim()}).
+                </div>
+              )}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -254,6 +262,31 @@ export function RoyalRSVP({ context, onRSVPSubmit }: TemplateComponentProps) {
                   )}
                 </div>
               )}
+
+              {/* WhatsApp Phone */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-semibold">
+                    Nomor WhatsApp
+                  </label>
+                  <span className="text-[10px] uppercase tracking-wider text-[#d4af37]/80">
+                    Kirim E-Tiket QR
+                  </span>
+                </div>
+                <input
+                  type="tel"
+                  disabled={isDemo}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={isDemo ? "Mode Pratinjau Demo" : "Contoh: 08123456789 atau 628123456789"}
+                  className={`w-full px-4 py-3 rounded-xl bg-[#02241b]/80 border border-[#d4af37]/35 text-[#fdfbf7] placeholder-[#b8c9c1]/40 text-sm focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all ${
+                    isDemo ? "cursor-not-allowed opacity-75" : ""
+                  }`}
+                />
+                <p className="text-[10px] text-[#b8c9c1]/70 mt-1">
+                  E-Tiket QR Presensi akan dikirimkan langsung ke nomor WhatsApp ini.
+                </p>
+              </div>
 
               {/* Prayer Message */}
               <div>

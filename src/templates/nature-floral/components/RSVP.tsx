@@ -10,6 +10,7 @@ export function FloralRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponent
   const isDemo = Boolean(wedding?.isDemo);
   const [attendance, setAttendance] = useState<"attending" | "not_attending">("attending");
   const [count, setCount] = useState(guest?.guestCount ?? 1);
+  const [phone, setPhone] = useState(guest?.phone || "");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ export function FloralRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponent
         weddingId: wedding.id,
         attendanceStatus: attendance,
         guestCount: count,
+        phone: phone.trim() || undefined,
         message,
       });
       onTrack?.("rsvp_submit");
@@ -42,14 +44,25 @@ export function FloralRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponent
     return (
       <section id="section-rsvp" className="py-16 sm:py-20 px-4 sm:px-6 bg-[#fbf8f3]">
         <div className="max-w-md mx-auto">
-          <div className="rounded-2xl bg-white p-8 text-center border border-[#c5a880] shadow-sm">
-            <span className="text-4xl block mb-3">🌿</span>
+          <div className="rounded-2xl bg-white p-7 sm:p-8 text-center border border-[#c5a880] shadow-sm space-y-4">
+            <span className="text-4xl block mb-2">🌿</span>
             <h3 className="font-serif-floral text-2xl font-bold text-[#2d4a3e]">
               Terima Kasih!
             </h3>
-            <p className="text-sm text-[#63756b] mt-2 leading-relaxed">
+            <p className="text-sm text-[#63756b] leading-relaxed">
               Konfirmasi kehadiran Anda telah berhasil kami catat. Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran Anda.
             </p>
+            {phone.trim() && (
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-start gap-2.5 text-left">
+                <span className="text-base mt-0.5">📲</span>
+                <div>
+                  <p className="font-bold text-emerald-900">E-Tiket QR Terkirim ke WhatsApp</p>
+                  <p className="text-[11px] text-emerald-700 mt-0.5">
+                    Tiket kehadiran dan barcode QR telah dikirimkan otomatis ke nomor WhatsApp <strong>{phone}</strong>.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -104,6 +117,28 @@ export function FloralRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponent
                 value={guest?.name || "Tamu Undangan"}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-[#fcfaf7] border border-[#e8ded1] text-[#2d4a3e] font-medium opacity-90 cursor-not-allowed"
               />
+            </div>
+
+            <div>
+              <label className="block text-[#4a5e52] font-semibold mb-1 flex items-center justify-between">
+                <span>Nomor WhatsApp (Kirim E-Tiket QR)</span>
+                <span className="text-[10px] text-emerald-700 font-mono">Auto WhatsApp</span>
+              </label>
+              <input
+                type="tel"
+                disabled={isDemo}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Contoh: 081234567890"
+                className={`w-full px-3.5 py-2.5 rounded-xl border border-[#e8ded1] text-xs transition-colors ${
+                  isDemo
+                    ? "bg-slate-100/80 text-slate-500 cursor-not-allowed"
+                    : "bg-[#fcfaf7] text-[#2d4a3e] placeholder-[#9ca3af] focus:outline-[#2d4a3e] focus:bg-white"
+                }`}
+              />
+              <p className="text-[10px] text-[#63756b] mt-1">
+                E-Tiket Presensi QR akan dikirimkan otomatis ke nomor WhatsApp ini setelah konfirmasi.
+              </p>
             </div>
 
             <div>

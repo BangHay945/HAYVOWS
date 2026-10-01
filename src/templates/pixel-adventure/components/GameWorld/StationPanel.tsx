@@ -34,6 +34,7 @@ export function StationPanel({
   // RSVP Form State
   const [rsvpStatus, setRsvpStatus] = useState<"attending" | "not_attending">("attending");
   const [rsvpCount, setRsvpCount] = useState(guest?.guestCount ?? 1);
+  const [rsvpPhone, setRsvpPhone] = useState(guest?.phone ?? "");
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
 
@@ -271,6 +272,11 @@ export function StationPanel({
                       <p className="text-xs text-white mt-1 leading-relaxed">
                         Terima kasih telah melakukan konfirmasi kehadiran. Kehadiran Anda sangat dinantikan di pesta bahagia kami!
                       </p>
+                      {rsvpPhone.trim() && (
+                        <p className="text-[11px] font-mono text-[#86efac] mt-2 border border-[#4ade80]/60 bg-[#064e3b]/80 p-2">
+                          📲 E-Tiket QR Presensi dikirimkan ke WhatsApp: {rsvpPhone.trim()}
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <form
@@ -284,6 +290,7 @@ export function StationPanel({
                             guestId: guest?.id || "",
                             attendanceStatus: rsvpStatus,
                             guestCount: rsvpCount,
+                            phone: rsvpPhone.trim() || undefined,
                           });
                           setRsvpSubmitted(true);
                           play8BitSound("success");
@@ -395,6 +402,23 @@ export function StationPanel({
                           </div>
                         </div>
                       )}
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[10px] font-bold text-[#fef08a] uppercase">
+                            NOMOR WHATSAPP (E-TIKET QR)
+                          </label>
+                          <span className="text-[9px] font-mono text-[#86efac]">AUTO SEND</span>
+                        </div>
+                        <input
+                          type="tel"
+                          disabled={Boolean(wedding.isDemo)}
+                          value={rsvpPhone}
+                          onChange={(e) => setRsvpPhone(e.target.value)}
+                          placeholder="Contoh: 08123456789"
+                          className="w-full bg-[#180309] border border-[#eab308]/60 p-2 text-xs font-mono text-white focus:outline-none focus:border-[#fde047]"
+                        />
+                      </div>
 
                       <button
                         type="submit"

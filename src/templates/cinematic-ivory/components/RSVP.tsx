@@ -34,6 +34,7 @@ export function CinematicIvoryRSVP({
   };
 
   const [message, setMessage] = useState("");
+  const [phone, setPhone] = useState(guest?.phone ?? "");
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [rsvpSuccess, setRsvpSuccess] = useState(false);
@@ -87,6 +88,7 @@ export function CinematicIvoryRSVP({
         attendanceStatus: attendance,
         guestCount: finalCount,
         message: trimmedMessage || undefined,
+        phone: phone.trim() || undefined,
       });
       onTrack?.("rsvp_submit");
 
@@ -278,6 +280,31 @@ export function CinematicIvoryRSVP({
               </div>
             )}
 
+            {/* Nomor WhatsApp untuk E-Tiket QR */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-ci-sans text-[8px] tracking-[0.4em] uppercase text-[#8a8b90]">
+                  Nomor WhatsApp Tamu
+                </p>
+                <span className="font-ci-sans text-[8px] tracking-wider text-[#d4c4b0]/70 uppercase">
+                  Kirim E-Tiket QR
+                </span>
+              </div>
+              <input
+                type="tel"
+                disabled={isDemo}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Contoh: 08123456789 atau 628123456789"
+                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl focus:border-[#d4c4b0] text-[#f5f3ef] font-ci-sans text-xs px-3.5 py-2.5 focus:outline-none placeholder:text-[#52535a] transition-colors ${
+                  isDemo ? "cursor-not-allowed opacity-60" : ""
+                }`}
+              />
+              <p className="font-ci-sans text-[9px] text-[#8a8b90]/70 mt-1 leading-relaxed">
+                E-Tiket QR Presensi akan dikirimkan langsung ke WhatsApp Anda.
+              </p>
+            </div>
+
             {/* Ucapan & Doa Restu (Integrated!) */}
             <div>
               <p className="font-ci-sans text-[8px] tracking-[0.4em] uppercase text-[#8a8b90] mb-2">
@@ -319,9 +346,16 @@ export function CinematicIvoryRSVP({
 
             {/* Success */}
             {rsvpSuccess && (
-              <div className="flex items-center gap-2 text-[#d4c4b0] font-ci-sans text-[10px] tracking-wider">
-                <Check className="w-3.5 h-3.5 shrink-0" />
-                <span>Terima kasih! Konfirmasi kehadiran dan doa restu Anda telah kami terima.</span>
+              <div className="space-y-1.5 p-3 rounded-xl bg-[#d4c4b0]/10 border border-[#d4c4b0]/25 animate-in fade-in">
+                <div className="flex items-center gap-2 text-[#d4c4b0] font-ci-sans text-[10px] tracking-wider font-medium">
+                  <Check className="w-3.5 h-3.5 shrink-0" />
+                  <span>Terima kasih! Konfirmasi kehadiran dan doa restu Anda telah kami terima.</span>
+                </div>
+                {phone.trim() && (
+                  <p className="font-ci-sans text-[9px] text-[#d4c4b0]/80 pl-5 leading-relaxed">
+                    E-Tiket QR Presensi sedang dikirimkan ke WhatsApp Anda ({phone.trim()}).
+                  </p>
+                )}
               </div>
             )}
 

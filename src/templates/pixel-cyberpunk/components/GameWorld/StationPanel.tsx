@@ -34,6 +34,7 @@ export function StationPanel({
   // RSVP Form State
   const [rsvpStatus, setRsvpStatus] = useState<"attending" | "not_attending">("attending");
   const [rsvpCount, setRsvpCount] = useState(guest?.guestCount ?? 1);
+  const [rsvpPhone, setRsvpPhone] = useState(guest?.phone ?? "");
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
 
@@ -58,6 +59,7 @@ export function StationPanel({
         attendanceStatus: rsvpStatus,
         guestCount: rsvpCount,
         message: "",
+        phone: rsvpPhone.trim() || undefined,
       });
       setRsvpSubmitted(true);
       playCyberSound("fanfare");
@@ -466,6 +468,11 @@ export function StationPanel({
                       <p className="text-[10px] text-gray-300 mt-1">
                         Terima kasih atas konfirmasi Anda. Sampai jumpa di Neo-District!
                       </p>
+                      {rsvpPhone.trim() && (
+                        <p className="text-[10px] font-mono text-[#00f0ff] mt-2 border border-[#00f0ff]/60 bg-[#080c14] p-2">
+                          📲 E-Tiket QR Presensi dikirimkan ke WhatsApp: {rsvpPhone.trim()}
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <form onSubmit={handleRSVP} className="space-y-3">
@@ -526,6 +533,22 @@ export function StationPanel({
                           </div>
                         </div>
                       )}
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[9px] text-[#00f0ff] font-bold">
+                            NOMOR WHATSAPP (E-TIKET QR):
+                          </label>
+                          <span className="text-[8px] font-mono text-[#00f0ff]">AUTO TRANSMIT</span>
+                        </div>
+                        <input
+                          type="tel"
+                          value={rsvpPhone}
+                          onChange={(e) => setRsvpPhone(e.target.value)}
+                          placeholder="Contoh: 08123456789"
+                          className="w-full bg-[#080c14] border border-[#00f0ff]/60 p-2 text-xs font-mono text-white focus:outline-none focus:border-[#ffe600]"
+                        />
+                      </div>
 
                       <button
                         type="submit"

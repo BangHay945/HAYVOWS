@@ -194,12 +194,26 @@ export default function PublicRSVPClient({
                 <p className="text-xs sm:text-sm text-slate-300">
                   Terima kasih, <strong>{submittedGuest.name}</strong>. Respon kehadiran Anda telah tercatat pada buku tamu mempelai.
                 </p>
-                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-400/30 text-[11px] text-amber-200/90 leading-relaxed text-left flex items-start gap-2 mt-2">
-                  <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <span>
-                    <strong>Tips Tamu:</strong> Silakan buka dan unduh tiket QR di bawah ini atau ambil tangkapan layar (<em>screenshot</em>) untuk ditunjukkan kepada penerima tamu di lokasi resepsi.
-                  </span>
-                </div>
+                {submittedGuest.phone ? (
+                  <div className="p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 text-xs text-emerald-200 leading-relaxed text-left flex items-start gap-2.5 mt-2">
+                    <span className="text-base leading-none mt-0.5">📲</span>
+                    <div>
+                      <p className="font-bold text-emerald-300">
+                        E-Tiket QR Terkirim Otomatis ke WhatsApp
+                      </p>
+                      <p className="text-[11px] text-emerald-200/80 mt-0.5">
+                        Pesan berisi gambar QR Code &amp; detail kehadiran telah dikirimkan ke nomor <strong>{submittedGuest.phone}</strong>.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-400/30 text-[11px] text-amber-200/90 leading-relaxed text-left flex items-start gap-2 mt-2">
+                    <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Tips Tamu:</strong> Silakan buka dan unduh tiket QR di bawah ini atau ambil tangkapan layar (<em>screenshot</em>) untuk ditunjukkan kepada penerima tamu di lokasi resepsi.
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -282,17 +296,23 @@ export default function PublicRSVPClient({
 
               {/* No WhatsApp */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-[#c9a84c]" />
-                  <span>Nomor WhatsApp (Opsional)</span>
+                <label className="text-xs font-semibold text-slate-300 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#c9a84c]" />
+                    <span>Nomor WhatsApp (Kirim E-Tiket QR)</span>
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-mono font-medium">Otomatis via WA</span>
                 </label>
                 <input
                   type="tel"
-                  placeholder="08xxxxxxxxxx"
+                  placeholder="Contoh: 081234567890"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-[#c9a84c] focus:ring-1 focus:ring-[#c9a84c]"
                 />
+                <p className="text-[10px] text-slate-400">
+                  E-Tiket Presensi QR akan dikirimkan langsung ke nomor WhatsApp ini setelah konfirmasi.
+                </p>
               </div>
 
               {/* Status Kehadiran Radio */}

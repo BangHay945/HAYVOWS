@@ -2,22 +2,38 @@ import { NextResponse } from "next/server";
 import { submitRSVP } from "@/lib/rsvp";
 import { submitMessage } from "@/lib/messages";
 import { prisma } from "@/lib/prisma";
+import type { Guest } from "@prisma/client";
 import { isDemoWedding } from "@/lib/demo";
 import { validateGuestMessage } from "@/lib/security/contentFilter";
 import { sendRSVPNotificationEmail } from "@/lib/email";
+import { sendRSVPTicketWhatsApp } from "@/lib/whatsapp/fonnte";
 import { z } from "zod";
 
-const schema = z.object({
-  weddingId: z.string(),
-  guestId: z.string().optional(),
-  guestName: z.string().optional(),
-  guestAddress: z.string().optional(),
-  phone: z.string().optional(),
-  attendanceStatus: z.enum(["attending", "not_attending"]),
-  guestCount: z.number().min(1).max(20),
-  message: z.string().optional(),
-  source: z.string().optional(), // "printed_qr" | "web"
-});
+const schema = z
+  .object({
+    weddingId: z.string(),
+    guestId: z.string().optional(),
+    guestName: z.string().optional(),
+    guestAddress: z.string().optional(),
+    phone: z.string().optional(),
+    attendanceStatus: z.enum(["attending", "not_attending"]).optional(),
+    status: z.enum(["attending", "not_attending"]).optional(),
+    guestCount: z.number().min(0).max(20).optional(),
+    message: z.string().optional(),
+    source: z.string().optional(), // "printed_qr" | "web"
+  })
+  .transform((val) => {
+    const finalStatus = (val.attendanceStatus || val.status || "attending") as
+      | "attending"
+      | "not_attending";
+    const finalCount =
+      finalStatus === "attending" ? Math.max(1, val.guestCount ?? 1) : 0;
+    return {
+      ...val,
+      attendanceStatus: finalStatus,
+      guestCount: finalCount,
+    };
+  });
 
 export async function POST(req: Request) {
   try {
@@ -26,7 +42,12 @@ export async function POST(req: Request) {
 
     const wedding = await prisma.wedding.findUnique({
       where: { id: data.weddingId },
-      include: { couple: true, template: true, user: true },
+      include: {
+        couple: true,
+        template: true,
+        user: true,
+        events: { orderBy: { sortOrder: "asc" } },
+      },
     });
 
     if (!wedding) {
@@ -50,7 +71,7 @@ export async function POST(req: Request) {
     }
 
     let targetGuestId = data.guestId;
-    let targetGuest = null;
+    let targetGuest: Guest | null = null;
 
     // If guestId is provided, check if valid
     if (targetGuestId && targetGuestId !== "new" && targetGuestId !== "public") {
@@ -138,13 +159,66 @@ export async function POST(req: Request) {
       }
     }
 
+    // Update nomor WhatsApp tamu jika diisi dalam form RSVP
+    if (data.phone?.trim() && targetGuest.phone !== data.phone.trim()) {
+      targetGuest = await prisma.guest.update({
+        where: { id: targetGuest.id },
+        data: { phone: data.phone.trim() },
+      });
+    }
+
+    const coupleNames =
+      wedding.couple?.groomNickname && wedding.couple?.brideNickname
+        ? `${wedding.couple.groomNickname} & ${wedding.couple.brideNickname}`
+        : wedding.user?.name || "Kedua Mempelai";
+
+    // Kirim E-Tiket Presensi QR otomatis ke WhatsApp tamu via Fonnte Gateway
+    const targetPhone = data.phone?.trim() || targetGuest.phone?.trim();
+    let whatsappDispatched = false;
+
+    if (targetPhone) {
+      let qrToken = targetGuest.qrCode;
+      if (!qrToken) {
+        qrToken = `HVW-${wedding.slug.replace(/[^a-zA-Z0-9]/g, "").slice(0, 6).toUpperCase()}-${targetGuest.slug.toUpperCase()}`;
+        try {
+          targetGuest = await prisma.guest.update({
+            where: { id: targetGuest.id },
+            data: { qrCode: qrToken },
+          });
+        } catch {
+          // Keep current targetGuest
+        }
+      }
+
+      const firstEvent = wedding.events && wedding.events.length > 0 ? wedding.events[0] : null;
+      const eventVenue = firstEvent
+        ? [firstEvent.venue, firstEvent.address].filter(Boolean).join(" - ") || undefined
+        : undefined;
+
+      sendRSVPTicketWhatsApp({
+        phone: targetPhone,
+        guestName: targetGuest.name,
+        coupleTitle: coupleNames,
+        weddingSlug: wedding.slug,
+        guestSlug: targetGuest.slug,
+        attendanceStatus: data.attendanceStatus,
+        guestCount: data.guestCount,
+        eventDate: firstEvent?.date,
+        eventVenue,
+        qrCode: qrToken,
+      })
+        .then((res) => {
+          if (res.success) {
+            console.log(`[Fonnte] E-Tiket QR berhasil dikirim ke WhatsApp ${targetPhone}`);
+          }
+        })
+        .catch((err) => console.error("[FONNTE_WA_TICKET_FAILED]", err));
+
+      whatsappDispatched = true;
+    }
+
     // Kirim notifikasi email ke pemilik undangan (non-blocking & bukan demo)
     if (!isDemoWedding(wedding.slug) && wedding.user?.email) {
-      const coupleNames =
-        wedding.couple?.groomNickname && wedding.couple?.brideNickname
-          ? `${wedding.couple.groomNickname} & ${wedding.couple.brideNickname}`
-          : wedding.user.name || "Mempelai";
-
       sendRSVPNotificationEmail({
         to: wedding.user.email,
         coupleName: coupleNames,
@@ -160,10 +234,12 @@ export async function POST(req: Request) {
       {
         success: true,
         rsvp,
+        whatsappSent: whatsappDispatched,
         guest: {
           id: targetGuest.id,
           name: targetGuest.name,
           slug: targetGuest.slug,
+          phone: targetGuest.phone,
           address: targetGuest.address,
           category: targetGuest.category,
           guestCount: targetGuest.guestCount,

@@ -25,6 +25,7 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
   };
 
   const [message, setMessage] = useState("");
+  const [phone, setPhone] = useState(guest?.phone ?? "");
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [rsvpSuccess, setRsvpSuccess] = useState(false);
@@ -74,6 +75,7 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
         attendanceStatus: attendance,
         guestCount: finalCount,
         message: message.trim() || undefined,
+        phone: phone.trim() || undefined,
       });
       onTrack?.("rsvp_submit");
 
@@ -251,6 +253,31 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
               </div>
             )}
 
+            {/* WhatsApp Phone */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="font-noir-sans text-[9px] tracking-[0.3em] uppercase text-[#7d7568]">
+                  Nomor WhatsApp
+                </p>
+                <span className="font-noir-sans text-[8px] tracking-[0.2em] uppercase text-[#9a792c]">
+                  Kirim E-Tiket QR
+                </span>
+              </div>
+              <input
+                type="tel"
+                disabled={isDemo}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Contoh: 08123456789 atau 628123456789"
+                className={`w-full bg-[#eee8dc] border border-[#ded7c8] text-[#171717] font-noir-sans text-xs px-3 py-2.5 focus:border-[#b38e36] focus:outline-none transition-colors ${
+                  isDemo ? "cursor-not-allowed opacity-75" : ""
+                }`}
+              />
+              <p className="font-noir-sans text-[9px] text-[#7d7568] mt-1 leading-relaxed">
+                E-Tiket QR Presensi akan dikirimkan otomatis ke WhatsApp Anda.
+              </p>
+            </div>
+
             {/* Message / Prayer Input */}
             <div>
               <p className="font-noir-sans text-[9px] tracking-[0.3em] uppercase text-[#7d7568] mb-2">
@@ -290,9 +317,16 @@ export function NoirRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentPr
             )}
 
             {rsvpSuccess && (
-              <div className="flex items-center gap-2 p-3 bg-[#b38e36]/15 border border-[#b38e36]/40 text-[#9a792c] text-[10px] font-noir-sans tracking-wide">
-                <Check className="w-3.5 h-3.5 shrink-0" />
-                <span>Terima kasih! Konfirmasi &amp; doa restu Anda telah kami terima.</span>
+              <div className="p-3 bg-[#b38e36]/15 border border-[#b38e36]/40 text-[#9a792c] space-y-1">
+                <div className="flex items-center gap-2 text-[10px] font-noir-sans tracking-wide">
+                  <Check className="w-3.5 h-3.5 shrink-0" />
+                  <span>Terima kasih! Konfirmasi &amp; doa restu Anda telah kami terima.</span>
+                </div>
+                {phone.trim() && (
+                  <p className="text-[9px] font-noir-sans text-[#7d7568] pl-5 leading-relaxed">
+                    E-Tiket QR Presensi sedang dikirimkan ke WhatsApp Anda ({phone.trim()}).
+                  </p>
+                )}
               </div>
             )}
 

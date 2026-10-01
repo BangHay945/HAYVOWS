@@ -7,6 +7,7 @@ export function PixelRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentP
   const { guest, wedding } = context;
   const [attendance, setAttendance] = useState<"attending" | "not_attending">("attending");
   const [count, setCount] = useState(guest?.guestCount ?? 1);
+  const [phone, setPhone] = useState(guest?.phone ?? "");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,7 @@ export function PixelRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentP
         attendanceStatus: attendance,
         guestCount: count,
         message,
+        phone: phone.trim() || undefined,
       });
       onTrack?.("rsvp_submit");
       setSubmitted(true);
@@ -38,6 +40,11 @@ export function PixelRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentP
             <p className="font-mono text-4xl mb-4">✅</p>
             <h3 className="font-mono text-xl font-bold">RESPONSE SAVED!</h3>
             <p className="font-mono text-sm text-[#555] mt-2">Terima kasih, {guest?.name}!</p>
+            {phone.trim() && (
+              <p className="font-mono text-xs text-[#059669] mt-3 border-2 border-[#059669] bg-[#ecfdf5] p-2">
+                📲 E-Tiket QR Presensi dikirimkan ke WhatsApp: {phone.trim()}
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -104,6 +111,19 @@ export function PixelRSVP({ context, onRSVPSubmit, onTrack }: TemplateComponentP
                 </div>
               </div>
             )}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-mono text-xs text-[#888]">WHATSAPP (E-TIKET QR)</label>
+                <span className="font-mono text-[10px] text-[#059669]">AUTO SEND</span>
+              </div>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Contoh: 08123456789"
+                className="w-full border-4 border-[#111] p-3 font-mono text-sm focus:outline-none focus:border-[#FFD700]"
+              />
+            </div>
             <div>
               <label className="font-mono text-xs text-[#888] block mb-1">MESSAGE</label>
               <textarea
