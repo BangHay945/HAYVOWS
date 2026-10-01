@@ -174,6 +174,8 @@ export async function sendRSVPTicketWhatsApp({
     `━━━━━━━━━━━━━━━━━━━━`,
     `🔗 *Buka E-Pass:*`,
     `${ticketUrl}?epass=1`,
+    "",
+    `💡 _Tunjukkan QR ini ke penerima tamu saat tiba di lokasi._`,
   ]
     .filter((line) => line !== null)
     .join("\n");
