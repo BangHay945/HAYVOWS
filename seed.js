@@ -6,11 +6,13 @@ async function main() {
     // 1. Seed Template Pixel Adventure
     const tplPixel = await prisma.template.upsert({
         where: { slug: "pixel-adventure" },
-        update: {},
+        update: {
+            description: "Pengalaman seperti bermain game RPG 16-bit! Tamu diajak berkeliling di pulau langit terapung, berbicara dengan 5 NPC interaktif, dan membuka fitur pernikahan.",
+        },
         create: {
             slug: "pixel-adventure",
             name: "Pixel Adventure",
-            description: "Wedding invitation dengan pengalaman seperti game RPG 8-bit retro.",
+            description: "Pengalaman seperti bermain game RPG 16-bit! Tamu diajak berkeliling di pulau langit terapung, berbicara dengan 5 NPC interaktif, dan membuka fitur pernikahan.",
             isPremium: false,
             isActive: true,
             version: "1.0.0",
@@ -20,11 +22,13 @@ async function main() {
     // 1.5. Seed Template Pixel Cyberpunk (Neo-District 2077)
     const tplCyber = await prisma.template.upsert({
         where: { slug: "pixel-cyberpunk" },
-        update: {},
+        update: {
+            description: "Pengalaman pernikahan futuristik bernuansa neon cyberpunk! Dilengkapi eksplorasi peta kota Skyline District, 7 NPC interaktif, audio synthwave, dan visual retro-futuristik.",
+        },
         create: {
             slug: "pixel-cyberpunk",
             name: "Cyberpunk Neo-District",
-            description: "Wedding invitation RPG 16-bit futuristik bertema kota neon 2077 dengan sistem kedalaman Y-sorting.",
+            description: "Pengalaman pernikahan futuristik bernuansa neon cyberpunk! Dilengkapi eksplorasi peta kota Skyline District, 7 NPC interaktif, audio synthwave, dan visual retro-futuristik.",
             isPremium: false,
             isActive: true,
             version: "1.0.0",
@@ -34,11 +38,13 @@ async function main() {
     // 1.6. Seed Template Nature Floral
     const tplFloral = await prisma.template.upsert({
         where: { slug: "nature-floral" },
-        update: {},
+        update: {
+            description: "Estetika botani hijau sage & emas mewah dengan tipografi Playfair Display puitis. Lengkap dengan 11 komponen interaktif dan efek suara akustik lembut.",
+        },
         create: {
             slug: "nature-floral",
             name: "Nature Floral",
-            description: "Tema pernikahan estetik bernuansa botani & bunga dengan tipografi serif elegan dan 11 komponen interaktif lengkap.",
+            description: "Estetika botani hijau sage & emas mewah dengan tipografi Playfair Display puitis. Lengkap dengan 11 komponen interaktif dan efek suara akustik lembut.",
             isPremium: false,
             isActive: true,
             version: "1.0.0",
@@ -48,11 +54,13 @@ async function main() {
     // 1.7. Seed Template Modern Monogram (Paket Basic)
     const tplMonogram = await prisma.template.upsert({
         where: { slug: "modern-monogram" },
-        update: {},
+        update: {
+            description: "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
+        },
         create: {
             slug: "modern-monogram",
             name: "Modern Monogram",
-            description: "Tema pernikahan minimalis editorial elegan khusus Paket Basic dengan inisial monogram artistik, navigasi Google Maps, dan musik preset romantis bawaan.",
+            description: "Desain minimalis bebas bunga berfokus pada monogram inisial nama mempelai, keindahan tipografi editorial modern, hitung mundur waktu acara, serta alunan musik romantis.",
             isPremium: false,
             isActive: true,
             version: "1.0.0",
@@ -62,11 +70,13 @@ async function main() {
     // 1.8. Seed Template Eternal Noir (Luxury Premium)
     const tplNoir = await prisma.template.upsert({
         where: { slug: "eternal-noir" },
-        update: {},
+        update: {
+            description: "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
+        },
         create: {
             slug: "eternal-noir",
             name: "Eternal Noir",
-            description: "Tema pernikahan mewah premium bernuansa editorial hitam-putih dengan tipografi Cormorant Garamond, efek grayscale otomatis, hover reveal warna galeri, dot navigation sidebar, dan smooth full-page scroll sinematik.",
+            description: "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
             isPremium: true,
             isActive: true,
             version: "1.0.0",
@@ -76,11 +86,13 @@ async function main() {
     // 1.9. Seed Template Batik Jawa Heritage (Paket Populer / Adat)
     const tplBatikJawa = await prisma.template.upsert({
         where: { slug: "batik-jawa" },
-        update: {},
+        update: {
+            description: "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
+        },
         create: {
             slug: "batik-jawa",
             name: "Batik Jawa Heritage",
-            description: "Tema pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
+            description: "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
             isPremium: true,
             isActive: true,
             version: "1.0.0",
@@ -90,17 +102,51 @@ async function main() {
     // 1.10. Seed Template Royal Emerald & Gold (Pilar Haute Luxury)
     const tplRoyalEmerald = await prisma.template.upsert({
         where: { slug: "royal-emerald" },
-        update: {},
+        update: {
+            description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
+        },
         create: {
             slug: "royal-emerald",
             name: "Royal Emerald & Gold",
-            description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, ornamen mahkota kerajaan, dan tata letak split desktop sinematik.",
+            description: "Kemewahan aristokrat bernuansa hijau zamrud (emerald velvet) dipadukan dengan aksen emas bangsawan, mahkota kerajaan, dan layout split desktop sinematik.",
             isPremium: true,
             isActive: true,
             version: "1.0.0",
         },
     });
     console.log("✅ Seeded template: Royal Emerald & Gold");
+    // 1.11. Seed Template The Wedding Journal (Cinematic Editorial - Luxury Exclusive)
+    const tplEditorial = await prisma.template.upsert({
+        where: { slug: "cinematic-editorial" },
+        update: {
+            description: "Desain majalah mode editorial kelas atas (Vogue / Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik, dan background galeri dinamis.",
+        },
+        create: {
+            slug: "cinematic-editorial",
+            name: "The Wedding Journal",
+            description: "Desain majalah mode editorial kelas atas (Vogue / Kinfolk vibes) dengan tipografi megah, slideshow foto prewedding sinematik, dan background galeri dinamis.",
+            isPremium: true,
+            isActive: true,
+            version: "1.0.0",
+        },
+    });
+    console.log("✅ Seeded template: The Wedding Journal (Cinematic Editorial)");
+    // 1.12. Seed Template Cinematic Ivory (Dark Cinematic Luxury)
+    const tplIvory = await prisma.template.upsert({
+        where: { slug: "cinematic-ivory" },
+        update: {
+            description: "Kemewahan sinematik film pernikahan kelas atas bernuansa midnight charcoal & tipografi platinum ivory bercahaya. Transisi film dramatis, portrait 3:4 artistik, timeline storytelling tanpa card, dan galeri asimetris elegan.",
+        },
+        create: {
+            slug: "cinematic-ivory",
+            name: "Cinematic Ivory",
+            description: "Kemewahan sinematik film pernikahan kelas atas bernuansa midnight charcoal & tipografi platinum ivory bercahaya. Transisi film dramatis, portrait 3:4 artistik, timeline storytelling tanpa card, dan galeri asimetris elegan.",
+            isPremium: true,
+            isActive: true,
+            version: "1.0.0",
+        },
+    });
+    console.log("✅ Seeded template: Cinematic Ivory");
     // 2. Seed Demo User (password: admin123)
     const hashedPassword = "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
     const demoUser = await prisma.user.upsert({
@@ -981,7 +1027,6 @@ async function main() {
         },
     });
     console.log("✅ Seeded demo batik-jawa wedding: /invitation/prasetyo-kinanti/budi-santoso");
-
     // 12. Seed Royal Emerald & Gold Demo Wedding: arthur-guinevere
     const royalWedding = await prisma.wedding.upsert({
         where: { slug: "arthur-guinevere" },
