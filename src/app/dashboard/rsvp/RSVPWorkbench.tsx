@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   CheckCircle2,
   XCircle,
@@ -16,6 +16,7 @@ import {
   Copy,
   Check,
   Filter,
+  Trash2,
 } from "lucide-react";
 import { PrintableRSVPCardModal } from "@/components/dashboard/PrintableRSVPCardModal";
 
@@ -43,11 +44,17 @@ export default function RSVPWorkbench({
     eventDate?: string;
   };
 }) {
+  const [rsvpList, setRsvpList] = useState<RSVPItem[]>(rsvps);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterTab, setFilterTab] = useState<"all" | "attending" | "not_attending">("all");
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedPhoneId, setCopiedPhoneId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRsvpList(rsvps);
+  }, [rsvps]);
 
   const openWhatsApp = (phone: string, name: string) => {
     const cleanPhone = phone.replace(/[^0-9]/g, "");
@@ -62,9 +69,29 @@ export default function RSVPWorkbench({
     setTimeout(() => setCopiedPhoneId(null), 2000);
   };
 
-  const totalResponses = rsvps.length;
-  const attendingList = rsvps.filter((r) => r.attendanceStatus === "attending");
-  const notAttendingList = rsvps.filter((r) => r.attendanceStatus === "not_attending");
+  const handleDeleteRSVP = async (id: string, name: string) => {
+    if (!window.confirm(`Hapus data konfirmasi RSVP dari "${name}"?`)) return;
+
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/rsvp?id=${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || "Gagal menghapus data RSVP");
+      }
+      setRsvpList((prev) => prev.filter((r) => r.id !== id));
+    } catch (err: any) {
+      alert(err?.message || "Terjadi kesalahan saat menghapus RSVP");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const totalResponses = rsvpList.length;
+  const attendingList = rsvpList.filter((r) => r.attendanceStatus === "attending");
+  const notAttendingList = rsvpList.filter((r) => r.attendanceStatus === "not_attending");
 
   // Sum pax for attending
   const totalAttendingPax = attendingList.reduce(
@@ -80,7 +107,7 @@ export default function RSVPWorkbench({
 
   // Filtered list
   const filteredRSVP = useMemo(() => {
-    return rsvps.filter((r) => {
+    return rsvpList.filter((r) => {
       const matchesSearch =
         searchQuery.trim() === "" ||
         r.guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -92,7 +119,7 @@ export default function RSVPWorkbench({
 
       return matchesSearch && matchesTab;
     });
-  }, [rsvps, searchQuery, filterTab]);
+  }, [rsvpList, searchQuery, filterTab]);
 
   return (
     <div className="space-y-6 w-full">
@@ -378,9 +405,20 @@ export default function RSVPWorkbench({
                         </>
                       ) : (
                         <div className="flex-1 text-center text-slate-400 text-[11px] py-1 bg-slate-50 rounded-lg border border-slate-100">
-                          Tamu tidak mencantumkan nomor telepon
+                          Tamu tanpa nomor HP
                         </div>
                       )}
+
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteRSVP(r.id, r.guest.name)}
+                        disabled={deletingId === r.id}
+                        className="inline-flex items-center justify-center gap-1 min-h-[32px] px-2.5 py-1 rounded-lg border border-rose-200 bg-rose-50/60 hover:bg-rose-100 text-rose-700 text-[11px] font-medium cursor-pointer shadow-2xs transition-colors shrink-0 disabled:opacity-50"
+                        title="Hapus konfirmasi RSVP ini"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Hapus</span>
+                      </button>
                     </div>
                   </div>
                 )}
@@ -408,6 +446,7 @@ export default function RSVPWorkbench({
                 <th className="px-6 py-3.5">Status Kehadiran</th>
                 <th className="px-6 py-3.5">Jumlah Pax</th>
                 <th className="px-6 py-3.5 text-right">Waktu Submit</th>
+                <th className="px-4 py-3.5 text-center w-24">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -477,13 +516,38 @@ export default function RSVPWorkbench({
                         minute: "2-digit",
                       })}
                     </td>
+
+                    {/* Actions */}
+                    <td className="px-4 py-3.5 text-center">
+                      <div className="flex items-center justify-center gap-1.5">
+                        {r.guest.phone && (
+                          <button
+                            type="button"
+                            onClick={() => openWhatsApp(r.guest.phone, r.guest.name)}
+                            className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 transition-colors cursor-pointer"
+                            title="Chat WhatsApp"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteRSVP(r.id, r.guest.name)}
+                          disabled={deletingId === r.id}
+                          className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer disabled:opacity-50"
+                          title="Hapus konfirmasi RSVP ini"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}
 
               {filteredRSVP.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center py-10 text-slate-400 text-xs">
+                  <td colSpan={7} className="text-center py-10 text-slate-400 text-xs">
                     {searchQuery || filterTab !== "all"
                       ? "Tidak ada respon RSVP yang cocok dengan filter."
                       : "Belum ada tamu yang mengirimkan konfirmasi kehadiran."}

@@ -6,7 +6,8 @@ import type { Guest } from "@prisma/client";
 import { isDemoWedding } from "@/lib/demo";
 import { validateGuestMessage } from "@/lib/security/contentFilter";
 import { sendRSVPNotificationEmail } from "@/lib/email";
-import { sendRSVPTicketWhatsApp } from "@/lib/whatsapp/fonnte";
+import { sendRSVPTicketWhatsApp, normalizeIndonesianPhone } from "@/lib/whatsapp/fonnte";
+import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const schema = z
@@ -78,25 +79,43 @@ export async function POST(req: Request) {
       targetGuest = await prisma.guest.findUnique({
         where: { id: targetGuestId },
       });
+      if (targetGuest) {
+        // Keep existing guest data updated with latest form submission
+        targetGuest = await prisma.guest.update({
+          where: { id: targetGuest.id },
+          data: {
+            name: data.guestName?.trim() || targetGuest.name,
+            address: data.guestAddress?.trim() || targetGuest.address,
+            phone: data.phone?.trim() || targetGuest.phone,
+            guestCount: data.guestCount,
+            attendanceStatus: data.attendanceStatus,
+          },
+        });
+      }
     }
 
     // If no existing guest was found and guestName is provided (Public / Printed QR submission)
     if (!targetGuest && data.guestName && data.guestName.trim()) {
       const cleanName = data.guestName.trim();
+      const cleanPhone = data.phone ? normalizeIndonesianPhone(data.phone) : "";
 
-      // Check if a guest with this exact name already exists in this wedding (Prevent Duplication)
+      // Check if a guest with this phone number OR exact name already exists in this wedding (Prevent Duplication)
       const allGuests = await prisma.guest.findMany({
         where: { weddingId: wedding.id },
       });
-      const existing = allGuests.find(
-        (g) => g.name.trim().toLowerCase() === cleanName.toLowerCase()
-      );
+      const existing = allGuests.find((g) => {
+        const gPhoneNorm = g.phone ? normalizeIndonesianPhone(g.phone) : "";
+        const samePhone = Boolean(cleanPhone && gPhoneNorm && cleanPhone === gPhoneNorm);
+        const sameName = g.name.trim().toLowerCase() === cleanName.toLowerCase();
+        return samePhone || sameName;
+      });
 
       if (existing) {
         // Update existing guest data without creating a duplicate row
         targetGuest = await prisma.guest.update({
           where: { id: existing.id },
           data: {
+            name: cleanName, // Update name if edited
             address: data.guestAddress?.trim() || existing.address,
             phone: data.phone?.trim() || existing.phone,
             guestCount: data.guestCount,
@@ -259,5 +278,63 @@ export async function POST(req: Request) {
     }
     console.error("RSVP Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const rsvpId = searchParams.get("id");
+
+    if (!rsvpId) {
+      return NextResponse.json({ error: "ID RSVP wajib disertakan" }, { status: 400 });
+    }
+
+    const rsvp = await prisma.rsvp.findUnique({
+      where: { id: rsvpId },
+      include: {
+        guest: {
+          include: {
+            wedding: true,
+          },
+        },
+      },
+    });
+
+    if (!rsvp || rsvp.guest.wedding.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: "Data RSVP tidak ditemukan atau Anda tidak memiliki akses" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.rsvp.delete({
+      where: { id: rsvpId },
+    });
+
+    // If guest was created from public QR / printed QR, delete guest too to keep list clean
+    if (
+      rsvp.guest.category === "Undangan Cetak" ||
+      rsvp.guest.category === "Public RSVP"
+    ) {
+      await prisma.guest.delete({
+        where: { id: rsvp.guestId },
+      }).catch(() => null);
+    } else {
+      await prisma.guest.update({
+        where: { id: rsvp.guestId },
+        data: { attendanceStatus: "pending" },
+      }).catch(() => null);
+    }
+
+    return NextResponse.json({ success: true, id: rsvpId });
+  } catch (error: any) {
+    console.error("Delete RSVP Error:", error);
+    return NextResponse.json({ error: error?.message || "Gagal menghapus RSVP" }, { status: 500 });
   }
 }

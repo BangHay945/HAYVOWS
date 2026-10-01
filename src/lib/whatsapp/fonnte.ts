@@ -156,17 +156,17 @@ export async function sendRSVPTicketWhatsApp({
     }
   }
 
-  // URL gambar QR Code dinamis resolusi tinggi (bisa langsung dipratinjau & disimpan tamu di WA)
-  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=${encodeURIComponent(
+  // URL gambar QR Code dinamis resolusi tinggi (bisa langsung dipratinjau & diunduh tamu)
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(
     qrCode
   )}&format=png&margin=10`;
 
   const message = [
     `Halo Kak *${guestName}*,`,
-    `Terima kasih telah melakukan konfirmasi kehadiran untuk pernikahan:`,
+    `Terima kasih telah melakukan konfirmasi kehadiran untuk:`,
     `💍 *${coupleTitle}*`,
     "",
-    `Berikut adalah *E-Pass Presensi QR* resmi Anda:`,
+    `*Detail E-Pass Presensi:*`,
     `━━━━━━━━━━━━━━━━━━━━`,
     `🎟️ *Kode Tiket:* \`${qrCode}\``,
     `👤 *Nama Tamu:* ${guestName}`,
@@ -176,8 +176,8 @@ export async function sendRSVPTicketWhatsApp({
     eventVenue ? `📍 *Lokasi Acara:* ${eventVenue}` : null,
     `━━━━━━━━━━━━━━━━━━━━`,
     "",
-    `🔗 *Buka E-Pass Digital:*`,
-    `${ticketUrl}?epass=1`,
+    `📥 *Download QR E-Pass:*`,
+    qrImageUrl,
     "",
     `💡 *Petunjuk Presensi:*`,
     `Simpan gambar QR di atas dan tunjukkan kepada petugas di meja penerima tamu saat tiba di lokasi untuk verifikasi kehadiran.`,
