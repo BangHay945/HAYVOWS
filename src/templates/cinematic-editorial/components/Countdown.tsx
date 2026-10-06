@@ -11,7 +11,9 @@ export function EditorialCountdown({ context }: TemplateComponentProps) {
   const firstEvent = events[0];
 
   const targetDateStr = firstEvent?.date
-    ? `${firstEvent.date}T${firstEvent.startTime || "08:00"}:00`
+    ? firstEvent.date.includes("T")
+      ? firstEvent.date
+      : `${firstEvent.date}T${firstEvent.startTime || "08:00"}:00`
     : "2026-10-18T08:00:00";
 
   const [timeLeft, setTimeLeft] = useState<{

@@ -906,5 +906,203 @@ export async function ensureDemoWeddingSeeded(slug: string): Promise<boolean> {
     }
   }
 
+  // Handle leonardo-beatrice auto-seed (Vintage Royal - Tuscan Estate)
+  if (normalizedSlug === "leonardo-beatrice") {
+    try {
+      // 1. Ensure vintage-royal template exists in DB
+      const tplVintageRoyal = await prisma.template.upsert({
+        where: { slug: "vintage-royal" },
+        update: {},
+        create: {
+          slug: "vintage-royal",
+          name: "Vintage Royal Estate",
+          description:
+            "Kemewahan estetika Tuscan Estate bernuansa warm charcoal & antique gold. Ornamen wax seal monogram klasik, layout majalah editorial, foto prewedding sinematik, dan alunan piano romantis.",
+          isPremium: true,
+          isActive: true,
+          version: "1.0.0",
+        },
+      });
+
+      // 2. Ensure demo user exists
+      const hashedPassword =
+        "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";
+      const demoUser = await prisma.user.upsert({
+        where: { email: "admin@hayvows.com" },
+        update: { plan: "luxury", role: "admin" },
+        create: {
+          email: "admin@hayvows.com",
+          name: "Super Admin Hayvows",
+          password: hashedPassword,
+          role: "admin",
+          plan: "luxury",
+        },
+      });
+
+      // 3. Upsert leonardo-beatrice wedding
+      await prisma.wedding.upsert({
+        where: { slug: "leonardo-beatrice" },
+        update: { templateId: tplVintageRoyal.id, status: "published" },
+        create: {
+          userId: demoUser.id,
+          slug: "leonardo-beatrice",
+          templateId: tplVintageRoyal.id,
+          status: "published",
+          messageMode: "auto",
+          themeConfig: JSON.stringify({
+            colorway: "tuscan-parchment",
+            accentColor: "#d5be9b",
+            accentSecondary: "#9b8058",
+            sections: {
+              countdown: true,
+              story: true,
+              gallery: true,
+              rsvp: true,
+              messages: true,
+              gift: true,
+            },
+          }),
+          couple: {
+            create: {
+              groomName: "Leonardo Valerio Pratama, S.T.",
+              groomNickname: "Leonardo",
+              groomFather: "Bpk. Ir. Robert Valerio",
+              groomMother: "Ibu Victoria Valerio",
+              groomInstagram: "leonardo.valerio",
+              groomPhoto:
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+              brideName: "Beatrice Elena Clarissa, B.A.",
+              brideNickname: "Beatrice",
+              brideFather: "Bpk. Gunawan Wijaya",
+              brideMother: "Ibu Silvia Wijaya",
+              brideInstagram: "beatrice.elena",
+              bridePhoto:
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+              couplePhoto:
+                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+            },
+          },
+          events: {
+            create: [
+              {
+                title: "Sacred Holy Matrimony",
+                date: "2026-10-24T09:00:00.000Z",
+                startTime: "09:00",
+                endTime: "11:00",
+                venue: "Villa Casale San Pietro",
+                address: "Jl. Lembah Pinus No. 88, Dago Highland, Bandung",
+                mapsUrl: "https://maps.google.com",
+                description: "Pemberkatan pernikahan kudus di hadapan keluarga dan kerabat terkasih.",
+                sortOrder: 1,
+              },
+              {
+                title: "Grand Tuscan Reception",
+                date: "2026-10-24T18:30:00.000Z",
+                startTime: "18:30",
+                endTime: "21:30",
+                venue: "The Grand Ballroom & Loggia",
+                address: "Jl. Lembah Pinus No. 88, Dago Highland, Bandung",
+                mapsUrl: "https://maps.google.com",
+                description: "Resepsi makan malam gala bernuansa hangat Tuscan Estate.",
+                sortOrder: 2,
+              },
+            ],
+          },
+          stories: {
+            create: [
+              {
+                title: "Pertemuan Pertama di Kota Tua",
+                date: "2021",
+                description:
+                  "Takdir mempertemukan kami dalam kehangatan suasana senja kota tua, saat tatapan mata pertama berubah menjadi percakapan tanpa akhir.",
+                image:
+                  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+                sortOrder: 1,
+              },
+              {
+                title: "Sebuah Janji di Perbukitan",
+                date: "2024",
+                description:
+                  "Di bawah naungan langit senja keemasan, satu kata bersambut dan dua hati memutuskan untuk melangkah bersama mengarungi sisa waktu.",
+                image:
+                  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80",
+                sortOrder: 2,
+              },
+            ],
+          },
+          galleries: {
+            create: [
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+                caption: "The Beginning of Forever",
+                sortOrder: 1,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+                caption: "Whispers in The Sun",
+                sortOrder: 2,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80",
+                caption: "Moments of Grace",
+                sortOrder: 3,
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80",
+                caption: "Timeless Romance",
+                sortOrder: 4,
+              },
+            ],
+          },
+          guests: {
+            create: [
+              {
+                name: "Bpk. Dr. Hendra Wijaya & Keluarga",
+                slug: "hendra-wijaya",
+                category: "VIP",
+                guestCount: 2,
+                tableNumber: "Table 01 - Royal Loggia",
+              },
+              {
+                name: "Bpk. Budi Santoso & Keluarga",
+                slug: "budi-santoso",
+                category: "VIP",
+                guestCount: 2,
+                tableNumber: "Table 02 - Royal Villa",
+              },
+            ],
+          },
+          giftAccounts: {
+            create: [
+              {
+                bankName: "BCA",
+                accountName: "Leonardo Valerio",
+                accountNo: "8830192841",
+                type: "bank",
+                sortOrder: 1,
+              },
+              {
+                bankName: "Bank Mandiri",
+                accountName: "Beatrice Elena",
+                accountNo: "1370092817291",
+                type: "bank",
+                sortOrder: 2,
+              },
+            ],
+          },
+        },
+      });
+
+      return true;
+    } catch (err) {
+      console.error("Failed to auto-seed leonardo-beatrice demo wedding:", err);
+      return false;
+    }
+  }
+
   return false;
 }

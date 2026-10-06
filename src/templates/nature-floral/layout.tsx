@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import type {
   TemplateLayoutProps,
   RSVPSubmitData,
@@ -22,6 +22,7 @@ import { MobileNavigation } from "./components/MobileNavigation";
 import { Gift } from "lucide-react";
 import { playFloralSound } from "./sound";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function FloralLayout({
   context,
@@ -29,6 +30,11 @@ export function FloralLayout({
   onOpen,
   onOpenTicket,
 }: TemplateLayoutProps) {
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "nature-floral"),
+    [context.wedding.themeConfig]
+  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -285,7 +291,54 @@ export function FloralLayout({
   const props = { context, onRSVPSubmit: submitRSVP, onTrack: track };
 
   return (
-    <div className={`w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#13231c] font-sans-floral text-[#2d4a3e] relative selection:bg-[#e8eee5] selection:text-[#2d4a3e]`}>
+    <div
+      data-hy-theme="nature-floral"
+      className={`w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#13231c] font-sans-floral text-[#2d4a3e] relative selection:bg-[#e8eee5] selection:text-[#2d4a3e]`}
+    >
+      {/* Dynamic Hayvows Curated Colorway Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="nature-floral"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+            }
+            [data-hy-theme="nature-floral"] .text-\\[\\#2d4a3e\\] {
+              color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+            [data-hy-theme="nature-floral"] .bg-\\[\\#2d4a3e\\] {
+              background-color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+            [data-hy-theme="nature-floral"] .border-\\[\\#2d4a3e\\] {
+              border-color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+            [data-hy-theme="nature-floral"] .text-\\[\\#5a7263\\] {
+              color: var(--hy-accent, #5a7263) !important;
+            }
+            [data-hy-theme="nature-floral"] .bg-\\[\\#5a7263\\] {
+              background-color: var(--hy-accent, #5a7263) !important;
+            }
+            [data-hy-theme="nature-floral"] .border-\\[\\#5a7263\\] {
+              border-color: var(--hy-accent, #5a7263) !important;
+            }
+            [data-hy-theme="nature-floral"] .text-\\[\\#c5a880\\] {
+              color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="nature-floral"] .bg-\\[\\#c5a880\\] {
+              background-color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="nature-floral"] .border-\\[\\#c5a880\\] {
+              border-color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="nature-floral"] .hover\\:border-\\[\\#5a7263\\]:hover {
+              border-color: var(--hy-accent, #5a7263) !important;
+            }
+            [data-hy-theme="nature-floral"] .hover\\:text-\\[\\#5a7263\\]:hover {
+              color: var(--hy-accent, #5a7263) !important;
+            }
+          `,
+        }}
+      />
       {/* Resilient YouTube Player Iframe */}
       {isYT && ytId && (
         <div
@@ -318,26 +371,28 @@ export function FloralLayout({
               transition={{ duration: 0.3 }}
               className="fixed top-3.5 right-3.5 sm:top-4 sm:right-4 z-50 flex items-center gap-2 select-none"
             >
-              <motion.button
-                type="button"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                onClick={() => {
-                  playFloralSound("open");
-                  setIsGiftModalOpen(true);
-                }}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#2d4a3e] via-[#385b4d] to-[#4c7361] text-[#fef08a] border border-[#c5a880] shadow-md flex items-center justify-center cursor-pointer transition-all relative group hover:brightness-110"
-                title="Kirim Tanda Kasih / Amplop Digital"
-                aria-label="Kirim Tanda Kasih / Amplop Digital"
-              >
-                <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c5a880] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c5a880] border border-white"></span>
-                </span>
-                <Gift className="w-4 h-4 text-[#fef08a] transition-transform group-hover:rotate-12" />
-              </motion.button>
+              {themeConfig.sections.gift && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={() => {
+                    playFloralSound("open");
+                    setIsGiftModalOpen(true);
+                  }}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#2d4a3e] via-[#385b4d] to-[#4c7361] text-[#fef08a] border border-[#c5a880] shadow-md flex items-center justify-center cursor-pointer transition-all relative group hover:brightness-110"
+                  title="Kirim Tanda Kasih / Amplop Digital"
+                  aria-label="Kirim Tanda Kasih / Amplop Digital"
+                >
+                  <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c5a880] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c5a880] border border-white"></span>
+                  </span>
+                  <Gift className="w-4 h-4 text-[#fef08a] transition-transform group-hover:rotate-12" />
+                </motion.button>
+              )}
 
               <FloralMusicButton
                 isPlaying={isPlaying}
@@ -368,17 +423,19 @@ export function FloralLayout({
             >
               <FloralHero {...props} />
               <FloralCouple {...props} />
-              <FloralCountdown {...props} />
-              <FloralStory {...props} />
+              {themeConfig.sections.countdown && <FloralCountdown {...props} />}
+              {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && <FloralStory {...props} />}
               <FloralEvent {...props} />
-              <FloralGallery {...props} />
-              <FloralRSVP {...props} />
-              <FloralMessages {...props} />
-              <FloralGift
-                {...props}
-                isModalOpen={isGiftModalOpen}
-                setIsModalOpen={setIsGiftModalOpen}
-              />
+              {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && <FloralGallery {...props} />}
+              {themeConfig.sections.rsvp && <FloralRSVP {...props} />}
+              {themeConfig.sections.messages && <FloralMessages {...props} />}
+              {themeConfig.sections.gift && (
+                <FloralGift
+                  {...props}
+                  isModalOpen={isGiftModalOpen}
+                  setIsModalOpen={setIsGiftModalOpen}
+                />
+              )}
               <FloralFooter {...props} />
 
               {/* Mobile Floating Bottom Menu */}

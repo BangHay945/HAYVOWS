@@ -9,18 +9,81 @@ import { GuestTicketModal } from "@/components/invitation/GuestTicketModal";
 import { checkTrialStatus } from "@/lib/wedding/trial";
 
 export default function InvitationClient({
-  wedding,
-  guest,
+  wedding: initialWedding,
+  guest: initialGuest,
   messages,
   templateSlug,
+  isPreview = false,
 }: {
   wedding: Wedding;
   guest: Guest | null;
   messages: GuestMessage[];
   templateSlug: string;
+  isPreview?: boolean;
 }) {
+  const [wedding, setWedding] = useState<Wedding>(initialWedding);
   const [isOpen, setIsOpen] = useState(false);
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
+
+  // Sync state if initial prop changes
+  useEffect(() => {
+    setWedding(initialWedding);
+  }, [initialWedding]);
+
+  // Realtime Live Preview Message Listener (dari Parent Window / Editor)
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "HAYVOWS_PREVIEW_SYNC" && event.data.wedding) {
+        setWedding((prev) => ({
+          ...prev,
+          ...event.data.wedding,
+        }));
+      }
+      if (event.data?.type === "HAYVOWS_SET_OPEN") {
+        setIsOpen(Boolean(event.data.isOpen));
+      }
+      if (event.data?.type === "HAYVOWS_NAVIGATE_TAB") {
+        const tab = event.data.tab;
+        const sectionId = event.data.sectionId;
+
+        // Buka cover otomatis agar isi langsung terlihat
+        setIsOpen(true);
+
+        setTimeout(() => {
+          if (sectionId) {
+            const el =
+              document.getElementById(sectionId) ||
+              document.querySelector(`[id*="${tab}"]`);
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+              return;
+            }
+          }
+          if (tab === "couple" || tab === "theme" || tab === "settings" || tab === "music") {
+            const topEl =
+              document.getElementById("section-hero") ||
+              document.getElementById("section-couple");
+            if (topEl) {
+              topEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }
+        }, 300);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    // Kirim sinyal siap ke parent frame editor
+    try {
+      if (typeof window !== "undefined" && window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: "HAYVOWS_PREVIEW_READY" }, "*");
+      }
+    } catch {}
+
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   // Auto buka modal E-Pass langsung jika link URL mengandung ?epass=1 atau ?ticket=1
   useEffect(() => {
@@ -69,9 +132,20 @@ export default function InvitationClient({
       document.documentElement.style.overscrollBehavior = "";
     }
   }, [isOpen]);
+
+  // Sembunyikan scrollbar di html & body untuk tampilan mobile/mockup bebas dari bilah scroll abu-abu
+  useEffect(() => {
+    document.documentElement.classList.add("no-scrollbar");
+    document.body.classList.add("no-scrollbar");
+    return () => {
+      document.documentElement.classList.remove("no-scrollbar");
+      document.body.classList.remove("no-scrollbar");
+    };
+  }, []);
+
   const template = getTemplate(templateSlug);
 
-  if (!template) return <div className="p-8 text-center">Template not found</div>;
+  if (!template) return <div className="p-8 text-center text-white">Template tidak ditemukan.</div>;
 
   const coupleTitle = `${wedding.couple?.groomNickname || wedding.couple?.groomName || "Pengantin"} & ${wedding.couple?.brideNickname || wedding.couple?.brideName || "Pengantin"}`;
 
@@ -85,9 +159,25 @@ export default function InvitationClient({
     wedding.isDemo
   );
 
-  if (trialStatus.isExpired) {
+  // Jangan block di mode preview
+  if (trialStatus.isExpired && !isPreview) {
     return <TrialExpiredNotice coupleTitle={coupleTitle} />;
   }
+
+  // Jika di mode preview dan guest belum diset, sediakan mock guest untuk simulasi tiket & sapaan VIP
+  const guest = initialGuest || (isPreview ? {
+    id: "preview-guest-sample",
+    weddingId: wedding.id,
+    name: "Tamu Kehormatan",
+    slug: "tamu-kehormatan",
+    phone: "081234567890",
+    category: "VIP",
+    guestCount: 2,
+    tableNumber: "A-01",
+    sessionName: "Sesi 1 (Akad & Resepsi)",
+    attendanceStatus: "pending" as const,
+    openedAt: null,
+  } : null);
 
   const context = { wedding, guest, messages };
   const { Layout } = template;
@@ -95,6 +185,37 @@ export default function InvitationClient({
 
   return (
     <>
+      {/* Sembunyikan bilah scrollbar bawaan desktop agar pratinjau mockup HP bersih 100% seperti smartphone asli */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            /* Webkit (Chrome, Edge, Safari, Opera) */
+            ::-webkit-scrollbar {
+              display: none !important;
+              width: 0px !important;
+              height: 0px !important;
+              background: transparent !important;
+            }
+            ::-webkit-scrollbar-thumb {
+              display: none !important;
+              background: transparent !important;
+            }
+            ::-webkit-scrollbar-track {
+              display: none !important;
+              background: transparent !important;
+            }
+            /* Firefox & IE/Edge Legacy */
+            * {
+              scrollbar-width: none !important;
+              -ms-overflow-style: none !important;
+            }
+            html, body {
+              scrollbar-width: none !important;
+              -ms-overflow-style: none !important;
+            }
+          `,
+        }}
+      />
       <TrialWatermark
         isTrial={trialStatus.isTrial}
         daysRemaining={trialStatus.daysRemaining}

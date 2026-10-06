@@ -57,6 +57,27 @@ export function GuestTicketModal({
 
   const qrToken = qrCode || `HVW-${weddingSlug.replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase()}-${guestSlug.toUpperCase()}`;
 
+function formatDisplayDate(dateStr?: string | null): string | undefined {
+  if (!dateStr) return undefined;
+  if (!dateStr.includes("T") && !/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+    return dateStr;
+  }
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
+  } catch {
+    // fallback
+  }
+  return dateStr;
+}
+
   // Theme-specific QR colors & styles
   const isCyberpunk = templateSlug === "pixel-cyberpunk";
   const isNoir = templateSlug === "eternal-noir";
@@ -65,6 +86,7 @@ export function GuestTicketModal({
   const isMonogram = templateSlug === "modern-monogram";
   const isEditorial = templateSlug === "cinematic-editorial";
   const isCinematicIvory = templateSlug === "cinematic-ivory";
+  const isVintageRoyal = templateSlug === "vintage-royal";
 
   const qrColors = isCyberpunk
     ? { dark: "#00f0ff", light: "#0a0a14" }
@@ -80,6 +102,8 @@ export function GuestTicketModal({
     ? { dark: "#0d0d11", light: "#fdfbf7" }
     : isCinematicIvory
     ? { dark: "#0c0d0e", light: "#f5f3ef" }
+    : isVintageRoyal
+    ? { dark: "#141517", light: "#f8f6f0" }
     : { dark: "#2d4a3e", light: "#ffffff" }; // Nature Floral (Default)
 
   useEffect(() => {
@@ -731,7 +755,185 @@ export function GuestTicketModal({
     );
   }
 
-  // 7. NATURE FLORAL & MODERN MONOGRAM (STANDARD ELEGANT HAYVOWS)
+  // 7. VINTAGE ROYAL THEME (TUSCAN ESTATE / WARM CHARCOAL & ANTIQUE GOLD)
+  if (isVintageRoyal) {
+    return (
+      <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[500px] z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="relative w-full max-w-md bg-[#141517] rounded-3xl shadow-[0_24px_70px_rgba(0,0,0,0.9)] border border-[#d5be9b]/35 text-[#f8f6f0] max-h-[92vh] flex flex-col font-sans overflow-hidden">
+          {/* Header Banner */}
+          <div className="bg-gradient-to-b from-[#1c1e22] via-[#16171a] to-[#141517] p-6 border-b border-[#d5be9b]/20 text-center relative shrink-0">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-[#d5be9b] flex items-center justify-center cursor-pointer transition-colors"
+              aria-label="Tutup Tiket"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Crest / Subtitle */}
+            <div className="flex items-center justify-center gap-1.5 mb-1.5">
+              <Crown className="w-3.5 h-3.5 text-[#d5be9b]" />
+              <span className="text-[9.5px] font-sans tracking-[0.3em] uppercase text-[#d5be9b] font-medium">
+                ROYAL INVITATION &bull; GUEST PASS
+              </span>
+            </div>
+
+            {/* Couple Heading */}
+            <h2 className="text-2xl font-serif font-normal tracking-wide text-[#f8f6f0] leading-snug">
+              {coupleTitle}
+            </h2>
+
+            {/* Tuscan Fleuron Hairline */}
+            <div className="flex items-center justify-center gap-2 my-2 opacity-70">
+              <div className="w-10 h-px bg-[#d5be9b]/40" />
+              <span className="text-[10px] text-[#d5be9b] select-none">✦</span>
+              <div className="w-10 h-px bg-[#d5be9b]/40" />
+            </div>
+
+            {/* Event Date & Venue */}
+            {eventDate && (
+              <p className="text-[11px] text-[#b8b5ad] font-sans tracking-wider flex items-center justify-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-[#d5be9b]" />
+                <span>{formatDisplayDate(eventDate)}</span>
+                {venueName && <span>&bull; {venueName}</span>}
+              </p>
+            )}
+          </div>
+
+          {/* Ticket Body Content */}
+          <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1" ref={ticketRef}>
+            {/* Guest Identity Card */}
+            <div className="p-4 rounded-2xl bg-[#1c1e22] border border-[#d5be9b]/25 space-y-3 relative shadow-inner">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <span className="text-[10px] font-sans tracking-[0.25em] uppercase text-[#d5be9b] block">
+                    Tamu Kehormatan
+                  </span>
+                  <h3 className="text-lg font-serif text-[#f8f6f0] font-normal leading-snug mt-0.5">
+                    {guestName}
+                  </h3>
+                </div>
+                <span
+                  className={`text-[10px] font-sans font-medium px-2.5 py-0.5 rounded-full border uppercase tracking-wider flex items-center gap-1 shrink-0 ${
+                    isVip
+                      ? "bg-[#9b3b32]/25 text-[#f8f6f0] border-[#d5be9b]/60 shadow-[0_0_12px_rgba(155,59,50,0.3)]"
+                      : "bg-[#141517] text-[#d5be9b] border-[#d5be9b]/30"
+                  }`}
+                >
+                  {isVip && <Crown className="w-2.5 h-2.5 text-[#d5be9b]" />}
+                  {guestCategory || "Reguler"}
+                </span>
+              </div>
+
+              {guestAddress && (
+                <div className="flex items-center gap-1.5 text-xs text-[#b8b5ad] pt-2 border-t border-white/10">
+                  <MapPin className="w-3.5 h-3.5 text-[#d5be9b] shrink-0" />
+                  <span className="font-sans">Domisili: {guestAddress}</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-xs">
+                <div>
+                  <span className="text-[10px] font-sans text-[#7c7970] block uppercase tracking-wider">
+                    Alokasi Kuota
+                  </span>
+                  <span className="font-medium text-[#f8f6f0]">{guestCount} Pax</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-sans text-[#7c7970] block uppercase tracking-wider">
+                    Nomor Meja
+                  </span>
+                  <span className="font-medium text-[#d5be9b]">{tableNumber || "Bebas / Menyesuaikan"}</span>
+                </div>
+              </div>
+
+              {sessionName && (
+                <div className="text-xs text-[#b8b5ad] bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                  <span className="text-[10px] font-sans text-[#7c7970] block uppercase tracking-wider">
+                    Sesi Acara
+                  </span>
+                  <span className="font-medium text-[#f8f6f0]">{sessionName}</span>
+                </div>
+              )}
+            </div>
+
+            {/* QR Code Presentation Box */}
+            <div className="flex flex-col items-center justify-center p-5 rounded-2xl bg-[#1c1e22]/70 border border-[#d5be9b]/30 text-center relative overflow-hidden">
+              {/* Tuscan filigree corner brackets */}
+              <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-[#d5be9b]/40 pointer-events-none" />
+              <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-[#d5be9b]/40 pointer-events-none" />
+              <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-[#d5be9b]/40 pointer-events-none" />
+              <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-[#d5be9b]/40 pointer-events-none" />
+
+              {isGenerating ? (
+                <div className="w-44 h-44 flex items-center justify-center bg-[#141517] rounded-2xl border border-white/10">
+                  <QrCode className="w-8 h-8 text-[#d5be9b] animate-pulse" />
+                </div>
+              ) : qrDataUrl ? (
+                <div className="space-y-2.5">
+                  <div className="p-3 bg-[#f8f6f0] rounded-2xl border-2 border-[#d5be9b]/60 shadow-[0_8px_30px_rgba(0,0,0,0.6)] inline-block">
+                    <img
+                      src={qrDataUrl}
+                      alt={`QR Code Presensi ${guestName}`}
+                      className="w-44 h-44 object-contain mx-auto rounded-xl block"
+                    />
+                  </div>
+                  <p className="font-mono text-xs font-semibold text-[#d5be9b] tracking-widest">
+                    {qrToken}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xs text-rose-400">Gagal memuat kode QR</p>
+              )}
+
+              <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-[#b8b5ad] max-w-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#d5be9b] shrink-0" />
+                <p className="text-[11px] font-serif italic leading-tight text-[#b8b5ad]">
+                  Tunjukkan kode QR ini kepada penerima tamu di lokasi acara untuk presensi cepat.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="p-4 bg-[#18191d] border-t border-white/10 flex flex-col gap-2 shrink-0">
+            <div className="flex items-center gap-2 w-full">
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={!qrDataUrl}
+                className="flex-1 h-11 px-4 rounded-xl bg-[#141517] hover:bg-[#d5be9b] active:scale-[0.98] border border-[#d5be9b]/50 hover:border-[#d5be9b] text-[#f8f6f0] hover:text-[#141517] font-sans font-medium text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md group"
+              >
+                <Download className="w-4 h-4 text-[#d5be9b] group-hover:text-[#141517] transition-colors" />
+                <span className="group-hover:text-[#141517] transition-colors">Simpan Gambar E-Pass</span>
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="h-11 px-5 rounded-xl text-xs uppercase font-sans tracking-wider border border-white/15 hover:border-[#d5be9b]/40 hover:bg-white/5 text-[#b8b5ad] hover:text-[#f8f6f0] transition-colors cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
+
+            {/* Mandatory Official Hayvows Backlink */}
+            <div className="text-center pt-1">
+              <a
+                href="https://www.hayvows.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[9.5px] font-sans tracking-[0.25em] text-[#7c7970] hover:text-[#d5be9b] transition-colors"
+              >
+                WWW.HAYVOWS.COM
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 8. NATURE FLORAL & MODERN MONOGRAM (STANDARD ELEGANT HAYVOWS)
   return (
     <div className="fixed inset-0 lg:left-auto lg:right-0 lg:w-[500px] z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/90 text-slate-900 max-h-[92vh] flex flex-col">

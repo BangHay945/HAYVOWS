@@ -176,7 +176,8 @@ export const getRequiredPlan = (slug: string): SubscriptionTier => {
     slug === "eternal-noir" ||
     slug === "royal-emerald" ||
     slug === "cinematic-editorial" ||
-    slug === "cinematic-ivory"
+    slug === "cinematic-ivory" ||
+    slug === "vintage-royal"
   ) {
     return "luxury";
   }
@@ -184,8 +185,7 @@ export const getRequiredPlan = (slug: string): SubscriptionTier => {
   // Paket Populer (Rp 199.000)
   if (
     slug === "nature-floral" ||
-    slug === "batik-jawa" ||
-    slug === "vintage-royal"
+    slug === "batik-jawa"
   ) {
     return "premium";
   }

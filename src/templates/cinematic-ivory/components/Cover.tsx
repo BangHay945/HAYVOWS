@@ -342,7 +342,7 @@ export function CinematicIvoryCover({
                   : {}
               }
               whileTap={!isOpening ? { scale: 0.97 } : {}}
-              className="relative w-full max-w-[240px] justify-center py-3.5 px-6 text-[9.5px] tracking-[0.3em] uppercase rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.5)] disabled:cursor-default transition-all duration-300 flex items-center gap-2 cursor-pointer"
+              className="relative w-full max-w-[240px] justify-center py-3.5 px-6 text-[9.5px] tracking-[0.3em] uppercase rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.5)] disabled:cursor-default transition-all duration-300 flex items-center gap-2 cursor-pointer group"
               style={{
                 fontFamily:
                   "var(--font-ci-sans, 'Montserrat', sans-serif)",
@@ -353,8 +353,8 @@ export function CinematicIvoryCover({
                 fontWeight: 500,
               }}
             >
-              <Sparkles className="w-3 h-3 text-[#d4c4b0]" />
-              <span>Buka Undangan</span>
+              <Sparkles className="w-3 h-3 text-[#d4c4b0] group-hover:text-[#0c0d0e] transition-colors duration-300" />
+              <span className="group-hover:text-[#0c0d0e] transition-colors duration-300">Buka Undangan</span>
             </motion.button>
 
             {/* E-Pass QR Button — placed cleanly below Buka Undangan */}

@@ -17,6 +17,7 @@ import { BatikJawaFooter } from "./components/Footer";
 import { BatikJawaMusicButton } from "./components/MusicButton";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { BATIK_JAWA_THEME } from "./theme";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function BatikJawaLayout({
   context,
@@ -24,6 +25,11 @@ export function BatikJawaLayout({
   onOpen,
   onOpenTicket,
 }: TemplateLayoutProps) {
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "batik-jawa"),
+    [context.wedding.themeConfig]
+  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
@@ -170,17 +176,17 @@ export function BatikJawaLayout({
   const visibleSections = useMemo(() => [
     { id: "section-hero", label: "Pembuka" },
     { id: "section-couple", label: "Mempelai" },
-    ...((context.wedding.stories ?? []).length > 0
+    ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
       ? [{ id: "section-story", label: "Kisah" }]
       : []),
-    { id: "section-countdown", label: "Waktu" },
+    ...(themeConfig.sections.countdown ? [{ id: "section-countdown", label: "Waktu" }] : []),
     { id: "section-event", label: "Acara" },
-    ...((context.wedding.galleries ?? []).length > 0
+    ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
       ? [{ id: "section-gallery", label: "Galeri" }]
       : []),
-    { id: "section-rsvp", label: "Kehadiran" },
+    ...(themeConfig.sections.rsvp ? [{ id: "section-rsvp", label: "Kehadiran" }] : []),
     { id: "section-footer", label: "Penutup" },
-  ], [context.wedding.stories, context.wedding.galleries]);
+  ], [context.wedding.stories, context.wedding.galleries, themeConfig.sections]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -216,10 +222,61 @@ export function BatikJawaLayout({
 
   return (
     <div
+      data-hy-theme="batik-jawa"
       className={`relative w-full flex flex-col lg:flex-row font-jawa-body bg-[#1A0F08] ${
         !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
       }`}
     >
+      {/* Dynamic Hayvows Curated Colorway Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="batik-jawa"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+            }
+            [data-hy-theme="batik-jawa"] .text-\\[\\#B8860B\\] {
+              color: var(--hy-accent, #B8860B) !important;
+            }
+            [data-hy-theme="batik-jawa"] .text-\\[\\#D4A853\\] {
+              color: var(--hy-accent, #D4A853) !important;
+            }
+            [data-hy-theme="batik-jawa"] .bg-\\[\\#B8860B\\] {
+              background-color: var(--hy-accent, #B8860B) !important;
+            }
+            [data-hy-theme="batik-jawa"] .bg-\\[\\#D4A853\\] {
+              background-color: var(--hy-accent, #D4A853) !important;
+            }
+            [data-hy-theme="batik-jawa"] .border-\\[\\#B8860B\\] {
+              border-color: var(--hy-accent, #B8860B) !important;
+            }
+            [data-hy-theme="batik-jawa"] .border-\\[\\#D4A853\\] {
+              border-color: var(--hy-accent, #D4A853) !important;
+            }
+            [data-hy-theme="batik-jawa"] .border-\\[\\#B8860B\\/25\\],
+            [data-hy-theme="batik-jawa"] .border-\\[\\#B8860B\\/30\\],
+            [data-hy-theme="batik-jawa"] .border-\\[\\#B8860B\\/40\\] {
+              border-color: color-mix(in srgb, var(--hy-accent, #B8860B) 35%, transparent) !important;
+            }
+            [data-hy-theme="batik-jawa"] .bg-\\[\\#B8860B\\/10\\],
+            [data-hy-theme="batik-jawa"] .bg-\\[\\#B8860B\\/15\\],
+            [data-hy-theme="batik-jawa"] .bg-\\[\\#B8860B\\/20\\] {
+              background-color: color-mix(in srgb, var(--hy-accent, #B8860B) 15%, transparent) !important;
+            }
+            [data-hy-theme="batik-jawa"] .hover\\:border-\\[\\#B8860B\\]:hover {
+              border-color: var(--hy-accent, #B8860B) !important;
+            }
+            [data-hy-theme="batik-jawa"] .hover\\:text-\\[\\#D4A853\\]:hover {
+              color: var(--hy-accent, #D4A853) !important;
+            }
+            [data-hy-theme="batik-jawa"] .batik-music-btn,
+            [data-hy-theme="batik-jawa"] .batik-music-btn svg {
+              color: var(--hy-accent, #D4A853) !important;
+              border-color: var(--hy-accent, #B8860B) !important;
+            }
+          `,
+        }}
+      />
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -279,7 +336,7 @@ export function BatikJawaLayout({
                     className="w-11 h-11 rounded-full backdrop-blur-md flex items-center justify-center cursor-pointer transition-all relative group"
                     style={{
                       background: "rgba(61,43,31,0.9)",
-                      border: "1px solid rgba(184,134,11,0.6)",
+                      border: "1px solid color-mix(in srgb, var(--hy-accent, #B8860B) 60%, transparent)",
                       boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
                     }}
                     title="Amplop Digital"
@@ -316,28 +373,34 @@ export function BatikJawaLayout({
               <div id="section-hero"><BatikJawaHero {...props} /></div>
               <div id="section-couple"><BatikJawaCouple {...props} /></div>
 
-              {(context.wedding.stories ?? []).length > 0 && (
+              {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && (
                 <div id="section-story"><BatikJawaStory {...props} /></div>
               )}
 
-              <div id="section-countdown"><BatikJawaCountdown {...props} /></div>
+              {themeConfig.sections.countdown && (
+                <div id="section-countdown"><BatikJawaCountdown {...props} /></div>
+              )}
 
               <div id="section-event"><BatikJawaEvent {...props} /></div>
 
-              {(context.wedding.galleries ?? []).length > 0 && (
+              {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && (
                 <div id="section-gallery"><BatikJawaGallery {...props} /></div>
               )}
 
-              <div id="section-rsvp"><BatikJawaRSVP {...props} /></div>
+              {themeConfig.sections.rsvp && (
+                <div id="section-rsvp"><BatikJawaRSVP {...props} /></div>
+              )}
 
               <div id="section-footer"><BatikJawaFooter {...props} /></div>
 
               {/* Gift Modal */}
-              <BatikJawaGift
-                {...props}
-                isModalOpen={isGiftModalOpen}
-                setIsModalOpen={setIsGiftModalOpen}
-              />
+              {themeConfig.sections.gift && (
+                <BatikJawaGift
+                  {...props}
+                  isModalOpen={isGiftModalOpen}
+                  setIsModalOpen={setIsGiftModalOpen}
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

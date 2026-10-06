@@ -50,13 +50,18 @@ body {
   font-family: 'Lora', Georgia, 'Times New Roman', serif;
 }
 
-/* Sembunyikan scrollbar untuk pengalaman scroll horizontal mobile yang rapi */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Sembunyikan scrollbar untuk pengalaman scroll mobile & mockup yang rapi */
+.no-scrollbar::-webkit-scrollbar,
+.no-scrollbar *::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.no-scrollbar,
+.no-scrollbar * {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* Cinematic Ivory Template Fonts */

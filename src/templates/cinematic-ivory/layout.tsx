@@ -19,6 +19,7 @@ import { CinematicIvoryMusicButton } from "./components/MusicButton";
 import { CinematicIvoryBackgroundSlideshow } from "./components/BackgroundSlideshow";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { CINEMATIC_IVORY_THEME } from "./theme";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function CinematicIvoryLayout({
   context,
@@ -161,21 +162,28 @@ export function CinematicIvoryLayout({
     }
   };
 
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "cinematic-ivory"),
+    [context.wedding.themeConfig]
+  );
+
   const visibleSections = useMemo(
     () => [
       { id: "section-hero", label: "Pembuka" },
       { id: "section-couple", label: "Mempelai" },
-      ...((context.wedding.stories ?? []).length > 0
+      ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
         ? [{ id: "section-story", label: "Kisah Cinta" }]
         : []),
       { id: "section-event", label: "Agenda Acara" },
-      ...((context.wedding.galleries ?? []).length > 0
+      ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
         ? [{ id: "section-gallery", label: "Galeri Foto" }]
         : []),
-      { id: "section-rsvp", label: "RSVP & Doa" },
+      ...(themeConfig.sections.rsvp
+        ? [{ id: "section-rsvp", label: "RSVP & Doa" }]
+        : []),
       { id: "section-footer", label: "Penutup" },
     ],
-    [context.wedding.stories, context.wedding.galleries]
+    [context.wedding.stories, context.wedding.galleries, themeConfig.sections]
   );
 
   useEffect(() => {
@@ -212,10 +220,76 @@ export function CinematicIvoryLayout({
 
   return (
     <div
-      className={`relative w-full flex flex-col lg:flex-row bg-[#0c0d0e] text-[#f5f3ef] ${
+      data-hy-theme="ivory"
+      className={`relative w-full flex flex-col lg:flex-row bg-[#0c0d0e] text-[#f5f3ef] selection:bg-[#d4c4b0] selection:text-[#0c0d0e] ${
         !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
       }`}
     >
+      {/* Dynamic Hayvows Curated Colorway & Veil Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="ivory"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+              --hy-veil-rgba: ${themeConfig.veilRgba};
+            }
+            [data-hy-theme="ivory"] .text-\\[\\#d4c4b0\\] {
+              color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .bg-\\[\\#d4c4b0\\] {
+              background-color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .border-\\[\\#d4c4b0\\] {
+              border-color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .text-\\[\\#d4c4b0\\]\\/50 {
+              color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 50%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .text-\\[\\#d4c4b0\\]\\/70 {
+              color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 70%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .text-\\[\\#d4c4b0\\]\\/80 {
+              color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 80%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .bg-\\[\\#d4c4b0\\]\\/10 {
+              background-color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 10%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .bg-\\[\\#d4c4b0\\]\\/30 {
+              background-color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 30%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .bg-\\[\\#d4c4b0\\]\\/40 {
+              background-color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 40%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .border-\\[\\#d4c4b0\\]\\/40,
+            [data-hy-theme="ivory"] .border-\\[\\#d4c4b0\\]\\/60 {
+              border-color: color-mix(in srgb, var(--hy-accent, #d4c4b0) 45%, transparent) !important;
+            }
+            [data-hy-theme="ivory"] .hover\\:text-\\[\\#d4c4b0\\]:hover {
+              color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .hover\\:bg-\\[\\#d4c4b0\\]:hover {
+              background-color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .hover\\:border-\\[\\#d4c4b0\\]:hover {
+              border-color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .hover\\:text-\\[\\#0c0d0e\\]:hover,
+            [data-hy-theme="ivory"] .hover\\:text-\\[\\#0c0d0e\\]:hover *,
+            [data-hy-theme="ivory"] .group:hover .group-hover\\:text-\\[\\#0c0d0e\\],
+            [data-hy-theme="ivory"] .group:hover .group-hover\\:text-\\[\\#0c0d0e\\] * {
+              color: #0c0d0e !important;
+              fill: currentColor !important;
+            }
+            [data-hy-theme="ivory"] .focus\\:border-\\[\\#d4c4b0\\]:focus {
+              border-color: var(--hy-accent, #d4c4b0) !important;
+            }
+            [data-hy-theme="ivory"] .selection\\:bg-\\[\\#d4c4b0\\] *::selection {
+              background-color: var(--hy-accent, #d4c4b0) !important;
+            }
+          `,
+        }}
+      />
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div
@@ -275,7 +349,7 @@ export function CinematicIvoryLayout({
               </div>
 
               {/* Floating Gift Button */}
-              {(context.wedding.giftAccounts ?? []).length > 0 && (
+              {themeConfig.sections.gift && (context.wedding.giftAccounts ?? []).length > 0 && (
                 <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
                   <motion.button
                     type="button"
@@ -325,7 +399,7 @@ export function CinematicIvoryLayout({
                 <CinematicIvoryCouple {...props} />
               </div>
 
-              {(context.wedding.stories ?? []).length > 0 && (
+              {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && (
                 <div id="section-story">
                   <CinematicIvoryStory {...props} />
                 </div>
@@ -335,25 +409,29 @@ export function CinematicIvoryLayout({
                 <CinematicIvoryEvent {...props} />
               </div>
 
-              {(context.wedding.galleries ?? []).length > 0 && (
+              {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && (
                 <div id="section-gallery">
                   <CinematicIvoryGallery {...props} />
                 </div>
               )}
 
-              <div id="section-rsvp">
-                <CinematicIvoryRSVP {...props} />
-              </div>
+              {themeConfig.sections.rsvp && (
+                <div id="section-rsvp">
+                  <CinematicIvoryRSVP {...props} />
+                </div>
+              )}
               <div id="section-footer">
                 <CinematicIvoryFooter {...props} />
               </div>
 
               {/* Digital Gift Modal */}
-              <CinematicIvoryGift
-                {...props}
-                isModalOpen={isGiftModalOpen}
-                setIsModalOpen={setIsGiftModalOpen}
-              />
+              {themeConfig.sections.gift && (
+                <CinematicIvoryGift
+                  {...props}
+                  isModalOpen={isGiftModalOpen}
+                  setIsModalOpen={setIsGiftModalOpen}
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

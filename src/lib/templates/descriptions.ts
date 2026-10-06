@@ -10,7 +10,7 @@ export const TEMPLATE_DESCRIPTIONS: Record<string, string> = {
   "batik-jawa":
     "Keanggunan pernikahan adat Jawa Kraton dengan ornamen gunungan & kawung SVG, tipografi prasasti, palet merah saga & emas kraton, serta alunan gamelan Jawa.",
   "vintage-royal":
-    "Estetika floral klasik berpadu arsitektur editorial nan megah, ornamen wax seal digital, dan instrumen piano romantis.",
+    "Kemewahan estetika Tuscan Estate bernuansa warm charcoal & antique gold. Ornamen wax seal monogram klasik, tata letak majalah editorial, foto prewedding sinematik statis, dan alunan piano romantis.",
   "eternal-noir":
     "Keanggunan monokromatik hitam pekat berpadu aksen emas sampanye mewah. Tata letak split-screen desktop dengan transisi Ken Burns sinematik.",
   "royal-emerald":

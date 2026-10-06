@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import type { TemplateLayoutProps } from "@/types/template";
 import { AnimatePresence, motion } from "framer-motion";
 import { MonogramCover } from "./components/Cover";
@@ -14,6 +14,7 @@ import { MonogramFooter } from "./components/Footer";
 import { MonogramMusicButton } from "./components/MusicButton";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { MODERN_MONOGRAM_THEME } from "./theme";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function MonogramLayout({
   context,
@@ -21,6 +22,11 @@ export function MonogramLayout({
   onOpen,
   onOpenTicket,
 }: TemplateLayoutProps) {
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "modern-monogram"),
+    [context.wedding.themeConfig]
+  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -52,7 +58,40 @@ export function MonogramLayout({
   };
 
   return (
-    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#1e1914] text-slate-800 font-sans selection:bg-[#2d4a3e]/15 selection:text-[#2d4a3e]`}>
+    <div
+      data-hy-theme="modern-monogram"
+      className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#1e1914] text-slate-800 font-sans selection:bg-[#2d4a3e]/15 selection:text-[#2d4a3e]`}
+    >
+      {/* Dynamic Hayvows Curated Colorway Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="modern-monogram"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+            }
+            [data-hy-theme="modern-monogram"] .text-\\[\\#c5a880\\] {
+              color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="modern-monogram"] .bg-\\[\\#c5a880\\] {
+              background-color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="modern-monogram"] .border-\\[\\#c5a880\\] {
+              border-color: var(--hy-accent, #c5a880) !important;
+            }
+            [data-hy-theme="modern-monogram"] .text-\\[\\#2d4a3e\\] {
+              color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+            [data-hy-theme="modern-monogram"] .bg-\\[\\#2d4a3e\\] {
+              background-color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+            [data-hy-theme="modern-monogram"] .border-\\[\\#2d4a3e\\] {
+              border-color: var(--hy-accent-dark, #2d4a3e) !important;
+            }
+          `,
+        }}
+      />
+
       {/* Audio Element with Built-in Romantic Preset */}
       <audio
         ref={audioRef}
@@ -100,11 +139,11 @@ export function MonogramLayout({
               <main className="w-full divide-y divide-slate-100">
                 <MonogramHero context={context} />
                 <MonogramCouple context={context} />
-                <MonogramCountdown context={context} />
+                {themeConfig.sections.countdown && <MonogramCountdown context={context} />}
                 <MonogramEvent context={context} />
-                <MonogramGallery context={context} />
-                <MonogramGift context={context} />
-                <MonogramMessages context={context} />
+                {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && <MonogramGallery context={context} />}
+                {themeConfig.sections.gift && <MonogramGift context={context} />}
+                {themeConfig.sections.messages && <MonogramMessages context={context} />}
               </main>
 
               {/* Footer */}

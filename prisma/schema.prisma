@@ -119,6 +119,7 @@ model Wedding {
   customSubdomain  String?  @unique  // "romeo-juliet" → romeo-juliet.hayvows.com
   customDomain     String?  @unique  // "romeo-juliet.com" → domain sendiri
   domainVerified   Boolean  @default(false) // apakah custom domain sudah diverifikasi DNS
+  themeConfig      String?  // JSON string untuk kustomisasi tema terkurasi
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

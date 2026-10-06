@@ -13,14 +13,14 @@ export function BatikJawaMusicButton({ isPlaying, onToggle }: MusicButtonProps) 
       onClick={onToggle}
       aria-label={isPlaying ? 'Jeda Musik' : 'Putar Musik'}
       title={isPlaying ? 'Jeda Musik' : 'Putar Musik'}
-      className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8860B] cursor-pointer relative"
+      className="batik-music-btn w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hy-accent,#B8860B)] cursor-pointer relative"
       style={{
         backgroundColor: 'rgba(61,43,31,0.90)',
-        border: '1px solid rgba(184,134,11,0.60)',
+        border: '1px solid color-mix(in srgb, var(--hy-accent, #B8860B) 60%, transparent)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         boxShadow:
-          '0 4px 24px rgba(0,0,0,0.55), 0 1px 4px rgba(184,134,11,0.18), inset 0 1px 0 rgba(212,168,83,0.08)',
+          '0 4px 24px rgba(0,0,0,0.55), 0 1px 4px color-mix(in srgb, var(--hy-accent, #B8860B) 25%, transparent), inset 0 1px 0 rgba(255,255,255,0.08)',
       }}
     >
       <span
@@ -28,14 +28,15 @@ export function BatikJawaMusicButton({ isPlaying, onToggle }: MusicButtonProps) 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#D4A853',
+          color: 'var(--hy-accent, #D4A853)',
           animation: isPlaying ? 'music-spin 4s linear infinite' : 'none',
         }}
       >
         <Music2
           size={18}
           strokeWidth={1.8}
-          style={{ color: '#D4A853' }}
+          className="text-[#D4A853]"
+          style={{ color: 'var(--hy-accent, #D4A853)' }}
         />
       </span>
 
@@ -50,9 +51,9 @@ export function BatikJawaMusicButton({ isPlaying, onToggle }: MusicButtonProps) 
       {/* Ripple ring when playing */}
       {isPlaying && (
         <span
-          className="absolute inset-0 rounded-full"
+          className="absolute inset-0 rounded-full pointer-events-none"
           style={{
-            border: '1px solid rgba(184,134,11,0.35)',
+            border: '1px solid color-mix(in srgb, var(--hy-accent, #B8860B) 40%, transparent)',
             animation: 'music-ripple 2s ease-out infinite',
           }}
         />

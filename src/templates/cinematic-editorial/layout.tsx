@@ -20,6 +20,7 @@ import { EditorialFooter } from "./components/Footer";
 import { EditorialMusicButton } from "./components/MusicButton";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { CINEMATIC_EDITORIAL_THEME } from "./theme";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function EditorialLayout({
   context,
@@ -164,23 +165,34 @@ export function EditorialLayout({
     }
   };
 
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "cinematic-editorial"),
+    [context.wedding.themeConfig]
+  );
+
   const visibleSections = useMemo(
     () => [
       { id: "section-hero", label: "Editorial" },
       { id: "section-couple", label: "Mempelai" },
-      { id: "section-countdown", label: "Hitung Mundur" },
-      ...((context.wedding.stories ?? []).length > 0
+      ...(themeConfig.sections.countdown
+        ? [{ id: "section-countdown", label: "Hitung Mundur" }]
+        : []),
+      ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
         ? [{ id: "section-story", label: "Kisah Cinta" }]
         : []),
       { id: "section-event", label: "Agenda Acara" },
-      ...((context.wedding.galleries ?? []).length > 0
+      ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
         ? [{ id: "section-gallery", label: "Galeri Foto" }]
         : []),
-      { id: "section-rsvp", label: "RSVP Kehadiran" },
-      { id: "section-messages", label: "Untaian Doa" },
+      ...(themeConfig.sections.rsvp
+        ? [{ id: "section-rsvp", label: "RSVP Kehadiran" }]
+        : []),
+      ...(themeConfig.sections.messages
+        ? [{ id: "section-messages", label: "Untaian Doa" }]
+        : []),
       { id: "section-footer", label: "Penutup" },
     ],
-    [context.wedding.stories, context.wedding.galleries]
+    [context.wedding.stories, context.wedding.galleries, themeConfig.sections]
   );
 
   useEffect(() => {
@@ -220,10 +232,80 @@ export function EditorialLayout({
 
   return (
     <div
+      data-hy-theme="editorial"
       className={`relative w-full flex flex-col lg:flex-row bg-[#0a0a0c] font-sans selection:bg-[#e8d5b5] selection:text-[#0a0a0c] ${
         !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
       }`}
     >
+      {/* Dynamic Hayvows Curated Colorway & Veil Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="editorial"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+              --hy-veil-rgba: ${themeConfig.veilRgba};
+            }
+            [data-hy-theme="editorial"] .text-\\[\\#e8d5b5\\] {
+              color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .bg-\\[\\#e8d5b5\\] {
+              background-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .border-\\[\\#e8d5b5\\] {
+              border-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .ring-\\[\\#e8d5b5\\] {
+              --tw-ring-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .text-\\[\\#e8d5b5\\]\\/40 {
+              color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 40%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .text-\\[\\#e8d5b5\\]\\/70 {
+              color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 70%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .bg-\\[\\#e8d5b5\\]\\/15 {
+              background-color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 15%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .bg-\\[\\#e8d5b5\\]\\/30 {
+              background-color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 30%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .bg-\\[\\#e8d5b5\\]\\/60 {
+              background-color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 60%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .border-\\[\\#e8d5b5\\]\\/25,
+            [data-hy-theme="editorial"] .border-\\[\\#e8d5b5\\]\\/30,
+            [data-hy-theme="editorial"] .border-\\[\\#e8d5b5\\]\\/40,
+            [data-hy-theme="editorial"] .border-\\[\\#e8d5b5\\]\\/50 {
+              border-color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 35%, transparent) !important;
+            }
+            [data-hy-theme="editorial"] .hover\\:border-\\[\\#e8d5b5\\]\\/30:hover,
+            [data-hy-theme="editorial"] .hover\\:border-\\[\\#e8d5b5\\]\\/40:hover,
+            [data-hy-theme="editorial"] .hover\\:border-\\[\\#e8d5b5\\]:hover {
+              border-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .hover\\:bg-\\[\\#f3e7cf\\]:hover {
+              background-color: color-mix(in srgb, var(--hy-accent, #e8d5b5) 85%, white) !important;
+            }
+            [data-hy-theme="editorial"] .hover\\:text-\\[\\#111115\\]:hover,
+            [data-hy-theme="editorial"] .hover\\:text-\\[\\#111115\\]:hover *,
+            [data-hy-theme="editorial"] .group:hover .group-hover\\:text-\\[\\#111115\\],
+            [data-hy-theme="editorial"] .group:hover .group-hover\\:text-\\[\\#111115\\] * {
+              color: #111115 !important;
+              fill: currentColor !important;
+            }
+            [data-hy-theme="editorial"] .focus\\:border-\\[\\#e8d5b5\\]:focus {
+              border-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .focus\\:ring-\\[\\#e8d5b5\\]:focus {
+              --tw-ring-color: var(--hy-accent, #e8d5b5) !important;
+            }
+            [data-hy-theme="editorial"] .selection\\:bg-\\[\\#e8d5b5\\] *::selection {
+              background-color: var(--hy-accent, #e8d5b5) !important;
+            }
+          `,
+        }}
+      />
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div
@@ -274,7 +356,7 @@ export function EditorialLayout({
               </div>
 
               {/* Floating Gift Button (Fixed at Bottom Right of Frame) */}
-              {(context.wedding.giftAccounts ?? []).length > 0 && (
+              {themeConfig.sections.gift && (context.wedding.giftAccounts ?? []).length > 0 && (
                 <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
                   <motion.button
                     type="button"
@@ -321,11 +403,14 @@ export function EditorialLayout({
               <div id="section-couple">
                 <EditorialCouple {...props} />
               </div>
-              <div id="section-countdown">
-                <EditorialCountdown {...props} />
-              </div>
 
-              {(context.wedding.stories ?? []).length > 0 && (
+              {themeConfig.sections.countdown && (
+                <div id="section-countdown">
+                  <EditorialCountdown {...props} />
+                </div>
+              )}
+
+              {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && (
                 <div id="section-story">
                   <EditorialStory {...props} />
                 </div>
@@ -335,28 +420,36 @@ export function EditorialLayout({
                 <EditorialEvent {...props} />
               </div>
 
-              {(context.wedding.galleries ?? []).length > 0 && (
+              {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && (
                 <div id="section-gallery">
                   <EditorialGallery {...props} />
                 </div>
               )}
 
-              <div id="section-rsvp">
-                <EditorialRSVP {...props} />
-              </div>
-              <div id="section-messages">
-                <EditorialMessages {...props} />
-              </div>
+              {themeConfig.sections.rsvp && (
+                <div id="section-rsvp">
+                  <EditorialRSVP {...props} />
+                </div>
+              )}
+
+              {themeConfig.sections.messages && (
+                <div id="section-messages">
+                  <EditorialMessages {...props} />
+                </div>
+              )}
+
               <div id="section-footer">
                 <EditorialFooter {...props} />
               </div>
 
               {/* Digital Gift Modal */}
-              <EditorialGift
-                {...props}
-                isModalOpen={isGiftModalOpen}
-                setIsModalOpen={setIsGiftModalOpen}
-              />
+              {themeConfig.sections.gift && (
+                <EditorialGift
+                  {...props}
+                  isModalOpen={isGiftModalOpen}
+                  setIsModalOpen={setIsGiftModalOpen}
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

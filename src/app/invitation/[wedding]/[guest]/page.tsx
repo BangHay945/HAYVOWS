@@ -281,6 +281,7 @@ export default async function InvitationPage({
       guest={guest as Parameters<typeof InvitationClient>[0]["guest"]}
       messages={messages as Parameters<typeof InvitationClient>[0]["messages"]}
       templateSlug={templateSlug}
+      isPreview={rawGuestSlug === "preview" || (sParams as any)?.preview === "1"}
     />
   );
 }

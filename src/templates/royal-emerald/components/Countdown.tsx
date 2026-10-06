@@ -106,10 +106,10 @@ export function RoyalCountdown({ context }: TemplateComponentProps) {
             href={mainCalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border border-[#d4af37]/60 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all duration-300 shadow-[0_2px_12px_rgba(212,175,55,0.2)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.45)] cursor-pointer"
+            className="group inline-flex items-center justify-center gap-2 py-2.5 px-6 rounded-full border border-[#d4af37]/60 bg-[#02241b]/90 hover:bg-[#d4af37] hover:text-[#02241b] text-xs font-serif tracking-wider uppercase font-semibold text-[#d4af37] transition-all duration-300 shadow-[0_2px_12px_rgba(212,175,55,0.2)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.45)] cursor-pointer"
           >
-            <CalendarPlus className="w-4 h-4 text-[#ffd700] shrink-0" />
-            <span>Simpan ke Kalender</span>
+            <CalendarPlus className="w-4 h-4 text-[#ffd700] group-hover:text-[#02241b] transition-colors duration-300 shrink-0" />
+            <span className="group-hover:text-[#02241b] transition-colors duration-300">Simpan ke Kalender</span>
           </a>
         </div>
       </div>

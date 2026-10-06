@@ -13,7 +13,7 @@ import {
 
 interface DesktopSplitSidePanelProps {
   context: WeddingContextData;
-  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald" | "cinematic-editorial" | "cinematic-ivory";
+  themeSlug: "nature-floral" | "eternal-noir" | "batik-jawa" | "modern-monogram" | "royal-emerald" | "cinematic-editorial" | "cinematic-ivory" | "vintage-royal";
 }
 
 export function DesktopSplitSidePanel({
@@ -55,6 +55,21 @@ export function DesktopSplitSidePanel({
     return () => clearInterval(timer);
   }, [slideImages.length]);
 
+function parseEventTargetDate(dateStr?: string, timeStr?: string): number {
+  if (!dateStr) return NaN;
+  if (dateStr.includes("T")) {
+    const directTime = new Date(dateStr).getTime();
+    if (!isNaN(directTime)) return directTime;
+  }
+  const cleanDate = dateStr.split("T")[0];
+  const time = timeStr && timeStr.trim() ? timeStr.trim() : "09:00";
+  const formatted = `${cleanDate}T${time.length === 5 ? `${time}:00` : time}`;
+  const formattedTime = new Date(formatted).getTime();
+  if (!isNaN(formattedTime)) return formattedTime;
+
+  return new Date(dateStr).getTime();
+}
+
   // Countdown timer logic
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
@@ -65,7 +80,8 @@ export function DesktopSplitSidePanel({
 
   useEffect(() => {
     if (!firstEvent?.date) return;
-    const target = new Date(`${firstEvent.date}T${firstEvent.startTime || "09:00"}:00`).getTime();
+    const target = parseEventTargetDate(firstEvent.date, firstEvent.startTime);
+    if (isNaN(target)) return;
 
     const updateTimer = () => {
       const now = new Date().getTime();
@@ -76,11 +92,16 @@ export function DesktopSplitSidePanel({
         return;
       }
 
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
       setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
+        days: isNaN(d) ? 0 : d,
+        hours: isNaN(h) ? 0 : h,
+        minutes: isNaN(m) ? 0 : m,
+        seconds: isNaN(s) ? 0 : s,
       });
     };
 
@@ -102,6 +123,18 @@ export function DesktopSplitSidePanel({
   // Theme-specific styles & color palettes
   const getThemeStyles = () => {
     switch (themeSlug) {
+      case "vintage-royal":
+        return {
+          bgGradient: "from-[#141517] via-[#1c1e22] to-[#0f1012]",
+          overlayGradient: "from-[#141517]/90 via-[#1c1e22]/70 to-[#0f1012]/95",
+          accentGold: "text-[#d5be9b]",
+          accentGoldBg: "bg-[#d5be9b]/15 border-[#d5be9b]/40 text-[#f8f6f0]",
+          cardBg: "bg-[#1c1e22]/80 border-white/10 backdrop-blur-md",
+          fontTitle: "font-serif text-[#f8f6f0] tracking-wide",
+          fontBody: "font-sans text-[#b8b5ad]",
+          particleColor: "bg-[#d5be9b]/20",
+          ornamentBorder: "border-[#d5be9b]/35",
+        };
       case "cinematic-ivory":
         return {
           bgGradient: "from-[#0c0d0e] via-[#131417] to-[#08080a]",

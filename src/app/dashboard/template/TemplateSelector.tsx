@@ -125,17 +125,18 @@ const THEME_EXTRAS: Record<string, RichTemplateDetail> = {
   },
   "vintage-royal": {
     slug: "vintage-royal",
-    iconBg: "bg-[#2d4a3e] text-[#dfc49e]",
-    categoryTag: "Paket Populer",
-    categoryStyle: PLAN_BADGE_STYLES["Paket Populer"],
-    versionTag: "v1.0.0 • Editorial",
+    iconBg: "bg-[#1c1e22] text-[#d5be9b]",
+    categoryTag: "Paket Exclusive",
+    categoryStyle: PLAN_BADGE_STYLES["Paket Exclusive"],
+    versionTag: "v1.0.0 • Tuscan Estate",
+    bannerImage: "/assets/templates/vintage-royal/banner.jpg",
     description: TEMPLATE_DESCRIPTIONS["vintage-royal"],
     highlights: [
-      "Audio: Classical Strings & Piano Romance",
-      "Fitur: Digital Envelope Wax Seal & Gold Lettering",
-      "Estetika: Floral Architecture & Glasshouse Garden",
+      "Palet: Warm Charcoal & Antique Tuscan Gold",
+      "Fitur: Monogram Wax Seal & Fixed Depth Slideshow",
+      "Estetika: Italian Tuscan Estate & Architectural Typography",
     ],
-    demoPath: "/invitation/alex-sara?tpl=vintage-royal",
+    demoPath: "/invitation/leonardo-beatrice/budi-santoso",
   },
   "eternal-noir": {
     slug: "eternal-noir",
@@ -587,7 +588,16 @@ export default function TemplateSelector({
                         NOIR
                       </div>
                     </div>
-                  ) : tpl.slug === "nature-floral" || tpl.slug === "vintage-royal" ? (
+                  ) : tpl.slug === "vintage-royal" ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 rounded-full border border-[#d5be9b]/50 bg-[#1c1e22] flex items-center justify-center text-[#d5be9b] font-serif text-base shadow-lg">
+                        VR
+                      </div>
+                      <span className="text-[10px] tracking-[0.25em] text-[#d5be9b] font-serif uppercase">
+                        Tuscan Estate
+                      </span>
+                    </div>
+                  ) : tpl.slug === "nature-floral" ? (
                     <Flower2 className="w-12 h-12 text-[#fef08a]" />
                   ) : tpl.slug.includes("cyber") ? (
                     <Sparkles className="w-12 h-12 text-cyan-300" />

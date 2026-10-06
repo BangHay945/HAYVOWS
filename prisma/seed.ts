@@ -156,6 +156,23 @@ async function main() {
   });
   console.log("✅ Seeded template: Cinematic Ivory");
 
+  // 1.13. Seed Template Vintage Royal Estate (Old Money & Tuscan Villa)
+  const tplVintageRoyal = await prisma.template.upsert({
+    where: { slug: "vintage-royal" },
+    update: {
+      description: "Estetika floral klasik berpadu arsitektur editorial nan megah, ornamen wax seal digital, dan instrumen piano romantis.",
+    },
+    create: {
+      slug: "vintage-royal",
+      name: "Vintage Royal Estate",
+      description: "Estetika floral klasik berpadu arsitektur editorial nan megah, ornamen wax seal digital, dan instrumen piano romantis.",
+      isPremium: true,
+      isActive: true,
+      version: "1.0.0",
+    },
+  });
+  console.log("✅ Seeded template: Vintage Royal Estate");
+
   // 2. Seed Demo User (password: admin123)
   const hashedPassword =
     "$2b$10$4MuM4.FCi.peWO9TY74b8.xdVK28yVfW5sCo4DXKbW.965Mh8qm0y";

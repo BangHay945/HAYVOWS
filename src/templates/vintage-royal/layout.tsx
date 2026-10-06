@@ -5,30 +5,30 @@ import type { TemplateLayoutProps, RSVPSubmitData } from "@/types/template";
 import { AnimatePresence, motion } from "framer-motion";
 import { isYouTubeUrl, extractYouTubeId } from "@/lib/utils/youtube";
 import { Gift as GiftIcon } from "lucide-react";
-import { RoyalCover } from "./components/Cover";
-import { RoyalHero } from "./components/Hero";
-import { RoyalCouple } from "./components/Couple";
-import { RoyalCountdown } from "./components/Countdown";
-import { RoyalStory } from "./components/Story";
-import { RoyalEvent } from "./components/Event";
-import { RoyalGallery } from "./components/Gallery";
-import { RoyalRSVP } from "./components/RSVP";
-import { RoyalMessages } from "./components/Messages";
-import { RoyalGift } from "./components/Gift";
-import { RoyalFooter } from "./components/Footer";
-import { RoyalMusicButton } from "./components/MusicButton";
+import { VintageRoyalBackgroundSlideshow } from "./components/BackgroundSlideshow";
+import { VintageRoyalCover } from "./components/Cover";
+import { VintageRoyalHero } from "./components/Hero";
+import { VintageRoyalCouple } from "./components/Couple";
+import { VintageRoyalStory } from "./components/Story";
+import { VintageRoyalCountdown } from "./components/Countdown";
+import { VintageRoyalEvent } from "./components/Event";
+import { VintageRoyalGallery } from "./components/Gallery";
+import { VintageRoyalRSVP } from "./components/RSVP";
+import { VintageRoyalGift } from "./components/Gift";
+import { VintageRoyalFooter } from "./components/Footer";
+import { VintageRoyalMusicButton } from "./components/MusicButton";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
-import { ROYAL_EMERALD_THEME } from "./theme";
+import { VINTAGE_ROYAL_THEME } from "./theme";
 import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
-export function RoyalLayout({
+export function VintageRoyalLayout({
   context,
   isOpen,
   onOpen,
   onOpenTicket,
 }: TemplateLayoutProps) {
   const themeConfig = useMemo(
-    () => parseThemeConfig(context.wedding.themeConfig, "royal-emerald"),
+    () => parseThemeConfig(context.wedding.themeConfig, "vintage-royal"),
     [context.wedding.themeConfig]
   );
 
@@ -41,11 +41,13 @@ export function RoyalLayout({
   const shouldPlayRef = useRef(false);
 
   const musicUrl =
-    context.wedding.musics?.[0]?.fileUrl || ROYAL_EMERALD_THEME.presetMusic;
+    context.wedding.musics?.[0]?.fileUrl ||
+    VINTAGE_ROYAL_THEME.presetMusic ||
+    VINTAGE_ROYAL_THEME.fallbackMusic;
   const isYT = isYouTubeUrl(musicUrl);
   const ytId = extractYouTubeId(musicUrl);
 
-  // YouTube Background Audio handler
+  // YouTube audio player handler
   const sendYtCommand = useCallback((func: string, args: any[] = []) => {
     if (ytIframeRef.current?.contentWindow) {
       try {
@@ -81,9 +83,7 @@ export function RoyalLayout({
       } catch {}
     };
     window.addEventListener("message", handleMsg);
-    return () => {
-      window.removeEventListener("message", handleMsg);
-    };
+    return () => window.removeEventListener("message", handleMsg);
   }, [isYT, ytId, sendYtCommand]);
 
   useEffect(() => {
@@ -106,10 +106,11 @@ export function RoyalLayout({
   }, [isYT, musicUrl]);
 
   const handleOpen = () => {
-    onOpen();
     if (isYT) {
       shouldPlayRef.current = true;
       setIsPlaying(true);
+      sendYtCommand("unMute");
+      sendYtCommand("setVolume", [100]);
       sendYtCommand("playVideo");
     } else {
       let audio = audioRef.current;
@@ -124,6 +125,7 @@ export function RoyalLayout({
         .then(() => setIsPlaying(true))
         .catch((e) => console.warn("Autoplay blocked:", e));
     }
+    onOpen();
   };
 
   const toggleMusic = () => {
@@ -169,24 +171,26 @@ export function RoyalLayout({
     }
   };
 
-  const visibleSections = useMemo(() => [
-    { id: "section-hero", label: "Pembuka" },
-    { id: "section-couple", label: "Mempelai" },
-    ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
-      ? [{ id: "section-story", label: "Kisah" }]
-      : []),
-    { id: "section-event", label: "Acara" },
-    ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
-      ? [{ id: "section-gallery", label: "Galeri" }]
-      : []),
-    ...(themeConfig.sections.rsvp ? [{ id: "section-rsvp", label: "Reservasi" }] : []),
-    ...(themeConfig.sections.messages ? [{ id: "section-messages", label: "Doa Restu" }] : []),
-    { id: "section-footer", label: "Penutup" },
-  ], [context.wedding.stories, context.wedding.galleries, themeConfig.sections]);
+  const visibleSections = useMemo(
+    () => [
+      { id: "vr-hero", label: "Pembuka" },
+      { id: "vr-couple", label: "Mempelai" },
+      ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
+        ? [{ id: "vr-story", label: "Kisah" }]
+        : []),
+      ...(themeConfig.sections.countdown ? [{ id: "vr-countdown", label: "Waktu" }] : []),
+      { id: "vr-event", label: "Acara" },
+      ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
+        ? [{ id: "vr-gallery", label: "Galeri" }]
+        : []),
+      ...(themeConfig.sections.rsvp ? [{ id: "vr-rsvp", label: "RSVP & Doa" }] : []),
+      { id: "vr-footer", label: "Penutup" },
+    ],
+    [context.wedding.stories, context.wedding.galleries, themeConfig.sections]
+  );
 
   useEffect(() => {
     if (!isOpen) return;
-
     let removeListener: (() => void) | null = null;
     const timer = setTimeout(() => {
       const updateActive = () => {
@@ -198,12 +202,10 @@ export function RoyalLayout({
         });
         setActiveSection(found);
       };
-
       updateActive();
       window.addEventListener("scroll", updateActive, { passive: true });
       removeListener = () => window.removeEventListener("scroll", updateActive);
     }, 700);
-
     return () => {
       clearTimeout(timer);
       removeListener?.();
@@ -221,69 +223,89 @@ export function RoyalLayout({
 
   return (
     <div
-      data-hy-theme="royal-emerald"
-      className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#021a13] font-sans selection:bg-[#d4af37] selection:text-[#02241b]`}
+      data-hy-theme="vintage-royal"
+      className={`relative w-full flex flex-col lg:flex-row bg-[#141517] text-[#f8f6f0] selection:bg-[#d5be9b] selection:text-[#141517] ${
+        !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+      }`}
     >
-      {/* Dynamic Hayvows Curated Colorway Engine */}
+      {/* Dynamic Curated Colorway Engine */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            [data-hy-theme="royal-emerald"] {
-              --hy-accent: ${themeConfig.accentColor};
-              --hy-accent-dark: ${themeConfig.accentSecondary};
+            [data-hy-theme="vintage-royal"] {
+              --hy-accent: ${themeConfig.accentColor || "#d5be9b"};
+              --hy-accent-dark: ${themeConfig.accentSecondary || "#9b8058"};
             }
-            [data-hy-theme="royal-emerald"] .text-\\[\\#d4af37\\] {
-              color: var(--hy-accent, #d4af37) !important;
+            [data-hy-theme="vintage-royal"] .text-\\[\\#d5be9b\\] {
+              color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .bg-\\[\\#d4af37\\] {
-              background-color: var(--hy-accent, #d4af37) !important;
+            [data-hy-theme="vintage-royal"] .bg-\\[\\#d5be9b\\] {
+              background-color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .border-\\[\\#d4af37\\] {
-              border-color: var(--hy-accent, #d4af37) !important;
+            [data-hy-theme="vintage-royal"] .border-\\[\\#d5be9b\\] {
+              border-color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .text-\\[\\#ffd700\\] {
-              color: var(--hy-accent, #ffd700) !important;
+            [data-hy-theme="vintage-royal"] .border-\\[\\#d5be9b\\]\\/30,
+            [data-hy-theme="vintage-royal"] .border-\\[\\#d5be9b\\]\\/40 {
+              border-color: color-mix(in srgb, var(--hy-accent, #d5be9b) 40%, transparent) !important;
             }
-            [data-hy-theme="royal-emerald"] .border-\\[\\#d4af37\\/30\\],
-            [data-hy-theme="royal-emerald"] .border-\\[\\#d4af37\\/40\\] {
-              border-color: color-mix(in srgb, var(--hy-accent, #d4af37) 35%, transparent) !important;
+            [data-hy-theme="vintage-royal"] .hover\\:text-\\[\\#d5be9b\\]:hover {
+              color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .bg-\\[\\#d4af37\\/10\\],
-            [data-hy-theme="royal-emerald"] .bg-\\[\\#d4af37\\/20\\] {
-              background-color: color-mix(in srgb, var(--hy-accent, #d4af37) 15%, transparent) !important;
+            [data-hy-theme="vintage-royal"] .hover\\:bg-\\[\\#d5be9b\\]:hover {
+              background-color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .hover\\:border-\\[\\#d4af37\\]:hover {
-              border-color: var(--hy-accent, #d4af37) !important;
+            [data-hy-theme="vintage-royal"] .hover\\:border-\\[\\#d5be9b\\]:hover {
+              border-color: var(--hy-accent, #d5be9b) !important;
             }
-            [data-hy-theme="royal-emerald"] .hover\\:text-\\[\\#02241b\\]:hover,
-            [data-hy-theme="royal-emerald"] .hover\\:text-\\[\\#02241b\\]:hover *,
-            [data-hy-theme="royal-emerald"] .group:hover .group-hover\\:text-\\[\\#02241b\\],
-            [data-hy-theme="royal-emerald"] .group:hover .group-hover\\:text-\\[\\#02241b\\] * {
-              color: #02241b !important;
+            /* High-priority dark text & icons on accent background hover */
+            [data-hy-theme="vintage-royal"] .hover\\:text-\\[\\#141517\\]:hover,
+            [data-hy-theme="vintage-royal"] .hover\\:text-\\[\\#141517\\]:hover *,
+            [data-hy-theme="vintage-royal"] .group:hover .group-hover\\:text-\\[\\#141517\\],
+            [data-hy-theme="vintage-royal"] .group:hover .group-hover\\:text-\\[\\#141517\\] * {
+              color: #141517 !important;
               fill: currentColor !important;
+            }
+            [data-hy-theme="vintage-royal"] .hover\\:text-\\[\\#f8f6f0\\]:hover,
+            [data-hy-theme="vintage-royal"] .group:hover .group-hover\\:text-\\[\\#f8f6f0\\] {
+              color: #f8f6f0 !important;
+            }
+            [data-hy-theme="vintage-royal"] .vintage-royal-music-btn {
+              border-color: color-mix(in srgb, var(--hy-accent, #d5be9b) 45%, transparent) !important;
+            }
+            [data-hy-theme="vintage-royal"] .vintage-royal-music-btn svg {
+              color: var(--hy-accent, #d5be9b) !important;
             }
           `,
         }}
       />
-      {/* YouTube hidden iframe */}
+
+      {/* YouTube hidden player */}
       {isYT && ytId && (
-        <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden"
+          aria-hidden="true"
+        >
           <iframe
             ref={ytIframeRef}
-            id="royal-youtube-bgm-iframe"
+            id="vr-youtube-bgm-iframe"
             src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&autoplay=0&loop=1&playlist=${ytId}&playsinline=1&controls=0`}
             allow="autoplay; encrypted-media"
             className="w-full h-full border-0"
-            title="Royal Background Music"
+            title="Vintage Royal Background Music"
           />
         </div>
       )}
 
-      {/* DESKTOP LEFT FIXED PANEL */}
-      <DesktopSplitSidePanel context={context} themeSlug="royal-emerald" />
+      {/* DESKTOP LEFT FIXED PANEL (Statis / Diam) */}
+      <DesktopSplitSidePanel context={context} themeSlug="vintage-royal" />
 
-      {/* RIGHT COLUMN (500px on Desktop, Full Width on Mobile) */}
-      <div className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} bg-[#02241b] relative shadow-2xl lg:border-l border-[#d4af37]/30 flex flex-col justify-start`}>
+      {/* RIGHT COLUMN (500px Lebar di Layar Desktop, Scrollable Content) */}
+      <div
+        className={`w-full lg:w-[500px] lg:min-w-[500px] lg:max-w-[500px] bg-[#141517] relative shadow-2xl lg:border-l border-white/10 flex flex-col justify-start ${
+          !isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"
+        }`}
+      >
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <motion.div
@@ -292,7 +314,7 @@ export function RoyalLayout({
               transition={{ duration: 0.5 }}
               className="w-full h-[100dvh] max-h-[100dvh] overflow-hidden"
             >
-              <RoyalCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
+              <VintageRoyalCover {...props} onOpen={handleOpen} onOpenTicket={onOpenTicket} />
             </motion.div>
           ) : (
             <motion.div
@@ -302,13 +324,16 @@ export function RoyalLayout({
               transition={{ duration: 0.6 }}
               className="w-full relative"
             >
-              {/* Floating Music Button (Fixed at Bottom Left of Frame) */}
+              {/* Fixed Depth Background Slideshow */}
+              <VintageRoyalBackgroundSlideshow context={context} />
+
+              {/* Floating Music Button — bottom-left of 500px frame */}
               <div className="fixed bottom-6 left-4 sm:bottom-8 sm:left-6 lg:left-auto lg:right-[436px] z-50 select-none">
-                <RoyalMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
+                <VintageRoyalMusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
               </div>
 
-              {/* Floating Gift Button (Fixed at Bottom Right of Frame) */}
-              {themeConfig.sections.gift && (context.wedding.giftAccounts ?? []).length > 0 && (
+              {/* Floating Gift Button — bottom-right of 500px frame */}
+              {(context.wedding.giftAccounts ?? []).length > 0 && themeConfig.sections.gift && (
                 <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
                   <motion.button
                     type="button"
@@ -317,20 +342,20 @@ export function RoyalLayout({
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.92 }}
                     onClick={() => setIsGiftModalOpen(true)}
-                    className="w-12 h-12 rounded-full bg-[#02241b]/95 backdrop-blur-md border border-[#d4af37] text-[#ffd700] shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex items-center justify-center cursor-pointer transition-all hover:border-[#ffd700] hover:scale-105 relative group"
-                    title="Amplop Digital / Tanda Kasih"
-                    aria-label="Amplop Digital / Tanda Kasih"
+                    className="w-11 h-11 rounded-full bg-[#141517]/95 backdrop-blur-md flex items-center justify-center cursor-pointer transition-all shadow-[0_4px_24px_rgba(0,0,0,0.6)] group border border-[#d5be9b]/40 hover:border-[#d5be9b]"
+                    title="Amplop Digital"
+                    aria-label="Amplop Digital"
                   >
-                    <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffd700] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#ffd700] border-2 border-[#02241b]"></span>
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d5be9b] opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#d5be9b]" />
                     </span>
-                    <GiftIcon className="w-5 h-5 text-[#ffd700] transition-transform group-hover:scale-110" />
+                    <GiftIcon className="w-5 h-5 text-[#d5be9b] transition-transform group-hover:scale-110" />
                   </motion.button>
                 </div>
               )}
 
-              {/* Dot navigation — fixed on right edge */}
+              {/* Dot Navigation Sidebar */}
               <nav className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5 items-center select-none">
                 {visibleSections.map((sec, i) => (
                   <button
@@ -341,38 +366,40 @@ export function RoyalLayout({
                     aria-label={sec.label}
                     className={`transition-all duration-500 cursor-pointer rounded-full ${
                       activeSection === i
-                        ? "w-1.5 h-4 bg-[#ffd700]"
-                        : "w-1.5 h-1.5 bg-white/20 hover:bg-white/50"
+                        ? "w-1.5 h-4 bg-[#d5be9b]"
+                        : "w-1.5 h-1.5 bg-[#7c7970]/60 hover:bg-[#d5be9b]/70"
                     }`}
                   />
                 ))}
               </nav>
 
-              {/* Invitation Sections */}
-              <div id="section-hero"><RoyalHero {...props} /></div>
-              <div id="section-couple"><RoyalCouple {...props} /></div>
+              {/* Main Content Sections */}
+              <div id="vr-hero"><VintageRoyalHero {...props} /></div>
+              <div id="vr-couple"><VintageRoyalCouple {...props} /></div>
 
               {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && (
-                <div id="section-story"><RoyalStory {...props} /></div>
+                <div id="vr-story"><VintageRoyalStory {...props} /></div>
               )}
 
-              <div id="section-event"><RoyalEvent {...props} /></div>
+              {themeConfig.sections.countdown && (
+                <div id="vr-countdown"><VintageRoyalCountdown {...props} /></div>
+              )}
+
+              <div id="vr-event"><VintageRoyalEvent {...props} /></div>
 
               {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && (
-                <div id="section-gallery"><RoyalGallery {...props} /></div>
+                <div id="vr-gallery"><VintageRoyalGallery {...props} /></div>
               )}
 
               {themeConfig.sections.rsvp && (
-                <div id="section-rsvp"><RoyalRSVP {...props} /></div>
+                <div id="vr-rsvp"><VintageRoyalRSVP {...props} /></div>
               )}
-              {themeConfig.sections.messages && (
-                <div id="section-messages"><RoyalMessages {...props} /></div>
-              )}
-              <div id="section-footer"><RoyalFooter {...props} /></div>
 
-              {/* Digital Gift Modal */}
+              <div id="vr-footer"><VintageRoyalFooter {...props} /></div>
+
+              {/* Gift Modal Popup */}
               {themeConfig.sections.gift && (
-                <RoyalGift
+                <VintageRoyalGift
                   {...props}
                   isModalOpen={isGiftModalOpen}
                   setIsModalOpen={setIsGiftModalOpen}

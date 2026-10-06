@@ -191,14 +191,14 @@ export function CinematicIvoryMessages({ context }: TemplateComponentProps) {
               <button
                 type="submit"
                 disabled={isSubmitting || !guest?.id}
-                className={`w-full flex items-center justify-center gap-2 font-ci-sans text-[8.5px] tracking-[0.3em] uppercase py-3.5 rounded-full border transition-all duration-300 ${
+                className={`w-full flex items-center justify-center gap-2 font-ci-sans text-[8.5px] tracking-[0.3em] uppercase py-3.5 rounded-full border transition-all duration-300 group ${
                   isSubmitting || !guest?.id
                     ? "border-white/10 text-[#72737a] cursor-not-allowed opacity-60 bg-white/[0.02]"
                     : "border-[#d4c4b0]/60 text-[#f5f3ef] bg-white/[0.06] hover:bg-[#d4c4b0] hover:text-[#0c0d0e] cursor-pointer shadow-sm"
                 }`}
               >
-                <Send className="w-3 h-3" />
-                <span>{isSubmitting ? "Mengirimkan..." : "Kirim Doa Restu"}</span>
+                <Send className="w-3 h-3 group-hover:text-[#0c0d0e] transition-colors duration-300" />
+                <span className="group-hover:text-[#0c0d0e] transition-colors duration-300">{isSubmitting ? "Mengirimkan..." : "Kirim Doa Restu"}</span>
               </button>
             </form>
           )}

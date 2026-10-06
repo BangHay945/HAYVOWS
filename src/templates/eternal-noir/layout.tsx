@@ -16,6 +16,7 @@ import { NoirFooter } from "./components/Footer";
 import { NoirMusicButton } from "./components/MusicButton";
 import { DesktopSplitSidePanel } from "@/components/invitation/DesktopSplitSidePanel";
 import { ETERNAL_NOIR_THEME } from "./theme";
+import { parseThemeConfig } from "@/lib/wedding/themeConfig";
 
 export function NoirLayout({
   context,
@@ -23,6 +24,11 @@ export function NoirLayout({
   onOpen,
   onOpenTicket,
 }: TemplateLayoutProps) {
+  const themeConfig = useMemo(
+    () => parseThemeConfig(context.wedding.themeConfig, "eternal-noir"),
+    [context.wedding.themeConfig]
+  );
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
@@ -195,16 +201,16 @@ export function NoirLayout({
   const visibleSections = useMemo(() => [
     { id: "section-hero", label: "Pembuka" },
     { id: "section-couple", label: "Mempelai" },
-    ...((context.wedding.stories ?? []).length > 0
+    ...(themeConfig.sections.story && (context.wedding.stories ?? []).length > 0
       ? [{ id: "section-story", label: "Kisah" }]
       : []),
     { id: "section-event", label: "Acara" },
-    ...((context.wedding.galleries ?? []).length > 0
+    ...(themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0
       ? [{ id: "section-gallery", label: "Galeri" }]
       : []),
-    { id: "section-rsvp", label: "Kehadiran & Doa" },
+    ...(themeConfig.sections.rsvp ? [{ id: "section-rsvp", label: "Kehadiran & Doa" }] : []),
     { id: "section-footer", label: "Penutup" },
-  ], [context.wedding.stories, context.wedding.galleries]);
+  ], [context.wedding.stories, context.wedding.galleries, themeConfig.sections]);
 
   // Dot nav active section detection via scroll event (more reliable than IntersectionObserver
   // when sections render after Framer Motion animation completes)
@@ -246,7 +252,45 @@ export function NoirLayout({
   const props = { context, onRSVPSubmit: submitRSVP };
 
   return (
-    <div className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}>
+    <div
+      data-hy-theme="eternal-noir"
+      className={`relative w-full ${!isOpen ? "h-[100dvh] max-h-[100dvh] overflow-hidden" : "min-h-[100dvh]"} flex flex-col lg:flex-row bg-[#080808] font-noir-sans`}
+    >
+      {/* Dynamic Hayvows Curated Colorway Engine */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            [data-hy-theme="eternal-noir"] {
+              --hy-accent: ${themeConfig.accentColor};
+              --hy-accent-dark: ${themeConfig.accentSecondary};
+            }
+            [data-hy-theme="eternal-noir"] .text-\\[\\#c9a84c\\] {
+              color: var(--hy-accent, #c9a84c) !important;
+            }
+            [data-hy-theme="eternal-noir"] .bg-\\[\\#c9a84c\\] {
+              background-color: var(--hy-accent, #c9a84c) !important;
+            }
+            [data-hy-theme="eternal-noir"] .border-\\[\\#c9a84c\\] {
+              border-color: var(--hy-accent, #c9a84c) !important;
+            }
+            [data-hy-theme="eternal-noir"] .border-\\[\\#c9a84c\\/30\\],
+            [data-hy-theme="eternal-noir"] .border-\\[\\#c9a84c\\/40\\],
+            [data-hy-theme="eternal-noir"] .border-\\[\\#c9a84c\\/60\\] {
+              border-color: color-mix(in srgb, var(--hy-accent, #c9a84c) 40%, transparent) !important;
+            }
+            [data-hy-theme="eternal-noir"] .bg-\\[\\#c9a84c\\/10\\],
+            [data-hy-theme="eternal-noir"] .bg-\\[\\#c9a84c\\/20\\] {
+              background-color: color-mix(in srgb, var(--hy-accent, #c9a84c) 15%, transparent) !important;
+            }
+            [data-hy-theme="eternal-noir"] .hover\\:border-\\[\\#c9a84c\\]:hover {
+              border-color: var(--hy-accent, #c9a84c) !important;
+            }
+            [data-hy-theme="eternal-noir"] .hover\\:text-\\[\\#c9a84c\\]:hover {
+              color: var(--hy-accent, #c9a84c) !important;
+            }
+          `,
+        }}
+      />
       {/* YouTube hidden iframe */}
       {isYT && ytId && (
         <div className="fixed bottom-0 right-0 w-24 h-14 pointer-events-none opacity-[0.001] z-0 overflow-hidden" aria-hidden="true">
@@ -290,7 +334,7 @@ export function NoirLayout({
               </div>
 
               {/* Floating Gift Button (Fixed at Bottom Right of Right 500px Frame) */}
-              {(context.wedding.giftAccounts ?? []).length > 0 && (
+              {themeConfig.sections.gift && (context.wedding.giftAccounts ?? []).length > 0 && (
                 <div className="fixed bottom-6 right-4 sm:bottom-8 sm:right-6 z-50 select-none">
                   <motion.button
                     type="button"
@@ -340,26 +384,30 @@ export function NoirLayout({
               </div>
               <div id="section-couple"><NoirCouple {...props} /></div>
 
-              {(context.wedding.stories ?? []).length > 0 && (
+              {themeConfig.sections.story && (context.wedding.stories ?? []).length > 0 && (
                 <div id="section-story"><NoirStory {...props} /></div>
               )}
 
               <div id="section-event"><NoirEvent {...props} /></div>
 
-              {(context.wedding.galleries ?? []).length > 0 && (
+              {themeConfig.sections.gallery && (context.wedding.galleries ?? []).length > 0 && (
                 <div id="section-gallery"><NoirGallery {...props} /></div>
               )}
 
-              <div id="section-rsvp"><NoirRSVP {...props} /></div>
+              {themeConfig.sections.rsvp && (
+                <div id="section-rsvp"><NoirRSVP {...props} /></div>
+              )}
 
               <div id="section-footer"><NoirFooter {...props} /></div>
 
               {/* Gift Modal Dialog */}
-              <NoirGift
-                {...props}
-                isModalOpen={isGiftModalOpen}
-                setIsModalOpen={setIsGiftModalOpen}
-              />
+              {themeConfig.sections.gift && (
+                <NoirGift
+                  {...props}
+                  isModalOpen={isGiftModalOpen}
+                  setIsModalOpen={setIsGiftModalOpen}
+                />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

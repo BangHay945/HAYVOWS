@@ -25,6 +25,21 @@ export interface Wedding {
   template?: { id: string; slug: string; name: string; version: string };
   isDemo?: boolean;
   user?: { id?: string; name?: string | null; email?: string; plan?: string };
+  themeConfig?: string | ThemeConfig | null;
+}
+
+export interface ThemeConfig {
+  colorway?: string;
+  veilIntensity?: "light" | "medium" | "deep";
+  fontPairing?: string;
+  sections?: {
+    countdown?: boolean;
+    story?: boolean;
+    gallery?: boolean;
+    rsvp?: boolean;
+    messages?: boolean;
+    gift?: boolean;
+  };
 }
 
 export interface Couple {
